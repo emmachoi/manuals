@@ -246,7 +246,9 @@ Replication Manager의 한 가지 이점은 인터넷 연결이 가능하다면 
 업데이트할 수 있다는 것이다. 온라인 업데이트 기능을 통해 최신 정보를 확인할 수
 있고 마우스 몇 번의 클릭만으로 Replication Manager의 최신 버전을 얻을 수 있다.
 
-![D:\\emmachoigit\\manuals\\media\\ReplicationManager\\07e48c76f8aa10e195700839e789583e.png](media/07e48c76f8aa10e195700839e789583e.png)
+![](D:\emmachoigit\manuals\media\ReplicationManager\07e48c76f8aa10e195700839e789583e.png)
+
+
 
 Replication Manager를 최신 버전으로 업데이트하는 절차는 다음과 같다.
 
