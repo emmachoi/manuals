@@ -3,7 +3,7 @@ Alitbase® Tools & Utilities
 Replication Manager User’s Manual
 =================================
 
-![e5cfb3761673686d093a3b00c062fe7a](media\ReplicationManager\e5cfb3761673686d093a3b00c062fe7a.png)
+![e5cfb3761673686d093a3b00c062fe7a](media/ReplicationManager\e5cfb3761673686d093a3b00c062fe7a.png)
 
 
 
@@ -15,7 +15,7 @@ Altibase Tools & Utilities Replication Manager User’s Manual
 
 Release 7.1
 
-Copyright ⓒ 2001\~ 2018 Altibase Corp. All Rights Reserved.
+Copyright ⓒ 2001/~ 2018 Altibase Corp. All Rights Reserved.
 
 본 문서의 저작권은 ㈜알티베이스에 있습니다. 이 문서에 대하여 당사의 동의없이
 무단으로 복제 또는 전용할 수 없습니다.
@@ -248,7 +248,7 @@ Replication Manager의 한 가지 이점은 인터넷 연결이 가능하다면 
 업데이트할 수 있다는 것이다. 온라인 업데이트 기능을 통해 최신 정보를 확인할 수
 있고 마우스 몇 번의 클릭만으로 Replication Manager의 최신 버전을 얻을 수 있다.
 
-![](media\ReplicationManager\07e48c76f8aa10e195700839e789583e.png)
+![](media/ReplicationManager/07e48c76f8aa10e195700839e789583e.png)
 
 
 
@@ -292,7 +292,7 @@ Replication Manager를 최신 버전으로 업데이트하는 절차는 다음�
 이 절은 Replication Manager의 사용자 인터페이스를 소개하고 Replication Manager의
 기본 사용법에 설명한다. 이 툴은 아래처럼 구성되어 있다.
 
-![48deb125f1f8d0bad9072829a57b02c7](media\ReplicationManager\48deb125f1f8d0bad9072829a57b02c7.png)
+![48deb125f1f8d0bad9072829a57b02c7](media/ReplicationManager/48deb125f1f8d0bad9072829a57b02c7.png)
 
 1.  DB Connections: 프로그램의 시작 위치이며, 데이터베이스와 이중화 객체 간의
     관계를 트리 구조로 보여주는 데이터베이스 중심의 뷰이다.
@@ -395,7 +395,7 @@ JDBC 드라이버를 불러오기 위해 아래와 같이 한다.
 2. 이 대화 상자에서 JDBC 드라이버 파일 가져오기 대화 상자를 열기 위해 오른쪽의
    “+” 아이콘을 클릭한다.
 
-   ![5d9de880b8ffcff76f8f2fed4b5f50cf](media\ReplicationManager\5d9de880b8ffcff76f8f2fed4b5f50cf.png)
+   ![5d9de880b8ffcff76f8f2fed4b5f50cf](media/ReplicationManager/5d9de880b8ffcff76f8f2fed4b5f50cf.png)
 
 3. 불러올 JDBC 드라이버 파일을 선택한 다음 Replication Manager에서 사용될 파일
    이름을 입력한다. 소스 파일은 지정된 디렉토리에 복사되며 지정한 대로 파일
@@ -415,7 +415,7 @@ JDBC 드라이버를 불러오기 위해 아래와 같이 한다.
 2.  “새로운 데이터베이스 연결” 대화 상자가 표시되면 필드 정보를 아래와 같이
     입력한다.
 
-![f6753230700743fd3fbdf8349161b408](media\ReplicationManager\f6753230700743fd3fbdf8349161b408.png)
+![f6753230700743fd3fbdf8349161b408](media/ReplicationManager/f6753230700743fd3fbdf8349161b408.png)
 
 -   기본 정보
 
@@ -451,7 +451,7 @@ IP 주소 유형: 알맞는 IP 주소 유형을 선택한다. Replication Manage
 Alitbase를 설치하고 앞선 두 가지 작업을 마침으로써 데이터베이스에 연결할 준비가
 완료되었다.
 
-![6e97d198c19b208617582e4bcb6c9ea7](media\ReplicationManager\6e97d198c19b208617582e4bcb6c9ea7.png)
+![6e97d198c19b208617582e4bcb6c9ea7](media/ReplicationManager/6e97d198c19b208617582e4bcb6c9ea7.png)
 
 데이터베이스에 연결하기 위해 아래와 같은 순서를 따른다.
 
