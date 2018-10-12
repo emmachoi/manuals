@@ -3,7 +3,7 @@ Alitbase® Tools & Utilities
 Replication Manager User’s Manual
 =================================
 
-![e5cfb3761673686d093a3b00c062fe7a](media\ReplicationManager\e5cfb3761673686d093a3b00c062fe7a.png)
+![e5cfb3761673686d093a3b00c062fe7a](media/ReplicationManager/e5cfb3761673686d093a3b00c062fe7a.png)
 
 
 
