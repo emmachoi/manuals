@@ -3,7 +3,7 @@ Alitbase® Tools & Utilities
 Replication Manager User’s Manual
 =================================
 
-![e5cfb3761673686d093a3b00c062fe7a](media/ReplicationManager\e5cfb3761673686d093a3b00c062fe7a.png)
+![e5cfb3761673686d093a3b00c062fe7a](media\ReplicationManager\e5cfb3761673686d093a3b00c062fe7a.png)
 
 
 
@@ -15,7 +15,7 @@ Altibase Tools & Utilities Replication Manager User’s Manual
 
 Release 7.1
 
-Copyright ⓒ 2001/~ 2018 Altibase Corp. All Rights Reserved.
+Copyright ⓒ 2001~ 2018 Altibase Corp. All Rights Reserved.
 
 본 문서의 저작권은 ㈜알티베이스에 있습니다. 이 문서에 대하여 당사의 동의없이
 무단으로 복제 또는 전용할 수 없습니다.
