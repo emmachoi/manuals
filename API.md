@@ -114,17 +114,17 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 이 매뉴얼에서는 다음 구성 요소로 구축된 다이어그램을 사용하여, 명령문의 구문을
 설명한다.
 
-| 구성 요소                                              | 의미                                                         |
-| ------------------------------------------------------ | ------------------------------------------------------------ |
-| ![image1](D:\emmachoigit\manuals\media\API\image1.gif) | 명령문이 시작한다. 완전한 명령문이 아닌 구문 요소는 화살표로 시작한다. |
-| ![image2](D:\emmachoigit\manuals\media\API\image2.gif) | 명령문이 다음 라인에 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 종료한다. |
-| ![image3](D:\emmachoigit\manuals\media\API\image3.gif) | 명령문이 이전 라인으로부터 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 시작한다. |
-| ![image4](D:\emmachoigit\manuals\media\API\image4.gif) | 명령문이 종료한다.                                           |
-| ![image5](D:\emmachoigit\manuals\media\API\image5.gif) | 필수 항목                                                    |
-| ![image6](D:\emmachoigit\manuals\media\API\image6.gif) | 선택적 항목                                                  |
-| ![image7](D:\emmachoigit\manuals\media\API\image7.gif) | 선택사항이 있는 필수 항목. 한 항목만 제공해야 한다.          |
-| ![image8](D:\emmachoigit\manuals\media\API\image8.gif) | 선택사항이 있는 선택적 항목                                  |
-| ![image9](D:\emmachoigit\manuals\media\API\image9.gif) | 선택적 항목. 여러 항목이 허용된다. 각 반복 앞부분에 콤마가 와야 한다. |
+| 구성 요소                       | 의미                                                         |
+| ------------------------------- | ------------------------------------------------------------ |
+| ![image1](media/API/image1.gif) | 명령문이 시작한다. 완전한 명령문이 아닌 구문 요소는 화살표로 시작한다. |
+| ![image2](media/API/image2.gif) | 명령문이 다음 라인에 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 종료한다. |
+| ![image3](media/API/image3.gif) | 명령문이 이전 라인으로부터 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 시작한다. |
+| ![image4](media/API/image4.gif) | 명령문이 종료한다.                                           |
+| ![image5](media/API/image5.gif) | 필수 항목                                                    |
+| ![image6](media/API/image6.gif) | 선택적 항목                                                  |
+| ![image7](media/API/image7.gif) | 선택사항이 있는 필수 항목. 한 항목만 제공해야 한다.          |
+| ![image8](media/API/image8.gif) | 선택사항이 있는 선택적 항목                                  |
+| ![image9](media/API/image9.gif) | 선택적 항목. 여러 항목이 허용된다. 각 반복 앞부분에 콤마가 와야 한다. |
 
 ##### 샘플 코드 규칙
 
@@ -223,9 +223,7 @@ PHP로 Altibase에 연동을 하기 위해서는 먼저 ODBC 매니저를 설치
 
 ```
 ./configure -prefix=설치경로 -enable-gui=no -–enable-drivers=no
-
 make
-
 make install
 ```
 
@@ -248,9 +246,7 @@ export ODBCSYSINI=\~
 
 ```
 export LD_LIBRARY_PATH= /usr/local/odbcDriverManager32/lib:\$LD_LIBRARY_PATH
-
-export LD_LIBRARY_PATH_64=
-/usr/local/odbcDriverManager64/lib:\$LD_LIBRARY_PATH_64
+export LD_LIBRARY_PATH_64= /usr/local/odbcDriverManager64/lib:\$LD_LIBRARY_PATH_64
 ```
 
 
@@ -266,11 +262,8 @@ export LD_LIBRARY_PATH_64=
 
 ```
 [Altibase]
-
 Driver = /home/altibase/altibase_home/lib/libaltibase_odbc.so
-
 Server = 127.0.0.1
-
 Port = 20300
 ```
 
@@ -290,58 +283,35 @@ http://php.morva.net/manual/kr/index.php
 
 ```
 <?
-
 // SYSTEM DSN, USER_ID, USER_PASSWORD
+$conn = odbc_connect("Altibase", "SYS", "MANAGER");
 
-\$conn = odbc_connect("Altibase", "SYS", "MANAGER");
-
-if (\$conn)
-
+if ($conn)
 {
+    // direct-execution
+    echo "now, i create table t1 (id integer, name char(20)<br>";
+    odbc_exec($conn, "drop table t1");
+    odbc_exec($conn, "create table t1 (id integer, name char(20))");
 
-// direct-execution
+    // prepare-execution 
+    echo "now, i insert into t1 value (100, Lee)<br>";
+    $stmt = odbc_prepare ($conn, "insert into t1 values (?, ?)");
+    $Insert = array (100, "Lee");
+    if (!odbc_execute($stmt, &$Insert))
+    {
+        echo ("error");
+    }
 
-echo "now, i create table t1 (id integer, name char(20)\<br\>";
-
-odbc_exec(\$conn, "drop table t1");
-
-odbc_exec(\$conn, "create table t1 (id integer, name char(20))");
-
-// prepare-execution
-
-echo "now, i insert into t1 value (100, Lee)\<br\>";
-
-\$stmt = odbc_prepare (\$conn, "insert into t1 values (?, ?)");
-
-\$Insert = array (100, "Lee");
-
-if (!odbc_execute(\$stmt, &\$Insert))
-
-{
-
-echo ("error");
-
+    // single-selection
+    $res = odbc_do ($conn, "select id, name, sysdate from T1");
+    odbc_fetch_row ($res);
+    $ID = odbc_result($res, 1);
+    $NAME = odbc_result($res, 2);
+    $DATE = odbc_result($res, 3);
+    echo ("id = $ID , name = $NAME datetime = $DATE <br>"); 
+    odbc_close($conn);
 }
-
-// single-selection
-
-\$res = odbc_do (\$conn, "select id, name, sysdate from T1");
-
-odbc_fetch_row (\$res);
-
-\$ID = odbc_result(\$res, 1);
-
-\$NAME = odbc_result(\$res, 2);
-
-\$DATE = odbc_result(\$res, 3);
-
-echo ("id = \$ID , name = \$NAME datetime = \$DATE \<br\>");
-
-odbc_close(\$conn);
-
-}
-
-?\>
+?>
 ```
 
 
@@ -385,13 +355,17 @@ pdo_altibase를 사용하기 위해서는 pecl 사용환경을 갖춰야 한다.
 
 pecl을 사용하여 pdo_altibase를 설치한다.
 
+```
 pecl install PDO_ALTIBASE-1.0.0.tgz
+```
 
 #### 환경설정
 
 php.ini 등 설정파일에 확장 사용설정을 추가한다.
 
+```
 extension=pdo_altibase.so
+```
 
 
 
@@ -446,11 +420,11 @@ extension=pdo_altibase.so
 
 pdo_altibase의 DSN 구성은 다음과 같다.
 
-| 속성       | 설명                                                                                                |
-|------------|-----------------------------------------------------------------------------------------------------|
-| DSN prefix | “altibase”                                                                                          |
-| Server     | 서버의 호스트 이름 또는 ip 주소                                                                     |
-| Port       | 서버의 포트 번호                                                                                    |
+| 속성       | 설명                                                         |
+| ---------- | ------------------------------------------------------------ |
+| DSN prefix | “altibase”                                                   |
+| Server     | 서버의 호스트 이름 또는 ip 주소                              |
+| Port       | 서버의 포트 번호                                             |
 | NLS_USE    | 캐릭터 셋. US7ASCII가 기본값이며, 환경변수 ALTIBASE_NLS_USE가 설정된 경우에는 지정된 값을 사용한다. |
 
 ##### 예제
@@ -464,13 +438,13 @@ pdo_altibase의 DSN 구성은 다음과 같다.
 PDO::getAttribute(), PDO::setAttribute() 함수에서 사용할 수 있는 속성은 다음과
 같다. 사용할 수 없는 속성은 “제약 및 주의사항”을 참조한다.
 
-| 속성 ID                       | 설명                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| PDO::ALTIBASE_DATE_FORMAT     | DATE를 표현하는데 사용할 포맷. 사용예제, DATE 포맷 변경 참고.                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| PDO::ALTIBASE_EXPLAIN_PL AN   | 수행 계획을 얻을지 여부와 그 방식. PDO::ALTIBASE_EXPLAIN_PLAN_OFF :                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|                               | 수행 계획을 얻지 않는다. PDO::ALTIBASE_EXPLAIN_PLAN_ON :                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-|                               | Prepare 및 Execution 후 결정된 수행 계획을 얻는다. PDO::ALTIBASE_EXPLAIN_PLAN_ONLY :                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|                               | Prepare 후 Execution 전에 결정된 수행 계획을 얻는다. 자세한 내용은 사용 예제\> 수행계획 확인 을 참고하라.                                                                                                                                                                                                                                                                                                                                                                                              |
+| 속성 ID                       | 설명                                                         |
+| ----------------------------- | ------------------------------------------------------------ |
+| PDO::ALTIBASE_DATE_FORMAT     | DATE를 표현하는데 사용할 포맷. 사용예제, DATE 포맷 변경 참고. |
+| PDO::ALTIBASE_EXPLAIN_PLAN    | 수행 계획을 얻을지 여부와 그 방식. PDO::ALTIBASE_EXPLAIN_PLAN_OFF : |
+|                               | 수행 계획을 얻지 않는다. PDO::ALTIBASE_EXPLAIN_PLAN_ON :     |
+|                               | Prepare 및 Execution 후 결정된 수행 계획을 얻는다. PDO::ALTIBASE_EXPLAIN_PLAN_ONLY : |
+|                               | Prepare 후 Execution 전에 결정된 수행 계획을 얻는다. 자세한 내용은 사용 예제\> 수행계획 확인 을 참고하라. |
 | PDO::ALTIBASE_DEFER_PROTOCOLS | Prepare, execute를 반복하여 호출하는 구조로 작성된 프로그램의 성능 향상을 위한 프로토콜 최적화 여부를 설정한다. 이 속성을 사용하기 위해서는, 하나의 커넥션 객체를 여러 쓰레드에서 공유해서 사용하지 않아야 한다. 또한 성능을 위해서는 prepare를 한번만 호출한 후, execute를 반복 호출하는 구조로 프로그램을 작성해야 한다. 0 : 프로토콜 최적화하지 않음 (default) 1 : execute 관련 프로토콜 최적화 2 : execute, close 관련 프로토콜 최적화 ex\> \$db-\>setAttribute(PDO::ALTIBASE_DEFER_PROTOCOLS, 1); |
 
 #### 파라미터 바인딩
@@ -483,13 +457,14 @@ pdo_altibase는 named parameter를 지원하지 않는다.
 
 ##### 바인딩 예제
 
-\$stmt = \$db-\>prepare("SELECT \* FROM t1 WHERE val = ? OR val = ?");
+```
+$stmt = $db->prepare("SELECT * FROM t1 WHERE val = ? OR val = ?");
+$stmt->bindParam(1, $val1);
+$stmt->bindParam(2, $val2);
+$stmt->execute();
+```
 
-\$stmt-\>bindParam(1, \$val1);
 
-\$stmt-\>bindParam(2, \$val2);
-
-\$stmt-\>execute();
 
 #### 컬럼 바인딩
 
@@ -512,13 +487,14 @@ BIT, VARBIT, BYTE, VARBYTE, NIBBLE, LOB, GEOMETRY 타입은 제한적으로 지�
 
 ##### 예제
 
-\$db = new PDO("altibase:Server=127.0.0.1;Port=20333", "sys", "manager");
-
-foreach (\$db-\>query("SELECT \* FROM dual") as \$row) {
-
-print_r(\$row);
-
+```
+$db = new PDO("altibase:Server=127.0.0.1;Port=20333", "sys", "manager");
+foreach ($db->query("SELECT * FROM dual") as $row) {
+    print_r($row);
 }
+```
+
+
 
 #### DATE 포맷 변경
 
@@ -526,21 +502,24 @@ DATE를 위해 기본으로 어떤 문자열 포맷을 사용할 것인지 설�
 
 ##### 예제
 
-\$db-\>setAttribute(PDO::ALTIBASE_DATE_FORMAT, "YYYY-MM-DD");
+```
+$db->setAttribute(PDO::ALTIBASE_DATE_FORMAT, "YYYY-MM-DD");
+$attr_dateform = $db->getAttribute(PDO::ALTIBASE_DATE_FORMAT);
+echo "attr_dateform = $attr_dateform\n";
+$stmt->execute();
+echo $stmt->fetchColumn(), "\n";
+```
 
-\$attr_dateform = \$db-\>getAttribute(PDO::ALTIBASE_DATE_FORMAT);
 
-echo "attr_dateform = \$attr_dateform\\n";
-
-\$stmt-\>execute();
-
-echo \$stmt-\>fetchColumn(), "\\n";
 
 ##### 출력 결과
 
+```
 attr_dateform = YYYY-MM-DD
-
 2017-04-18
+```
+
+
 
 #### 수행계획 확인
 
@@ -548,98 +527,63 @@ PDO 객체의 setAttribute() 함수를 통해 수행 계획 출력 여부를 설
 
 ##### 예제
 
-\$attr_plan = \$db-\>getAttribute(PDO::ALTIBASE_EXPLAIN_PLAN);
+```
+$attr_plan = $db->getAttribute(PDO::ALTIBASE_EXPLAIN_PLAN);
+echo "attr_plan = $attr_plan\n";
+ 
+$db->setAttribute(PDO::ALTIBASE_EXPLAIN_PLAN, PDO::ALTIBASE_EXPLAIN_PLAN_ONLY);
+$attr_plan = $db->getAttribute(PDO::ALTIBASE_EXPLAIN_PLAN);
+echo "attr_plan = $attr_plan\n";
+$stmt = $db->prepare("SELECT * FROM dual");
+$stmt->execute();
+print_r($stmt->fetchAll());
+echo $stmt->getPlanText();
+$stmt = null;
+$db->setAttribute(PDO::ALTIBASE_EXPLAIN_PLAN, PDO::ALTIBASE_EXPLAIN_PLAN_ON);
+$attr_plan = $db->getAttribute(PDO::ALTIBASE_EXPLAIN_PLAN);
+echo "attr_plan = $attr_plan\n";
+$stmt = $db->prepare("SELECT * FROM dual");
+$stmt->execute();
+print_r($stmt->fetchAll());
+echo $stmt->getPlanText();
+$stmt = null;
+```
 
-echo "attr_plan = \$attr_plan\\n";
 
-\$db-\>setAttribute(PDO::ALTIBASE_EXPLAIN_PLAN,
-PDO::ALTIBASE_EXPLAIN_PLAN_ONLY);
-
-\$attr_plan = \$db-\>getAttribute(PDO::ALTIBASE_EXPLAIN_PLAN);
-
-echo "attr_plan = \$attr_plan\\n";
-
-\$stmt = \$db-\>prepare("SELECT \* FROM dual");
-
-\$stmt-\>execute();
-
-print_r(\$stmt-\>fetchAll());
-
-echo \$stmt-\>getPlanText();
-
-\$stmt = null;
-
-\$db-\>setAttribute(PDO::ALTIBASE_EXPLAIN_PLAN, PDO::ALTIBASE_EXPLAIN_PLAN_ON);
-
-\$attr_plan = \$db-\>getAttribute(PDO::ALTIBASE_EXPLAIN_PLAN);
-
-echo "attr_plan = \$attr_plan\\n";
-
-\$stmt = \$db-\>prepare("SELECT \* FROM dual");
-
-\$stmt-\>execute();
-
-print_r(\$stmt-\>fetchAll());
-
-echo \$stmt-\>getPlanText();
-
-\$stmt = null;
 
 ##### 출력 결과
 
+```
 attr_plan = 0
-
 attr_plan = 2
-
 Array
-
 (
-
-[0] =\> Array
-
-(
-
-[dummy] =\> X
-
-[0] =\> X
-
+    [0] => Array
+        (
+            [dummy] => X
+            [0] => X
+        )
 )
-
-)
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 3, COST: 0.01 )
-
-SCAN ( TABLE: DUAL, FULL SCAN, ACCESS: ??, COST: 0.01 )
-
-\------------------------------------------------------------
-
+ SCAN ( TABLE: DUAL, FULL SCAN, ACCESS: ??, COST: 0.01 )
+------------------------------------------------------------
 attr_plan = 1
-
 Array
-
 (
-
-[0] =\> Array
-
-(
-
-[dummy] =\> X
-
-[0] =\> X
-
+    [0] => Array
+        (
+            [dummy] => X
+            [0] => X
+        )
 )
-
-)
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 3, COST: 0.01 )
+ SCAN ( TABLE: DUAL, FULL SCAN, ACCESS: 1, COST: 0.01 )
+------------------------------------------------------------
+```
 
-SCAN ( TABLE: DUAL, FULL SCAN, ACCESS: 1, COST: 0.01 )
 
-\------------------------------------------------------------
 
 #### 커서 유지
 
@@ -647,26 +591,21 @@ commit, rollback을 수행해도 fetch중인 커서를 유지해준다.
 
 ##### 예제
 
+```
 // HOLD를 쓰려면 AUTOCOMMIT 속성이 false여야 함
-
-\$db-\>setAttribute(PDO::ATTR_AUTOCOMMIT, false);
-
+$db->setAttribute(PDO::ATTR_AUTOCOMMIT, false);
+ 
 // prepare 때 HOLD 속성을 줘야 함
-
-\$stmt_sel = \$db-\>prepare("SELECT \* FROM pdo_hold",
-array(PDO::ALTIBASE_CURSOR_HOLD =\> PDO::ALTIBASE_CURSOR_HOLD_ON));
-
-\$stmt_del = \$db-\>prepare("DELETE pdo_hold WHERE id = ?");
-
+$stmt_sel = $db->prepare("SELECT * FROM pdo_hold", array(PDO::ALTIBASE_CURSOR_HOLD => PDO::ALTIBASE_CURSOR_HOLD_ON));
+$stmt_del = $db->prepare("DELETE pdo_hold WHERE id = ?");
+ 
 // TODO
-
+ 
 // AUTOCOMMIT을 바꾸려면 stmt를 모두 정리해야 함
-
-unset(\$stmt_sel);
-
-unset(\$stmt_del);
-
-\$db-\>setAttribute(PDO::ATTR_AUTOCOMMIT, true);
+unset($stmt_sel);
+unset($stmt_del);
+$db->setAttribute(PDO::ATTR_AUTOCOMMIT, true);
+```
 
 
 
@@ -694,7 +633,9 @@ DBI는 애플리케이션에서 동일한 인터페이스를 사용하여 여러
 이들 메소드와 속성들은 database 메소드와 속성, 그리고 statement 메소드와
 속성으로 나뉘어져 있다.
 
->   [그림 3‑1] PERL DBD와 DBI 구조도
+![image10](media/API/image10.gif)
+
+[그림 3‑1] PERL DBD와 DBI 구조도
 
 
 
@@ -702,26 +643,59 @@ DBI는 애플리케이션에서 동일한 인터페이스를 사용하여 여러
 
 #### Perl 패키지 설치 절차
 
-1.  사용하는 장비의 운영체제의 버전에 맞게 Perl 패키지를 다운로드 받는다.
-2.  임의의 디렉터리에서 패키지 (ex. perl-5.8.5.tar.gz)의 압축을 푼다.  
-    gzip -cd perl-5.8.5.tar.gz \| tar xvf –
-3.  Perl 패키지의 압축을 푼 디렉터리에서 configure를 수행한다.  
-    ./configure
-4.  Perl 패키지의 압축을 푼 디렉터리에서 make를 수행한다.  
-    make
-5.  Perl 패키지의 압축을 푼 디렉터리에서 root 계정으로 컴파일한 모듈을 설치한다.  
+1. 사용하는 장비의 운영체제의 버전에 맞게 Perl 패키지를 다운로드 받는다.
+
+2. 임의의 디렉터리에서 패키지 (ex. perl-5.8.5.tar.gz)의 압축을 푼다.  
+
+   ```
+   gzip -cd perl-5.8.5.tar.gz \| tar xvf –
+   ```
+
+3. Perl 패키지의 압축을 푼 디렉터리에서 configure를 수행한다.  
+
+   ```
+   ./configure
+   ```
+
+4. Perl 패키지의 압축을 푼 디렉터리에서 make를 수행한다.  
+
+   ```
+   make
+   ```
+
+5. Perl 패키지의 압축을 푼 디렉터리에서 root 계정으로 컴파일한 모듈을 설치한다.  
+
+   ```
+   make install
+   ```
+
+6. Event 모듈 설치를 위해서 event 패키지 (ex. Event-1.00 .tar.gz)를 다운로드
+   받는다.
+
+7. 임의의 디렉터리에서 Event-1.00.tar.gz의 압축을 푼다.  
+
+   ```
+   gzip -cd Event-1.00.tar.gz \| tar xvf
+   ```
+
+8. Event 패키지의 압축을 푼 디렉터리에서 configure를 수행한다.  
+
+   ```
+   ./configure
+   ```
+
+9. Event 패키지의 압축을 푼 디렉터리에서 make를 수행한다.  
+
+   ```
+   make
+   ```
+
+10. Event 패키지의 압축을 푼 디렉터리에서 root 계정으로 컴파일한 모듈을 설치한다.  
+
+    ```
     make install
-6.  Event 모듈 설치를 위해서 event 패키지 (ex. Event-1.00 .tar.gz)를 다운로드
-    받는다.
-7.  임의의 디렉터리에서 Event-1.00.tar.gz의 압축을 푼다.  
-    gzip -cd Event-1.00.tar.gz \| tar xvf
-8.  Event 패키지의 압축을 푼 디렉터리에서 configure를 수행한다.  
-    ./configure
-9.  Event 패키지의 압축을 푼 디렉터리에서 make를 수행한다.  
-    make
-10.  Event 패키지의 압축을 푼 디렉터리에서 root 계정으로 컴파일한 모듈을
-     설치한다.  
-     make install
+    ```
+
 
 
 
@@ -735,59 +709,68 @@ DBI는 애플리케이션에서 동일한 인터페이스를 사용하여 여러
 2.  Perl DBI 설치  
     Perl DBD 컴파일하기 위한 선행 절차로 Perl DBI 패키지를 설치한다.
 
+```
 방법 1) root계정으로
-
-\# perl -MCPAN -e shell
-
-prompt\> install DBI
-
-방법 2) 상기 방법으로 안될 경우, 아래 ftp사이트에서 DBI 패키지를 다운받아
-컴파일한 후에 설치한다.
-
+# perl -MCPAN -e shell
+prompt> install DBI
+방법 2) 상기 방법으로 안될 경우, 아래 ftp사이트에서 DBI 패키지를 다운받아 컴파일한 후에 설치한다. 
 ftp://ftp.nuri.net/pub/CPAN/modules/by-module/DBI
+ 2-1) perl Makefile.PL 
+ 2-2) make
+ 2-3) make install
+```
 
-2-1) perl Makefile.PL
 
-2-2) make
 
-2-3) make install
+3. 아래 위치에서 Altibase Perl DBD를 다운로드하고 설치한다. Altibase Perl DBD는
+   32bit이기 때문에 Altibase 32bit 클라이언트 패키지 또는 32bit 서버 패키지가
+   이미 설치되어 있어야하고, ALTIBASE_HOME 환경변수도 올바르게 설정되어 있어야
+   한다. http://data.altibase.com/download_back/altibase/PERL-DBD/altibase-perlDBD.tar.gz
 
-1.  아래 위치에서 Altibase Perl DBD를 다운로드하고 설치한다. Altibase Perl DBD는
-    32bit이기 때문에 Altibase 32bit 클라이언트 패키지 또는 32bit 서버 패키지가
-    이미 설치되어 있어야하고, ALTIBASE_HOME 환경변수도 올바르게 설정되어 있어야
-    한다.
-
-http://data.altibase.com/download_back/altibase/PERL-DBD/altibase-perlDBD.tar.gz
-
+```
 gzip –cd altibase-perlDBD.tar.gz \| tar –xvf -
+```
 
-1.  다운로드한 패키지 내의 install.mk를 사용해서 Altibase DBD를 생성하는 데
-    필요한 Makefile을 생성한다.
 
+
+4. 다운로드한 패키지 내의 install.mk를 사용해서 Altibase DBD를 생성하는 데
+   필요한 Makefile을 생성한다.
+
+```
 make -f install.mk
+```
 
-1.  컴파일한다.  
-    make  
-    Altibase Perl DBD는 shared library형태로 생성된다. HP 플랫폼에서는
-    altibase.sl의 이름으로 생성된다. HP 이외의 플랫폼에서는 altibase.so의
-    이름으로 생성되며, 생성되는 위치는 blib/arch/auto/DBD/altibase 이다.
 
-2.  root 계정으로 make install을 실행한다. Altibase Perl DBD가 Perl 에 설치된다.  
-    이 예제에서는 Altibase DBD는 아래 위치에 설치된다.
 
+5. 컴파일한다. Altibase Perl DBD는 shared library형태로 생성된다. HP 플랫폼에서는
+   altibase.sl의 이름으로 생성된다. HP 이외의 플랫폼에서는 altibase.so의
+   이름으로 생성되며, 생성되는 위치는 blib/arch/auto/DBD/altibase 이다.
+
+   ```
+   make  
+   ```
+
+
+6. root 계정으로 make install을 실행한다. Altibase Perl DBD가 Perl 에 설치된다.  
+   이 예제에서는 Altibase DBD는 아래 위치에 설치된다.
+
+```
 /opt/perl_5.8.8/bin/lib/site_perl/5.8.8/IA64.ARCHREV_0/auto/DBD/altibase
+```
 
-1.  LD_PRELOAD환경변수를 설정한다.  
-    HP 또는 일부 플랫폼은 이 단계를 수행해야 한다. 이 작업을 수행하지 않을 경우
-    오류 메시지가 나타난다.
 
-2.  perl test.pl을 수행해서 테스트한다.  
-    Altibase 서버를 구동한 후, test.pl파일의 소스 코드를 아래와 같이 수정한 후에
-    perl test.pl을 수행한다.
 
-my \$dbh =
-DBI-\>connect("dbi:altibase:DSN=127.0.0.1;UID=SYS;PWD=MANAGER;CONNTYPE=1;NLS_USE=US7ASCII;PORT_NO=20999",
-"", "", {'RaiseError' =\> 1});
+7. LD_PRELOAD환경변수를 설정한다.  
+   HP 또는 일부 플랫폼은 이 단계를 수행해야 한다. 이 작업을 수행하지 않을 경우
+   오류 메시지가 나타난다.
+
+8. perl test.pl을 수행해서 테스트한다.  
+   Altibase 서버를 구동한 후, test.pl파일의 소스 코드를 아래와 같이 수정한 후에
+   perl test.pl을 수행한다.
+
+```
+my $dbh = DBI->connect("dbi:altibase:DSN=127.0.0.1;UID=SYS;PWD=MANAGER;CONNTYPE=1;NLS_USE=US7ASCII;PORT_NO=20999", "", "", {'RaiseError' => 1});
+```
 
 
 
@@ -876,7 +859,9 @@ XA는 하나 이상의 데이타베이스에서 트랜잭션을 처리하는 애
 아래 그림에서 보는 것처럼, 하나 이상의 AP (Application Program), TM (Transaction
 Manager)과 하나 이상의 RM (Resource Manager)이 분산 트랜잭션에 관여한다.
 
->   [그림 4‑1] XA 구조
+![xa](media/API/xa.gif)
+
+[그림 4‑1] XA 구조
 
 AP가 TX 인터페이스를 사용하여 TM에게 분산 트랜잭션이 시작됐다고 알리면, TM은
 어떤 RM (데이타베이스 시스템)이 분산 트랜잭션의 대상인지 확인한다. TM은
@@ -911,42 +896,26 @@ XA 인터페이스를 지원하는 모든 RM은 RM에 대한 정보와 각 인�
 point를 가지는 xa_switch_t 구조체를 제공한다. Altibase는 altibase_xa_switch라는
 이름으로 제공한다.
 
+```
 struct xa_switch_t {
-
-char name[RMNAMESZ]; /\* name of resource manager \*/
-
-long flags; /\* resource manager specific options \*/
-
-long version;
-
-int (\*xa_open_entry)(/\*\_ char \*, int, long \_\*/); /\*xa_open fn pointer\*/
-
-int (\*xa_close_entry)(/\*\_ char \*, int, long \_\*/); /\*xa_close fn
-pointer\*/
-
-int (\*xa_start_entry)(/\*\_ XID \*, int, long \_\*/); /\*xa_start fn pointer\*/
-
-int (\*xa_end_entry)(/\*\_ XID \*, int, long \_\*/); /\*xa_end fn pointer\*/
-
-int (\*xa_rollback_entry)(/\*\_ XID \*, int, long \_\*/); /\*xa_rollback fn
-pointer\*/
-
-int (\*xa_prepare_entry)(/\*\_ XID \*, int, long \_\*/); /\*xa_prepare fn
-pointer\*/
-
-int (\*xa_commit_entry)(/\*\_ XID \*, int, long \_\*/); /\*xa_commit fn
-pointer\*/
-
-int (\*xa_recover_entry)(/\*\_ XID \*, long, int, long \_\*/); /\*xa_recover fn
-pointer\*/
-
-int (\*xa_forget_entry)(/\*\_ XID \*, int, long \_\*/); /\*xa_forget fn
-pointer\*/
-
-int (\*xa_complete_entry)(/\*\_ int \*, int \*, int, long \_\*/); /\*xa_complete
-fn pointer\*/
-
+    char name[RMNAMESZ];   /* name of resource manager */
+    long flags;              /* resource manager specific options */
+    long version;               
+   
+    int (*xa_open_entry)(/*_ char *, int, long _*/); /*xa_open fn pointer*/
+    int  (*xa_close_entry)(/*_ char *, int, long _*/); /*xa_close fn pointer*/
+    int  (*xa_start_entry)(/*_ XID *, int, long _*/); /*xa_start fn pointer*/
+    int  (*xa_end_entry)(/*_ XID *, int, long _*/); /*xa_end fn pointer*/
+    int  (*xa_rollback_entry)(/*_ XID *, int, long _*/); /*xa_rollback fn pointer*/
+    int  (*xa_prepare_entry)(/*_ XID *, int, long _*/); /*xa_prepare fn pointer*/
+    int  (*xa_commit_entry)(/*_ XID *, int, long _*/); /*xa_commit fn pointer*/
+    int  (*xa_recover_entry)(/*_ XID *, long, int, long _*/); /*xa_recover fn pointer*/
+    int  (*xa_forget_entry)(/*_ XID *, int, long _*/); /*xa_forget fn pointer*/
+    int  (*xa_complete_entry)(/*_ int *, int *, int, long _*/); /*xa_complete fn pointer*/
 };
+```
+
+
 
 #### XA 라이브러리
 
@@ -982,13 +951,15 @@ Altibase는 xa_switch_t의 Altibase 구현인 altibase_xa_switch 구조체에 XA
 | xa_recover    | prepare, 휴리스틱 커밋 또는 휴리스틱 롤백된 트랜잭션의 XID 리스트를 보여준다.                                 |
 | xa_forget     | 휴리스틱하게 완료된 트랜잭션 브랜치에 대한 정보를 RM에서 폐기하도록 한다.                                     |
 
->   [표 4‑1] XA 인터페이스
+[표 4‑1] XA 인터페이스
 
 ##### xa_open
 
 RM에 접속한다.
 
-int xa_open(char \*xa_info, int rmid, long flags);
+```
+int xa_open(char *xa_info, int rmid, long flags);
+```
 
 xa_info는 null-terminated 문자열로, 서버 정보를 포함하며 최대 길이는
 256byte이다. SQLDriverConnect의 인자와 동일한 포맷을 가지며, 추가적으로 XA_NAME,
@@ -1004,7 +975,7 @@ NAME=value;NAME=value;NAME=value;…
 | XA_NAME     | Altibase Embedded SQL 프로그램에서 연결의 식별자로 사용되는 이름이다. Altibase Embedded SQL로 애플리케이션을 작성할 때 이 값을 생략하면, 기본 연결을 사용하게 된다. 만약 XA_NAME 속성에 이름을 명시했다면, SQL문 수행시 AT 절에 이 이름을 사용하면 된다. |
 | XA_LOG_DIR  | Altibase XA 라이브러리에서 발생한 에러 정보를 로깅하는 디렉터리를 명시한다. 기본값은 ALTIBASE_HOME 환경변수가 설정되었을 경우 \$ALTIBASE_HOME/trc이고, 그렇지 않다면 현재 디렉터리다.                                                                    |
 
->   [표 4‑2] XA 인터페이스에 추가된 필드
+[표 4‑2] XA 인터페이스에 추가된 필드
 
 rmid는 접속할 서버의 ID를 기록하며, 아무 값이나 쓸 수 있다.
 
@@ -1016,7 +987,9 @@ rmid는 접속할 서버의 ID를 기록하며, 아무 값이나 쓸 수 있다.
 
 지정된 RM과 연결을 종료한다.
 
-int xa_close(char \*xa_info, int rmid, long flags);
+```
+int xa_close(char *xa_info, int rmid, long flags);
+```
 
 xa_info는 서버에 대한 정보를 기록하는 문자열로, 최대 길이는 256byte이다.
 
@@ -1030,7 +1003,9 @@ Note: 연결이 이미 종료된 것에 대해 xa_close가 수행되어도, XA_O
 
 트랜잭션 브랜치를 시작한다. xid는 글로벌 트랜잭션에 대한 식별자이다.
 
-int xa_start(XID \*xid, int rmid, long flags);
+```
+int xa_start(XID *xid, int rmid, long flags);
+```
 
 플래그(flags)는 다음의 값을 쓸 수 있다.
 
@@ -1053,7 +1028,9 @@ int xa_start(XID \*xid, int rmid, long flags);
 
 트랜잭션 브랜치를 끝낸다.
 
-int xa_end(XID \*xid, int rmid, long flags);
+```
+int xa_end(XID *xid, int rmid, long flags);
+```
 
 플래그(flags)는 다음의 값을 쓸 수 있다.
 
@@ -1073,7 +1050,9 @@ int xa_end(XID \*xid, int rmid, long flags);
 
 지정된 트랜잭션 브랜치에 대해서 수행한 연산을 롤백한다.
 
-int xa_rollback(XID \*xid, int rmid, long flags);
+```
+int xa_rollback(XID *xid, int rmid, long flags);
+```
 
 플래그(flags)는 다음의 값을 쓸 수 있다.
 
@@ -1087,7 +1066,9 @@ int xa_rollback(XID \*xid, int rmid, long flags);
 
 2단계 커밋 프로토콜에서 트랜잭션을 커밋하거나 롤백하기 이전에 수행한다.
 
-int xa_prepare(XID \*xid, int rmid, long flags);
+```
+int xa_prepare(XID *xid, int rmid, long flags);
+```
 
 플래그(flags)는 다음의 값을 쓸 수 있다.
 
@@ -1110,7 +1091,9 @@ int xa_prepare(XID \*xid, int rmid, long flags);
 
 특정 트랜잭션 브랜치를 커밋한다.
 
-int xa_commit(XID \*xid, int rmid, long flags);
+```
+int xa_commit(XID *xid, int rmid, long flags);
+```
 
 플래그(flags)는 다음의 값을 쓸 수 있다.
 
@@ -1124,7 +1107,9 @@ int xa_commit(XID \*xid, int rmid, long flags);
 
 RM에서 prepare 상태로 있는 트랜잭션 브랜치에 해당하는 xid의 목록을 얻는다.
 
-int xa_recover(XID \*xids, long count, int rmid, long flags);
+```
+int xa_recover(XID *xids, long count, int rmid, long flags);
+```
 
 리턴 값은 xids 에 반환되는 xid의 갯수이다.
 
@@ -1146,7 +1131,9 @@ count 매개변수에는 xids의 사이즈를 지정한다.
 휴리스틱하게 (heuristically) 완료된 트랜잭션을 Altibase 서버가 관리하지 않도록
 한다.
 
-int xa_forget(XID \* xid, int rmid, long flags);
+```
+int xa_forget(XID * xid, int rmid, long flags);
+```
 
 플래그(flags)는 다음의 값을 쓸 수 있다.
 
@@ -1211,10 +1198,14 @@ ODBC 애플리케이션이 분산 트랜잭션을 사용할 수 있도록, SQLSe
 
 XA 연결하기 위해서는 SQLSetConnectAttr에 다음과 같은 매개변수를 준다.
 
+```
 SQLRETURN SQLSetConnectAttr (SQLHDBC hdbc,  
 SQLINTEGER fAttr,  
 SQLPOINTER vParam,  
 SQLINTEGER sLen);
+```
+
+
 
 -   fAttr = ALTIBASE_XA_RMID  
     hdbc로 지정한 연결을 XA 연결로써 사용하도록 한다. XA 연결에 대한 자세한
@@ -1239,7 +1230,9 @@ XA 프로그램을 작성할 때, 커서는 한 트랜잭션 내에서만 유효
 기본 연결을 사용려면 다음과 같이 xa_open의 연결 정보를 가지는 xa_info 인자에
 XA_NAME 필드를 지정하지 않은 문자열을 사용해야 한다.
 
+```
 DSN=127.0.0.1;UID=SYS;PWD=MANAGER
+```
 
 그리고 SQL 구문에서는 다음 예제처럼 AT 절을 사용하지 않아도 된다.
 
@@ -1257,72 +1250,84 @@ Embedded SQL 프로그램에서 명시적으로 연결의 이름을 사용하려
 연결 이름이 conn1, conn2로 존재한다면 TM의 환경 설정에서 open_string은 다음과
 같이 XA_NAME을 사용해서 연결 이름을 명시한다.
 
-DSN=127.0.0.1;UID=SYS;PWD=MANAGER;XA_NAME=*conn1*
-
-DSN=127.0.0.1;UID=SYS;PWD=MANAGER;XA_NAME=*conn2*
-
+```
+DSN=127.0.0.1;UID=SYS;PWD=MANAGER;XA_NAME=conn1
+DSN=127.0.0.1;UID=SYS;PWD=MANAGER;XA_NAME=conn2
 DSN=127.0.0.1;UID=SYS;PWD=MANAGER
+```
 
 애플리케이션 서버의 서비스 함수 프로그램에서는 아래처럼 AT절을 포함한 Embedded
 SQL 구문을 작성한다.
 
-EXEC SQL AT *conn1* UPDATE emp SET empno = 5;
-
-EXEC SQL AT *conn2* UPDATE emp SET empno = 5;
-
+```
+EXEC SQL AT conn1 UPDATE emp SET empno = 5;
+EXEC SQL AT conn2 UPDATE emp SET empno = 5;
 EXEC SQL UPDATE emp SET empno = 5;
+```
+
+
 
 #### JDBC/XA 수행 순서
 
 Altibase의 JDBC 드라이버가 정의하는 XA관련 클래스는 다음과 같다.
 
+```
 Altibase.jdbc.driver.AltibaseXADataSource
-
 Altibase.jdbc.driver.AltibaseXAResource
-
 Altibase.jdbc.driver.AltibaseXID
+```
 
 사용자가 직접 사용하는 클래스는 AltibaseXADataSource이다. 나머지는 JTA
 인터페이스 클래스를 구현한 클래스로 사용자가 직접 사용할 필요는 없다.
 
 1.  AltibaseXADataSource 객체 생성
 
+```
 AltibaseXADataSource xaDataSource = new AltibaseXADataSource();
-
 xaDataSource.setUrl(args[0]);
-
 xaDataSource.setUser("SYS");
-
 xaDataSource.setPassword("MANAGER");
+```
 
-1.  XAConnection 객체 생성  
-    XAConnection을 XADataSource 클래스의 getXAConnection 매소드를 호출하여
-    생성한다.
+2. XAConnection 객체 생성  
+   XAConnection을 XADataSource 클래스의 getXAConnection 매소드를 호출하여
+   생성한다.
 
+```
 XAConnection xaConnection = xaDataSource.getXAConnection(“SYS”, “MANAGER:”);
+```
 
-1.  XAResource 객체 생성  
-    XAResource를 XAConnection 클래스의 getXAResource 매소드를 호출하여 생성한다.
+XAResource 객체 생성  
+XAResource를 XAConnection 클래스의 getXAResource 매소드를 호출하여 생성한다.
 
+```
 XAResource xaResource = xaConnection.getXaResource();
+```
 
-1.  Connection 객체 생성  
-    SQL을 수행할 커넥션을 XAConnection 클래스의 getConnection 매소드를 호출하여
-    생성한다.
+4. Connection 객체 생성  
+   SQL을 수행할 커넥션을 XAConnection 클래스의 getConnection 매소드를 호출하여
+   생성한다.
 
+```
 Connection conn1 = xaConnection.getConnection();
+```
 
-1.  XAResource 객체를 이용하여 XA 함수 실행  
-    xa_start, xa_end 등의 XA 함수들은 XAResource 클래스의 매소드를 사용하여
-    실행된다.
+5. XAResource 객체를 이용하여 XA 함수 실행  
+   xa_start, xa_end 등의 XA 함수들은 XAResource 클래스의 매소드를 사용하여
+   실행된다.
 
+```
 xaResource.start(AltibaseXID, XAResource.TMNOFLAGS);
+```
 
-1.  Connection 객체를 이용하여 SQL 구문 수행
+6. Connection 객체를 이용하여 SQL 구문 수행
 
+```
 Statement stmt = conn.createStatement();
-
 int cnt = stmt.executeUpdate("insert into t1 values (4321)");
+```
+
+
 
 #### XA 트랜잭션 제어
 
@@ -1342,11 +1347,13 @@ TM은 일반적으로 XA 인터페이스를 사용해서 트랜잭션을 제어�
 | tx_commit     | 트랜잭션을 커밋한다.        |
 | tx_rollback   | 트랜잭션을 롤백한다.        |
 
->   [표 4‑3] TX 인터페이스
+[표 4‑3] TX 인터페이스
 
 TX 인터페이스와 XA 인터페이스의 호출 흐름을 살펴보면, 다음 그림과 같다.
 
->   [그림 4‑2] TX 인터페이스와 XA 인터페이스의 호출 흐름도
+![image17](media/API/image17.gif)
+
+[그림 4‑2] TX 인터페이스와 XA 인터페이스의 호출 흐름도
 
 TPM 애플리케이션은 애플리케이션 클라이언트가 애플리케이션 서버에서 제공하는
 서비스를 요청하는 client/server 구조로 되어 있다. 서비스란 논리적인 일의
@@ -1362,68 +1369,51 @@ TPM 애플리케이션은 애플리케이션 클라이언트가 애플리케이�
 
 애플리케이션 서버에 의해서 트랜잭션이 시작되는 예제이다.
 
-**Client:**
-
+```
+Client:
 tpm_service(“SERVICE1”);
 
-**Server:**
-
+Server:
 SERVICE1()
-
 {
-
-\<get service specific data\>
-
+<get service specific data>
 tx_begin();
-
 EXEC SQL UPDATE....;
-
 tpm_service(“SERVICE2”);
-
 tx_commit();
-
-\<return service status back to the client\>
-
+<return service status back to the client>
 }
+```
+
+
 
 ###### 애플리케이션 클라이언트에서 트랜잭션 시작하기
 
 애플리케이션 클라이언트에 의해서 트랜잭션이 시작되는 예제이다.
 
-**Client:**
-
+```
+Client:
 tx_begin();
-
 tpm_service(“SERVICE1”);
-
 tmp_service(“SERVICE2”);
-
 tx_commit();
 
-**Server:**
-
+Server:
 SERVICE1()
-
 {
-
-\<get service specific data\>
-
+<get service specific data>
 EXEC SQL UPDATE...;
-
-\<return service status back to the client\>  
+<return service status back to the client>
 }
-
 SERVICE2()
-
 {
-
-\<get service specific data\>
-
+<get service specific data>
 EXEC SQL UPDATE...;
-
-\<return service status back to the client\>
-
+<return service status back to the client>
 }
+```
+
+
 
 #### 기존 애플리케이션을 TPM 애플리케이션으로 변경
 
@@ -1435,7 +1425,6 @@ EXEC SQL UPDATE...;
     프레임워크란 애플리케이션 클라이언트가 애플리케이션 서버에게 ‘서비스’를
     요청하는 구조를 의미한다. 어떤 TPM은 tx_open, tx_close 함수를 사용할 것을
     요구하고, 어떤 TPM은 묵시적으로 logon, logoff를 하기도 한다.
-
 2.  일반적인 connect 구문을 TPM호환성이 있는 형태로 변경한다. 예를 들어,
     Embedded SQL프로그램의 경우에는 EXEC SQL CONNECT 구문을 tx_open()으로
     변경하고, ODBCCLI에서는 SQLDriverConnect 구문을 tx_open과 SQLConnect로
@@ -1446,12 +1435,10 @@ EXEC SQL UPDATE...;
 3.  일반적인 disconnect 구문을 TPM호환성이 있는 형태로 변경한다. Embedded
     SQL프로그램의 EXEC SQL DISCONNECT 또는 ODBCCLI의 SQLDisconnect 구문을
     tx_close()로 변경한다.
-
 4.  Commit, rollback 구문을 TPM호환성이 있는 형태로 변경한다. 예를 들어 EXEC SQL
     COMMIT/ROLLBACK (Embedded SQL프로그램), SQLEndTran(ODBCCLI) 을
     tx_commit/tx_rollback으로 변경하고, tx_begin()을 호출하여 트랜잭션을
     시작하도록 한다.
-
 5.  애플리케이션은 트랜잭션을 종료(end)하기 전에 fetch 상태를 리셋해야 한다.
     커서를 사용해서 fetch를 했으면 트랜잭션을 종료하기 전에 CLOSE RELEASE를
     사용해서 커서를 닫고 자원을 해제해야 한다.
@@ -1585,7 +1572,9 @@ XA 표준에 부합하는 분산 트랜잭션 기능을 구현한 모든 클래�
 분산 트랜잭션에서 애플리케이션이 애플리케이션 서버를 통해서 트랜잭션을 수행하는
 과정을 그림과 같이 설명한다.
 
->   [그림 4‑3] 분산 트랜잭션 과정
+![image18](media/API/image18.gif)
+
+[그림 4‑3] 분산 트랜잭션 과정
 
 애플리케이션 서버는 각각의 자원들과 연결될 수 있는 XAConnection을 지원한다.
 
@@ -1614,19 +1603,15 @@ JDBC 2.0 Optional 패키지의 표준 XA 인터페이스들과 이를 구현한 
 javax.sql.XADataSource는 XA Connection의 factory 기능을 갖는 인터페이스이다. 이
 인터페이스의 getXAConnection 메소드가 XA Connection 인스턴스를 반환한다.
 
+```
 public interface XADataSource
-
-{
-
-XAConnection getXAConnection() throws SQLException;
-
-XAConnection getXAConnection(String user, String password)
-
-throws SQLException;
-
-...
-
+	{
+	   XAConnection getXAConnection() throws SQLException;
+	   XAConnection getXAConnection(String user, String password)
+	      throws SQLException;
+	   ...
 }
+```
 
 Altibase.jdbc.driver.AltibaseXADataSource는 Altibase에서 제공한 JDBC 드라이버에
 존재하는 XADataSource 인터페이스를 구현한 클래스이다. 동시에
@@ -1637,7 +1622,9 @@ AltibaseConnectionPoolDataSource 클래스는 Altibase.jdbc.driver.DataSource를
 따라서, AltibaseXADataSource 클래스는 DataSource와
 AltibaseConnectionPoolDataSource의 connection properties를 모두 포함한다.
 
->   [그림 4‑4] AltibaseXADataSource 클래스
+![image19](media/API/image19.gif)
+
+[그림 4‑4] AltibaseXADataSource 클래스
 
 AltibaseXADataSource 클래스의 getXAConnection 메소드는 XAConnection 타입의
 인스턴스를 반환한다. 이 인스턴스는 실제로 ABPooledConnection 클래스의
@@ -1653,15 +1640,13 @@ XAConnection 인터페이스는 PooledConnection 인터페이스의 하위 인�
 getConnection, close, addConnectionEventListener, removeConnectionEventListener
 메소드를 포함한다.
 
+```
 public interface XAConnection extends PooledConnection
-
-{
-
-javax.jta.xa.XAResource getXAResource() throws SQLException;
-
-…
-
-}
+	{
+   javax.jta.xa.XAResource getXAResource() throws SQLException;
+   …
+	}
+```
 
 XAConnection의 인스턴스는 데이타베이스와 물리적으로 연결하고 있다. 또한
 XAConnection 인스턴스를 통해 분산 트랜잭션을 관리하는데 사용되는 XAResource를
@@ -1673,7 +1658,9 @@ Altibase JDBC driver에서는 Altibase.jdbc.driver.ABPooledConnection 클래스�
 ABPooledConnection 클래스의 getXAResource 메소드는 AltibaseXAResource 인스턴스를
 반환하고, getConnection 메소드는 ABConnection 인스턴스를 반환한다.
 
->   [그림 4‑5] ABPooledConnection 클래스
+![image20](media/API/image20.gif)
+
+[그림 4‑5] ABPooledConnection 클래스
 
 getConnection 메소드를 통해 반환되는 ABConnection 인스턴스는 데이타베이스와의
 물리적인 연결에 대한 임시 핸들이고, 이 Connection은 글로벌 트랜잭션에
@@ -1695,7 +1682,9 @@ TM은 모든 트랜잭션 브랜치들을 조정하기 위해서 AltibaseXAResou
 Altibse.jdbc.driver.AltibaseXAResource 타입의 인스턴스는
 javax.transaction.xa.XAResource 인터페이스를 구현하는 클래스의 인스턴스이다.
 
->   [그림 4‑6] AltibaseXAResource 클래스
+![image21](media/API/image21.gif)
+
+[그림 4‑6] AltibaseXAResource 클래스
 
 Altibase JDBC driver 는 ABPooledConnection 클래스의 getXAResource 메소드를
 호출할 때마다 AltibaseXAResource 인스턴스를 생성하여 반환하고, Altibase JDBC
@@ -1708,19 +1697,15 @@ AltibaseXAResource 클래스는 분산된 트랜잭션의 트랜잭션 브랜치
 TM은 애플리케이션 서버와 같은 중간층의 컴포넌트로부터 AltibaseXAResource
 인스턴스를 받으며, 아래의 메소드를 갖고 있다.
 
+```
 void start(Xid xid, int flags)
-
 void end(Xid xid, int flags)
-
 int prepare(Xid xid)
-
 void commit(Xid xid, boolean onePhase)
-
 void rollback(Xid xid)
-
 public void forget(Xid xid)
-
 public Xid[] recover(int flag)
+```
 
 자세한 내용은 java API Spec.의 javax.transaction.xa.XAResource를 참조하기
 바란다.
@@ -1731,18 +1716,20 @@ TM은 트랜잭션 ID 인스턴스를 생성하고, 분산 트랜잭션의 브�
 사용한다. 각각의 트랜잭션 브랜치는 유일한 트랜잭션 ID를 부여받으며, 다음의
 정보를 포함한다.
 
+```
 Format identifier
 
 Global transaction identifier
 
 Branch qualifier
+```
 
 Altibase는 javax.transaction.xa.Xid 인터페이스를 구현한 클래스가
 Altibase.jdbc.driver 패키지에 XID 클래스로 존재한다.
 
-Note: AltibaseXAResource 호출에는 Altibase.jdbc.driver.AltibaseXID를 반드시
-사용할 필요는 없다. 여기에는 javax.transaction.xa.Xid 인터페이스를 구현한 어떤
-클래스도 사용될 수 있다.
+> Note: AltibaseXAResource 호출에는 Altibase.jdbc.driver.AltibaseXID를 반드시
+> 사용할 필요는 없다. 여기에는 javax.transaction.xa.Xid 인터페이스를 구현한 어떤
+> 클래스도 사용될 수 있다.
 
 #### 에러 처리
 
@@ -1762,66 +1749,56 @@ XA 관련 메소드는 에러가 발생할 때, ABXAException을 throw한다. AB
 | Driver Classname | Altibase.jdbc.driver.AltibaseDriver | Altibase.jdbc.driver.AltibaseXADataSource |
 | Properties       | User=[username]                     | User=[username]                           |
 
->   [표 4‑4] NON-XA와 XA의 연결정보 비교
+[표 4‑4] NON-XA와 XA의 연결정보 비교
 
-![](media/API/4a9558199049cea767989c75677c485e.png)
+![image22](media/API/image22.jpeg)
 
->   [그림 4‑7] JDBC 연결정보 입력
+[그림 4‑7] JDBC 연결정보 입력
 
-1.  생성된 Connection Pool을 이용해서 DataSource를 만든다.  
-    Services-\>JDBC-\>Data Sources에서 Configure a new JDBC Data Source를
-    선택한다.  
-    Name과 JNDI Name을 입력하고 “Honor Global Transactions”에 체크한다.  
-    다음 페이지에서 PoolName에 앞서 만든 Pool의 이름을 입력한다. (weblogic 8.1)
-    ([그림 6-7] 데이타 소스 생성 참조)  
-    Note: weblogic8.1 이전 버전에서는 Services-\>JDBC-\>XA Data Sources에서
-    새로운 DataSource를 생성한다.
+2. 생성된 Connection Pool을 이용해서 DataSource를 만든다.  
+   Services-\>JDBC-\>Data Sources에서 Configure a new JDBC Data Source를
+   선택한다.  
+   Name과 JNDI Name을 입력하고 “Honor Global Transactions”에 체크한다.  
+   다음 페이지에서 PoolName에 앞서 만든 Pool의 이름을 입력한다. (weblogic 8.1)
+   ([그림 6-7] 데이타 소스 생성 참조)  
 
-![](media/API/f1756a8b99475d620e49461a31151bdd.jpg)
+   > Note: weblogic8.1 이전 버전에서는 Services-\>JDBC-\>XA Data Sources에서
+   > 새로운 DataSource를 생성한다.
 
->   [그림 4‑8] 데이타 소스 생성
+![](media/API/image23.jpeg)
+
+[그림 4‑8] 데이타 소스 생성
 
 ##### Weblogic 애플리케이션 예제 
 
+```
 // step 1. JNDI Lookup and get UserTransaction Object
-
 Context ctx = null;
-
 Hashtable env = new Hashtable();
 
 // Parameter for weblogic
-
-env.put(Context.INITIAL_CONTEXT_FACTORY,
-"weblogic.jndi.WLInitialContextFactory");
-
+env.put(Context.INITIAL_CONTEXT_FACTORY, "weblogic.jndi.WLInitialContextFactory");
 env.put(Context.PROVIDER_URL,"t3://localhost:7001");
-
 env.put(Context.SECURITY_PRINCIPAL,"weblogic");
-
 env.put(Context.SECURITY_CREDENTIALS,"weblogic");
 
 ctx = new InitialContext(env);
-
 System.out.println("Context Created :"+ctx);
 
 // step 2. get User Transaction Object
-
-UserTransaction tx =
-(UserTransaction)ctx.lookup("javax.transaction.UserTransaction");
+UserTransaction tx = (UserTransaction)ctx.lookup("javax.transaction.UserTransaction");
 
 // step 3 start Transaction
-
 System.out.println("Start Transaction :"+tx);
-
 tx.begin();
 
 try{
-
 // step 4. doing query
-
 // step 4-1. get Datasource
-
 DataSource xads1 = (DataSource)ctx.lookup("altiTXDS");
+```
+
+
 
 ##### JEUS에서 XA 설정
 
@@ -1840,49 +1817,39 @@ DataSource xads1 = (DataSource)ctx.lookup("altiTXDS");
 
 ![](media/API/854d2590732a990a589c46dde6517ed7.png)
 
->   [그림 4‑9] 제우스에서 데이타 소스 설정하기
+[그림 4‑9] 제우스에서 데이타 소스 설정하기
 
 ##### JEUS애플리케이션 예제
 
+```
 // step 1. JNDI Lookup and get UserTransaction Object
-
 Context ctx = null;
-
 Hashtable env = new Hashtable();
 
 // Parameter for weblogic
-
 env.put(Context.INITIAL_CONTEXT_FACTORY, "jeus.jndi.JNSContextFactory");
-
-env.put(Context.URL_PKG_PREFIXES, "jeus.jndi.jns.url");
-
+env.put(Context.URL_PKG_PREFIXES, "jeus.jndi.jns.url");    
 env.put(Context.PROVIDER_URL, "127.0.0.1");
-
 env.put(Context.SECURITY_PRINCIPAL,"jeus");
-
 env.put(Context.SECURITY_CREDENTIALS,"jeus");
 
 ctx = new InitialContext(env);
-
 System.out.println("Context Created :"+ctx);
 
 // step 2. get User Transaction Object
-
 UserTransaction tx = (UserTransaction)ctx.lookup("java:comp/UserTransaction");
 
 // step 3 start Transaction
-
 System.out.println("Start Transaction :"+tx);
-
 tx.begin();
-
+    
 try{
-
 // step 4. doing query
-
 // step 4-1. get Datasource
-
 DataSource xads1 = (DataSource)ctx.lookup("altiTXDS");
+```
+
+
 
 #### 예제
 
@@ -1911,373 +1878,232 @@ Altibase XA 기능을 사용해서 분산 트랜잭션을 어떻게 구현하는
 
 10. Commit branch \#2.
 
-import java.sql.\*;
-
-import javax.sql.\*;
-
-import Altibase.jdbc.driver.\*;
-
-import javax.transaction.xa.\*;
+```
+import java.sql.*;
+import javax.sql.*;
+import Altibase.jdbc.driver.*;
+import javax.transaction.xa.*;
 
 class XA4
-
 {
+  public static void main (String args [])
+       throws SQLException
+  {
 
-public static void main (String args [])
+    try
+    {
+        String URL1 = "jdbc:Altibase://localhost:25226/mydb";
+        // You can put a database name after the @ sign in the connection URL.
+        String URL2 = "jdbc:Altibase://localhost:25226/mydb";
+        // Create first DataSource and get connection
+        Altibase.jdbc.driver.DataSource ads1 = new Altibase.jdbc.driver.DataSource();
+        ads1.setUrl(URL1);
+        ads1.setUser("SYS");
+        ads1.setPassword("MANAGER");
+        Connection conna = ads1.getConnection();
 
-throws SQLException
+        // Create second DataSource and get connection
+        Altibase.jdbc.driver.DataSource ads2 = new Altibase.jdbc.driver.DataSource();
+        ads2.setUrl(URL2);
+        ads2.setUser("SYS");
+        ads2.setPassword("MANAGER");
+        Connection connb = ads2.getConnection();
 
-{
+        // Prepare a statement to create the table
+        Statement stmta = conna.createStatement ();
 
-try
+        // Prepare a statement to create the table
+        Statement stmtb = connb.createStatement ();
 
-{
+        try
+        {
+          // Drop the test table
+          stmta.execute ("drop table my_table");
+        }
+        catch (SQLException e)
+        {
+          // Ignore an error here
+        }
 
-String URL1 = "jdbc:Altibase://localhost:25226/mydb";
+        try
+        {
+          // Create a test table
+          stmta.execute ("create table my_table (col1 int)");
+        }
+        catch (SQLException e)
+        {
+          // Ignore an error here too
+        }
 
-// You can put a database name after the \@ sign in the connection URL.
+        try
+        {
+          // Drop the test table
+          stmtb.execute ("drop table my_tab");
+        }
+        catch (SQLException e)
+        {
+          // Ignore an error here
+        }
 
-String URL2 = "jdbc:Altibase://localhost:25226/mydb";
+        try
+        {
+          // Create a test table
+          stmtb.execute ("create table my_tab (col1 char(30))");
+        }
+        catch (SQLException e)
+        {
+          // Ignore an error here too
+        }
 
-// Create first DataSource and get connection
+        // Create XADataSource instances and set properties.
+        AltibaseXADataSource axds1 = new AltibaseXADataSource();
+        axds1.setUrl("jdbc:Altibase://localhost:25226/mydb");
+        axds1.setUser("SYS");
+        axds1.setPassword("MANAGER");
 
-Altibase.jdbc.driver.DataSource ads1 = new Altibase.jdbc.driver.DataSource();
+        AltibaseXADataSource axds2 = new AltibaseXADataSource();
 
-ads1.setUrl(URL1);
+        axds2.setUrl("jdbc:Altibase://localhost:25226/mydb");
+        axds2.setUser("SYS");
+        axds2.setPassword("MANAGER");
 
-ads1.setUser("SYS");
+        // Get XA connections to the underlying data sources
+        XAConnection pc1  = axds1.getXAConnection();
+        XAConnection pc2  = axds2.getXAConnection();
 
-ads1.setPassword("MANAGER");
+        // Get the physical connections
+        Connection conn1 = pc1.getConnection();
+        Connection conn2 = pc2.getConnection();
 
-Connection conna = ads1.getConnection();
+        // Get the XA resources
+        XAResource axar1 = pc1.getXAResource();
+        XAResource axar2 = pc2.getXAResource();
 
-// Create second DataSource and get connection
+        // Create the Xids With the Same Global Ids
+        Xid xid1 = createXid(1);
+        Xid xid2 = createXid(2);
 
-Altibase.jdbc.driver.DataSource ads2 = new Altibase.jdbc.driver.DataSource();
+        // Start the Resources
+        axar1.start (xid1, XAResource.TMNOFLAGS);
+        axar2.start (xid2, XAResource.TMNOFLAGS);
 
-ads2.setUrl(URL2);
+        // Execute SQL operations with conn1 and conn2
+        doSomeWork1 (conn1);
+        doSomeWork2 (conn2);
 
-ads2.setUser("SYS");
+        // END both the branches -- IMPORTANT
+        axar1.end(xid1, XAResource.TMSUCCESS);
+        axar2.end(xid2, XAResource.TMSUCCESS);
 
-ads2.setPassword("MANAGER");
+        // Prepare the RMs
+        int prp1 =  axar1.prepare (xid1);
+        int prp2 =  axar2.prepare (xid2);
 
-Connection connb = ads2.getConnection();
+        System.out.println("Return value of prepare 1 is " + prp1);
+        System.out.println("Return value of prepare 2 is " + prp2);
 
-// Prepare a statement to create the table
+        boolean do_commit = true;
 
-Statement stmta = conna.createStatement ();
+        if (!((prp1 == XAResource.XA_OK) || (prp1 == XAResource.XA_RDONLY)))
+           do_commit = false;
 
-// Prepare a statement to create the table
+        if (!((prp2 == XAResource.XA_OK) || (prp2 == XAResource.XA_RDONLY)))
+           do_commit = false;
 
-Statement stmtb = connb.createStatement ();
+        System.out.println("do_commit is " + do_commit);
+        System.out.println("Is axar1 same as axar2 ? " + axar1.isSameRM(axar2));
 
-try
+        if (prp1 == XAResource.XA_OK)
+          if (do_commit)
+             axar1.commit (xid1, false);
+          else
+             axar1.rollback (xid1);
 
-{
+        if (prp2 == XAResource.XA_OK)
+          if (do_commit)
+             axar2.commit (xid2, false);
+          else
+             axar2.rollback (xid2);
 
-// Drop the test table
+         // Close connections
+        conn1.close();
+        conn1 = null;
+        conn2.close();
+        conn2 = null;
 
-stmta.execute ("drop table my_table");
+        pc1.close();
+        pc1 = null;
+        pc2.close();
+        pc2 = null;
 
+        ResultSet rset = stmta.executeQuery ("select col1 from my_table");
+        while (rset.next())
+          System.out.println("Col1 is " + rset.getInt(1));
+
+        rset.close();
+        rset = null;
+
+        rset = stmtb.executeQuery ("select col1 from my_tab");
+        while (rset.next())
+          System.out.println("Col1 is " + rset.getString(1));
+
+        rset.close();
+        rset = null;
+
+        stmta.close();
+        stmta = null;
+        stmtb.close();
+        stmtb = null;
+
+        conna.close();
+        conna = null;
+        connb.close();
+        connb = null;
+
+    } catch (SQLException sqe)
+    {
+      sqe.printStackTrace();
+    } catch (XAException xae)
+    {
+      System.out.println("XA Error is " + xae.getMessage());
+    }
+  }
+
+  static Xid createXid(int bids)
+    throws XAException
+  {
+      byte[] gid = new byte[1]; gid[0] = (byte)9;
+      byte[] bid = new byte[1]; bid[0] = (byte)bids;
+      byte[] gtrid = new byte[4];
+      byte[] bqual = new byte[4];
+
+      System.arraycopy(gid,0,gtrid,0,1);
+      System.arraycopy(bid,0,bqual,0,1);
+      Xid xid = new XID(0x1234,gtrid,bqual);
+      return xid;
+  }
+
+  private static void doSomeWork1 (Connection conn)
+   throws SQLException
+  {
+      String sql ;
+      Statement stmt = conn.createStatement();
+      sql = "insert into my_table values(1)";
+      stmt.executeUpdate(sql);
+      stmt.close();
+  }
+
+  private static void doSomeWork2 (Connection conn)
+   throws SQLException
+  {
+      String sql ;
+      Statement stmt = conn.createStatement();
+      sql = "insert into my_tab values('test')";
+      stmt.executeUpdate(sql);
+      stmt.close();
+  }
 }
-
-catch (SQLException e)
-
-{
-
-// Ignore an error here
-
-}
-
-try
-
-{
-
-// Create a test table
-
-stmta.execute ("create table my_table (col1 int)");
-
-}
-
-catch (SQLException e)
-
-{
-
-// Ignore an error here too
-
-}
-
-try
-
-{
-
-// Drop the test table
-
-stmtb.execute ("drop table my_tab");
-
-}
-
-catch (SQLException e)
-
-{
-
-// Ignore an error here
-
-}
-
-try
-
-{
-
-// Create a test table
-
-stmtb.execute ("create table my_tab (col1 char(30))");
-
-}
-
-catch (SQLException e)
-
-{
-
-// Ignore an error here too
-
-}
-
-// Create XADataSource instances and set properties.
-
-AltibaseXADataSource axds1 = new AltibaseXADataSource();
-
-axds1.setUrl("jdbc:Altibase://localhost:25226/mydb");
-
-axds1.setUser("SYS");
-
-axds1.setPassword("MANAGER");
-
-AltibaseXADataSource axds2 = new AltibaseXADataSource();
-
-axds2.setUrl("jdbc:Altibase://localhost:25226/mydb");
-
-axds2.setUser("SYS");
-
-axds2.setPassword("MANAGER");
-
-// Get XA connections to the underlying data sources
-
-XAConnection pc1 = axds1.getXAConnection();
-
-XAConnection pc2 = axds2.getXAConnection();
-
-// Get the physical connections
-
-Connection conn1 = pc1.getConnection();
-
-Connection conn2 = pc2.getConnection();
-
-// Get the XA resources
-
-XAResource axar1 = pc1.getXAResource();
-
-XAResource axar2 = pc2.getXAResource();
-
-// Create the Xids With the Same Global Ids
-
-Xid xid1 = createXid(1);
-
-Xid xid2 = createXid(2);
-
-// Start the Resources
-
-axar1.start (xid1, XAResource.TMNOFLAGS);
-
-axar2.start (xid2, XAResource.TMNOFLAGS);
-
-// Execute SQL operations with conn1 and conn2
-
-doSomeWork1 (conn1);
-
-doSomeWork2 (conn2);
-
-// END both the branches -- IMPORTANT
-
-axar1.end(xid1, XAResource.TMSUCCESS);
-
-axar2.end(xid2, XAResource.TMSUCCESS);
-
-// Prepare the RMs
-
-int prp1 = axar1.prepare (xid1);
-
-int prp2 = axar2.prepare (xid2);
-
-System.out.println("Return value of prepare 1 is " + prp1);
-
-System.out.println("Return value of prepare 2 is " + prp2);
-
-boolean do_commit = true;
-
-if (!((prp1 == XAResource.XA_OK) \|\| (prp1 == XAResource.XA_RDONLY)))
-
-do_commit = false;
-
-if (!((prp2 == XAResource.XA_OK) \|\| (prp2 == XAResource.XA_RDONLY)))
-
-do_commit = false;
-
-System.out.println("do_commit is " + do_commit);
-
-System.out.println("Is axar1 same as axar2 ? " + axar1.isSameRM(axar2));
-
-if (prp1 == XAResource.XA_OK)
-
-if (do_commit)
-
-axar1.commit (xid1, false);
-
-else
-
-axar1.rollback (xid1);
-
-if (prp2 == XAResource.XA_OK)
-
-if (do_commit)
-
-axar2.commit (xid2, false);
-
-else
-
-axar2.rollback (xid2);
-
-// Close connections
-
-conn1.close();
-
-conn1 = null;
-
-conn2.close();
-
-conn2 = null;
-
-pc1.close();
-
-pc1 = null;
-
-pc2.close();
-
-pc2 = null;
-
-ResultSet rset = stmta.executeQuery ("select col1 from my_table");
-
-while (rset.next())
-
-System.out.println("Col1 is " + rset.getInt(1));
-
-rset.close();
-
-rset = null;
-
-rset = stmtb.executeQuery ("select col1 from my_tab");
-
-while (rset.next())
-
-System.out.println("Col1 is " + rset.getString(1));
-
-rset.close();
-
-rset = null;
-
-stmta.close();
-
-stmta = null;
-
-stmtb.close();
-
-stmtb = null;
-
-conna.close();
-
-conna = null;
-
-connb.close();
-
-connb = null;
-
-} catch (SQLException sqe)
-
-{
-
-sqe.printStackTrace();
-
-} catch (XAException xae)
-
-{
-
-System.out.println("XA Error is " + xae.getMessage());
-
-}
-
-}
-
-static Xid createXid(int bids)
-
-throws XAException
-
-{
-
-byte[] gid = new byte[1]; gid[0] = (byte)9;
-
-byte[] bid = new byte[1]; bid[0] = (byte)bids;
-
-byte[] gtrid = new byte[4];
-
-byte[] bqual = new byte[4];
-
-System.arraycopy(gid,0,gtrid,0,1);
-
-System.arraycopy(bid,0,bqual,0,1);
-
-Xid xid = new XID(0x1234,gtrid,bqual);
-
-return xid;
-
-}
-
-private static void doSomeWork1 (Connection conn)
-
-throws SQLException
-
-{
-
-String sql ;
-
-Statement stmt = conn.createStatement();
-
-sql = "insert into my_table values(1)";
-
-stmt.executeUpdate(sql);
-
-stmt.close();
-
-}
-
-private static void doSomeWork2 (Connection conn)
-
-throws SQLException
-
-{
-
-String sql ;
-
-Statement stmt = conn.createStatement();
-
-sql = "insert into my_tab values('test')";
-
-stmt.executeUpdate(sql);
-
-stmt.close();
-
-}
-
-}
+```
 
 
 
@@ -2295,11 +2121,12 @@ Altibase 서버를 찾지 못한건지, 또는 로그온을 실패했는지 원�
 
 ##### 추적 파일 이름 및 위치
 
-altibase_xa\<XA_NAME\>\<date\>.log
+```
+altibase_xa\<XA_NAME\>\<date\>.log 
+```
 
 -   XA_NAME : TM 환경 설정시 open string에 XA_NAME=value로 명시한 값이다. 만약
     open string 에 XA_NAME=value 을 명시하지 않았다면 NULL 로 치환된다.
-
 -   date : trace 파일에 저장하는 날짜(YYYYMMDD)
 
 ALTIBASE_HOME 환경변수가 설정되어 있을 경우에는 \$ALTIBASE_HOME/trc에 생성되고,
@@ -2307,9 +2134,10 @@ ALTIBASE_HOME 환경변수가 설정되어 있을 경우에는 \$ALTIBASE_HOME/t
 
 ##### 예제
 
+```
 104744.19381.1:
-
 ulxXaOpen : XAER_RMERR : [ERR-4102E] Invalid password
+```
 
 ‘104744’는 로깅한 시간(HHMISS)이고, ‘19381’은 Process ID(PID) 이며, ‘1’은
 Resource Manager ID 이다.
@@ -2336,29 +2164,29 @@ Reference*를 참조하기 바란다.
 DBA는 임의로 트랜잭션을 처리하기 위해 다음과 같이 강제로 커밋 또는 롤백을 할 수
 있다.
 
+```
 COMMIT FORCE ‘global_tx_id’;
-
 ROLLBACK FORCE 'global_tx_id’;
+```
+
+
 
 ##### 예제
 
 in-doubt 트랜잭션을 확인하여, 임의로 특정 트랜잭션을 커밋한다.
 
-iSQL\> select \* From v\$dba_2pc_pending;
-
-LOCAL_TRAN_ID GLOBAL_TX_ID
-
-\------------------------------------------------------
-
-9280 69.FAEDFAED.00000001
-
-21315 69.FAEDFAED.00000002
-
-2 rows selected.
-
-iSQL\> commit force '69.FAEDFAED.00000002';
-
+```
+iSQL> select * From v$dba_2pc_pending; 
+LOCAL_TRAN_ID        GLOBAL_TX_ID                    
+------------------------------------------------------
+9280                 69.FAEDFAED.00000001        
+21315                 69.FAEDFAED.00000002    
+2 rows selected. 
+iSQL> commit force '69.FAEDFAED.00000002'; 
 Commit force success.
+```
+
+
 
 #### 휴리스틱 트랜잭션 확인
 
@@ -2377,49 +2205,32 @@ in-doubt 트랜잭션에 대해 Commit force를 수행하면, 이 트랜잭션�
 in-doubt 트랜잭션이 DBA에 의해 커밋된 경우, 정보는 변경되고
 SYS_XA_HEURISTIC_TRANS\_ 메타 테이블에 저장된다.
 
-iSQL\> select \* From v\$dba_2pc_pending;
+```
+iSQL> select * From v$dba_2pc_pending; 
+V$DBA_2PC_PENDING.LOCAL_TRAN_ID 
+V$DBA_2PC_PENDING.GLOBAL_TX_ID         
+------------------------------------------ 
+100421               
+69.FAEDFAED.00000001  
+1 row selected. 
 
-V\$DBA_2PC_PENDING.LOCAL_TRAN_ID
+iSQL> commit force '69.FAEDFAED.00000001'; 
+Commit force success. 
 
-V\$DBA_2PC_PENDING.GLOBAL_TX_ID
-
-\------------------------------------------
-
-100421
-
-69.FAEDFAED.00000001
-
-1 row selected.
-
-iSQL\> commit force '69.FAEDFAED.00000001';
-
-Commit force success.
-
-iSQL\> select \* from system_.sys_xa_heuristic_trans_;
-
-SYS_XA_HEURISTIC_TRANS_.FORMAT_ID
-
-SYS_XA_HEURISTIC_TRANS_.GLOBAL_TX_ID
-
-SYS_XA_HEURISTIC_TRANS_.BRANCH_QUALIFIER
-
-SYS_XA_HEURISTIC_TRANS_.STATUS
-
-SYS_XA_HEURISTIC_TRANS_.OCCUR_TIME
-
-\--------------------------------------
-
-69
-
-FAEDFAED
-
-00000001
-
-1
-
-2008/08/29 10:09:53
-
-1 row selected.
+iSQL> select * from system_.sys_xa_heuristic_trans_; 
+SYS_XA_HEURISTIC_TRANS_.FORMAT_ID 
+SYS_XA_HEURISTIC_TRANS_.GLOBAL_TX_ID      
+SYS_XA_HEURISTIC_TRANS_.BRANCH_QUALIFIER   
+SYS_XA_HEURISTIC_TRANS_.STATUS 
+SYS_XA_HEURISTIC_TRANS_.OCCUR_TIME 
+--------------------------------------
+69                   
+FAEDFAED    
+00000001    
+1     
+2008/08/29 10:09:53  
+1 row selected. 
+```
 
 
 
@@ -2458,7 +2269,11 @@ Altibase iLoader API는 Altibase 데이타베이스의 데이타를 다운로드
 
 응용 프로그램에서 포함해야 하는 헤더파일이다.
 
-\$ALTIBASE_HOME/include/iloaderApi.h
+```
+$ALTIBASE_HOME/include/iloaderApi.h
+```
+
+
 
 #### 라이브러리 파일
 
@@ -2468,7 +2283,9 @@ iLoader API를 사용해서 작성한 응용 프로그램의 빌드시 필요한
 
 -   UNIX
 
+```
 libiloader.a, libodbccli.a
+```
 
 #### 샘플
 
@@ -2507,18 +2324,19 @@ iLoader API를 사용하는 응용프로그램의 동작과 관련된 정보를 
 
 #### 에러 구조체
 
--   ALTIBASE_ILOADER_ERROR  
-    이는 iLoader API로 작성된 응용프로그램 실행 중 발생한 오류를 진단할 수 있는
-    정보를 저장하는 데 사용되는 구조체이다.  
-    이 구조체는 다음과 같이 정의되어 있다.
+- ALTIBASE_ILOADER_ERROR  
+  이는 iLoader API로 작성된 응용프로그램 실행 중 발생한 오류를 진단할 수 있는
+  정보를 저장하는 데 사용되는 구조체이다.  이 구조체는 다음과 같이 정의되어 있다.
 
-| typedef struct ALTIBASE_ILOADER_ERROR                                                                                                                                              |
-| {                                                                                                                                                                                  |
-| int errorCode; /\* Error Code \*/                                                                                                                                                  |
-| char \*errorState; /\* SQLSTATE Code \*/                                                                                                                                           |
-| char \*errorMessage; /\* Error Message \*/                                                                                                                                         |
-| } ALTIBASE_ILOADER_ERROR;                                                                                                                                                          |
-|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+  ```
+  typedef struct ALTIBASE_ILOADER_ERROR
+  {
+      int errorCode;      /* Error Code */
+      char *errorState;   /* SQLSTATE Code */
+      char *errorMessage; /* Error Message */
+  } ALTIBASE_ILOADER_ERROR;
+  ```
+
 
 
 #### 로그 구조체
@@ -2526,62 +2344,71 @@ iLoader API를 사용하는 응용프로그램의 동작과 관련된 정보를 
 iLoader API 는 iLoader 의 진행 상태를 로깅하는 데 사용하도록 다음의 두 구조체를
 제공한다.
 
--   ALTIBASE_ILOADER_LOG  
-    이는 iLoader 작업 수행 중 오류가 발생할 때마다 응용프로그램의 콜백 함수로
-    전달되는 구조체이다.  
-    이는 또한 iLoader 작업의 완료시에도 콜백 함수로 전달된다. 이 시점에는
-    record, recordData, recordColCount, 및 errorMgr 멤버는 전달되지 않는다.  
-    이 구조체의 목적은 iLoader 작업 수행 중 발생한 오류를 보고하고, 어떤 작업의
-    수행 결과와 관련된 정보를 제공하는 데 있다.  
-    이 구조체는 다음과 같이 정의되어 있다.
+- ALTIBASE_ILOADER_LOG  
+  이는 iLoader 작업 수행 중 오류가 발생할 때마다 응용프로그램의 콜백 함수로
+  전달되는 구조체이다.  
+  이는 또한 iLoader 작업의 완료시에도 콜백 함수로 전달된다. 이 시점에는
+  record, recordData, recordColCount, 및 errorMgr 멤버는 전달되지 않는다.  
+  이 구조체의 목적은 iLoader 작업 수행 중 발생한 오류를 보고하고, 어떤 작업의
+  수행 결과와 관련된 정보를 제공하는 데 있다.  이 구조체는 다음과 같이 정의되어 있다.
 
-| typedef struct ALTIBASE_ILOADER_LOG                                                                                                                                                                          |                                                                                                                                                                                        |
-| {                                                                                                                                                                                                            |                                                                                                                                                                                        |
-| char tableName[50];                                                                                                                                                                                          |                                                                                                                                                                                        |
-| int totalCount;                                                                                                                                                                                              |                                                                                                                                                                                        |
-| int loadCount;                                                                                                                                                                                               |                                                                                                                                                                                        |
-| int errorCount;                                                                                                                                                                                              |                                                                                                                                                                                        |
-| int record;                                                                                                                                                                                                  |                                                                                                                                                                                        |
-| char \*\*recordData;                                                                                                                                                                                         |                                                                                                                                                                                        |
-| int recordColCount;                                                                                                                                                                                          |                                                                                                                                                                                        |
-| ALTIBASE_ILOADER_ERROR errorMgr;                                                                                                                                                                             |                                                                                                                                                                                        |
-| } ALTIBASE_ILOADER_LOG;                                                                                                                                                                                      |                                                                                                                                                                                        |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 멤버                                                                                                                                                                                                         | 설명                                                                                                                                                                                   |
-| tableName                                                                                                                                                                                                    | 업로드 또는 다운로드 중인 테이블의 이름                                                                                                                                                |
-| totalCount                                                                                                                                                                                                   | 업로드 또는 다운로드를 시도한 행의 총 개수                                                                                                                                             |
-| loadCount                                                                                                                                                                                                    | 업로드 또는 다운로드에 성공한 행의 총 개수                                                                                                                                             |
-| errorCount                                                                                                                                                                                                   | 오류 발생으로 인해 업로드 또는 다운로드를 하지 못한 행의 총 개수. 오류가 발생했을 때, 이 값은 현재 오류는 포함하지 않는다. 즉, 이 값은 현재 오류 이전에 발생했던 모든 오류의 개수이다. |
-| record                                                                                                                                                                                                       | 오류 발생 시, 이는 업로드 또는 다운로드를 하지 못한 레코드의 위치를 알려준다                                                                                                           |
-| recordData                                                                                                                                                                                                   | 오류 발생 시, 이는 업로드 또는 다운로드를 하지 못한 레코드의 칼럼 데이타를 나타낸다.                                                                                                   |
-| recordColCount                                                                                                                                                                                               | 오류 발생 시, 이는 업로드 또는 다운로드를 하지 못한 레코드의 칼럼 개수를 알려준다.                                                                                                     |
-| errorMgr                                                                                                                                                                                                     | 오류 발생 시, 이는 오류에 대한 정보를 담고 있는 에러 구조체를 가리킨다.                                                                                                                |
+  ```
+  typedef struct ALTIBASE_ILOADER_LOG
+  {
+      char tableName[50];
+      int totalCount;
+      int loadCount;
+      int errorCount;
+      int record;
+      char **recordData;
+      int recordColCount;
+      ALTIBASE_ILOADER_ERROR errorMgr;
+  } ALTIBASE_ILOADER_LOG;
+  ```
 
--   ALTIBASE_ILOADER_STATIC_LOG  
-    이 구조체는 iLoader 작업 수행 중 주기적으로 호출되는 응용프로그램의 콜백
-    함수로 전달된다. 전달하는 주기는 옵션 구조체의 setRowFrequency 옵션으로
-    설정할 있다.  
-    이 구조체는 iLoader 작업에 대한 통계 정보를 전달하는 데 사용된다. 이 통계
-    정보는 작업 시작 시각, 업로드 또는 다운로드한 행의 총 개수, 업로드 또는
-    다운로드에 성공한 행의 개수, 오류 발생으로 인해 업로드 또는 다운로드에
-    실패한 행의 개수이다.  
-    이 구조체는 다음과 같이 정의되어 있다.
+  ​                                                                                                                                                                
 
-| typedef struct ALTIBASE_ILOADER_STATISTIC_LOG                                                                                                                   |                                                                         |
-| {                                                                                                                                                               |                                                                         |
-| char tableName[50];                                                                                                                                             |                                                                         |
-| time_t startTime;                                                                                                                                               |                                                                         |
-| int totalCount;                                                                                                                                                 |                                                                         |
-| int loadCount;                                                                                                                                                  |                                                                         |
-| int errorCount;                                                                                                                                                 |                                                                         |
-| } ALTIBASE_ILOADER_STATISTIC_LOG;                                                                                                                               |                                                                         |
-|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
-| 멤버                                                                                                                                                            | 설명                                                                    |
-| tableName                                                                                                                                                       | 업로드 또는 다운로드 중인 테이블의 이름                                 |
-| startTime                                                                                                                                                       | 업로드 또는 다운로드 작업을 시작한 시각                                 |
-| totalCount                                                                                                                                                      | 업로드할 행의 총 개수. 이 멤버는 데이타 다운로드시에는 사용되지 않는다. |
-| loadCount                                                                                                                                                       | 업로드 또는 다운로드에 성공한 행의 총 개수                              |
-| errorCount                                                                                                                                                      | 오류 발생으로 인해 업로드 또는 다운로드를 하지 못한 행의 총 개수        |
+  | 멤버           | 설명                                                         |
+  | -------------- | ------------------------------------------------------------ |
+  | tableName      | 업로드 또는 다운로드 중인 테이블의 이름                      |
+  | totalCount     | 업로드 또는 다운로드를 시도한 행의 총 개수                   |
+  | loadCount      | 업로드 또는 다운로드에 성공한 행의 총 개수                   |
+  | errorCount     | 오류 발생으로 인해 업로드 또는 다운로드를 하지 못한 행의 총 개수.   오류가 발생했을 때, 이 값은 현재 오류는 포함하지 않는다. 즉, 이 값은 현재 오류 이전에 발생했던 모든 오류의 개수이다. |
+  | record         | 오류 발생 시, 이는 업로드 또는 다운로드를 하지 못한 레코드의   위치를 알려준다 |
+  | recordData     | 오류 발생 시, 이는 업로드 또는 다운로드를 하지 못한 레코드의   칼럼 데이타를 나타낸다. |
+  | recordColCount | 오류 발생 시, 이는 업로드 또는 다운로드를 하지 못한 레코드의   칼럼 개수를 알려준다. |
+  | errorMgr       | 오류 발생 시, 이는 오류에 대한 정보를 담고 있는 에러 구조체를   가리킨다. |
+
+
+- ALTIBASE_ILOADER_STATIC_LOG  
+  이 구조체는 iLoader 작업 수행 중 주기적으로 호출되는 응용프로그램의 콜백
+  함수로 전달된다. 전달하는 주기는 옵션 구조체의 setRowFrequency 옵션으로
+  설정할 있다.  
+  이 구조체는 iLoader 작업에 대한 통계 정보를 전달하는 데 사용된다. 이 통계
+  정보는 작업 시작 시각, 업로드 또는 다운로드한 행의 총 개수, 업로드 또는
+  다운로드에 성공한 행의 개수, 오류 발생으로 인해 업로드 또는 다운로드에
+  실패한 행의 개수이다.  이 구조체는 다음과 같이 정의되어 있다.
+
+  ```
+  typedef struct ALTIBASE_ILOADER_STATISTIC_LOG
+  {
+   char tableName[50];
+      time_t startTime;
+      int totalCount;
+      int loadCount;
+      int errorCount;
+  } ALTIBASE_ILOADER_STATISTIC_LOG;
+  ```
+
+  | 멤버       | 설명                                                         |
+  | ---------- | ------------------------------------------------------------ |
+  | tableName  | 업로드 또는 다운로드 중인 테이블의 이름                      |
+  | startTime  | 업로드 또는 다운로드 작업을 시작한 시각                      |
+  | totalCount | 업로드할 행의 총 개수. 이 멤버는 데이타 다운로드시에는 사용되지   않는다. |
+  | loadCount  | 업로드 또는 다운로드에 성공한 행의 총 개수                   |
+  | errorCount | 오류 발생으로 인해 업로드 또는 다운로드를 하지 못한 행의 총 개수 |
+
+     
 
 #### 옵션 구조체
 
@@ -2590,83 +2417,95 @@ iLoader API 는 iLoader 의 진행 상태를 로깅하는 데 사용하도록 �
     옵션은 각 멤버에 주석을 달아놓았다. iLoader 옵션에 대한 자세한 설명은
     *iLoader User’s Manual*을 참고하기 바란다.  
     iloBool, iloLoadeMode, iloDirectMode 와 ALTIBASE_ILOADER_LOG_TYPE 열거형의
-    정의는 “iLoader API 열거형”을 참고한다.  
-    이 구조체는 다음과 같이 정의되어 있다.
+    정의는 “iLoader API 열거형”을 참고한다.  이 구조체는 다음과 같이 정의되어 있다.
 
-| typedef struct ALTIBASE_ILOADER_OPTIONS_V1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |                                                                                                                                                                                                                                                                                                              |
-| {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |                                                                                                                                                                                                                                                                                                              |
-| int version;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                                                              |
-| char loginID[128 \* 2]; /\* -u login_id \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |                                                                                                                                                                                                                                                                                                              |
-| char password[128]; /\* -p password \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                                              |
-| char serverName[128]; /\* -s server_name \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                                                              |
-| int portNum; /\* -port port_no \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |                                                                                                                                                                                                                                                                                                              |
-| char NLS[128]; /\* -nls_use characterset \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                                                              |
-| char DBName[128];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |                                                                                                                                                                                                                                                                                                              |
-| char tableOwner[50];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                                                              |
-| char tableName[50]; /\* -T table_name \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |                                                                                                                                                                                                                                                                                                              |
-| char formFile[1024]; /\* -f formatfile \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |                                                                                                                                                                                                                                                                                                              |
-| char dataFile[32][1024]; /\* -d datafile \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |                                                                                                                                                                                                                                                                                                              |
-| int dataFileNum;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |                                                                                                                                                                                                                                                                                                              |
-| int firstRow; /\* -F firstrow \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |                                                                                                                                                                                                                                                                                                              |
-| int lastRow; /\* -L lastrow \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                                                              |
-| char fieldTerm[11]; /\* -t field_term \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |                                                                                                                                                                                                                                                                                                              |
-| char rowTerm[11]; /\* -r row_term \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |                                                                                                                                                                                                                                                                                                              |
-| char enclosingChar[11]; /\* -e enclosing_term \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |                                                                                                                                                                                                                                                                                                              |
-| iloBool useLobFile; /\* -lob use_lob_file \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |                                                                                                                                                                                                                                                                                                              |
-| iloBool useSeparateFile; /\* -lob use_separate_file \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                                              |
-| char lobFileSize[11]; /\* -lob log_file_size \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |                                                                                                                                                                                                                                                                                                              |
-| char lobIndicator[11]; /\* -lob lob_indicator\*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |                                                                                                                                                                                                                                                                                                              |
-| iloBool replication; /\* -replication true/false \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                                                              |
-| iloLoadMode loadModeType; /\* -mode mode_type \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |                                                                                                                                                                                                                                                                                                              |
-| char bad[1024]; /\* -bad bad_file \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |                                                                                                                                                                                                                                                                                                              |
-| char log[1024]; /\* -log log_file \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |                                                                                                                                                                                                                                                                                                              |
-| int splitRowCount; /\* -split n \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |                                                                                                                                                                                                                                                                                                              |
-| int errorCount; /\* -errors count \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |                                                                                                                                                                                                                                                                                                              |
-| int arrayCount; /\* -array array_size \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |                                                                                                                                                                                                                                                                                                              |
-| int commitUnit; /\* -commit commit_unit \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |                                                                                                                                                                                                                                                                                                              |
-| iloBool atomic; /\* -atomic \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                                                              |
-| iloDirectMode directLog; /\* -direct log/nolog \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |                                                                                                                                                                                                                                                                                                              |
-| int parallelCount; /\* -parallel count \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |                                                                                                                                                                                                                                                                                                              |
-| int readSize; /\* -readSize size \*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                                                              |
-| iloBool informix;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |                                                                                                                                                                                                                                                                                                              |
-| iloBool flock;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |                                                                                                                                                                                                                                                                                                              |
-| iloBool mssql;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |                                                                                                                                                                                                                                                                                                              |
-| iloBool getTotalRowCount;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |                                                                                                                                                                                                                                                                                                              |
-| int setRowFrequency;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                                                              |
-| } ALTIBASE_ILOADER_OPTIONS_V1;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |                                                                                                                                                                                                                                                                                                              |
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 멤버                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | 설명                                                                                                                                                                                                                                                                                                         |
-| version                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | 이 값은 altibase_iloader_option_init() 함수의 version 인자와 같은 값이어야 한다.                                                                                                                                                                                                                             |
-| tableOwner                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | 테이블 소유자의 이름을 지정하는데 사용된다.                                                                                                                                                                                                                                                                  |
-| loadModeType                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | ILO_APPEND: iLoader의 –mode 옵션에 쓸 수 있는 값 중 APPEND 와 동일하다. ILO_REPLACE: iLoader의 –mode 옵션에 쓸 수 있는 값 중 REPLACE 와 동일하다. ILO_TRUNCATE: iLoader의 –mode 옵션에 쓸 수 있는 값 중 TRUNCATE 와 동일하다. 기본값은 ILO_APPEND이다.                                                       |
-| atomic                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Atomic Array INSERT를 사용할 것인지를 지정하는데 사용된다. ILO_TRUE 또는 ILO_FALSE 중의 하나일 수 있다. 기본값은 ILO_FALSE이다.                                                                                                                                                                              |
-| directLog                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Direct-path INSERT를 사용할 것인지를 지정하는데 사용된다. 이 값이 ILO_DIRECT_NONE이면, Direct-Path INSERT는 사용되지 않는다. 이 값이 ILO_DIRECT_LOG이면, 로깅 모드로 Direct-Path INSERT를 실행한다. 이 값이 ILO_DIRECT_NOLOG이면, 노로깅 모드로 Direct-Path INSERT를 실행한다. 기본값은 ILO_DIRECT_NONE이다. |
-| dataFileNum                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | 이 구조체의 dataFile 멤버에 몇 개의 데이타파일이 지정되는지 그 개수를 명시하는데 사용된다.                                                                                                                                                                                                                   |
-| getTotalRowCount                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | 데이타 파일 내의 행의 총 개수를 구해서 데이타 업로드시에 ALTIBASE_ILOADER_STATISTIC_LOG 구조체의 totalCount 멤버에 이 값을 설정할 것인지를 지정한다. ILO_TRUE 또는 ILO_FALSE 중의 하나일 수 있다. 기본값은 ILO_FALSE이다.                                                                                    |
-| setRowFrequency                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | 여기에 명시한 개수만큼의 행이 업로드 또는 다운로드 될 때마다 사용자 콜백 함수가 호출된다. 기본값은 0이다. 이 값이 0이면, 콜백 함수는 호출되지 않는다.                                                                                                                                                        |
+```
+typedef struct ALTIBASE_ILOADER_OPTIONS_V1
+{
+    int            version;
+    char           loginID[128 * 2];        /* -u login_id */
+    char           password[128];           /* -p password */
+    char           serverName[128];         /* -s server_name */
+    int            portNum;                 /* -port port_no */
+    char           NLS[128];                /* -nls_use characterset */
+    char           DBName[128];
+    char           tableOwner[50];
+    char           tableName[50];           /* -T table_name */
+    char           formFile[1024];          /* -f formatfile */
+    char           dataFile[32][1024];      /* -d datafile */
+    int            dataFileNum;
+    int            firstRow;                /* -F firstrow */
+    int            lastRow;                 /* -L lastrow */
+    char           fieldTerm[11];           /* -t field_term */
+    char           rowTerm[11];             /* -r row_term */
+    char           enclosingChar[11];       /* -e enclosing_term */
+    iloBool        useLobFile;              /* -lob use_lob_file */
+    iloBool        useSeparateFile;         /* -lob use_separate_file */
+    char           lobFileSize[11];         /* -lob log_file_size */
+    char           lobIndicator[11];        /* -lob lob_indicator*/
+    iloBool        replication;             /* -replication true/false */
+    iloLoadMode    loadModeType;            /* -mode mode_type */
+    char           bad[1024];               /* -bad bad_file */
+    char           log[1024];               /* -log log_file */
+    int            splitRowCount;           /* -split n */
+    int            errorCount;              /* -errors count */
+    int            arrayCount;              /* -array array_size */
+    int            commitUnit;              /* -commit commit_unit */
+    iloBool        atomic;                  /* -atomic */
+    iloDirectMode  directLog;               /* -direct log/nolog */
+    int            parallelCount;           /* -parallel count */
+    int            readSize;                /* -readSize size */
+    iloBool        informix;
+    iloBool        flock;
+    iloBool        mssql;
+    iloBool        getTotalRowCount;
+    int            setRowFrequency;
+} ALTIBASE_ILOADER_OPTIONS_V1;
+
+```
+
+| 멤버             | 설명                                                         |
+| ---------------- | ------------------------------------------------------------ |
+| version          | 이 값은 altibase_iloader_option_init() 함수의 version 인자와 같은 값이어야 한다. |
+| tableOwner       | 테이블 소유자의 이름을 지정하는데 사용된다.                  |
+| loadModeType     | ILO_APPEND: iLoader의 –mode 옵션에 쓸 수 있는 값 중   APPEND 와 동일하다.   ILO_REPLACE: iLoader의 –mode 옵션에 쓸 수 있는 값 중   REPLACE 와 동일하다.   ILO_TRUNCATE: iLoader의 –mode 옵션에 쓸 수 있는 값 중   TRUNCATE 와 동일하다.   기본값은 ILO_APPEND이다. |
+| atomic           | Atomic Array INSERT를 사용할 것인지를 지정하는데   사용된다. ILO_TRUE 또는 ILO_FALSE 중의   하나일 수 있다.   기본값은 ILO_FALSE이다. |
+| directLog        | Direct-path INSERT를 사용할 것인지를 지정하는데 사용된다. 이 값이 ILO_DIRECT_NONE이면, Direct-Path INSERT는 사용되지 않는다. 이 값이 ILO_DIRECT_LOG이면, 로깅 모드로 Direct-Path INSERT를 실행한다. 이 값이 ILO_DIRECT_NOLOG이면, 노로깅 모드로 Direct-Path INSERT를 실행한다.   기본값은 ILO_DIRECT_NONE이다. |
+| dataFileNum      | 이 구조체의 dataFile 멤버에 몇 개의 데이타파일이 지정되는지   그 개수를 명시하는데 사용된다. |
+| getTotalRowCount | 데이타 파일 내의 행의 총 개수를 구해서 데이타 업로드시에   ALTIBASE_ILOADER_STATISTIC_LOG 구조체의 totalCount 멤버에   이 값을 설정할 것인지를 지정한다.   ILO_TRUE 또는   ILO_FALSE 중의 하나일 수 있다.   기본값은 ILO_FALSE이다. |
+| setRowFrequency  | 여기에 명시한 개수만큼의 행이 업로드 또는 다운로드 될 때마다 사용자 콜백 함수가 호출된다.   기본값은 0이다. 이   값이 0이면, 콜백 함수는 호출되지 않는다. |
+
+
+
 
 #### iLoader API 열거형 (enum)
 
-| typedef enum                                                                                                                                                                                                                                                                                |
-| {                                                                                                                                                                                                                                                                                           |
-| ILO_FALSE = 0, /\* false \*/                                                                                                                                                                                                                                                                |
-| ILO_TRUE = 1 /\* true \*/                                                                                                                                                                                                                                                                   |
-| } iloBool; typedef enum                                                                                                                                                                                                                                                                     |
-| {                                                                                                                                                                                                                                                                                           |
-| ILO_APPEND,                                                                                                                                                                                                                                                                                 |
-| ILO_REPLACE,                                                                                                                                                                                                                                                                                |
-| ILO_TRUNCATE                                                                                                                                                                                                                                                                                |
-| } iloLoadMode; typedef enum                                                                                                                                                                                                                                                                 |
-| {                                                                                                                                                                                                                                                                                           |
-| ILO_DIRECT_NONE,                                                                                                                                                                                                                                                                            |
-| ILO_DIRECT_LOG,                                                                                                                                                                                                                                                                             |
-| ILO_DIRECT_NOLOG                                                                                                                                                                                                                                                                            |
-| } iloDirectMode; typedef enum                                                                                                                                                                                                                                                               |
-| {                                                                                                                                                                                                                                                                                           |
-| ILO_LOG,                                                                                                                                                                                                                                                                                    |
-| ILO_STATISTIC_LOG                                                                                                                                                                                                                                                                           |
-| } ALTIBASE_ILOADER_LOG_TYPE;                                                                                                                                                                                                                                                                |
-|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+```
+typedef enum
+{
+    ILO_FALSE = 0,                /* false */
+    ILO_TRUE  = 1                 /* true */
+} iloBool;
+typedef enum
+{
+    ILO_APPEND,
+    ILO_REPLACE,
+    ILO_TRUNCATE
+} iloLoadMode;
+typedef enum
+{
+    ILO_DIRECT_NONE,
+    ILO_DIRECT_LOG,
+    ILO_DIRECT_NOLOG
+} iloDirectMode;
+typedef enum
+{
+    ILO_LOG,
+    ILO_STATISTIC_LOG
+} ALTIBASE_ILOADER_LOG_TYPE;
+```
+
+
 
 
 
@@ -2699,17 +2538,16 @@ iLoader API 는 iLoader 의 진행 상태를 로깅하는 데 사용하도록 �
 
 ##### 구문
 
+```
 int altibase_iloader_datain (
+ ALTIBASE_ILOADER_HANDLE * handle,
+ int version
+ void * options
+ ALTIBASE_ILOADER_CALLBACK logCallback,
+ ALTIBASE_ILOADER_ERROR * error );
+```
 
-ALTIBASE_ILOADER_HANDLE \* handle,
 
-int version
-
-void \* options
-
-ALTIBASE_ILOADER_CALLBACK logCallback,
-
-ALTIBASE_ILOADER_ERROR \* error );
 
 ##### 인자
 
@@ -2762,89 +2600,66 @@ API를 사용하는 것 모두 아래에 예를 들었다.
 
 -   iLoader 유틸리티를 사용해서 데이타 업로드
 
+```
 iloader in -s 127.0.0.1 -u sys -p manager -f t1.fmt -d t1.dat
+```
+
+
 
 -   응용 프로그램 내에서 iLoader API를 사용해서 데이타 업로드
 
+```
 int main()
-
 {
+    ALTIBASE_ILOADER_HANDLE      handle = ALTIBASE_ILOADER_NULL_HANDLE;
+    ALTIBASE_ILOADER_OPTIONS_V1  opt;
+    ALTIBASE_ILOADER_ERROR       err;
+    int rc;
 
-ALTIBASE_ILOADER_HANDLE handle = ALTIBASE_ILOADER_NULL_HANDLE;
+    /* Allocate an ILOADER handle */
+    rc = altibase_iloader_init(&handle);
 
-ALTIBASE_ILOADER_OPTIONS_V1 opt;
+    if ( rc != ALTIBASE_ILO_SUCCESS )
+    {
+        printf("altibase_iloader_init() failed: %d\n", rc);
+        return 1;
+    }
 
-ALTIBASE_ILOADER_ERROR err;
+    /* Initialize an option structure */
+    altibase_iloader_options_init(ALTIBASE_ILOADER_V1, &opt);
 
-int rc;
+    strcpy(opt.serverName, "127.0.0.1");
+    strcpy(opt.loginID, "sys");
+    strcpy(opt.password, "manager");
+    strcpy(opt.formFile, "t1.fmt");
+    strcpy(opt.dataFile[0], "t1.dat");
+    opt.dataFileNum = 1;
 
-/\* Allocate an ILOADER handle \*/
+    /* Upload data */
+    rc = altibase_iloader_datain(&handle, ALTIBASE_ILOADER_V1, &opt, NULL, &err);
 
-rc = altibase_iloader_init(\&handle);
+    if ( rc == ALTIBASE_ILO_SUCCESS )
+    {
+        printf("SUCCESS\n");
+    }
+    else
+    {
+        printf("ERR-%05X [%s] %s\n",
+                err.errorCode,
+                err.errorState,
+                err.errorMessage);
+    }
 
-if ( rc != ALTIBASE_ILO_SUCCESS )
+    if ( handle != ALTIBASE_ILOADER_NULL_HANDLE )
+    {
+        altibase_iloader_final(&handle);
+    }
 
-{
-
-printf("altibase_iloader_init() failed: %d\\n", rc);
-
-return 1;
-
+    return 0;
 }
+```
 
-/\* Initialize an option structure \*/
 
-altibase_iloader_options_init(ALTIBASE_ILOADER_V1, \&opt);
-
-strcpy(opt.serverName, "127.0.0.1");
-
-strcpy(opt.loginID, "sys");
-
-strcpy(opt.password, "manager");
-
-strcpy(opt.formFile, "t1.fmt");
-
-strcpy(opt.dataFile[0], "t1.dat");
-
-opt.dataFileNum = 1;
-
-/\* Upload data \*/
-
-rc = altibase_iloader_datain(&handle, ALTIBASE_ILOADER_V1, &opt, NULL, \&err);
-
-if ( rc == ALTIBASE_ILO_SUCCESS )
-
-{
-
-printf("SUCCESS\\n");
-
-}
-
-else
-
-{
-
-printf("ERR-%05X [%s] %s\\n",
-
-err.errorCode,
-
-err.errorState,
-
-err.errorMessage);
-
-}
-
-if ( handle != ALTIBASE_ILOADER_NULL_HANDLE )
-
-{
-
-altibase_iloader_final(\&handle);
-
-}
-
-return 0;
-
-}
 
 #### altibase_iloader_dataout
 
@@ -2853,17 +2668,16 @@ return 0;
 
 ##### 구문
 
+```
 int altibase_iloader_dataout (
+ ALTIBASE_ILOADER_HANDLE * handle,
+ int version
+ void * options
+ ALTIBASE_ILOADER_CALLBACK logCallback,
+ ALTIBASE_ILOADER_ERROR *   error );
+```
 
-ALTIBASE_ILOADER_HANDLE \* handle,
 
-int version
-
-void \* options
-
-ALTIBASE_ILOADER_CALLBACK logCallback,
-
-ALTIBASE_ILOADER_ERROR \* error );
 
 ##### 인자
 
@@ -2913,89 +2727,66 @@ API를 사용하는 것 모두 아래에 예를 들었다.
 
 -   iLoader 유틸리티를 사용해서 데이타 다운로드
 
+```
 iloader out -s 127.0.0.1 -u sys -p manager -f t1.fmt -d t1.dat
+```
+
+
 
 -   응용 프로그램 내에서 iLoader API를 사용해서 데이타 다운로드
 
+```
 int main()
-
 {
+    ALTIBASE_ILOADER_HANDLE      handle = ALTIBASE_ILOADER_NULL_HANDLE;
+    ALTIBASE_ILOADER_OPTIONS_V1  opt;
+    ALTIBASE_ILOADER_ERROR       err;
+    int rc;
 
-ALTIBASE_ILOADER_HANDLE handle = ALTIBASE_ILOADER_NULL_HANDLE;
+    /* Allocate an iLoader handle */
+    rc = altibase_iloader_init(&handle);
 
-ALTIBASE_ILOADER_OPTIONS_V1 opt;
+    if ( rc != ALTIBASE_ILO_SUCCESS )
+    {
+        printf("altibase_iloader_init() failed: %d\n", rc);
+        return 1;
+    }
 
-ALTIBASE_ILOADER_ERROR err;
+    /* Initialize an option structure */
+    altibase_iloader_options_init(ALTIBASE_ILOADER_V1, &opt);
 
-int rc;
+    strcpy(opt.serverName, "127.0.0.1");
+    strcpy(opt.loginID, "sys");
+    strcpy(opt.password, "manager");
+    strcpy(opt.formFile, "t1.fmt");
+    strcpy(opt.dataFile[0], "t1.dat");
+    opt.dataFileNum = 1;
 
-/\* Allocate an iLoader handle \*/
+    /* Download data */
+    rc = altibase_iloader_dataout(&handle, ALTIBASE_ILOADER_V1, &opt, NULL, &err);
 
-rc = altibase_iloader_init(\&handle);
+    if ( rc == ALTIBASE_ILO_SUCCESS )
+    {
+        printf("SUCCESS\n");
+    }
+    else
+    {
+        printf("ERR-%05X [%s] %s\n",
+                err.errorCode,
+                err.errorState,
+                err.errorMessage);
+    }
 
-if ( rc != ALTIBASE_ILO_SUCCESS )
+    if ( handle != ALTIBASE_ILOADER_NULL_HANDLE )
+    {
+        altibase_iloader_final(&handle);
+    }
 
-{
-
-printf("altibase_iloader_init() failed: %d\\n", rc);
-
-return 1;
-
+    return 0;
 }
+```
 
-/\* Initialize an option structure \*/
 
-altibase_iloader_options_init(ALTIBASE_ILOADER_V1, \&opt);
-
-strcpy(opt.serverName, "127.0.0.1");
-
-strcpy(opt.loginID, "sys");
-
-strcpy(opt.password, "manager");
-
-strcpy(opt.formFile, "t1.fmt");
-
-strcpy(opt.dataFile[0], "t1.dat");
-
-opt.dataFileNum = 1;
-
-/\* Download data \*/
-
-rc = altibase_iloader_dataout(&handle, ALTIBASE_ILOADER_V1, &opt, NULL, \&err);
-
-if ( rc == ALTIBASE_ILO_SUCCESS )
-
-{
-
-printf("SUCCESS\\n");
-
-}
-
-else
-
-{
-
-printf("ERR-%05X [%s] %s\\n",
-
-err.errorCode,
-
-err.errorState,
-
-err.errorMessage);
-
-}
-
-if ( handle != ALTIBASE_ILOADER_NULL_HANDLE )
-
-{
-
-altibase_iloader_final(\&handle);
-
-}
-
-return 0;
-
-}
 
 #### altibase_iloader_final
 
@@ -3003,9 +2794,11 @@ return 0;
 
 ##### 구문
 
-int altibase_iloader_final (
+```
+int altibase_iloader_final (ALTIBASE_ILOADER_HANDLE * handle );
+```
 
-ALTIBASE_ILOADER_HANDLE \* handle );
+
 
 ##### 인자
 
@@ -3036,15 +2829,15 @@ altibase_iloader_init 을 참고한다.
 
 ##### 구문
 
+```
 int altibase_iloader_formout (
+ ALTIBASE_ILOADER_HANDLE * handle,
+ int version
+ void * options
+ ALTIBASE_ILOADER_ERROR * error );
+```
 
-ALTIBASE_ILOADER_HANDLE \* handle,
 
-int version
-
-void \* options
-
-ALTIBASE_ILOADER_ERROR \* error );
 
 ##### 인자
 
@@ -3094,87 +2887,65 @@ altibase_iloader_final
 
 -   iLoader 유틸리티를 사용해서 포맷 파일 생성
 
+```
 iloader formout -s 127.0.0.1 -u sys -p manager -T T1 -f t1.fmt
+```
+
+
 
 -   응용 프로그램 내에서 iLoader API를 사용해서 포맷 파일 생성
 
+```
 int main()
-
 {
+    ALTIBASE_ILOADER_HANDLE     handle = ALTIBASE_ILOADER_NULL_HANDLE;
+    ALTIBASE_ILOADER_OPTIONS_V1 opt;
+    ALTIBASE_ILOADER_ERROR      err;
+    int rc;
 
-ALTIBASE_ILOADER_HANDLE handle = ALTIBASE_ILOADER_NULL_HANDLE;
+    /* Allocate an iLoader handle */
+    rc = altibase_iloader_init(&handle);
 
-ALTIBASE_ILOADER_OPTIONS_V1 opt;
+    if ( rc != ALTIBASE_ILO_SUCCESS )
+    {
+        printf("Failed to altibase_iloader_init() failed: %d\n", rc);
+        return 1;
+    }
 
-ALTIBASE_ILOADER_ERROR err;
+    /* Initialize an option structure */
+    altibase_iloader_options_init(ALTIBASE_ILOADER_V1, &opt);
 
-int rc;
+    strcpy(opt.serverName, "127.0.0.1");
+    strcpy(opt.loginID, "sys");
+    strcpy(opt.password, "manager");
+    strcpy(opt.tableName, "t1");
+    strcpy(opt.formFile, "t1.fmt");
 
-/\* Allocate an iLoader handle \*/
+    /* formout */
+    rc = altibase_iloader_formout(&handle, ALTIBASE_ILOADER_V1, &opt, &err);
 
-rc = altibase_iloader_init(\&handle);
+    if ( rc == ALTIBASE_ILO_SUCCESS )
+    {
+        printf("SUCCESS\n");
+    }
+    else
+    {
+        printf("ERR-%05X [%s] %s\n",
+                err.errorCode,
+                err.errorState,
+                err.errorMessage);
+    }
 
-if ( rc != ALTIBASE_ILO_SUCCESS )
+    if ( handle != ALTIBASE_ILOADER_NULL_HANDLE )
+    {
+        altibase_iloader_final(&handle);
+    }
 
-{
-
-printf("Failed to altibase_iloader_init() failed: %d\\n", rc);
-
-return 1;
-
+    return 0;
 }
+```
 
-/\* Initialize an option structure \*/
 
-altibase_iloader_options_init(ALTIBASE_ILOADER_V1, \&opt);
-
-strcpy(opt.serverName, "127.0.0.1");
-
-strcpy(opt.loginID, "sys");
-
-strcpy(opt.password, "manager");
-
-strcpy(opt.tableName, "t1");
-
-strcpy(opt.formFile, "t1.fmt");
-
-/\* formout \*/
-
-rc = altibase_iloader_formout(&handle, ALTIBASE_ILOADER_V1, &opt, \&err);
-
-if ( rc == ALTIBASE_ILO_SUCCESS )
-
-{
-
-printf("SUCCESS\\n");
-
-}
-
-else
-
-{
-
-printf("ERR-%05X [%s] %s\\n",
-
-err.errorCode,
-
-err.errorState,
-
-err.errorMessage);
-
-}
-
-if ( handle != ALTIBASE_ILOADER_NULL_HANDLE )
-
-{
-
-altibase_iloader_final(\&handle);
-
-}
-
-return 0;
-
-}
 
 #### altibase_iloader_init
 
@@ -3182,9 +2953,11 @@ return 0;
 
 ##### 구문
 
-int altibase_iloader_init (
+```
+int altibase_iloader_init (ALTIBASE_ILOADER_HANDLE * handle );
+```
 
-ALTIBASE_ILOADER_HANDLE \* handle );
+
 
 ##### 인자
 
@@ -3215,37 +2988,30 @@ altibase_iloader_final
 
 ##### 예제
 
+```
 int main()
-
 {
+    ALTIBASE_ILOADER_HANDLE handle = ALTIBASE_ILOADER_NULL_HANDLE;
+    int rc;
 
-ALTIBASE_ILOADER_HANDLE handle = ALTIBASE_ILOADER_NULL_HANDLE;
+    rc = altibase_iloader_init( &handle );
+    if ( rc != ILOADER_SUCCESS )
+    {
+        printf( “altibase_iloader_init() failed: %d\n”,rc );
+    }
 
-int rc;
+    /* ... omit ... */
 
-rc = altibase_iloader_init( &handle );
+    if( handle != ALTIBASE_ILOADER_NULL_HANDLE )
+    {
+        altibase_iloader_final( &handle );
+    }
 
-if ( rc != ILOADER_SUCCESS )
-
-{
-
-printf( “altibase_iloader_init() failed: %d\\n”,rc );
-
+    return 0;
 }
+```
 
-/\* ... omit ... \*/
 
-if( handle != ALTIBASE_ILOADER_NULL_HANDLE )
-
-{
-
-altibase_iloader_final( &handle );
-
-}
-
-return 0;
-
-}
 
 #### altibase_iloader_options_init
 
@@ -3253,11 +3019,13 @@ return 0;
 
 ##### 구문
 
+```
 int altibase_iloader_options_init (
+			int version,
+			void * options );
+```
 
-int version,
 
-void \* options );
 
 ##### 인자
 
@@ -3293,11 +3061,13 @@ altibase_iloader_datain 과 altibase_iloader_dataout 함수의 예제를 참고�
 
 ##### 구문
 
+```
 int CallbackFuncationName (
+	 	ALTIBASE_ILOADER_LOG_TYPE type,
+	 	void * log );
+```
 
-ALTIBASE_ILOADER_LOG_TYPE type,
 
-void \* log );
 
 ##### 인자
 
@@ -3360,105 +3130,69 @@ altibase_iloader_dataout
 
 -   사용자 콜백 함수 정의
 
-int print_callback ( ALTIBASE_ILOADER_LOG_TYPE type, void \*log)
-
+```
+int print_callback ( ALTIBASE_ILOADER_LOG_TYPE type, void *log)
 {
+    int i;
 
-int i;
+    ALTIBASE_ILOADER_LOG           *slog;
+    ALTIBASE_ILOADER_STATISTIC_LOG *statisticlog;
 
-ALTIBASE_ILOADER_LOG \*slog;
+    if ( type == ILO_LOG )
+    {
+        slog = (ALTIBASE_ILOADER_LOG *) log;
 
-ALTIBASE_ILOADER_STATISTIC_LOG \*statisticlog;
+        if ( slog->record == 0 )
+        {
+            printf("LOG Total Count : %d\n", slog->totalCount);
+            printf("LOG Load Count : %d\n", slog->loadCount);
+            printf("LOG Error Count : %d\n", slog->errorCount);
+        }
+        else
+        {
+            printf("LOG %d\n", slog->record);
+            for (i = 0; i < slog->recordColCount; i++)
+            {
+                printf("    [%d] : %s\n", i, slog->recordData[i]);
+            }
+        }
 
-if ( type == ILO_LOG )
+        if ( slog->errorMgr.errorCode != 0 )
+        {
+            printf("    ERR-%05X [%s] %s\n",
+                    slog->errorMgr.errorCode,
+                    slog->errorMgr.errorState,
+                    slog->errorMgr.errorMessage);
+        }
+    }
+    else if ( type == ILO_STATISTIC_LOG )
+    {
+        statisticlog = (ALTIBASE_ILOADER_STATISTIC_LOG *) log;
 
-{
+        printf("STATISTIC LOG Start Time  : %s\n", ctime(&statisticlog->startTime));
+        printf("STATISTIC LOG Table Name  : %s\n", statisticlog->tableName );
+        printf("STATISTIC LOG Total Count : %d\n", statisticlog->totalCount );
+        printf("STATISTIC LOG Load Count  : %d\n", statisticlog->loadCount);
+        printf("STATISTIC LOG Error Count : %d\n", statisticlog->errorCount);
+    }
 
-slog = (ALTIBASE_ILOADER_LOG \*) log;
-
-if ( slog-\>record == 0 )
-
-{
-
-printf("LOG Total Count : %d\\n", slog-\>totalCount);
-
-printf("LOG Load Count : %d\\n", slog-\>loadCount);
-
-printf("LOG Error Count : %d\\n", slog-\>errorCount);
-
+    return 0;
 }
+```
 
-else
 
-{
-
-printf("LOG %d\\n", slog-\>record);
-
-for (i = 0; i \< slog-\>recordColCount; i++)
-
-{
-
-printf(" [%d] : %s\\n", i, slog-\>recordData[i]);
-
-}
-
-}
-
-if ( slog-\>errorMgr.errorCode != 0 )
-
-{
-
-printf(" ERR-%05X [%s] %s\\n",
-
-slog-\>errorMgr.errorCode,
-
-slog-\>errorMgr.errorState,
-
-slog-\>errorMgr.errorMessage);
-
-}
-
-}
-
-else if ( type == ILO_STATISTIC_LOG )
-
-{
-
-statisticlog = (ALTIBASE_ILOADER_STATISTIC_LOG \*) log;
-
-printf("STATISTIC LOG Start Time : %s\\n", ctime(\&statisticlog-\>startTime));
-
-printf("STATISTIC LOG Table Name : %s\\n", statisticlog-\>tableName );
-
-printf("STATISTIC LOG Total Count : %d\\n", statisticlog-\>totalCount );
-
-printf("STATISTIC LOG Load Count : %d\\n", statisticlog-\>loadCount);
-
-printf("STATISTIC LOG Error Count : %d\\n", statisticlog-\>errorCount);
-
-}
-
-return 0;
-
-}
 
 -   사용자 콜백 함수 등록
 
-...
-
-/\* upload data \*/
-
+```
+/* upload data */
 altibase_iloader_datain(&handle,
+                        ALTIBASE_ILOADER_V1,
+                        &opt,
+                        print_callback,
+                        &err);
 
-ALTIBASE_ILOADER_V1,
-
-&opt,
-
-print_callback,
-
-\&err);
-
-....
+```
 
 
 
@@ -3503,7 +3237,11 @@ CheckServer API는 CheckServer 유틸리티와 같은 기능을 제공한다. �
 
 응용 프로그램에서 포함해야 하는 헤더파일이다.
 
-\$ALTIBASE_HOME/include/chksvr.h
+```
+$ALTIBASE_HOME/include/chksvr.h
+```
+
+
 
 #### 라이브러리 파일
 
@@ -3512,8 +3250,7 @@ CheckServer API를 사용해서 작성한 응용 프로그램의 빌드시 필�
 다음의 라이브러리 파일을 반드시 링크해야 한다.
 
 -   UNIX
-
-libchksvr.a, libaltiutil.a
+    libchksvr.a, libaltiutil.a
 
 #### 샘플
 
@@ -3568,9 +3305,12 @@ CheckServer 핸들은 CheckServer API 라이브러리 내에 정의된 자료형
 
 ##### 구문
 
+```
 int altibase_check_server (
-
 ALTIBASE_CHECK_SERVER_HANDLE handle );
+```
+
+
 
 ##### 인자
 
@@ -3606,55 +3346,41 @@ altibase_check_server_cancel
 
 ##### 예제
 
+```
 int main()
-
 {
+    ALTIBASE_CHECK_SERVER_HANDLE handle = ALTIBASE_CHECK_SERVER_NULL_HANDLE;
+    char *homeDir = NULL;
+    int rc;
 
-ALTIBASE_CHECK_SERVER_HANDLE handle = ALTIBASE_CHECK_SERVER_NULL_HANDLE;
+    rc = altibase_check_server_init( &handle, homeDir );
 
-char \*homeDir = NULL;
+    if ( rc != ALTIBASE_CS_SUCCESS )
+    {
+        printf( "altibase_check_server_init() failed: %d\n", rc );
+    }
 
-int rc;
+    rc = altibase_check_server(handle);
 
-rc = altibase_check_server_init( &handle, homeDir );
+    if ( rc == ALTIBASE_CS_SERVER_STOPED )
+    {
+        printf( "Server stopped.\n" );
+    }
+    else
+    {
+        printf( "An error has occured: %d\n", rc );
+    }
 
-if ( rc != ALTIBASE_CS_SUCCESS )
+    if ( handle != ALTIBASE_CHECK_SERVER_NULL_HANDLE )
+    {
+        altibase_check_server_final(&handle);
+    }
 
-{
-
-printf( "altibase_check_server_init() failed: %d\\n", rc );
-
+    return 0;
 }
+```
 
-rc = altibase_check_server(handle);
 
-if ( rc == ALTIBASE_CS_SERVER_STOPED )
-
-{
-
-printf( "Server stopped.\\n" );
-
-}
-
-else
-
-{
-
-printf( "An error has occured: %d\\n", rc );
-
-}
-
-if ( handle != ALTIBASE_CHECK_SERVER_NULL_HANDLE )
-
-{
-
-altibase_check_server_final(\&handle);
-
-}
-
-return 0;
-
-}
 
 #### altibase_check_server_final
 
@@ -3662,9 +3388,12 @@ return 0;
 
 ##### 구문
 
+```
 int altibase_check_server_final (
+ALTIBASE_CHECK_SERVER_HANDLE * handle );
+```
 
-ALTIBASE_CHECK_SERVER_HANDLE \* handle );
+
 
 ##### 인자
 
@@ -3700,11 +3429,13 @@ altibase_check_server의 예제를 참고한다.
 
 ##### 구문
 
+```
 int altibase_check_server_init (
+ALTIBASE_CHECK_SERVER_HANDLE * handle,
+char * home_dir );
+```
 
-ALTIBASE_CHECK_SERVER_HANDLE \* handle,
 
-char \* home_dir );
 
 ##### 인자
 
@@ -3743,9 +3474,12 @@ altibase_check_server의 예제를 참고한다.
 
 ##### 구문
 
+```
 int altibase_check_server_cancel (
+	ALTIBASE_CHECK_SERVER_HANDLE handle);
+```
 
-ALTIBASE_CHECK_SERVER_HANDLE handle);
+
 
 ##### 인자
 
