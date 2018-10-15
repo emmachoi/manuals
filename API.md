@@ -376,31 +376,20 @@ extension=pdo_altibase.so
 1.  pdo_altibase는 pdo_odbc와 동시에 사용할 수 없다. 두 extension을 모두 사용
     설정하면 예기치 않은 에러가 발생할 수 있다.
 
-2.  PDO 매뉴얼에 기술된 항목 중 아래 항목은 지원하지 않는다:
+2.  PDO 매뉴얼에 기술된 항목 중 아래 항목은 지원하지 않는다 :
 
--   PDO::lastInsertId
-
--   PDO::getAttribute, PDO::setAttribute
-
--   PDO::ATTR_CONNECTION_STATUS
-
--   PDO::ATTR_ORACLE_NULLS
-
--   PDO::ATTR_PERSISTENT
-
--   PDO::ATTR_SERVER_INFO
-
--   PDO::ATTR_STRINGIFY_FETCHES
-
--   PDO::ATTR_EMULATE_PREPARES
-
--   PDO::MYSQL_ATTR_USE_BUFFERED_QUERY
-
--   PDOStatement::getAttribute, PDOStatement::setAttribute
-
--   PDO::ATTR_CURSOR_NAME
-
--   PDOStatement::getColumnMeta
+- PDO::lastInsertId
+- PDO::getAttribute, PDO::setAttribute
+- PDO::ATTR_CONNECTION_STATUS
+- PDO::ATTR_ORACLE_NULLS
+- PDO::ATTR_PERSISTENT
+- PDO::ATTR_SERVER_INFO
+- PDO::ATTR_STRINGIFY_FETCHES
+- PDO::ATTR_EMULATE_PREPARES
+- PDO::MYSQL_ATTR_USE_BUFFERED_QUERY
+- PDOStatement::getAttribute, PDOStatement::setAttribute
+- PDO::ATTR_CURSOR_NAME
+- PDOStatement::getColumnMeta
 
 3. 기타 제약사항은 “파라미터 바인딩”을 참고한다.
 
@@ -440,12 +429,9 @@ PDO::getAttribute(), PDO::setAttribute() 함수에서 사용할 수 있는 속�
 
 | 속성 ID                       | 설명                                                         |
 | ----------------------------- | ------------------------------------------------------------ |
-| PDO::ALTIBASE_DATE_FORMAT     | DATE를 표현하는데 사용할 포맷. 사용예제, DATE 포맷 변경 참고. |
-| PDO::ALTIBASE_EXPLAIN_PLAN    | 수행 계획을 얻을지 여부와 그 방식. PDO::ALTIBASE_EXPLAIN_PLAN_OFF : |
-|                               | 수행 계획을 얻지 않는다. PDO::ALTIBASE_EXPLAIN_PLAN_ON :     |
-|                               | Prepare 및 Execution 후 결정된 수행 계획을 얻는다. PDO::ALTIBASE_EXPLAIN_PLAN_ONLY : |
-|                               | Prepare 후 Execution 전에 결정된 수행 계획을 얻는다. 자세한 내용은 사용 예제\> 수행계획 확인 을 참고하라. |
-| PDO::ALTIBASE_DEFER_PROTOCOLS | Prepare, execute를 반복하여 호출하는 구조로 작성된 프로그램의 성능 향상을 위한 프로토콜 최적화 여부를 설정한다. 이 속성을 사용하기 위해서는, 하나의 커넥션 객체를 여러 쓰레드에서 공유해서 사용하지 않아야 한다. 또한 성능을 위해서는 prepare를 한번만 호출한 후, execute를 반복 호출하는 구조로 프로그램을 작성해야 한다. 0 : 프로토콜 최적화하지 않음 (default) 1 : execute 관련 프로토콜 최적화 2 : execute, close 관련 프로토콜 최적화 ex\> \$db-\>setAttribute(PDO::ALTIBASE_DEFER_PROTOCOLS, 1); |
+| PDO::ALTIBASE_DATE_FORMAT     | DATE를 표현하는데 사용할 포맷.   사용예제, DATE 포맷 변경 참고. |
+| PDO::ALTIBASE_EXPLAIN_PL AN   | 수행 계획을 얻을지 여부와 그 방식.   PDO::ALTIBASE_EXPLAIN_PLAN_OFF   :     수행 계획을 얻지 않는다.   <br />PDO::ALTIBASE_EXPLAIN_PLAN_ON   :     Prepare 및 Execution 후 결정된 수행 계획을 얻는다.   PDO::ALTIBASE_EXPLAIN_PLAN_ONLY   :     Prepare 후 Execution 전에 결정된 수행 계획을 얻는다.   자세한 내용은 사용 예제>   수행계획 확인   을 참고하라. |
+| PDO::ALTIBASE_DEFER_PROTOCOLS | Prepare,   execute를 반복하여 호출하는 구조로 작성된 프로그램의 성능 향상을 위한 프로토콜 최적화 여부를 설정한다.   이 속성을 사용하기 위해서는, 하나의 커넥션 객체를 여러 쓰레드에서 공유해서 사용하지 않아야 한다.   또한 성능을 위해서는   prepare를 한번만 호출한 후, execute를 반복 호출하는 구조로 프로그램을   작성해야 한다.   <br />0 : 프로토콜   최적화하지 않음 (default)   <br />1 : execute   관련 프로토콜 최적화   <br />2 :   execute, close 관련 프로토콜 최적화  <br /> ex>   $db->setAttribute(PDO::ALTIBASE_DEFER_PROTOCOLS, 1); |
 
 #### 파라미터 바인딩
 
