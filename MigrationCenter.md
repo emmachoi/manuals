@@ -1848,26 +1848,26 @@ TABLE 문에 지정된다.
 | -------------------- | ------------ | -------------------------- | ---------------------------------- |
 | 문자형을 위한 문자열 | ''           |                            |                                    |
 | 날짜형을 위한 문자열 | '97/04/21'   | /\* DEFAULT '97/04/21' \*/ |                                    |
-| 함수 <rowspan="4">   | DBTIMEZONE   | DB_TIMEZONE()              | Altibase 6.3.1.0.0 이상에서 지원됨 |
+| 함수                 | DBTIMEZONE   | DB_TIMEZONE()              | Altibase 6.3.1.0.0 이상에서 지원됨 |
 |                      | SYS_GUID()   | SYS_GUID_STR()             | Altibase 6.3.1.0.0 이상에서 지원됨 |
 |                      | UID          | USER_ID()                  |                                    |
-| </rowspan>           | USER         | USER_NAME()                |                                    |
+|                      | USER         | USER_NAME()                |                                    |
 
 아래는 변환 예제이다.
 
-| 오라클의 테이블 생성 SQL문                                                                                                                                                                                                                                                                                                                                                             | Altibase의 테이블 생성 SQL문                                                                                                                                                                                                                                                                                                                                                                                                      |
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| CREATE TABLE testtbl_4_defval ( c1 INT DEFAULT 123, c2 VARCHAR(50) DEFAULT 'test', c3 INT DEFAULT NULL, c4 CHAR(10) DEFAULT '', c5 INT DEFAULT SQRT(144) + 72, c6 DATE DEFAULT '97/04/21', c7 DATE DEFAULT TO_DATE('1999-12-01', 'YYYY-MM-DD'), c8 VARCHAR(100) DEFAULT DBTIMEZONE, c9 VARCHAR(100) DEFAULT SYS_GUID(), c10 VARCHAR(100) DEFAULT UID, c11 VARCHAR(100) DEFAULT USER ); | CREATE TABLE TESTTBL_4_DEFVAL ( C1 NUMBER (38, 0) DEFAULT 123, C2 VARCHAR (50) DEFAULT 'test', C3 NUMBER (38, 0), C4 CHAR (10), C5 NUMBER (38, 0) DEFAULT SQRT(144) + 72, C6 DATE /\* DEFAULT '97/04/21' \*/, C7 DATE DEFAULT TO_DATE('1999-12-01', 'YYYY-MM-DD'), C8 VARCHAR (100) DEFAULT DB_TIMEZONE(), C9 VARCHAR (100) DEFAULT SYS_GUID_STR(), C10 VARCHAR (100) DEFAULT USER_ID(), C11 VARCHAR (100) DEFAULT USER_NAME() ); |
+| 오라클의 테이블 생성 SQL문                                   | Altibase의 테이블 생성 SQL문                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| CREATE TABLE testtbl_4_defval<br /> ( c1 INT DEFAULT 123, <br />c2 VARCHAR(50) DEFAULT 'test', <br />c3 INT DEFAULT NULL,<br /> c4 CHAR(10) DEFAULT '', <br />c5 INT DEFAULT SQRT(144) + 72, c6 DATE DEFAULT '97/04/21', c7 DATE DEFAULT TO_DATE('1999-12-01', 'YYYY-MM-DD'), c8 VARCHAR(100) DEFAULT DBTIMEZONE, c9 VARCHAR(100) DEFAULT SYS_GUID(), c10 VARCHAR(100) DEFAULT UID, c11 VARCHAR(100) DEFAULT USER ); | CREATE TABLE TESTTBL_4_DEFVAL ( C1 NUMBER (38, 0) DEFAULT 123, C2 VARCHAR (50) DEFAULT 'test', C3 NUMBER (38, 0), C4 CHAR (10), C5 NUMBER (38, 0) DEFAULT SQRT(144) + 72, C6 DATE /\* DEFAULT '97/04/21' \*/, C7 DATE DEFAULT TO_DATE('1999-12-01', 'YYYY-MM-DD'), C8 VARCHAR (100) DEFAULT DB_TIMEZONE(), C9 VARCHAR (100) DEFAULT SYS_GUID_STR(), C10 VARCHAR (100) DEFAULT USER_ID(), C11 VARCHAR (100) DEFAULT USER_NAME() ); |
 
 #### MS SQL Server to Altibase
 
 | Expression Type      | 원본(MS SQL Server)   | 대상(Altibase)                     | 특이 사항 |
-|----------------------|-----------------------|------------------------------------|-----------|
+| -------------------- | --------------------- | ---------------------------------- | --------- |
 | 문자형을 위한 문자열 | ''                    |                                    |           |
 | 날짜형을 위한 문자열 | 'December 5, 1985'    | /\* DEFAULT 'December 5, 1985' \*/ |           |
 | 함수                 | GETDATE()             | SYSDATE                            |           |
 |                      | CURRENT_TIMESTAMP     |                                    |           |
-|                      | LEN( str_expression ) | LENGTH( str_expression )           |           |
+| <td rowspan="3"/>    | LEN( str_expression ) | LENGTH( str_expression )           |           |
 
 아래는 변환 예제이다.
 
