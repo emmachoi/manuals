@@ -1844,14 +1844,14 @@ TABLE 문에 지정된다.
 
 #### Oracle 데이터베이스 to Altibase
 
-| Expression Type      | 원본(오라클) | 대상(Altibase)             | 특이 사항                          |
-| -------------------- | ------------ | -------------------------- | ---------------------------------- |
-| 문자형을 위한 문자열 | ''           |                            |                                    |
-| 날짜형을 위한 문자열 | '97/04/21'   | /\* DEFAULT '97/04/21' \*/ |                                    |
-| <td rowspan="4">함수 | DBTIMEZONE   | DB_TIMEZONE()              | Altibase 6.3.1.0.0 이상에서 지원됨 |
-|                      | SYS_GUID()   | SYS_GUID_STR()             | Altibase 6.3.1.0.0 이상에서 지원됨 |
-|                      | UID          | USER_ID()                  |                                    |
-| </td>                | USER         | USER_NAME()                |                                    |
+| Expression Type          | 원본(오라클) | 대상(Altibase)             | 특이 사항                          |
+| ------------------------ | ------------ | -------------------------- | ---------------------------------- |
+| 문자형을 위한 문자열     | ''           |                            |                                    |
+| <td>날짜형을 위한 문자열 | '97/04/21'   | /\* DEFAULT '97/04/21' \*/ | </td>                              |
+| <td rowspan="4">함수     | DBTIMEZONE   | DB_TIMEZONE()              | Altibase 6.3.1.0.0 이상에서 지원됨 |
+|                          | SYS_GUID()   | SYS_GUID_STR()             | Altibase 6.3.1.0.0 이상에서 지원됨 |
+|                          | UID          | USER_ID()                  |                                    |
+| </td>                    | USER         | USER_NAME()                |                                    |
 
 아래는 변환 예제이다.
 
