@@ -1844,14 +1844,29 @@ TABLE 문에 지정된다.
 
 #### Oracle 데이터베이스 to Altibase
 
-| Expression Type      | 원본(오라클) | 대상(Altibase)             | 특이 사항                          |
-| -------------------- | ------------ | -------------------------- | ---------------------------------- |
-| 문자형을 위한 문자열 | ''           |                            |                                    |
-| 날짜형을 위한 문자열 | '97/04/21'   | /\* DEFAULT '97/04/21' \*/ |                                    |
-| 함수                 | DBTIMEZONE   | DB_TIMEZONE()              | Altibase 6.3.1.0.0 이상에서 지원됨 |
-|                      | SYS_GUID()   | SYS_GUID_STR()             | Altibase 6.3.1.0.0 이상에서 지원됨 |
-|                      | UID          | USER_ID()                  |                                    |
-|                      | USER         | USER_NAME()                |                                    |
+<table>
+    <tr>        
+        <th>Expression Type</th> <th>원본(오라클)</th><th>대상(Altibase)</th><th>특이사항</th>
+    </tr>
+    <tr>
+        <td>문자형을 위한 문자열</td><td>"</td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>날짜형을 위한 문자열</td><td>'97/04/21'</td><td>/* DEFAULT '97/04/21' */</td><td></td>
+    </tr>
+    <tr>
+        <td rowspan="4">함수</td><td>DBTIMEZONE</td><td>DB_TIMEZONE()</td><td>Altibase 6.3.1.0.0 이상에서 지원됨</td>
+    </tr>
+    <tr>
+        <td >SYS_GUID()</td><td>SYS_GUID_STR()</td><td>Altibase 6.3.1.0.0 이상에서 지원됨</td>
+    </tr>
+     <tr>
+        <td >UID</td><td>USER_ID()</td><td></td>
+    </tr>
+    <tr>
+         <td >USER</td><td>USER_NAME()</td><td></td>
+    </tr>
+</table>
 
 아래는 변환 예제이다.
 
@@ -1861,13 +1876,28 @@ TABLE 문에 지정된다.
 
 #### MS SQL Server to Altibase
 
-| Expression Type      | 원본(MS SQL Server)   | 대상(Altibase)                     | 특이 사항 |
-| -------------------- | --------------------- | ---------------------------------- | --------- |
-| 문자형을 위한 문자열 | ''                    |                                    |           |
-| 날짜형을 위한 문자열 | 'December 5, 1985'    | /\* DEFAULT 'December 5, 1985' \*/ |           |
-| 함수                 | GETDATE()             | SYSDATE                            |           |
-|                      | CURRENT_TIMESTAMP     |                                    |           |
-|                      | LEN( str_expression ) | LENGTH( str_expression )           |           |
+<table>
+    <tr>        
+        <th>Expression Type</th> <th>원본(MS SQL Server)</th><th>대상(Altibase)</th><th>특이사항</th>
+    </tr>
+    <tr>
+        <td>문자형을 위한 문자열</td><td>"</td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>날짜형을 위한 문자열</td><td>'December 5, 1985'</td><td>/* DEFAULT 'December 5, 1985' */</td><td></td>
+    </tr>
+    <tr>
+        <td rowspan="3">함수</td><td>GETDATE90</td><td>SYSDATE</td><td></td>
+    </tr>
+    <tr>
+        <td >CURRENT_TIMESTAMP</td><td></td><td></td>
+    </tr>
+     <tr>
+        <td >LEN( str_expression )</td><td>LENGTH( str_expression )</td><td></td>
+    </tr>
+</table>
+
+
 
 아래는 변환 예제이다.
 
@@ -1877,19 +1907,44 @@ TABLE 문에 지정된다.
 
 #### MySQL to Altibase
 
-| Expression Type      | 원본(MySQL)           | 대상(Altibase)                                        | 특이 사항                                                                                                                                                                      |
-|----------------------|-----------------------|-------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 문자형을 위한 문자열 | ''                    |                                                       |                                                                                                                                                                                |
-| 날짜형을 위한 문자열 | '1989-04-28'          | TO_DATE('1989-04-28', 'YYYY-MM-DD')                   |                                                                                                                                                                                |
-|                      | '1989-04-28 12:31:29' | TO_DATE('1989-04-28 12:31:29', 'YYYY-MM-DD HH:MI:SS') |                                                                                                                                                                                |
-|                      | '0000-00-00 00:00:00' | /\* DEFAULT '0000-00-00 00:00:00' \*/                 | MySQL은 날짜형 타입의 기본값이 지정되지 않으면 자동으로 '0000-00-00 00:00:00'으로 지정된다. 하지만 이 값은 Altibase의 DATE 타입에는 입력이 불가능한 값이므로 주석 처리가 된다. |
-| 함수                 | CURRENT_TIMESTAMP     | SYSDATE                                               |                                                                                                                                                                                |
-|                      | CURRENT_TIMESTAMP()   |                                                       |                                                                                                                                                                                |
-|                      | NOW()                 |                                                       |                                                                                                                                                                                |
-|                      | LOCALTIME             |                                                       |                                                                                                                                                                                |
-|                      | LOCALTIME()           |                                                       |                                                                                                                                                                                |
-|                      | LOCALTIMESTAMP        |                                                       |                                                                                                                                                                                |
-|                      | LOCALTIMESTAMP()      |                                                       |                                                                                                                                                                                |
+<table>
+    <tr>        
+        <th>Expression Type</th> <th>원본(MySQL)</th><th>대상(Altibase)</th><th>특이사항</th>
+    </tr>
+    <tr>
+        <td>문자형을 위한 문자열</td><td>"</td><td></td><td></td>
+    </tr>
+    <tr>
+        <td rowspan="3">날짜형을 위한 문자열</td><td>'1989-04-28'</td><td>TO_DATE('1989-04-28', 'YYYY-MM-DD')</td><td></td>
+    </tr>
+     <tr>
+        <td> '1989-04-28 12:31:29'</td><td>TO_DATE('1989-04-28 12:31:29', 'YYYY-MM-DD HH:MI:SS')</td><td></td>
+    </tr>
+    <tr>
+        <td>'0000-00-00 00:00:00'</td><td>/* DEFAULT '0000-00-00 00:00:00' */</td><td>MySQL은 날짜형 타입의 기본값이 지정되지 않으면 자동으로 '0000-00-00 00:00:00'으로 지정된다. 하지만 이 값은 Altibase의 DATE 타입에는 입력이 불가능한 값이므로 주석 처리가 된다.</td>
+    </tr>
+    <tr>
+    <td rowspan="7">함수</td><td>CURRENT_TIMESTAMP</td><td rowspan="7">SYSDATE</td><td></td>
+    </tr>
+    <tr>
+        <td >CURRENT_TIMESTAMP()</td><td></td>
+    </tr>
+     <tr>
+        <td >NOW()</td><td></td>
+    </tr>
+    <tr>
+        <td >LOCALTIME</td><td></td>
+    </tr>
+    <tr>
+        <td >LOCALTIME()</td><td></td>
+    </tr>
+    <tr>
+        <td >LOCALTIMESETAMP</td><td></td>
+    </tr>
+    <tr>
+        <td >LOCALTIMESETAMP()</td><td></td>
+    </tr>
+</table>
 
 > 참고: MySQL은 테이블의 첫 칼럼의 데이터 타입이 TIMESTAMP인 경우, 사용자가
 > 기본값을 지정하지 않아도 기본값으로 CURRENT_TIMESTAMP이 자동으로 지정된다.
@@ -1903,80 +1958,139 @@ TABLE 문에 지정된다.
 
 #### Informix 11.5 to Altibase
 
-| Expression Type      | 원본(Informix) | 대상(Altibase)               | 특이 사항 |
-|----------------------|----------------|------------------------------|-----------|
-| 문자형을 위한 문자열 | ''             |                              |           |
-| 날짜형을 위한 문자열 | '2007-03-06'   | /\* DEFAULT '2007-03-06' \*/ |           |
-| 함수                 | CURRENT        | SYSDATE                      |           |
-|                      | TODAY          |                              |           |
+<table>
+    <tr>        
+        <th>Expression Type</th> <th>원본(Informix)</th><th>대상(Altibase)</th><th>특이사항</th>
+    </tr>
+    <tr>
+        <td>문자형을 위한 문자열</td><td>"</td><td></td><td></td>
+    </tr>
+    <tr>
+        <td>날짜형을 위한 문자열</td><td>'2007-03-06'</td><td>/* DEFAULT '2007-03-06' */</td><td></td>
+    </tr>
+    <tr>
+        <td rowspan="2">함수</td><td>CURRENT</td><td>SYSDATE</td><td></td>
+    </tr>
+    <tr>
+        <td >TODAY</td><td>SYSDATE</td><td></td>
+    </tr>     
+</table>
 
 아래는 변환 예제이다.
 
 | Informix의 테이블 생성 SQL문                                 | Altibase의 테이블 생성 SQL문                                 |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| CREATE TABLE testtbl_4_defval ( c1 INTEGER DEFAULT 123, c2 BOOLEAN DEFAULT 't', c3 CHAR(100) DEFAULT 'test', c4 INTEGER DEFAULT null, c5 CHAR(10) DEFAULT '', c6 DATETIME YEAR TO DAY DEFAULT DATETIME(07-3-6) YEAR TO DAY, c7 DATETIME DAY TO HOUR DEFAULT CURRENT DAY TO HOUR, c8 DATE DEFAULT TODAY ); | CREATE TABLE TESTTBL_4_DEFVAL ( C1 INTEGER DEFAULT 123, C2 CHAR (1) DEFAULT 't', C3 CHAR (100) DEFAULT 'test', C4 INTEGER, C5 CHAR (10), C6 DATE /\* DEFAULT '2007-03-06' \*/, C7 DATE DEFAULT SYSDATE, C8 DATE DEFAULT SYSDATE ); |
+| CREATE TABLE testtbl_4_defval ( <br />c1 INTEGER DEFAULT 123, <br />c2 BOOLEAN DEFAULT 't',<br />c3 CHAR(100) DEFAULT 'test', <br />c4 INTEGER DEFAULT null, <br />c5 CHAR(10) DEFAULT '', <br />c6 DATETIME YEAR TO DAY DEFAULT DATETIME(07-3-6) YEAR TO DAY, <br />c7 DATETIME DAY TO HOUR DEFAULT CURRENT DAY TO HOUR, <br />c8 DATE DEFAULT TODAY ); | CREATE TABLE TESTTBL_4_DEFVAL ( <br />C1 INTEGER DEFAULT 123, <br />C2 CHAR (1) DEFAULT 't', <br />C3 CHAR (100) DEFAULT 'test', <br />C4 INTEGER, <br />C5 CHAR (10), <br />C6 DATE /\* DEFAULT '2007-03-06' \*/, <br />C7 DATE DEFAULT SYSDATE, <br />C8 DATE DEFAULT SYSDATE ); |
 
 #### TimesTen to Altibase
 
-| Expression Type      | 원본(TimesTen)        | 대상(Altibase)                                        | 특이 사항 |
-|----------------------|-----------------------|-------------------------------------------------------|-----------|
-| 날짜형을 위한 문자열 | '1989-04-28'          | TO_DATE('1989-04-28', 'YYYY-MM-DD')                   |           |
-|                      | '1989-04-28 12:31:29' | TO_DATE('1989-04-28 12:31:29', 'YYYY-MM-DD HH:MI:SS') |           |
-|                      | '12:31:29'            | TO_DATE('12:31:29', 'HH:MI:SS')                       |           |
-| 함수                 | UID                   | USER_ID                                               |           |
-|                      | USER                  | USER_NAME                                             |           |
+<table>
+    <tr>        
+        <th>Expression Type</th> <th>원본(TimesTen)</th><th>대상(Altibase)</th><th>특이사항</th>
+    </tr>
+    <tr>
+        <td rowspan="3">날짜형을 위한 문자열</td><td>'1989-04-28'</td><td>TO_DATE('1989-04-28', 'YYYY-MM-DD')</td><td></td>
+    </tr>
+    <tr>
+        <td>'1989-04-28 12:31:29'</td><td>TO_DATE('1989-04-28 12:31:29', 'YYYY-MM-DD HH:MI:SS')</td><td></td>        
+    </tr>
+    <tr>
+        <td>'12:31:29'</td>    <td>TO_DATE('12:31:29', 'HH:MI:SS')</td>    <td></td>    
+    </tr>
+    <tr>
+        <td rowspan="2">함수</td><td>UID</td><td>USER_ID</td><td></td>
+    </tr>
+    <tr>
+        <td >USER</td><td>USER_NAME</td><td></td>
+    </tr>     
+</table>
 
 아래는 변환 예제이다.
 
-| TimesTen의 테이블 생성 SQL문                                                                                                                                                                                                                                                | Altibase의 테이블 생성 SQL문                                                                                                                                                                                                                                                                                                                           |
-|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| CREATE TABLE testtbl_4_defval ( c1 INT DEFAULT 123, c2 VARCHAR2(50) DEFAULT 'test', c3 INT DEFAULT NULL, c4 DATE DEFAULT '1999-12-01', c5 TIMESTAMP DEFAULT '1999-12-01 11:30:21', c6 TIME DEFAULT '11:30:21', c7 VARCHAR(100) DEFAULT UID, c8 VARCHAR(100) DEFAULT USER ); | CREATE TABLE TESTTBL_4_DEFVAL ( c1 INT DEFAULT 123, c2 VARCHAR2(50) DEFAULT 'test', c3 INT DEFAULT NULL, c4 DATE DEFAULT TO_DATE('1999-12-01', 'YYYY-MM-DD'), c5 TIMESTAMP DEFAULT TO_DATE('1999-12-01 11:30:21', 'YYYY-MM-DD HH:MI:SS), c6 TIME DEFAULT TO_DATE('11:30:21', 'HH:MI:SS'), c7 VARCHAR(100) DEFAULT UID, c8 VARCHAR(100) DEFAULT USER ); |
+| TimesTen의 테이블 생성 SQL문                                 | Altibase의 테이블 생성 SQL문                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| CREATE TABLE testtbl_4_defval ( <br />c1 INT DEFAULT 123, <br />c2 VARCHAR2(50) DEFAULT 'test', <br />c3 INT DEFAULT NULL, <br />c4 DATE DEFAULT '1999-12-01', <br />c5 TIMESTAMP DEFAULT '1999-12-01 11:30:21', <br />c6 TIME DEFAULT '11:30:21', <br />c7 VARCHAR(100) DEFAULT UID, <br />c8 VARCHAR(100) DEFAULT USER ); | CREATE TABLE TESTTBL_4_DEFVAL ( <br />c1 INT DEFAULT 123, <br />c2 VARCHAR2(50) DEFAULT 'test', <br />c3 INT DEFAULT NULL, <br />c4 DATE DEFAULT TO_DATE('1999-12-01', 'YYYY-MM-DD'), <br />c5 TIMESTAMP DEFAULT TO_DATE('1999-12-01 11:30:21', 'YYYY-MM-DD HH:MI:SS), <br />c6 TIME DEFAULT TO_DATE('11:30:21', 'HH:MI:SS'), c7 VARCHAR(100) DEFAULT UID, <br />c8 VARCHAR(100) DEFAULT USER ); |
 
 #### CUBRID to Altibase
 
-| Expression Type | 원본(CUBRID) | 대상(Altibase) | 특이 사항 |
-|-----------------|--------------|----------------|-----------|
-| 함수            | USER         | USER_ID()      |           |
-|                 | CURRENT_USER | USER_NAME()    |           |
+<table>
+    <tr>        
+        <th>Expression Type</th> <th>원본(CUBRID)</th><th>대상(Altibase)</th><th>특이사항</th>
+    </tr>   
+    <tr>
+        <td rowspan="2">함수</td><td>USER</td><td>USER_ID()</td><td></td>
+    </tr>
+    <tr>
+        <td >CURRENT_USER</td><td>USER_NAME()</td><td></td>
+    </tr>     
+</table>
 
 아래는 변환 예제이다.
 
-| CUBRID의 테이블 생성 SQL문                                                                                                                                                                                                                                                                                                                                                                                       | Altibase의 테이블 생성 SQL문                                                                                                                                                                                                                                                                                                                                                                      |
-|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| CREATE TABLE testtbl_4_defval ( c1 INTEGER DEFAULT 123, c2 CHARACTER VARYING (50) DEFAULT 'test', c3 INTEGER, c4 CHARACTER VARYING (100) DEFAULT 'USER', c5 CHARACTER VARYING (100) DEFAULT 'CURRENT_USER', c6 CHARACTER VARYING(100) DEFAULT ' ', c7 DATE DEFAULT DATE'2008-10-31', c8 TIME DEFAULT TIME'1:15', c9 TIMESTAMP DEFAULT TIMESTAMP'10/31', c10 DATETIME DEFAULT DATETIME'01:15:45 PM 2008-10-31' ); | CREATE TABLE TESTTBL_4_DEFVAL ( C1 INTEGER DEFAULT 123, C2 VARCHAR (50) DEFAULT 'test', C3 INTEGER, C4 VARCHAR (100) DEFAULT USER_ID(), C5 VARCHAR (100) DEFAULT USER_ID(), C6 VARCHAR (100) DEFAULT ' ', C7 DATE /\* DEFAULT '10/31/2008' \*/, C8 DATE /\* DEFAULT '01:15:00 AM' \*/, C9 DATE /\* DEFAULT '12:00:00 AM 10/31/2016' \*/, C10 DATE /\* DEFAULT '01:15:45.000 PM 10/31/2008' \*/ ); |
+| CUBRID의 테이블 생성 SQL문                                   | Altibase의 테이블 생성 SQL문                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| CREATE TABLE testtbl_4_defval ( <br />c1 INTEGER DEFAULT 123, <br />c2 CHARACTER VARYING (50) DEFAULT 'test', <br />c3 INTEGER, <br />c4 CHARACTER VARYING (100) DEFAULT 'USER', <br />c5 CHARACTER VARYING (100) DEFAULT 'CURRENT_USER', <br />c6 CHARACTER VARYING(100) DEFAULT ' ', <br />c7 DATE DEFAULT DATE'2008-10-31', <br />c8 TIME DEFAULT TIME'1:15', <br />c9 TIMESTAMP DEFAULT TIMESTAMP'10/31', <br />c10 DATETIME DEFAULT DATETIME'01:15:45 PM 2008-10-31' ); | CREATE TABLE TESTTBL_4_DEFVAL ( <br />C1 INTEGER DEFAULT 123, <br />C2 VARCHAR (50) DEFAULT 'test', <br />C3 INTEGER, <br />C4 VARCHAR (100) DEFAULT USER_ID(), <br />C5 VARCHAR (100) DEFAULT USER_ID(), <br />C6 VARCHAR (100) DEFAULT ' ', <br />C7 DATE /\* DEFAULT '10/31/2008' \*/, <br />C8 DATE /\* DEFAULT '01:15:00 AM' \*/, <br />C9 DATE /\* DEFAULT '12:00:00 AM 10/31/2016' \*/, <br />C10 DATE /\* DEFAULT '01:15:45.000 PM 10/31/2008' \*/ ); |
 
 #### Altibase to Oracle 
 
-| Expression Type      | 원본(Altibase) | 대상(Oracle) | 특이 사항                          |
-|----------------------|----------------|--------------|------------------------------------|
-| 문자형을 위한 문자열 | ''             |              |                                    |
-| 함수                 | DB_TIMEZONE()  | DBTIMEZONE   | Altibase 6.3.1.0.0 이상에서 지원됨 |
-|                      | SYS_GUID_STR() | SYS_GUID()   | Altibase 6.3.1.0.0 이상에서 지원됨 |
-|                      | USER_ID()      | UID          |                                    |
-|                      | USER_NAME()    | USER         |                                    |
+<table>
+    <tr>        
+        <th>Expression Type</th> <th>원본(Altibase)</th><th>대상(Oracle)</th><th>특이사항</th>
+    </tr>
+    <tr>
+        <td>문자형을 위한 문자열</td><td>"</td><td></td><td></td>
+    </tr>
+    <tr>
+    <td rowspan="4">함수</td><td>DB_TIMEZONE()</td><td>DBTIMEZONE</td><td>Altibase 6.3.1.0.0 이상에서 지원됨</td>
+    </tr>
+    <tr>
+        <td >SYS_GUID_STR()</td><td>SYS_GUID()</td><td>Altibase 6.3.1.0.0 이상에서 지원됨</td>
+    </tr> 
+    <tr>
+        <td>USER_ID()</td><td>UID</td><td></td>
+    </tr>
+    <tr>
+        <td>USER_NAME()</td><td>USER</td><td></td>
+    </tr>
+</table>
 
 아래는 변환 예제이다.
 
 | Altibase의 테이블 생성 SQL문                                 | Oracle의 테이블 생성 SQL문                                   |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| CREATE TABLE testtbl_4_defval <br />( c1 INT DEFAULT 123, c2 VARCHAR(50) DEFAULT 'test', c3 INT DEFAULT NULL, c4 CHAR(10) DEFAULT '', c5 INT DEFAULT SQRT(144) + 72, c6 DATE DEFAULT TO_DATE('1999-12-01 PM', 'YYYY-MM-DD AM'), c7 VARCHAR(100) DEFAULT DB_TIMEZONE(), c8 VARCHAR(100) DEFAULT SYS_GUID_STR(), c9 VARCHAR(100) DEFAULT USER_ID(), c10 VARCHAR(100) DEFAULT USER_NAME() ); | CREATE TABLE TESTTBL_4_DEFVAL <br />( C1 NUMBER (10) DEFAULT 123 ,C2 VARCHAR2 (50) DEFAULT 'test' ,C3 NUMBER (10) ,C4 CHAR (10) ,C5 NUMBER (10) DEFAULT SQRT(144) + 72 ,C6 TIMESTAMP  DEFAULT TO_DATE('1999-12-01 PM', 'YYYY-MM-DD AM') ,C7 VARCHAR2 (100) DEFAULT DBTIMEZONE ,C8 VARCHAR2 (100) DEFAULT SYS_GUID() ,C9 VARCHAR2 (100) DEFAULT UID ,C10 VARCHAR2 (100) DEFAULT USER ); |
+| CREATE TABLE testtbl_4_defval <br />( c1 INT DEFAULT 123, <br />c2 VARCHAR(50) DEFAULT 'test', <br />c3 INT DEFAULT NULL, <br />c4 CHAR(10) DEFAULT '', <br />c5 INT DEFAULT SQRT(144) + 72, <br />c6 DATE DEFAULT TO_DATE('1999-12-01 PM', 'YYYY-MM-DD AM'), <br />c7 VARCHAR(100) DEFAULT DB_TIMEZONE(), <br />c8 VARCHAR(100) DEFAULT SYS_GUID_STR(), <br />c9 VARCHAR(100) DEFAULT USER_ID(), <br />c10 VARCHAR(100) DEFAULT USER_NAME() ); | CREATE TABLE TESTTBL_4_DEFVAL <br />( C1 NUMBER (10) DEFAULT 123 ,<br />C2 VARCHAR2 (50) DEFAULT 'test' ,<br />C3 NUMBER (10) ,<br />C4 CHAR (10) ,<br />C5 NUMBER (10) DEFAULT SQRT(144) + 72 ,<br />C6 TIMESTAMP  DEFAULT TO_DATE('1999-12-01 PM', 'YYYY-MM-DD AM') ,<br />C7 VARCHAR2 (100) DEFAULT DBTIMEZONE ,<br />C8 VARCHAR2 (100) DEFAULT SYS_GUID() ,<br />C9 VARCHAR2 (100) DEFAULT UID ,<br />C10 VARCHAR2 (100) DEFAULT USER ); |
 
 #### Tibero to Altibase
 
-| Expression Type      | 원본(Tibero) | 대상(Altibase)             | 특이 사항                          |
-|----------------------|--------------|----------------------------|------------------------------------|
-| 문자형을 위한 문자열 | ''           |                            |                                    |
-| 날짜형을 위한 문자열 | '97/04/21'   | /\* DEFAULT '97/04/21' \*/ |                                    |
-| 함수                 | DBTIMEZONE   | DB_TIMEZONE()              | Altibase 6.3.1.0.0 이상에서 지원됨 |
-|                      | SYS_GUID()   | SYS_GUID_STR()             | Altibase 6.3.1.0.0 이상에서 지원됨 |
-|                      | UID          | USER_ID()                  |                                    |
-|                      | USER         | USER_NAME()                |                                    |
+<table>
+    <tr>        
+        <th>Expression Type</th> <th>원본(Tibero)</th><th>대상(Altibase)</th><th>특이사항</th>
+    </tr>
+    <tr>
+        <td>문자형을 위한 문자열</td><td>"</td><td></td><td></td>
+    </tr>
+     <tr>
+        <td>날짜형을 위한 문자열</td><td>'97/04/21'</td><td>/* DEFAULT '97/04/21' */	</td><td></td>
+    </tr>
+    <tr>
+    <td rowspan="4">함수</td><td>DBTIMEZONE</td><td>DB_TIMEZONE()</td><td>Altibase 6.3.1.0.0 이상에서 지원됨</td>
+    </tr>
+    <tr>
+        <td >SYS_GUID_GUID()</td><td>SYS_GUID_STR()</td><td>Altibase 6.3.1.0.0 이상에서 지원됨</td>
+    </tr> 
+    <tr>
+        <td>UID</td><td>USER_ID()</td><td></td>
+    </tr>
+    <tr>
+        <td>USER</td><td>USER_NAME()</td><td></td>
+    </tr>
+</table>
 
 아래는 변환 예제이다.
 
 | Tibero의 테이블 생성 SQL문                                   | Altibase의 테이블 생성 SQL문                                 |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| CREATE TABLE testtbl_4_defval <br />( c1 INT DEFAULT 123, c2 VARCHAR(50) DEFAULT 'test', c3 INT DEFAULT NULL, c4 CHAR(10) DEFAULT '', c5 INT DEFAULT QRT(144) + 72, c6 DATE DEFAULT '97/04/21', c7 DATE DEFAULT TO_DATE('1999-12-01', 'YYYY-MM-DD'), c8 VARCHAR(100) DEFAULT DBTIMEZONE, c9 VARCHAR(100) DEFAULT SYS_GUID(), c10 VARCHAR(100) DEFAULT UID, c11 VARCHAR(100) DEFAULT USER ); | CREATE TABLE TESTTBL_4_DEFVAL <br />(  C1  NUMBER (38, 0)  DEFAULT 123,    C2  VARCHAR (50)    DEFAULT 'test',    C3  NUMBER (38, 0),    C4  CHAR (10),    C5  NUMBER (38, 0)  DEFAULT SQRT(144) + 72,    C6  DATE /\* DEFAULT '97/04/21' \*/,    C7  DATE            DEFAULT TO_DATE('1999-12-01', 'YYYY-MM-DD'),    C8  VARCHAR (100)   DEFAULT DB_TIMEZONE(),    C9  VARCHAR (100)   DEFAULT SYS_GUID_STR(),    C10 VARCHAR (100)   DEFAULT USER_ID(),    C11 VARCHAR (100)   DEFAULT USER_NAME() ); |
+| CREATE TABLE testtbl_4_defval( <br />c1 INT DEFAULT 123, <br />c2 VARCHAR(50) DEFAULT 'test', <br />c3 INT DEFAULT NULL, <br />c4 CHAR(10) DEFAULT '', <br />c5 INT DEFAULT QRT(144) + 72, <br />c6 DATE DEFAULT '97/04/21', <br />c7 DATE DEFAULT TO_DATE('1999-12-01', 'YYYY-MM-DD'), <br />c8 VARCHAR(100) DEFAULT DBTIMEZONE, <br />c9 VARCHAR(100) DEFAULT SYS_GUID(), <br />c10 VARCHAR(100) DEFAULT UID, <br />c11 VARCHAR(100) DEFAULT USER ); | CREATE TABLE TESTTBL_4_DEFVAL(  <br />C1  NUMBER (38, 0)  DEFAULT 123,    <br />C2  VARCHAR (50)    DEFAULT 'test',    <br />C3  NUMBER (38, 0),    <br />C4  CHAR (10),    <br />C5  NUMBER (38, 0)  DEFAULT SQRT(144) + 72,   <br />C6  DATE /\* DEFAULT '97/04/21' \*/,    <br />C7  DATE DEFAULT TO_DATE('1999-12-01', 'YYYY-MM-DD'),    <br />C8  VARCHAR (100)   DEFAULT DB_TIMEZONE(),    <br />C9  VARCHAR (100)   DEFAULT SYS_GUID_STR(),<br />C10 VARCHAR (100)   DEFAULT USER_ID(), <br />C11 VARCHAR (100)   DEFAULT USER_NAME() ); |
 
 
 
@@ -7987,9 +8101,7 @@ Windows 환경에서 마이그레이션 센터를 실행할 때 발생할 수 �
 등록 시 JDBC 드라이버 파일을 선택하던 중, 디렉토리를 변경하면 프로그램이 비정상
 종료되는 문제가 나타날 수 있다. JVM과 Windows 운영체제 사이의 커뮤니케이션
 문제로 인해 발생하는 Java JVM crash이다. 아래 링크를 통해, 오래된 버전의 JVM에서
-발생하는 Java crash 문제를 확인할 수 있다.
-
-<http://www.java.com/en/download/help/error_hotspot.xml>
+발생하는 Java crash 문제를 확인할 수 있다. <http://www.java.com/en/download/help/error_hotspot.xml>
 
 ##### 해결방법
 
