@@ -258,7 +258,7 @@ PSM 생성 DDL을 파싱할 수 없어 실패하게 된다.
 #### 설치 절차
 
 1. 아래 링크에서 자신의 시스템에 설치 가능한 SquirreL SQL Client를 다운받는다.  
-   [](http://squirrel-sql.sourceforge.net/#installation )
+   [http://squirrel-sql.sourceforge.net/#installation](http://squirrel-sql.sourceforge.net/#installation )
 
    [http://squirrel-sql.sourceforge.net/#installation]: http://squirrel-sql.sourceforge.net/#installation
 
