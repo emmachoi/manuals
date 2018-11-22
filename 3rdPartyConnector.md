@@ -563,10 +563,12 @@ upper_func      UPPER
 
 아래 그림과 같은 DIT(Directory Information Tree)를 RDBMS인 Altibase에 구축한다.
 
+![openldap_dit](media/3rdPartyConnector/openldap_dit.gif)
+
 root DN은 dc=example,dc=com이며, ldif (LDAP Data Interchange Files, 트리
 데이터를 텍스트로 표현한 파일)는 아래와 같다. root DN "dc=example,dc=com" 외에는
 샘플 파일을 참고하기 바란다. 샘플 파일은
-<https://github.com/ALTIBASE/openldap/tree/master/servers/slapd/back-sql/rdbms_depend/altibase>에
+<https://github.com/ALTIBASE/openldap/tree/master/servers/slapd/back-sql/rdbms_depend/altibase> 에
 있다.
 
 ```
