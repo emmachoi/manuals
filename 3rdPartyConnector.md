@@ -3,7 +3,7 @@ Altibase® Application Development
 Altibase 3rd Party Connector Guide
 ==================================
 
-![](media/3rdPartyConnector/3rdPartyConnector/e5cfb3761673686d093a3b00c062fe7a.png)
+![](media/3rdPartyConnector/e5cfb3761673686d093a3b00c062fe7a.png)
 
 
 
@@ -11,7 +11,7 @@ Altibase Application Development Altibase 3rd Party Connector Guide
 
 Release 7.1
 
-Copyright ⓒ 2001\~ 2018Altibase Corp. All Rights Reserved.
+Copyright ⓒ 2001\~ 2019 Altibase Corp. All Rights Reserved.
 
 본 문서의 저작권은 ㈜알티베이스에 있습니다. 이 문서에 대하여 당사의 동의
 없이 무단으로 복제 또는 전용할 수 없습니다.
@@ -91,16 +91,16 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 아래 테이블은 코드 예제에서 사용된 인쇄 규칙에 대해 설명한다.
 
-| 규칙         | 의미                                                                                | 예제                                                                                                         |
-|--------------|-------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
-| [ ]          | 선택 항목을 표시                                                                    | VARCHAR [(*size*)] [[FIXED \|] VARIABLE]                                                                     |
-| { }          | 필수 항목 표시. 반드시 하나 이상을 선택해야 되는 표시                               | { ENABLE \| DISABLE \| COMPILE }                                                                             |
-| \|           | 선택 또는 필수 항목 표시의 인자 구분 표시                                           | { ENABLE \| DISABLE \| COMPILE } [ ENABLE \| DISABLE \| COMPILE ]                                            |
-| . . .        | 그 이전 인자의 반복 표시 예제 코드들의 생략되는 것을 표시                           | SQL\> SELECT ename FROM employee; ENAME  ----------------------- SWNO  HJNO  HSCHOI  . . . 20 rows selected. |
-| 그 밖에 기호 | 위에서 보여진 기호 이 외에 기호들                                                   | EXEC :p1 := 1; acc NUMBER(11,2);                                                                             |
-| 기울임 꼴    | 구문 요소에서 사용자가 지정해야 하는 변수, 특수한 값을 제공해야만 하는 위치         | SELECT \* FROM *table_name*; CONNECT *userID*/*password*;                                                    |
-| 소문자       | 사용자가 제공하는 프로그램의 요소들, 예를 들어 테이블 이름, 칼럼 이름, 파일 이름 등 | SELECT ename FROM employee;                                                                                  |
-| 대문자       | 시스템에서 제공하는 요소들 또는 구문에 나타나는 키워드                              | DESC SYSTEM_.SYS_INDICES_;                                                                                   |
+| 규칙         | 의미                                                         | 예제                                                         |
+| ------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [ ]          | 선택 항목을 표시                                             | VARCHAR [(*size*)] [[FIXED \|] VARIABLE]                     |
+| { }          | 필수 항목 표시. 반드시 하나 이상을 선택해야 되는 표시        | { ENABLE \| DISABLE \| COMPILE }                             |
+| \|           | 선택 또는 필수 항목 표시의 인자 구분 표시                    | { ENABLE \| DISABLE \| COMPILE } [ ENABLE \| DISABLE \| COMPILE ] |
+| . . .        | 그 이전 인자의 반복 표시 예제 코드들의 생략되는 것을 표시    | SQL\> SELECT ename FROM employee; <br />ENAME  ----------------------- SWNO  HJNO  HSCHOI  . . . 20 rows selected. |
+| 그 밖에 기호 | 위에서 보여진 기호 이 외에 기호들                            | EXEC :p1 := 1; acc NUMBER(11,2);                             |
+| 기울임 꼴    | 구문 요소에서 사용자가 지정해야 하는 변수, 특수한 값을 제공해야만 하는 위치 | SELECT \* FROM *table_name*; CONNECT *userID*/*password*;    |
+| 소문자       | 사용자가 제공하는 프로그램의 요소들, 예를 들어 테이블 이름, 칼럼 이름, 파일 이름 등 | SELECT ename FROM employee;                                  |
+| 대문자       | 시스템에서 제공하는 요소들 또는 구문에 나타나는 키워드       | DESC SYSTEM_.SYS_INDICES_;                                   |
 
 #### 관련 자료
 
@@ -120,7 +120,7 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 이 매뉴얼에 대한 여러분의 의견을 보내주시기 바랍니다. 사용자의 의견은 다음
 버전의 매뉴얼을 작성하는데 많은 도움이 됩니다. 보내실 때에는 아래 내용과 함께
-고객서비스포털(*http://support.altibase.com/kr/*)로 보내주시기 바랍니다.
+고객서비스포털(http://support.altibase.com/kr/ )로 보내주시기 바랍니다.
 
 -   사용 중인 매뉴얼의 이름과 버전
 
@@ -134,6 +134,8 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 요청하시기 바랍니다.
 
 여러분의 의견에 항상 감사드립니다.
+
+
 
 
 
@@ -255,8 +257,10 @@ PSM 생성 DDL을 파싱할 수 없어 실패하게 된다.
 
 #### 설치 절차
 
-1.  아래 링크에서 자신의 시스템에 설치 가능한 SquirreL SQL Client를 다운받는다.  
-    http://squirrel-sql.sourceforge.net/\#installation
+1. 아래 링크에서 자신의 시스템에 설치 가능한 SquirreL SQL Client를 다운받는다.  
+   [](http://squirrel-sql.sourceforge.net/#installation )
+
+   [http://squirrel-sql.sourceforge.net/#installation]: http://squirrel-sql.sourceforge.net/#installation
 
 2.  다운로드 받은 "squirrel-sql-3.7.1-standard.jar"을 더블 클릭하여 설치를
     시작한다.
