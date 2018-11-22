@@ -260,10 +260,8 @@ PSM 생성 DDL을 파싱할 수 없어 실패하게 된다.
 1. 아래 링크에서 자신의 시스템에 설치 가능한 SquirreL SQL Client를 다운받는다.  
    [http://squirrel-sql.sourceforge.net/#installation](http://squirrel-sql.sourceforge.net/#installation )
 
-   [http://squirrel-sql.sourceforge.net/#installation]: http://squirrel-sql.sourceforge.net/#installation
-
-2.  다운로드 받은 "squirrel-sql-3.7.1-standard.jar"을 더블 클릭하여 설치를
-    시작한다.
+2. 다운로드 받은 "squirrel-sql-3.7.1-standard.jar"을 더블 클릭하여 설치를
+   시작한다.
 
 
 
@@ -279,8 +277,11 @@ PSM 생성 DDL을 파싱할 수 없어 실패하게 된다.
    시킨다.
 
 3. Add Driver 창의 Driver항목에 아래와 같이 입력한다.
+
+   ```
    Name: Altibase
-   Example URL:jdbc:Altibase://\<host\>:\<port\>/\<database\>
+   Example URL:jdbc:Altibase://<host>:<port>/<database>
+   ```
 
 4. 하단의 Extra Class Path 탭의 "Add" 버튼을 클릭하여 접속에 사용할 Altibase
    JDBC driver file을 선택한다.
@@ -368,7 +369,7 @@ AltibaseDialect.java파일과
 Altibase Github사이트에서 제공한다.
 
 상세한 사용 방법은 [AltibaseDialect 포팅방법](https://github.com/ALTIBASE/hibernate-orm/blob/master/ALTIBASE_DIALECT_PORTING.md)
-(https://github.com/ALTIBASE/hibernate-orm/blob/master/ALTIBASE_DIALECT_PORTING.md)을
+(https://github.com/ALTIBASE/hibernate-orm/blob/master/ALTIBASE_DIALECT_PORTING.md )을
 참고한다.
 
 
