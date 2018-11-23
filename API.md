@@ -677,8 +677,8 @@ DBI는 애플리케이션에서 동일한 인터페이스를 사용하여 여러
 
 #### Altibase PERL DBD 설치 절차
 
-1.  perl –V를 실행하여 dlext설정이 올바른지 확인한다. 이 때 HP는 sl, 다른
-    플랫폼은 so이어야 한다. 이 값이 잘못되었으면 다시 Perl을 설치한다.
+1. perl –V를 실행하여 dlext설정이 올바른지 확인한다. 이 때 HP는 sl, 다른
+   플랫폼은 so이어야 한다. 이 값이 잘못되었으면 다시 Perl을 설치한다.
 
 2. Perl DBI 설치  
    Perl DBD 컴파일하기 위한 선행 절차로 Perl DBI 패키지를 설치한다.
@@ -691,9 +691,7 @@ DBI는 애플리케이션에서 동일한 인터페이스를 사용하여 여러
 
    방법 2) 상기 방법으로 안될 경우, 아래 ftp사이트에서 DBI 패키지를 다운받아 컴파일한 후에 설치한다. 
 
-   [ftp://ftp.nuri.net/pub/CPAN/modules/by-module/DBI]: ftp://ftp.nuri.net/pub/CPAN/modules/by-module/DBI
-
-
+   [ftp://ftp.nuri.net/pub/CPAN/modules/by-module/DBI]: http://data.altibase.com/download_back/altibase/PERL-DBD/altibase-perlDBD.tar.gz
 
    ```
     2-1) perl Makefile.PL 
