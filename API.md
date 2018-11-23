@@ -940,7 +940,9 @@ xa_info는 null-terminated 문자열로, 서버 정보를 포함하며 최대 �
 XA_LOG_DIR 필드가 존재한다. 다른 필드에 대한 자세한 설명한 *CLI User's Manual*
 의 SQLDriverConnect 함수를 참조하기 바란다.
 
+```
 NAME=value;NAME=value;NAME=value;…
+```
 
 예) DSN=127.0.0.1;UID=SYS;PWD=MANAGER ;XA_NAME=conn1
 
@@ -1210,7 +1212,11 @@ DSN=127.0.0.1;UID=SYS;PWD=MANAGER
 
 그리고 SQL 구문에서는 다음 예제처럼 AT 절을 사용하지 않아도 된다.
 
+```
 EXEC SQL UPDATE emp SET empno = 5;
+```
+
+
 
 ###### 한 개 이상의 연결을 사용하기 위해 XA_NAME을 사용한 프로그램 작성 방법
 
@@ -1254,52 +1260,57 @@ Altibase.jdbc.driver.AltibaseXID
 사용자가 직접 사용하는 클래스는 AltibaseXADataSource이다. 나머지는 JTA
 인터페이스 클래스를 구현한 클래스로 사용자가 직접 사용할 필요는 없다.
 
-1.  AltibaseXADataSource 객체 생성
+1. AltibaseXADataSource 객체 생성
 
-```
-AltibaseXADataSource xaDataSource = new AltibaseXADataSource();
-xaDataSource.setUrl(args[0]);
-xaDataSource.setUser("SYS");
-xaDataSource.setPassword("MANAGER");
-```
+   ```
+   AltibaseXADataSource xaDataSource = new AltibaseXADataSource();
+   xaDataSource.setUrl(args[0]);
+   xaDataSource.setUser("SYS");
+   xaDataSource.setPassword("MANAGER");
+   ```
+
 
 2. XAConnection 객체 생성  
    XAConnection을 XADataSource 클래스의 getXAConnection 매소드를 호출하여
    생성한다.
 
-```
-XAConnection xaConnection = xaDataSource.getXAConnection(“SYS”, “MANAGER:”);
-```
+   ```
+   XAConnection xaConnection = xaDataSource.getXAConnection(“SYS”, “MANAGER:”);
+   ```
 
-XAResource 객체 생성  
-XAResource를 XAConnection 클래스의 getXAResource 매소드를 호출하여 생성한다.
+3. XAResource 객체 생성  
+   XAResource를 XAConnection 클래스의 getXAResource 매소드를 호출하여 생성한다.
 
-```
-XAResource xaResource = xaConnection.getXaResource();
-```
+   ```
+   XAResource xaResource = xaConnection.getXaResource();
+   ```
+
 
 4. Connection 객체 생성  
    SQL을 수행할 커넥션을 XAConnection 클래스의 getConnection 매소드를 호출하여
    생성한다.
 
-```
-Connection conn1 = xaConnection.getConnection();
-```
+   ```
+   Connection conn1 = xaConnection.getConnection();
+   ```
 
 5. XAResource 객체를 이용하여 XA 함수 실행  
    xa_start, xa_end 등의 XA 함수들은 XAResource 클래스의 매소드를 사용하여
    실행된다.
 
-```
-xaResource.start(AltibaseXID, XAResource.TMNOFLAGS);
-```
+   ```
+   xaResource.start(AltibaseXID, XAResource.TMNOFLAGS);
+   ```
 
 6. Connection 객체를 이용하여 SQL 구문 수행
 
-```
-Statement stmt = conn.createStatement();
-int cnt = stmt.executeUpdate("insert into t1 values (4321)");
-```
+   ```
+   Statement stmt = conn.createStatement();
+   int cnt = stmt.executeUpdate("insert into t1 values (4321)");
+   ```
+
+
+
 
 
 
@@ -1710,12 +1721,15 @@ Altibase.jdbc.driver 패키지에 XID 클래스로 존재한다.
 XA 관련 메소드는 에러가 발생할 때, ABXAException을 throw한다. ABXAException
 클래스는 javax.transaction.xa.XAException 클래스의 하위 클래스이다.
 
+
+
 #### 애플리케이션 서버에서 XA설정
 
 ##### WebLogic에서 XA 설정
 
 1.  웹로직 콘솔에서 Services -\> JDBC -\> Connection Pools에서 Configure a new
     JDBC Connection Pool을 선택한 후 JDBC 연결정보를 입력한다.
+
 
 | 구분             | NON-XA                              | XA                                        |
 |------------------|-------------------------------------|-------------------------------------------|
@@ -1725,13 +1739,16 @@ XA 관련 메소드는 에러가 발생할 때, ABXAException을 throw한다. AB
 
 [표 4‑4] NON-XA와 XA의 연결정보 비교
 
+
+
 ![image22](media/API/image22.jpeg)
 
 [그림 4‑7] JDBC 연결정보 입력
 
+
+
 2. 생성된 Connection Pool을 이용해서 DataSource를 만든다.  
-   Services-\>JDBC-\>Data Sources에서 Configure a new JDBC Data Source를
-   선택한다.  
+   Services-\>JDBC-\>Data Sources에서 Configure a new JDBC Data Source를 선택한다.  
    Name과 JNDI Name을 입력하고 “Honor Global Transactions”에 체크한다.  
    다음 페이지에서 PoolName에 앞서 만든 Pool의 이름을 입력한다. (weblogic 8.1)
    ([그림 6-7] 데이타 소스 생성 참조)  
