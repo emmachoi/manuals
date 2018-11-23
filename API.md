@@ -215,27 +215,25 @@ PHP로 Altibase에 연동을 하기 위해서는 먼저 ODBC 매니저를 설치
 리눅스 또는 유닉스 환경에서 다음 절차대로 ODBC 매니저를 설치한다.
 
 1.  unixODBC 다운로드한다.  
-    unixODBC 홈페이지 (http://www.unixodbc.org)에서 다운로드 할 수 있다.
+    unixODBC 홈페이지 (http://www.unixodbc.org )에서 다운로드 할 수 있다.
 
-2.  unixODBC 설치한다.  
-    다운로드한 unixODBC 소스 파일을 컴파일해야 한다. 컴파일된 라이브러리를 특정
-    위치에 설치하려면, configure할 때 –prefix 옵션으로 경로를 입력한다.
+2. unixODBC 설치한다.  
+   다운로드한 unixODBC 소스 파일을 컴파일해야 한다. 컴파일된 라이브러리를 특정
+   위치에 설치하려면, configure할 때 –prefix 옵션으로 경로를 입력한다.
 
-```
-./configure -prefix=설치경로 -enable-gui=no -–enable-drivers=no
-make
-make install
-```
-
+   ```
+   ./configure -prefix=설치경로 -enable-gui=no -–enable-drivers=no
+   make
+   make install
+   ```
 
 
 3. unixODBC 환경을 설정한다.  
    ODBCSYSINI 환경변수의 값을 Altibase 설치 계정의 홈 디렉터리 경로로 설정한다.
 
-```
-export ODBCSYSINI=\~
-```
-
+   ```
+   
+   ```
 
 
 4. unixODBC Driver Manager가 설치된 경로를 다음과 같이 환경변수에 추가한다.
@@ -244,29 +242,30 @@ export ODBCSYSINI=\~
    다음은 unixODBC를 /usr/local/odbcDriverManager32 또는
    /usr/local/odbcDriverManager64에 설치한 예이다.
 
-```
-export LD_LIBRARY_PATH= /usr/local/odbcDriverManager32/lib:\$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH_64= /usr/local/odbcDriverManager64/lib:\$LD_LIBRARY_PATH_64
-```
-
+   ```
+   export LD_LIBRARY_PATH= /usr/local/odbcDriverManager32/lib:\$LD_LIBRARY_PATH
+   export LD_LIBRARY_PATH_64= /usr/local/odbcDriverManager64/lib:\$LD_LIBRARY_PATH_64
+   ```
 
 
 5. ODBCSYSINI 환경변수의 경로에 다음 2개의 파일을 생성한다.  
+
+   ```
    odbc.ini  
    odbcinst.ini
+   ```
 
 6. odbcinst.ini는 실제 내용이 없는 0 byte 파일이다.
 
 7. odbc.ini에는 DSN 이름 및 Altibase ODBC 드라이버 파일의 위치, 서버의 IP 주소,
    접속 포트 번호를 아래처럼 설정한다.
 
-```
-[Altibase]
-Driver = /home/altibase/altibase_home/lib/libaltibase_odbc.so
-Server = 127.0.0.1
-Port = 20300
-```
-
+   ```
+   [Altibase]
+   Driver = /home/altibase/altibase_home/lib/libaltibase_odbc.so
+   Server = 127.0.0.1
+   Port = 20300
+   ```
 
 
 ### ODBC 연결을 위한 PHP 함수
