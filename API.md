@@ -232,7 +232,7 @@ PHP로 Altibase에 연동을 하기 위해서는 먼저 ODBC 매니저를 설치
    ODBCSYSINI 환경변수의 값을 Altibase 설치 계정의 홈 디렉터리 경로로 설정한다.
 
    ```
-   
+   export ODBCSYSINI=~
    ```
 
 
@@ -274,9 +274,7 @@ Altibase는 표준 ODBC를 지원함으로써 PHP에서 이 ODBC 함수들을 �
 서버와 연동할 수 있다.
 
 PHP에서 사용하는 ODBC 함수들에 대한 자세한 설명은 아래의 PHP 공식 매뉴얼
-사이트를 참조한다:
-
-http://php.morva.net/manual/kr/index.php
+사이트를 참조한다:  http://php.morva.net/manual/kr/index.php
 
 #### Sample Test
 
@@ -374,7 +372,6 @@ extension=pdo_altibase.so
 
 1.  pdo_altibase는 pdo_odbc와 동시에 사용할 수 없다. 두 extension을 모두 사용
     설정하면 예기치 않은 에러가 발생할 수 있다.
-
 2.  PDO 매뉴얼에 기술된 항목 중 아래 항목은 지원하지 않는다 :
 
 - PDO::lastInsertId
@@ -413,7 +410,7 @@ pdo_altibase의 DSN 구성은 다음과 같다.
 | DSN prefix | “altibase”                                                   |
 | Server     | 서버의 호스트 이름 또는 ip 주소                              |
 | Port       | 서버의 포트 번호                                             |
-| NLS_USE    | 캐릭터 셋. US7ASCII가 기본값이며, 환경변수 ALTIBASE_NLS_USE가 설정된 경우에는 지정된 값을 사용한다. |
+| NLS_USE    | 캐릭터 셋. <br />US7ASCII가 기본값이며, 환경변수 ALTIBASE_NLS_USE가 설정된 경우에는 지정된 값을 사용한다. |
 
 ##### 예제
 
@@ -429,8 +426,8 @@ PDO::getAttribute(), PDO::setAttribute() 함수에서 사용할 수 있는 속�
 | 속성 ID                       | 설명                                                         |
 | ----------------------------- | ------------------------------------------------------------ |
 | PDO::ALTIBASE_DATE_FORMAT     | DATE를 표현하는데 사용할 포맷.   사용예제, DATE 포맷 변경 참고. |
-| PDO::ALTIBASE_EXPLAIN_PL AN   | 수행 계획을 얻을지 여부와 그 방식.   PDO::ALTIBASE_EXPLAIN_PLAN_OFF   :     수행 계획을 얻지 않는다.   <br />PDO::ALTIBASE_EXPLAIN_PLAN_ON   :     Prepare 및 Execution 후 결정된 수행 계획을 얻는다.   PDO::ALTIBASE_EXPLAIN_PLAN_ONLY   :     Prepare 후 Execution 전에 결정된 수행 계획을 얻는다.   자세한 내용은 사용 예제>   수행계획 확인   을 참고하라. |
-| PDO::ALTIBASE_DEFER_PROTOCOLS | Prepare,   execute를 반복하여 호출하는 구조로 작성된 프로그램의 성능 향상을 위한 프로토콜 최적화 여부를 설정한다.   이 속성을 사용하기 위해서는, 하나의 커넥션 객체를 여러 쓰레드에서 공유해서 사용하지 않아야 한다.   또한 성능을 위해서는   prepare를 한번만 호출한 후, execute를 반복 호출하는 구조로 프로그램을   작성해야 한다.   <br />0 : 프로토콜   최적화하지 않음 (default)   <br />1 : execute   관련 프로토콜 최적화   <br />2 :   execute, close 관련 프로토콜 최적화  <br /> ex>   $db->setAttribute(PDO::ALTIBASE_DEFER_PROTOCOLS, 1); |
+| PDO::ALTIBASE_EXPLAIN_PL AN   | 수행 계획을 얻을지 여부와 그 방식.   PDO::ALTIBASE_EXPLAIN_PLAN_OFF : 수행 계획을 얻지 않는다.   <br />PDO::ALTIBASE_EXPLAIN_PLAN_ON : Prepare 및 Execution 후 결정된 수행 계획을 얻는다.   <br />PDO::ALTIBASE_EXPLAIN_PLAN_ONLY :  Prepare 후 Execution 전에 결정된 수행 계획을 얻는다.   <br />자세한 내용은 사용 예제>   수행계획 확인   을 참고하라. |
+| PDO::ALTIBASE_DEFER_PROTOCOLS | Prepare,   execute를 반복하여 호출하는 구조로 작성된 프로그램의 성능 향상을 위한 프로토콜 최적화 여부를 설정한다.   <br />이 속성을 사용하기 위해서는, 하나의 커넥션 객체를 여러 쓰레드에서 공유해서 사용하지 않아야 한다.   <br />또한 성능을 위해서는   prepare를 한번만 호출한 후, execute를 반복 호출하는 구조로 프로그램을   작성해야 한다.   <br />0 : 프로토콜   최적화하지 않음 (default)   <br />1 : execute   관련 프로토콜 최적화   <br />2 :   execute, close 관련 프로토콜 최적화  <br /><br /> ex>   $db->setAttribute(PDO::ALTIBASE_DEFER_PROTOCOLS, 1); |
 
 #### 파라미터 바인딩
 
@@ -470,8 +467,6 @@ BIT, VARBIT, BYTE, VARBYTE, NIBBLE, LOB, GEOMETRY 타입은 제한적으로 지�
 
 #### 연결 및 쿼리 수행
 
-##### 예제
-
 ```
 $db = new PDO("altibase:Server=127.0.0.1;Port=20333", "sys", "manager");
 foreach ($db->query("SELECT * FROM dual") as $row) {
@@ -484,8 +479,6 @@ foreach ($db->query("SELECT * FROM dual") as $row) {
 #### DATE 포맷 변경
 
 DATE를 위해 기본으로 어떤 문자열 포맷을 사용할 것인지 설정할 수 있다.
-
-##### 예제
 
 ```
 $db->setAttribute(PDO::ALTIBASE_DATE_FORMAT, "YYYY-MM-DD");
@@ -509,8 +502,6 @@ attr_dateform = YYYY-MM-DD
 #### 수행계획 확인
 
 PDO 객체의 setAttribute() 함수를 통해 수행 계획 출력 여부를 설정할 수 있다.
-
-##### 예제
 
 ```
 $attr_plan = $db->getAttribute(PDO::ALTIBASE_EXPLAIN_PLAN);
@@ -573,8 +564,6 @@ PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 3, COST: 0.01 )
 #### 커서 유지
 
 commit, rollback을 수행해도 fetch중인 커서를 유지해준다.
-
-##### 예제
 
 ```
 // HOLD를 쓰려면 AUTOCOMMIT 속성이 false여야 함
