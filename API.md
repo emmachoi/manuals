@@ -680,20 +680,26 @@ DBI는 애플리케이션에서 동일한 인터페이스를 사용하여 여러
 1.  perl –V를 실행하여 dlext설정이 올바른지 확인한다. 이 때 HP는 sl, 다른
     플랫폼은 so이어야 한다. 이 값이 잘못되었으면 다시 Perl을 설치한다.
 
-2.  Perl DBI 설치  
-    Perl DBD 컴파일하기 위한 선행 절차로 Perl DBI 패키지를 설치한다.
+2. Perl DBI 설치  
+   Perl DBD 컴파일하기 위한 선행 절차로 Perl DBI 패키지를 설치한다.
+   방법 1) root계정으로
 
-```
-방법 1) root계정으로
-# perl -MCPAN -e shell
-prompt> install DBI
-방법 2) 상기 방법으로 안될 경우, 아래 ftp사이트에서 DBI 패키지를 다운받아 컴파일한 후에 설치한다. 
-ftp://ftp.nuri.net/pub/CPAN/modules/by-module/DBI
- 2-1) perl Makefile.PL 
- 2-2) make
- 2-3) make install
-```
+   ```
+   # perl -MCPAN -e shell
+   prompt> install DBI
+   ```
 
+   방법 2) 상기 방법으로 안될 경우, 아래 ftp사이트에서 DBI 패키지를 다운받아 컴파일한 후에 설치한다. 
+
+   [ftp://ftp.nuri.net/pub/CPAN/modules/by-module/DBI]: ftp://ftp.nuri.net/pub/CPAN/modules/by-module/DBI
+
+
+
+   ```
+    2-1) perl Makefile.PL 
+    2-2) make
+    2-3) make install
+   ```
 
 
 3. 아래 위치에서 Altibase Perl DBD를 다운로드하고 설치한다. Altibase Perl DBD는
@@ -701,19 +707,17 @@ ftp://ftp.nuri.net/pub/CPAN/modules/by-module/DBI
    이미 설치되어 있어야하고, ALTIBASE_HOME 환경변수도 올바르게 설정되어 있어야
    한다. http://data.altibase.com/download_back/altibase/PERL-DBD/altibase-perlDBD.tar.gz
 
-```
-gzip –cd altibase-perlDBD.tar.gz \| tar –xvf -
-```
-
+   ```
+   gzip –cd altibase-perlDBD.tar.gz | tar –xvf -
+   ```
 
 
 4. 다운로드한 패키지 내의 install.mk를 사용해서 Altibase DBD를 생성하는 데
    필요한 Makefile을 생성한다.
 
-```
-make -f install.mk
-```
-
+   ```
+   make -f install.mk
+   ```
 
 
 5. 컴파일한다. Altibase Perl DBD는 shared library형태로 생성된다. HP 플랫폼에서는
@@ -728,10 +732,9 @@ make -f install.mk
 6. root 계정으로 make install을 실행한다. Altibase Perl DBD가 Perl 에 설치된다.  
    이 예제에서는 Altibase DBD는 아래 위치에 설치된다.
 
-```
-/opt/perl_5.8.8/bin/lib/site_perl/5.8.8/IA64.ARCHREV_0/auto/DBD/altibase
-```
-
+   ```
+   /opt/perl_5.8.8/bin/lib/site_perl/5.8.8/IA64.ARCHREV_0/auto/DBD/altibase
+   ```
 
 
 7. LD_PRELOAD환경변수를 설정한다.  
@@ -742,10 +745,9 @@ make -f install.mk
    Altibase 서버를 구동한 후, test.pl파일의 소스 코드를 아래와 같이 수정한 후에
    perl test.pl을 수행한다.
 
-```
-my $dbh = DBI->connect("dbi:altibase:DSN=127.0.0.1;UID=SYS;PWD=MANAGER;CONNTYPE=1;NLS_USE=US7ASCII;PORT_NO=20999", "", "", {'RaiseError' => 1});
-```
-
+   ```
+   my $dbh = DBI->connect("dbi:altibase:DSN=127.0.0.1;UID=SYS;PWD=MANAGER;CONNTYPE=1;NLS_USE=US7ASCII;PORT_NO=20999", "", "", {'RaiseError' => 1});
+   ```
 
 
 
