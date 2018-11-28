@@ -416,8 +416,8 @@ Execute success.
 
 ```
 RAISE_APPLICATION_ERROR (
-errcode INTEGER, 
-errmsg VARCHAR(2047) );
+	errcode INTEGER, 
+    errmsg VARCHAR(2047) );
 ```
 
 #### 파라미터
