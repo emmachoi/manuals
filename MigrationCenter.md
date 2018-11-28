@@ -11,7 +11,7 @@ Altibase Tools & Utilities Migration Center User's Manual
 
 Release 7.6
 
-Copyright ⓒ 2001\~2018 Altibase Corp. All Rights Reserved.
+Copyright ⓒ 2001\~2019 Altibase Corp. All Rights Reserved.
 
 본 문서의 저작권은 ㈜알티베이스에 있습니다. 이 문서에 대하여 당사의 동의 없이
 무단으로 복제 또는 전용할 수 없습니다.

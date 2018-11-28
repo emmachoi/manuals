@@ -15,7 +15,7 @@ Altibase Tools & Utilities Replication Manager User’s Manual
 
 Release 7.1
 
-Copyright ⓒ 2001~ 2018 Altibase Corp. All Rights Reserved.
+Copyright ⓒ 2001~ 2019 Altibase Corp. All Rights Reserved.
 
 본 문서의 저작권은 ㈜알티베이스에 있습니다. 이 문서에 대하여 당사의 동의없이
 무단으로 복제 또는 전용할 수 없습니다.
@@ -113,7 +113,7 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 이 매뉴얼에 대한 여러분의 의견을 보내주시기 바랍니다. 사용자의 의견은 다음
 버전의 매뉴얼을 작성하는데 많은 도움이 됩니다. 보내실 때에는 아래 내용과 함께
-고객서비스포털(http://support.altibase.com/kr/)로 보내주시기 바랍니다.
+고객서비스포털(http://support.altibase.com/kr/ )로 보내주시기 바랍니다.
 
 -   사용 중인 매뉴얼의 이름과 버전
 
@@ -218,7 +218,7 @@ http://www.eclipse.org/eclipse/development/readme_eclipse_3.6.2.html 이클립�
 Replication Manager는 아래와 같이 두 가지 방법으로 구할 수 있다.
 
 1.  Alitbase 구매 고객에게 제공되는 클라이언트 패키지에 포함되어 있다.
-2.  Altibase 고객 서비스 포털(http://support.altibase.com)의 다운로드에서 받을
+2.  Altibase 고객 서비스 포털(http://support.altibase.com )의 다운로드에서 받을
     수 있다.
 
 
