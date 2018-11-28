@@ -683,7 +683,6 @@ DBI는 애플리케이션에서 동일한 인터페이스를 사용하여 여러
 2. Perl DBI 설치  
    Perl DBD 컴파일하기 위한 선행 절차로 Perl DBI 패키지를 설치한다.
 
-
    방법 1) root계정으로
 
    ```
@@ -2274,11 +2273,12 @@ iLoader API를 사용해서 작성한 응용 프로그램의 빌드시 필요한
 \$ALTIBASE_HOME/lib 디렉터리에 존재한다. iLoader API 응용프로그램은 다음의
 라이브러리 파일을 반드시 링크해야 한다.
 
--   UNIX
+- UNIX
 
-```
-libiloader.a, libodbccli.a
-```
+  ```
+  libiloader.a, libodbccli.a
+  ```
+
 
 #### 샘플
 
@@ -2405,57 +2405,58 @@ iLoader API 는 iLoader 의 진행 상태를 로깅하는 데 사용하도록 �
 
 #### 옵션 구조체
 
--   ALTIBASE_ILOADER_OPTION_V1  
-    이 구조체의 대부분의 멤버는 iLoader 유틸리티의 옵션과 대응한다. 대응하는
-    옵션은 각 멤버에 주석을 달아놓았다. iLoader 옵션에 대한 자세한 설명은
-    *iLoader User’s Manual*을 참고하기 바란다.  
-    iloBool, iloLoadeMode, iloDirectMode 와 ALTIBASE_ILOADER_LOG_TYPE 열거형의
-    정의는 “iLoader API 열거형”을 참고한다.  이 구조체는 다음과 같이 정의되어 있다.
+- ALTIBASE_ILOADER_OPTION_V1  
+  이 구조체의 대부분의 멤버는 iLoader 유틸리티의 옵션과 대응한다. 대응하는
+  옵션은 각 멤버에 주석을 달아놓았다. iLoader 옵션에 대한 자세한 설명은
+  *iLoader User’s Manual*을 참고하기 바란다.  
+  iloBool, iloLoadeMode, iloDirectMode 와 ALTIBASE_ILOADER_LOG_TYPE 열거형의
+  정의는 “iLoader API 열거형”을 참고한다.  이 구조체는 다음과 같이 정의되어 있다.
 
-```
-typedef struct ALTIBASE_ILOADER_OPTIONS_V1
-{
-    int            version;
-    char           loginID[128 * 2];        /* -u login_id */
-    char           password[128];           /* -p password */
-    char           serverName[128];         /* -s server_name */
-    int            portNum;                 /* -port port_no */
-    char           NLS[128];                /* -nls_use characterset */
-    char           DBName[128];
-    char           tableOwner[50];
-    char           tableName[50];           /* -T table_name */
-    char           formFile[1024];          /* -f formatfile */
-    char           dataFile[32][1024];      /* -d datafile */
-    int            dataFileNum;
-    int            firstRow;                /* -F firstrow */
-    int            lastRow;                 /* -L lastrow */
-    char           fieldTerm[11];           /* -t field_term */
-    char           rowTerm[11];             /* -r row_term */
-    char           enclosingChar[11];       /* -e enclosing_term */
-    iloBool        useLobFile;              /* -lob use_lob_file */
-    iloBool        useSeparateFile;         /* -lob use_separate_file */
-    char           lobFileSize[11];         /* -lob log_file_size */
-    char           lobIndicator[11];        /* -lob lob_indicator*/
-    iloBool        replication;             /* -replication true/false */
-    iloLoadMode    loadModeType;            /* -mode mode_type */
-    char           bad[1024];               /* -bad bad_file */
-    char           log[1024];               /* -log log_file */
-    int            splitRowCount;           /* -split n */
-    int            errorCount;              /* -errors count */
-    int            arrayCount;              /* -array array_size */
-    int            commitUnit;              /* -commit commit_unit */
-    iloBool        atomic;                  /* -atomic */
-    iloDirectMode  directLog;               /* -direct log/nolog */
-    int            parallelCount;           /* -parallel count */
-    int            readSize;                /* -readSize size */
-    iloBool        informix;
-    iloBool        flock;
-    iloBool        mssql;
-    iloBool        getTotalRowCount;
-    int            setRowFrequency;
-} ALTIBASE_ILOADER_OPTIONS_V1;
+  ```
+  typedef struct ALTIBASE_ILOADER_OPTIONS_V1
+  {
+      int            version;
+      char           loginID[128 * 2];        /* -u login_id */
+      char           password[128];           /* -p password */
+      char           serverName[128];         /* -s server_name */
+      int            portNum;                 /* -port port_no */
+      char           NLS[128];                /* -nls_use characterset */
+      char           DBName[128];
+      char           tableOwner[50];
+      char           tableName[50];           /* -T table_name */
+      char           formFile[1024];          /* -f formatfile */
+      char           dataFile[32][1024];      /* -d datafile */
+      int            dataFileNum;
+      int            firstRow;                /* -F firstrow */
+      int            lastRow;                 /* -L lastrow */
+      char           fieldTerm[11];           /* -t field_term */
+      char           rowTerm[11];             /* -r row_term */
+      char           enclosingChar[11];       /* -e enclosing_term */
+      iloBool        useLobFile;              /* -lob use_lob_file */
+      iloBool        useSeparateFile;         /* -lob use_separate_file */
+      char           lobFileSize[11];         /* -lob log_file_size */
+      char           lobIndicator[11];        /* -lob lob_indicator*/
+      iloBool        replication;             /* -replication true/false */
+      iloLoadMode    loadModeType;            /* -mode mode_type */
+      char           bad[1024];               /* -bad bad_file */
+      char           log[1024];               /* -log log_file */
+      int            splitRowCount;           /* -split n */
+      int            errorCount;              /* -errors count */
+      int            arrayCount;              /* -array array_size */
+      int            commitUnit;              /* -commit commit_unit */
+      iloBool        atomic;                  /* -atomic */
+      iloDirectMode  directLog;               /* -direct log/nolog */
+      int            parallelCount;           /* -parallel count */
+      int            readSize;                /* -readSize size */
+      iloBool        informix;
+      iloBool        flock;
+      iloBool        mssql;
+      iloBool        getTotalRowCount;
+      int            setRowFrequency;
+  } ALTIBASE_ILOADER_OPTIONS_V1;
+  
+  ```
 
-```
 
 | 멤버             | 설명                                                         |
 | ---------------- | ------------------------------------------------------------ |
