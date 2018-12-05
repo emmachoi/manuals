@@ -34,7 +34,7 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 [이 매뉴얼에 대하여 ](#이-매뉴얼에-대하여)
 
-[**1. Log Analyzer 소개 ](#log-analyzer-소개)**
+[1. Log Analyzer 소개 ](#log-analyzer-소개)
 
 [    Log Analyzer ](#log-analyzer)
 
@@ -67,7 +67,6 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 - [ALA_DestroyAPI 56](#ala_destroyapi)
 - [ALA_EnableLogging 58](#ala_enablelogging)
-
 - [ALA_DisableLogging 61](#ala_disablelogging)
 
 - [ALA_CreateXLogCollector 63](#ala_createxlogcollector)
@@ -185,21 +184,16 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 이 매뉴얼은 다음과 같이 구성되어 있다.
 
--   제 1장 Log Analyzer 소개  
+-   제 1장 [Log Analyzer 소개](#Log-Analyzer-소개)  
     이 장에서는 Log Analyzer의 개념과 기본적인 사용 방법을 설명한다.
-
 -   제 2장 XLog Sender  
     이 장에서는 Log Analyzer의 구성요소 중에서 XLog Sender의 사용법을 설명한다.
-
 -   제 3장 XLog 분석  
     이 장에서는 XLog를 분석하기 위해 필요한 XLog, Meta 정보, Altibase Internal
     Data Type 등에 대해 설명한다.
-
 -   제 4장 Log Analysis API  
     이 장에서는 XLog Sender에서 XLog를 받고 이를 분석하는 함수를 제공한다.
-
 -   A. 부록 : Error Code
-
 -   B. 부록 : Sample Code
 
 #### 문서화 규칙
@@ -289,7 +283,7 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 여러분의 의견에 항상 감사드립니다.
 
-Log Analyzer 소개
+1.Log Analyzer 소개
 -----------------
 
 이 장에서는 Log Analyzer의 개념과 기본적인 사용 방법을 설명한다.
@@ -1015,7 +1009,7 @@ XLog Sender의 Transaction Table 정보를 가진다.
 
 로그 분석 진도에 대한 정보를 가진다.
 
-XLog 분석
+3.XLog 분석
 ---------
 
 이 장은 XLog를 분석하기 위해 필요한 XLog, Meta 정보, Altibase Internal Data Type
