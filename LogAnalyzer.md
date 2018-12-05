@@ -42,7 +42,7 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 [Log Analysis API 요약 ](#log-analysis-api-요약)
 
-###### [2. XLog Sender](#xlog-sender-1)
+#### [2. XLog Sender](#xlog-sender-1)
 
 ​	[XLog Sender를 위한 SQL구문 ](#xlog-sender를-위한-sql구문)
 
