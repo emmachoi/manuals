@@ -50,7 +50,7 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 ​	[성능 뷰 ](#성능-뷰)
 
-[3. XLog 분석 ](#xlog-분석)
+### [3. XLog 분석 ](#xlog-분석)
 
 ​	[XLog ](#xlog-1)
 
@@ -60,25 +60,23 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 ​	[SAVEPOINT ](#savepoint)
 
-[4. Log Analysis API 53](#log-analysis-api-1)
+## [4. Log Analysis API 53](#log-analysis-api-1)
 
-[ALA_InitializeAPI 54](#ala_initializeapi)
+- [ALA_InitializeAPI 54](#ala_initializeapi)
 
-[ALA_DestroyAPI 56](#ala_destroyapi)
+- [ALA_DestroyAPI 56](#ala_destroyapi)
+- [ALA_EnableLogging 58](#ala_enablelogging)
 
-[ALA_EnableLogging 58](#ala_enablelogging)
+- [ALA_DisableLogging 61](#ala_disablelogging)
 
-[ALA_DisableLogging 61](#ala_disablelogging)
+- [ALA_CreateXLogCollector 63](#ala_createxlogcollector)
+- [ALA_AddAuthInfo 67](#ala_addauthinfo)
 
-[ALA_CreateXLogCollector 63](#ala_createxlogcollector)
+- [ALA_RemoveAuthInfo 69](#ala_removeauthinfo)
 
-[ALA_AddAuthInfo 67](#ala_addauthinfo)
+- [ALA_SetHandshakeTimeout 71](#ala_sethandshaketimeout)
 
-[ALA_RemoveAuthInfo 69](#ala_removeauthinfo)
-
-[ALA_SetHandshakeTimeout 71](#ala_sethandshaketimeout)
-
-[ALA_SetReceiveXLogTimeout 73](#ala_setreceivexlogtimeout)
+- [ALA_SetReceiveXLogTimeout 73](#ala_setreceivexlogtimeout)
 
 [ALA_SetXLogPoolSize ](#ala_setxlogpoolsize)
 
