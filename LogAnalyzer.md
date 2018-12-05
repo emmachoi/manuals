@@ -34,7 +34,7 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 [이 매뉴얼에 대하여 ](#이-매뉴얼에-대하여)
 
-[1. Log Analyzer 소개 ](#log-analyzer-소개)
+[**1. Log Analyzer 소개 ](#log-analyzer-소개)**
 
 [    Log Analyzer ](#log-analyzer)
 
@@ -42,7 +42,7 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 [Log Analysis API 요약 ](#log-analysis-api-요약)
 
-[2. XLog Sender](#xlog-sender-1)
+###### [2. XLog Sender](#xlog-sender-1)
 
 ​	[XLog Sender를 위한 SQL구문 ](#xlog-sender를-위한-sql구문)
 
