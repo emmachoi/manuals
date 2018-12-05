@@ -30,119 +30,9 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 목 차
 -----
 
-[서문](#서문)
-
-[이 매뉴얼에 대하여 ](#이-매뉴얼에-대하여)
-
-[1. Log Analyzer 소개 ](#log-analyzer-소개)
-
-[    Log Analyzer ](#log-analyzer)
-
-​    [Log Analysis API 사용 방법 ](#log-analysis-api-사용-방법)
-
-[Log Analysis API 요약 ](#log-analysis-api-요약)
-
-#### [2. XLog Sender](#xlog-sender-1)
-
-​	[XLog Sender를 위한 SQL구문 ](#xlog-sender를-위한-sql구문)
-
-​	[메타 테이블 ](#메타-테이블)
-
-​	[성능 뷰 ](#성능-뷰)
-
-### [3. XLog 분석 ](#xlog-분석)
-
-- ​	[XLog ](#xlog-1)
-
-- ​	[메타 정보](#메타-정보)
-
-- ​	[Altibase 데이터 타입과 저장 구조체](#altibase-데이터-타입과-저장-구조체)
-
-- ​	[SAVEPOINT ](#savepoint)
 
 
-### [4. Log Analysis API 53](#log-analysis-api-1)
 
-- [ALA_InitializeAPI 54](#ala_initializeapi)
-
-- [ALA_DestroyAPI 56](#ala_destroyapi)
-- [ALA_EnableLogging 58](#ala_enablelogging)
-- [ALA_DisableLogging 61](#ala_disablelogging)
-
-- [ALA_CreateXLogCollector 63](#ala_createxlogcollector)
-- [ALA_AddAuthInfo 67](#ala_addauthinfo)
-
-- [ALA_RemoveAuthInfo 69](#ala_removeauthinfo)
-
-- [ALA_SetHandshakeTimeout 71](#ala_sethandshaketimeout)
-
-- [ALA_SetReceiveXLogTimeout 73](#ala_setreceivexlogtimeout)
-
-[ALA_SetXLogPoolSize ](#ala_setxlogpoolsize)
-
-[ALA_Handshake 78](#ala_handshake)
-
-[ALA_ReceiveXLog 81](#ala_receivexlog)
-
-[ALA_GetXLog 83](#ala_getxlog)
-
-[ALA_SendACK 85](#ala_sendack)
-
-[ALA_FreeXLog 87](#ala_freexlog)
-
-[ALA_DestroyXLogCollector 89](#ala_destroyxlogcollector)
-
-[ALA_GetXLogCollectorStatus 91](#ala_getxlogcollectorstatus)
-
-[ALA_GetXLogHeader 94](#ala_getxlogheader)
-
-[ALA_GetXLogPrimaryKey 96](#ala_getxlogprimarykey)
-
-[ALA_GetXLogColumn 98](#ala_getxlogcolumn)
-
-[ALA_GetXLogSavepoint 100](#ala_getxlogsavepoint)
-
-[ALA_GetXLogLOB 102](#ala_getxloglob)
-
-[ALA_GetProtocolVersion 104](#ala_getprotocolversion)
-
-[ALA_GetReplicationInfo 106](#ala_getreplicationinfo)
-
-[ALA_GetTableInfo 110](#ala_gettableinfo)
-
-[ALA_GetTableInfoByName 112](#ala_gettableinfobyname)
-
-[ALA_GetColumnInfo 114](#ala_getcolumninfo)
-
-[ALA_GetIndexInfo 116](#ala_getindexinfo)
-
-[ALA_IsHiddenColumn 118](#ala_ishiddencolumn)
-
-[ALA_GetInternalNumericInfo 121](#ala_getinternalnumericinfo)
-
-[ALA_GetAltibaseText 123](#ala_getaltibasetext)
-
-[ALA_GetAltibaseSQL 125](#ala_getaltibasesql)
-
-[ALA_GetODBCCValue 128](#ala_getodbccvalue)
-
-[ALA\_ IsNullValue 131](#ala_-isnullvalue)
-
-[ALA_ClearErrorMgr 133](#ala_clearerrormgr)
-
-[ALA_GetErrorCode 135](#ala_geterrorcode)
-
-​	[ALA_GetErrorLevel 137](#ala_geterrorlevel)
-
-​	[ALA_GetErrorMessage 139](#ala_geterrormessage)
-
-[A. 부록: Error Code 141](#부록a.-error-code)
-
-[Error Code 정리 142](#error-code-정리)
-
-[B. 부록: Sample Code ](#부록b.-sample-code)
-
-[Sample Code : Replication to DBMS](#sample-code-replication-to-dbms)
 
 서문
 ----
@@ -184,7 +74,7 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 이 매뉴얼은 다음과 같이 구성되어 있다.
 
--   제 1장 [Log Analyzer 소개](#Log-Analyzer-소개)  
+-   제 1장 Log Analyzer 소개 
     이 장에서는 Log Analyzer의 개념과 기본적인 사용 방법을 설명한다.
 -   제 2장 XLog Sender  
     이 장에서는 Log Analyzer의 구성요소 중에서 XLog Sender의 사용법을 설명한다.
@@ -212,17 +102,17 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 이 매뉴얼에서는 다음 구성 요소로 구축된 다이어그램을 사용하여, 명령문의 구문을
 설명한다.
 
-| 구성 요소                                | 의미                                                                                      |
-|------------------------------------------|-------------------------------------------------------------------------------------------|
-| [./media/image3.wmf](./media/image3.wmf) | 명령문이 시작한다. 완전한 명령문이 아닌 구문 요소는 화살표로 시작한다.                    |
-|                                          | 명령문이 다음 라인에 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 종료한다.       |
-|                                          | 명령문이 이전 라인으로부터 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 시작한다. |
-|                                          | 명령문이 종료한다.                                                                        |
-|                                          | 필수 항목                                                                                 |
-|                                          | 선택적 항목                                                                               |
-|                                          | 선택사항이 있는 필수 항목. 한 항목만 제공해야 한다.                                       |
-|                                          | 선택사항이 있는 선택적 항목                                                               |
-|                                          | 선택적 항목. 여러 항목이 허용된다. 각 반복 앞부분에 콤마가 와야 한다.                     |
+| 구성 요소                                                    | 의미                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image1](D:\emmachoigit\manuals\media\LogAnalyzer\image1.gif) | 명령문이 시작한다. 완전한 명령문이 아닌 구문 요소는 화살표로 시작한다. |
+| ![image2](D:\emmachoigit\manuals\media\LogAnalyzer\image2.gif) | 명령문이 다음 라인에 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 종료한다. |
+| ![image3](D:\emmachoigit\manuals\media\LogAnalyzer\image3.gif) | 명령문이 이전 라인으로부터 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 시작한다. |
+| ![image4](D:\emmachoigit\manuals\media\LogAnalyzer\image4.gif) | 명령문이 종료한다.                                           |
+| ![image5](D:\emmachoigit\manuals\media\LogAnalyzer\image5.gif) | 필수 항목                                                    |
+| ![image6](D:\emmachoigit\manuals\media\LogAnalyzer\image6.gif) | 선택적 항목                                                  |
+| ![image7](D:\emmachoigit\manuals\media\LogAnalyzer\image7.gif) | 선택사항이 있는 필수 항목. 한 항목만 제공해야 한다.          |
+| ![image8](D:\emmachoigit\manuals\media\LogAnalyzer\image8.gif) | 선택사항이 있는 선택적 항목                                  |
+| ![image9](D:\emmachoigit\manuals\media\LogAnalyzer\image9.gif) | 선택적 항목. 여러 항목이 허용된다. 각 반복 앞부분에 콤마가 와야 한다. |
 
 ##### 샘플 코드 규칙
 
@@ -268,7 +158,7 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 이 매뉴얼에 대한 여러분의 의견을 보내주시기 바랍니다. 사용자의 의견은 다음
 버전의 매뉴얼을 작성하는데 많은 도움이 됩니다. 보내실 때에는 아래 내용과 함께
-고객서비스포털(*http://support.altibase.com/kr/*)로 보내주시기 바랍니다.
+고객서비스포털(http://support.altibase.com/kr/ )로 보내주시기 바랍니다.
 
 -   사용 중인 매뉴얼의 이름과 버전
 
@@ -376,7 +266,7 @@ Manager생성시 지정한 로그 파일에 기록한다.
 
 전체 구조를 그림으로 나타내면 아래와 같다.
 
-![](media/b06cfb645f01745efa8b8d35557fccde.png)
+![](media/LOGANALYZER/b06cfb645f01745efa8b8d35557fccde.png)
 
 [그림 1‑1] Log Analyzer의 구조
 
@@ -401,7 +291,7 @@ XLog Collector 내에서 메타 정보와 XLog가 이동하는 경로는 아래�
 Meta 정보와 XLog가 XLog Collector에서 이동하는 경로를 그림으로 나타내면 아래와
 같다.
 
-![](media/0b0e8c634b989c6ec58768236143a6e3.png)
+![](media/LogAnalyzer/0b0e8c634b989c6ec58768236143a6e3.png)
 
 [그림 1‑2] XLog Collector의 구조
 
@@ -477,6 +367,60 @@ Replication에 대한 자세한 내용은 *Replication Manual*을 참고한다.
 XLog Sender의 사용 방법은 ‘XLog Sender’를 참고한다.
 
 #### 필요한 파일
+
+<table width="405">
+<tbody>
+<tr>
+<td width="65">
+<p>종류</p>
+</td>
+<td width="80">
+<p>파일명</p>
+</td>
+<td width="260">
+<p>설명</p>
+</td>
+</tr>
+<tr>
+<td rowspan="2" width="65">
+<p>Header</p>
+</td>
+<td width="80">
+<p>alaAPI.h</p>
+</td>
+<td width="260">
+<p>Log Analysis API를 사용해서 클라이언트 프로그램 작성시 include해야 하는 파일이며, alaTypes.h를 include한다.</p>
+</td>
+</tr>
+<tr>
+<td width="80">
+<p>alaTypes.h</p>
+</td>
+<td width="260">
+<p>Log Analysis API 사용해서 클라이언트 프로그램 작성시 필요한 Data Type과 매크로를 정의</p>
+</td>
+</tr>
+<tr>
+<td rowspan="2" width="65">
+<p>Library</p>
+</td>
+<td width="80">
+<p>libala_sl.x</p>
+</td>
+<td width="260">
+<p>Log Analysis API의 Shared Library</p>
+</td>
+</tr>
+<tr>
+<td width="80">
+<p>libala.x</p>
+</td>
+<td width="260">
+<p>Log Analysis API의 Static Library</p>
+</td>
+</tr>
+</tbody>
+</table>
 
 | 종류    | 파일명      | 설명                                                                                                        |
 |---------|-------------|-------------------------------------------------------------------------------------------------------------|
