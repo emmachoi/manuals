@@ -52,15 +52,16 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 ### [3. XLog 분석 ](#xlog-분석)
 
-​	[XLog ](#xlog-1)
+- ​	[XLog ](#xlog-1)
 
-​	[메타 정보](#메타-정보)
+- ​	[메타 정보](#메타-정보)
 
-​	[Altibase 데이터 타입과 저장 구조체](#altibase-데이터-타입과-저장-구조체)
+- ​	[Altibase 데이터 타입과 저장 구조체](#altibase-데이터-타입과-저장-구조체)
 
-​	[SAVEPOINT ](#savepoint)
+- ​	[SAVEPOINT ](#savepoint)
 
-## [4. Log Analysis API 53](#log-analysis-api-1)
+
+### [4. Log Analysis API 53](#log-analysis-api-1)
 
 - [ALA_InitializeAPI 54](#ala_initializeapi)
 
