@@ -368,66 +368,59 @@ XLog Sender의 사용 방법은 ‘XLog Sender’를 참고한다.
 
 #### 필요한 파일
 
-<table width="405">
+<table>
 <tbody>
 <tr>
-<td width="65">
+<td>
 <p>종류</p>
 </td>
-<td width="80">
+<td>
 <p>파일명</p>
 </td>
-<td width="260">
+<td>
 <p>설명</p>
 </td>
 </tr>
 <tr>
-<td rowspan="2" width="65">
+<td rowspan="2" >
 <p>Header</p>
 </td>
-<td width="80">
+<td >
 <p>alaAPI.h</p>
 </td>
-<td width="260">
+<td >
 <p>Log Analysis API를 사용해서 클라이언트 프로그램 작성시 include해야 하는 파일이며, alaTypes.h를 include한다.</p>
 </td>
 </tr>
 <tr>
-<td width="80">
+<td >
 <p>alaTypes.h</p>
 </td>
-<td width="260">
+<td >
 <p>Log Analysis API 사용해서 클라이언트 프로그램 작성시 필요한 Data Type과 매크로를 정의</p>
 </td>
 </tr>
 <tr>
-<td rowspan="2" width="65">
+<td rowspan="2">
 <p>Library</p>
 </td>
-<td width="80">
+<td >
 <p>libala_sl.x</p>
 </td>
-<td width="260">
+<td >
 <p>Log Analysis API의 Shared Library</p>
 </td>
 </tr>
 <tr>
-<td width="80">
+<td >
 <p>libala.x</p>
 </td>
-<td width="260">
+<td >
 <p>Log Analysis API의 Static Library</p>
 </td>
 </tr>
 </tbody>
 </table>
-
-| 종류    | 파일명      | 설명                                                                                                        |
-|---------|-------------|-------------------------------------------------------------------------------------------------------------|
-| Header  | alaAPI.h    | Log Analysis API를 사용해서 클라이언트 프로그램 작성시 include해야 하는 파일이며, alaTypes.h를 include한다. |
-|         | alaTypes.h  | Log Analysis API 사용해서 클라이언트 프로그램 작성시 필요한 Data Type과 매크로를 정의                       |
-| Library | libala_sl.x | Log Analysis API의 Shared Library                                                                           |
-|         | libala.x    | Log Analysis API의 Static Library                                                                           |
 
 [표 1‑1] Log Analysis API시 필요한 파일
 
