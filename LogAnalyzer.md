@@ -36,11 +36,11 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 [1. Log Analyzer 소개 ](#log-analyzer-소개)
 
-​	[Log Analyzer ](#log-analyzer)
+	[Log Analyzer ](#log-analyzer)
 
-​	[Log Analysis API 사용 방법 ](#log-analysis-api-사용-방법)
+    [Log Analysis API 사용 방법 ](#log-analysis-api-사용-방법)
 
-​	[Log Analysis API 요약 ](#log-analysis-api-요약)
+    [Log Analysis API 요약 ](#log-analysis-api-요약)
 
 [2. XLog Sender](#xlog-sender-1)
 
