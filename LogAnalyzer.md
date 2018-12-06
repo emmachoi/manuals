@@ -436,6 +436,117 @@ XLog Sender의 사용 방법은 ‘XLog Sender’를 참고한다.
 
 Log Analysis API에서 사용하는 기본적인 데이터 타입은 아래와 같다.
 
+<table>
+<tbody>
+<tr>
+<td >
+<p>종류</p>
+</td>
+<td>
+<p>데이터 타입</p>
+</td>
+<td>
+<p>설명</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>Boolean</p>
+</td>
+<td >
+<p>ALA_BOOL</p>
+</td>
+<td>
+<p>ALA_TRUE: 참</p>
+<p>ALA_FALSE: 거짓</p>
+</td>
+</tr>
+<tr>
+<td >
+<p>Return Code</p>
+</td>
+<td >
+<p>ALA_RC</p>
+</td>
+<td >
+<p>ALA_SUCCESS: 성공</p>
+<p>ALA_FAILURE: 실패</p>
+</td>
+</tr>
+<tr>
+<td  rowspan="2">
+<p>Character</p>
+</td>
+<td >
+<p>Char (SChar)</p>
+</td>
+<td >
+<p>Signed Character (8 bits)</p>
+</td>
+</tr>
+<tr >
+<td >
+<p>unsigned char (UChar)</p>
+</td>
+<td>
+<p>Unsigned Character (8 bits)</p>
+</td>
+</tr>
+<tr >
+<td  rowspan="6">
+<p>Integer</p>
+</td>
+<td>
+<p>Short (SShort)</p>
+</td>
+<td>
+<p>Signed Small Integer (16 bits)</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>unsigned short (UShort)</p>
+</td>
+<td >
+<p>Unsigned Small Integer (16 bits)</p>
+</td>
+</tr>
+<tr>
+<td >
+<p>Int (SInt)</p>
+</td>
+<td>
+<p>Signed Integer (32 bits)</p>
+</td>
+</tr>
+<tr >
+<td >
+<p>unsigned Int (UInt)</p>
+</td>
+<td>
+<p>Unsigned Integer (32 bits)</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>Long (SLong)</p>
+</td>
+<td>
+<p>Signed Big Integer (64 bits)</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>unsigned long (ULong)</p>
+</td>
+<td>
+<p>Unsigned Big Integer (64 bits)</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+
 | 종류        | 데이터 타입             | 설명                                |
 |-------------|-------------------------|-------------------------------------|
 | Boolean     | ALA_BOOL                | ALA_TRUE: 참 ALA_FALSE: 거짓        |
