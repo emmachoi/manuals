@@ -545,21 +545,6 @@ Log Analysis API에서 사용하는 기본적인 데이터 타입은 아래와 �
 </tr>
 </tbody>
 </table>
-
-
-| 종류        | 데이터 타입             | 설명                                |
-|-------------|-------------------------|-------------------------------------|
-| Boolean     | ALA_BOOL                | ALA_TRUE: 참 ALA_FALSE: 거짓        |
-| Return Code | ALA_RC                  | ALA_SUCCESS: 성공 ALA_FAILURE: 실패 |
-| Character   | Char (SChar)            | Signed Character (8 bits)           |
-|             | unsigned char (UChar)   | Unsigned Character (8 bits)         |
-| Integer     | Short (SShort)          | Signed Small Integer (16 bits)      |
-|             | unsigned short (UShort) | Unsigned Small Integer (16 bits)    |
-|             | Int (SInt)              | Signed Integer (32 bits)            |
-|             | unsigned Int (UInt)     | Unsigned Integer (32 bits)          |
-|             | Long (SLong)            | Signed Big Integer (64 bits)        |
-|             | unsigned long (ULong)   | Unsigned Big Integer (64 bits)      |
-
 [표 1‑2] Log Analysis API의 기본 데이터 타입
 
 #### Error Handling
