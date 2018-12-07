@@ -555,17 +555,14 @@ API 호출 결과가 ALA_FAILURE인 경우, 오류 발생 원인을 확인해서
 
 오류 관리자 구조체는 다음과 같다.
 
+```
 typedef struct ALA_ErrorMgr
-
 {
-
-UInt mErrorCode; /\* CODE \*/
-
-SChar mErrorState[6]; /\* STATE \*/
-
-SChar mErrorMessage[ALA_MAX_ERROR_MSG_LEN+256];
-
+    UInt    mErrorCode;     /* CODE  */
+    SChar  mErrorState[6];   /* STATE */
+    SChar  mErrorMessage[ALA_MAX_ERROR_MSG_LEN+256];
 } ALA_ErrorMgr;
+```
 
 오류 관리자를 사용할 때의 주의사항은 아래와 같다.
 
@@ -585,17 +582,14 @@ SChar mErrorMessage[ALA_MAX_ERROR_MSG_LEN+256];
 
 ALA_ErrorLevel는 ALA_GetErrorLevel()로 얻을 수 있으며, 오류 수준을 나타낸다.
 
+```
 typedef enum
-
 {
-
-ALA_ERROR_FATAL = 0, /\* Need to Destroy \*/
-
-ALA_ERROR_ABORT, /\* Need to Handshake \*/
-
-ALA_ERROR_INFO /\* Information \*/
-
+    ALA_ERROR_FATAL = 0,    /* Need to Destroy */
+    ALA_ERROR_ABORT,        /* Need to Handshake */
+    ALA_ERROR_INFO          /* Information */
 } ALA_ErrorLevel;
+```
 
 각 오류 수준에 대한 조치 방법은 아래와 같다.
 
@@ -616,6 +610,8 @@ Log Manager에 대한 상세한 사용법은 ALA_EnableLogging()와 ALA_DisableL
 #### 기본 사용법
 
 아래의 다이어그램은 Log Analysis API를 사용할 때의 순서를 도식화한 것이다.
+
+![basic_use_kor](D:\emmachoigit\manuals\media\LogAnalyzer\basic_use_kor.gif)
 
 Log Analysis API를 사용 시, 아래의 사항을 주의해야 한다.
 
@@ -644,29 +640,145 @@ Log Analysis API를 사용 시, 아래의 사항을 주의해야 한다.
 
 #### Log Analysis API 환경 관리
 
-| 종 류                              | Log Analysis API   | 설 명                                              |
-|------------------------------------|--------------------|----------------------------------------------------|
-| Log Analysis API 환경 생성 및 제거 | ALA_InitializeAPI  | Log Analysis API를 호출할 수 있는 환경을 생성한다. |
-|                                    | ALA_DestroyAPI     | Log Analysis API를 호출할 수 있는 환경을 제거한다. |
-| Logging                            | ALA_EnableLogging  | Problem Tracking을 위해 Logging을 활성화한다.      |
-|                                    | ALA_DisableLogging | Logging을 비활성화한다.                            |
+<table>
+    <TR>
+        <TH>종류</TH><TH>Log Analysis API</TH><TH>설명</TH>
+    </TR>
+    <TR>
+        <TD rowspan="2">Log Analysis API 환경 생성 및 제거</TD>
+       		<td>ALA_InitializeAPI</td><td>Log Analysis API를 호출할 수 있는 환경을 생성한다.</td></tr>
+    <tr><td>ALA_DestroyAPI</td><td>Log Analysis API를 호출할 수 있는 환경을 제거한다.</td></tr>
+    <tr>
+        <td rowspan="2">Logging</td><td>ALA_EnableLogging</td><td>Problem Tracking을 위해 Logging을 활성화한다.</td>
+    </tr>
+    <tr>
+        <td>ALA_DisableLogging</td><td>Logging을 비활성화한다.</td>
+    </tr>
+</table>
+
+​            
 
 #### XLog Collector 관련 API
 
-| 종 류                       | Log Analysis API           | 설 명                                                |
-|-----------------------------|----------------------------|------------------------------------------------------|
-| XLog Collector 생성 및 준비 | ALA_CreateXLogCollector    | XLog Sender에 대응하는 XLog Collector를 생성한다.    |
-|                             | ALA_AddAuthInfo            | XLog Sender 인증 정보를 추가한다.                    |
-|                             | ALA_RemoveAuthInfo         | XLog Sender 인증 정보를 제거한다.                    |
-|                             | ALA_SetHandshakeTimeout    | Handshake의 Timeout을 지정한다.                      |
-|                             | ALA_SetReceiveXLogTimeout  | XLog 수신 Timeout을 지정한다.                        |
-| Meta 정보와 XLog 수신       | ALA_Handshake              | XLog Sender의 접속을 대기하고, Handshake를 수행한다. |
-|                             | ALA_ReceiveXLog            | XLog를 수신하여 XLog Queue에 XLog를 추가한다.        |
-|                             | ALA_GetXLog                | XLog Queue에서 XLog를 얻는다.                        |
-|                             | ALA_SendACK                | ACK를 XLog Sender에게 전송한다.                      |
-|                             | ALA_FreeXLog               | XLog를 XLog Pool에 반환한다.                         |
-| XLog Collector 제거         | ALA_DestroyXLogCollector   | XLog Collector를 제거한다.                           |
-| XLog Collector Monitoring   | ALA_GetXLogCollectorStatus | XLog Collector의 상태를 얻는다.                      |
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>Log Analysis API</th>
+<th>설명</th>
+</tr>
+<tr>
+<td rowspan="5">
+<p>XLog Collector 생성 및 준비</p>
+</td>
+<td>
+<p>ALA_CreateXLogCollector</p>
+</td>
+<td>
+<p>XLog Sender에 대응하는 XLog Collector를 생성한다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>ALA_AddAuthInfo</p>
+</td>
+<td>
+<p>XLog Sender 인증 정보를 추가한다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>ALA_RemoveAuthInfo</p>
+</td>
+<td>
+<p>XLog Sender 인증 정보를 제거한다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>ALA_SetHandshakeTimeout</p>
+</td>
+<td>
+<p>Handshake의 Timeout을 지정한다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>ALA_SetReceiveXLogTimeout</p>
+</td>
+<td>
+<p>XLog 수신 Timeout을 지정한다.</p>
+</td>
+</tr>
+<tr>
+<td rowspan="5">
+<p>Meta 정보와 XLog 수신</p>
+</td>
+<td>
+<p>ALA_Handshake</p>
+</td>
+<td>
+<p>XLog Sender의 접속을 대기하고, Handshake를 수행한다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>ALA_ReceiveXLog</p>
+</td>
+<td>
+<p>XLog를 수신하여 XLog Queue에 XLog를 추가한다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>ALA_GetXLog</p>
+</td>
+<td>
+<p>XLog Queue에서 XLog를 얻는다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>ALA_SendACK</p>
+</td>
+<td>
+<p>ACK를 XLog Sender에게 전송한다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>ALA_FreeXLog</p>
+</td>
+<td>
+<p>XLog를 XLog Pool에 반환한다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>XLog Collector 제거</p>
+</td>
+<td>
+<p>ALA_DestroyXLogCollector</p>
+</td>
+<td>
+<p>XLog Collector를 제거한다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>XLog Collector Monitoring</p>
+</td>
+<td>
+<p>ALA_GetXLogCollectorStatus</p>
+</td>
+<td>
+<p>XLog Collector의 상태를 얻는다.</p>
+</td>
+</tr>
+</thead>
+</table>
+
+
 
 #### XLog Analysis & Conversion API
 
