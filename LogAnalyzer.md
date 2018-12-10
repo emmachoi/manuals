@@ -782,33 +782,198 @@ Log Analysis API를 사용 시, 아래의 사항을 주의해야 한다.
 
 #### XLog Analysis & Conversion API
 
-| 종 류                       | Log Analysis API           | 설 명                                                      |
-|-----------------------------|----------------------------|------------------------------------------------------------|
-| XLog                        | ALA_GetXLogHeader          | XLog에서 Header 정보를 얻는다.                             |
-|                             | ALA_GetXLogPrimaryKey      | XLog에서 Primary Key 컬럼에 해당하는 데이터를 얻는다.      |
-|                             | ALA_GetXLogColumn          | XLog에서 Column 데이터 (before and after)를 얻는다.        |
-|                             | ALA_GetXLogSavepoint       | XLog에서 Savepoint 정보를 얻는다.                          |
-|                             | ALA_GetXLogLOB             | XLog에서 LOB 데이터를 얻는다.                              |
-| Meta 정보                   | ALA_GetProtocolVersion     | Log Analysis API의 Protocol Version을 얻는다.              |
-|                             | ALA_GetReplicationInfo     | Replication 정보를 얻는다.                                 |
-|                             | ALA_GetTableInfo           | Table OID로 Table 정보를 검색한다.                         |
-|                             | ALA_GetTableInfoByName     | Table 이름과 테이블 소유자 이름으로 Table 정보를 검색한다. |
-|                             | ALA_GetColumnInfo          | Column ID로 Table에서 Column 정보를 검색한다.              |
-|                             | ALA_GetIndexInfo           | Index ID로 Table에서 Index 정보를 검색한다.                |
-|                             | ALA_IsHiddenColumn         | Column ID로 검색한 컬럼이 숨겨진 것인지 여부를 알아낸다.   |
-| Altibase Internal Data Type | ALA_GetInternalNumericInfo | FLOAT, NUMERIC 데이터의 부호와 지수를 얻는다.              |
-|                             | ALA_GetAltibaseText        | Altibase 내부 데이터를 문자열로 변환한다.                  |
-|                             | ALA_GetAltibaseSQL         | Transaction 관련 XLog를 Altibase SQL 문자열로 변환한다.    |
-| ODBC C Conversion           | ALA_GetODBCCValue          | Altibase 내부 데이터를 ODBC C 의 데이터 타입으로 변환한다. |
+<table>
+<tbody>
+<tr>
+    <th>종류</th> <th>Log Analysis API</th> <th>설명</th>
+</tr>
+<tr>
+<td rowspan="5">
+<p>XLog</p>
+</td>
+<td >
+<p>ALA_GetXLogHeader</p>
+</td>
+<td>
+<p>XLog에서 Header 정보를 얻는다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>ALA_GetXLogPrimaryKey</p>
+</td>
+<td>
+<p>XLog에서 Primary Key 컬럼에 해당하는 데이터를 얻는다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>ALA_GetXLogColumn</p>
+</td>
+<td>
+<p>XLog에서 Column 데이터 (before and after)를 얻는다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>ALA_GetXLogSavepoint</p>
+</td>
+<td>
+<p>XLog에서 Savepoint 정보를 얻는다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>ALA_GetXLogLOB</p>
+</td>
+<td>
+<p>XLog에서 LOB 데이터를 얻는다.</p>
+</td>
+</tr>
+<tr>
+<td rowspan="7">
+<p>Meta 정보</p>
+</td>
+<td >
+<p>ALA_GetProtocolVersion</p>
+</td>
+<td >
+<p>Log Analysis API의 Protocol Version을 얻는다.</p>
+</td>
+</tr>
+<tr>
+<td >
+<p>ALA_GetReplicationInfo</p>
+</td>
+<td >
+<p>Replication 정보를 얻는다.</p>
+</td>
+</tr>
+<tr>
+<td >
+<p>ALA_GetTableInfo</p>
+</td>
+<td >
+<p>Table OID로 Table 정보를 검색한다.</p>
+</td>
+</tr>
+<tr>
+<td >
+<p>ALA_GetTableInfoByName</p>
+</td>
+<td >
+<p>Table 이름과 테이블 소유자 이름으로 Table 정보를 검색한다.</p>
+</td>
+</tr>
+<tr>
+<td >
+<p>ALA_GetColumnInfo</p>
+</td>
+<td >
+<p>Column ID로 Table에서 Column 정보를 검색한다.</p>
+</td>
+</tr>
+<tr>
+<td >
+<p>ALA_GetIndexInfo</p>
+</td>
+<td>
+<p>Index ID로 Table에서 Index 정보를 검색한다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>ALA_IsHiddenColumn</p>
+</td>
+<td>
+<p>Column ID로 검색한 컬럼이 숨겨진 것인지 여부를 알아낸다.</p>
+</td>
+</tr>
+<tr>
+<td rowspan="3">
+<p>Altibase Internal Data Type</p>
+</td>
+<td>
+<p>ALA_GetInternalNumericInfo</p>
+</td>
+<td>
+<p>FLOAT, NUMERIC 데이터의 부호와 지수를 얻는다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>ALA_GetAltibaseText</p>
+</td>
+<td>
+<p>Altibase 내부 데이터를 문자열로 변환한다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>ALA_GetAltibaseSQL</p>
+</td>
+<td>
+<p>Transaction 관련 XLog를 Altibase SQL 문자열로 변환한다.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>ODBC C Conversion</p>
+</td>
+<td>
+<p>ALA_GetODBCCValue</p>
+</td>
+<td>
+<p>Altibase 내부 데이터를 ODBC C 의 데이터 타입으로 변환한다.</p>
+</td>
+</tr>
+</tbody>
+</table>
 
 #### Error Handling API
 
-| 종 류          | Log Analysis API    | 설 명                            |
-|----------------|---------------------|----------------------------------|
-| Error Handling | ALA_ClearErrorMgr   | 오류 관리자를 초기화한다.        |
-|                | ALA_GetErrorCode    | Error Code를 얻는다.             |
-|                | ALA_GetErrorLevel   | Error Level을 얻는다.            |
-|                | ALA_GetErrorMessage | 구체적인 Error Message를 얻는다. |
+<table width="510">
+<tbody>
+<tr>
+    <th>종류 </th><th>Log Analysis API</th><th>설명</th>
+</tr>
+<tr>
+<td rowspan="4" width="77">
+<p>Error Handling</p>
+</td>
+<td width="153">
+<p>ALA_ClearErrorMgr</p>
+</td>
+<td width="280">
+<p>오류 관리자를 초기화한다.</p>
+</td>
+</tr>
+<tr>
+<td width="153">
+<p>ALA_GetErrorCode</p>
+</td>
+<td width="280">
+<p>Error Code를 얻는다.</p>
+</td>
+</tr>
+<tr>
+<td width="153">
+<p>ALA_GetErrorLevel</p>
+</td>
+<td width="280">
+<p>Error Level을 얻는다.</p>
+</td>
+</tr>
+<tr>
+<td width="153">
+<p>ALA_GetErrorMessage</p>
+</td>
+<td width="280">
+<p>구체적인 Error Message를 얻는다.</p>
+</td>
+</tr>
+</tbody>
+</table>
 
 XLog Sender
 -----------
@@ -825,13 +990,16 @@ Interface로 관리한다.
 
 ##### 구 문
 
-CREATE REPLICATION *replication_name* FOR ANALYSIS [PROPAGATION]  
-WITH {{'*remote_host_ip*', *remote_host\_ port_no*}  
-...  
-\|UNIX_DOMAIN}  
-FROM *user_name.table_name* TO *user_name.table_name*
+```
+CREATE REPLICATION replication_name FOR ANALYSIS [PROPAGATION]
+   WITH {{'remote_host_ip', remote_host_ port_no}
+   ...
+   |UNIX_DOMAIN}
+   FROM user_name.table_name TO user_name.table_name
+   [, FROM user_name.table_name TO user_name.table_name] ... ;
+```
 
-[, FROM *user_name.table_name* TO *user_name.table_name*] ... ;
+
 
 ##### 설 명
 
@@ -865,15 +1033,23 @@ PORT는 XLog Collector에서 정의한 PORT 번호
 
 분석 대상 Table: sys.t1
 
-iSQL\> CREATE REPLICATION log_analysis FOR ANALYSIS  
-WITH '127.0.0.1', 35300  
-FROM sys.t1 TO sys.t1;
+```
+iSQL> CREATE REPLICATION log_analysis FOR ANALYSIS 
+      WITH '127.0.0.1', 35300
+      FROM sys.t1 TO sys.t1;
+```
+
+
 
 #### XLog Sender 제거
 
 ##### 구 문
 
-DROP REPLICATION *replication_name*;
+```
+DROP REPLICATION replication_name;
+```
+
+
 
 ##### 설 명
 
@@ -885,14 +1061,21 @@ Replication과 동일하다.
 
 log_analysis라는 이름의 XLog Sender를 제거한다.
 
-iSQL\> DROP REPLICATION log_analysis;
+```
+iSQL> DROP REPLICATION log_analysis;
+```
+
+
 
 #### XLog Sender 시작
 
 ##### 구 문
 
-ALTER REPLICATION *replication_name* {START [AT SN
-(*xlog_sender_start_sn*)]\|QUICKSTART};
+```
+ALTER REPLICATION replication_name {START [AT SN (xlog_sender_start_sn)]|QUICKSTART};
+```
+
+
 
 ##### 설 명
 
@@ -930,13 +1113,21 @@ AT SN 절과 함께 XLog Sender를 시작하려면, 다음의 조건을 만족�
 
 log_analysis라는 이름의 XLog Sender를 마지막으로 종료한 위치부터 시작한다.
 
-iSQL\> ALTER REPLICATION log_analysis START;
+```
+iSQL> ALTER REPLICATION log_analysis START;
+```
+
+
 
 #### XLog Sender 종료
 
 ##### 구 문
 
-ALTER REPLICATION *replication_name* STOP;
+```
+ALTER REPLICATION replication_name STOP;
+```
+
+
 
 ##### 설 명
 
@@ -948,14 +1139,20 @@ Replication과 동일하다.
 
 log_analysis라는 이름의 XLog Sender를 중지한다.
 
-iSQL\> ALTER REPLICATION log_analysis STOP;
+```
+iSQL> ALTER REPLICATION log_analysis STOP;
+```
 
 #### 분석 대상 Table 추가
 
 ##### 구 문
 
-ALTER REPLICATION *replication_name* ADD TABLE  
-FROM *user_name.table_name* TO *user_name.table_name*;
+```
+ALTER REPLICATION replication_name ADD TABLE
+FROM user_name.table_name TO user_name.table_name;
+```
+
+
 
 ##### 설 명
 
@@ -973,15 +1170,23 @@ XLog Sender 이름: log_analysis
 
 분석 대상 리스트에 추가할 Table: sys.t2
 
-iSQL\> ALTER REPLICATION log_analysis ADD TABLE  
-FROM sys.t2 TO sys.t2;
+```
+iSQL> ALTER REPLICATION log_analysis ADD TABLE  
+    FROM sys.t2 TO sys.t2;
+```
+
+
 
 #### 분석 대상 Table 제거
 
 ##### 구 문
 
-ALTER REPLICATION replication_name DROP TABLE  
-FROM user_name.table_name TO user_name.table_name;
+```
+ALTER REPLICATION replication_name DROP TABLE
+   FROM user_name.table_name TO user_name.table_name;
+```
+
+
 
 ##### 설 명
 
@@ -995,15 +1200,23 @@ XLog Sender 이름: log_analysis
 
 분석 대상 리스트에서 제거할 Table: sys.t2
 
-iSQL\> ALTER REPLICATION log_analysis DROP TABLE  
-FROM sys.t2 TO sys.t2;
+```
+iSQL> ALTER REPLICATION log_analysis DROP TABLE
+   FROM sys.t2 TO sys.t2;
+```
+
+
 
 #### 호스트 추가
 
 ##### 구 문
 
+```
 ALTER REPLICATION replication_name  
-ADD HOST 'remote_host_ip', remote_port_no;
+      ADD HOST 'remote_host_ip', remote_port_no;
+```
+
+
 
 ##### 설 명
 
@@ -1023,15 +1236,22 @@ XLog Sender 이름: log_analysis
 
 XLog Collector 정보: TCP(IP : 127.0.0.1, PORT : 30301)
 
-iSQL\> ALTER REPLICATION log_analysis  
-ADD HOST '127.0.0.1', 30301;
+```
+iSQL> ALTER REPLICATION log_analysis ADD HOST '127.0.0.1', 30301;
+```
+
+
 
 #### 호스트 제거
 
 ##### 구 문
 
+```
 ALTER REPLICATION replication_name  
-DROP HOST 'remote_host_ip', remote_port_no;
+   DROP HOST 'remote_host_ip', remote_port_no;
+```
+
+
 
 ##### 설 명
 
@@ -1049,16 +1269,22 @@ XLog Sender 이름: log_analysis
 
 XLog Collector 정보: TCP(IP : 127.0.0.1, PORT : 30301)
 
-iSQL\> ALTER REPLICATION log_analysis  
-DROP HOST '127.0.0.1', 30301;
+```
+iSQL> ALTER REPLICATION log_analysis DROP HOST '127.0.0.1', 30301;
+```
+
+
 
 #### 호스트 지정
 
 ##### 구 문
 
-ALTER REPLICATION *replication_name*
+```
+ALTER REPLICATION replication_name
+   SET HOST 'remote_host_ip', remote_port_no;
+```
 
-SET HOST '*remote_host_ip*', *remote_port_no*;
+
 
 ##### 설 명
 
@@ -1078,15 +1304,21 @@ XLog Sender 이름: log_analysis
 
 XLog Collector 정보: TCP(IP : 127.0.0.1, PORT : 30301)
 
-iSQL\> ALTER REPLICATION log_analysis  
-SET HOST '127.0.0.1', 30301;
+```
+iSQL> ALTER REPLICATION log_analysis SET HOST '127.0.0.1', 30301;
+```
+
+
 
 #### XLog Flush
 
 ##### 구 문
 
-ALTER REPLICATION *replication_name* FLUSH [ALL]  
-[WAIT *timeout_sec*];
+```
+ALTER REPLICATION replication_name FLUSH [ALL] [WAIT timeout_sec];
+```
+
+
 
 ##### 설 명
 
@@ -1106,7 +1338,11 @@ Flush 기준 위치: 수행 시점
 
 Timeout: 10 초
 
-iSQL\> ALTER REPLICATION log_analysis FLUSH WAIT 10;
+```
+iSQL> ALTER REPLICATION log_analysis FLUSH WAIT 10;
+```
+
+
 
 ### 메타 테이블
 
@@ -1170,43 +1406,27 @@ XLog의 종류와 구성 요소를 설명한다.
 
 #### XLog의 종류
 
+```
 typedef enum
-
 {
-
-XLOG_TYPE_COMMIT = 2, /\* Transaction Commit \*/
-
-XLOG_TYPE_ABORT = 3, /\* Transaction Rollback \*/
-
-XLOG_TYPE_INSERT = 4, /\* DML: Insert \*/
-
-XLOG_TYPE_UPDATE = 5, /\* DML: Update \*/
-
-XLOG_TYPE_DELETE = 6, /\* DML: Delete \*/
-
-XLOG_TYPE_SP_SET = 8, /\* Savepoint Set \*/
-
-XLOG_TYPE_SP_ABORT = 9, /\* Abort to savepoint \*/
-
-XLOG_TYPE_LOB_CURSOR_OPEN = 14, /\* LOB Cursor open \*/
-
-XLOG_TYPE_LOB_CURSOR_CLOSE = 15, /\* LOB Cursor close \*/
-
-XLOG_TYPE_LOB_PREPARE4WRITE = 16, /\* LOB Prepare for write \*/
-
-XLOG_TYPE_LOB_PARTIAL_WRITE = 17, /\* LOB Partial write \*/
-
-XLOG_TYPE_LOB_FINISH2WRITE = 18, /\* LOB Finish to write \*/
-
-XLOG_TYPE_KEEP_ALIVE = 19, /\* Keep Alive \*/
-
-XLOG_TYPE_REPL_STOP = 21 /\* Replication Stop \*/
-
-XLOG_TYPE_LOB_TRIM = 35, /\* LOB Trim \*/
-
-XLOG_TYPE_CHANGE_META = 25 /\* Meta change by DDL \*/
-
+    XLOG_TYPE_COMMIT            = 2,   /* Transaction Commit */
+    XLOG_TYPE_ABORT             = 3,   /* Transaction Rollback */
+    XLOG_TYPE_INSERT            = 4,   /* DML: Insert */
+    XLOG_TYPE_UPDATE            = 5,   /* DML: Update */
+    XLOG_TYPE_DELETE            = 6,   /* DML: Delete */
+    XLOG_TYPE_SP_SET            = 8,   /* Savepoint Set */
+    XLOG_TYPE_SP_ABORT          = 9,   /* Abort to savepoint */
+    XLOG_TYPE_LOB_CURSOR_OPEN   = 14,  /* LOB Cursor open */
+    XLOG_TYPE_LOB_CURSOR_CLOSE  = 15,  /* LOB Cursor close */
+    XLOG_TYPE_LOB_PREPARE4WRITE = 16,  /* LOB Prepare for write */
+    XLOG_TYPE_LOB_PARTIAL_WRITE = 17,  /* LOB Partial write */
+    XLOG_TYPE_LOB_FINISH2WRITE  = 18,  /* LOB Finish to write */
+    XLOG_TYPE_KEEP_ALIVE        = 19,  /* Keep Alive */
+    XLOG_TYPE_REPL_STOP         = 21,  /* Replication Stop */
+    XLOG_TYPE_LOB_TRIM          = 35,  /* LOB Trim */
+    XLOG_TYPE_CHANGE_META       = 25  /* Meta change by DDL */
 } ALA_XLogType;
+```
 
 XLog에는 13 가지의 트랜잭션 관련 XLog, 2 가지의 Control 관련 XLog가 있다.
 
@@ -1215,32 +1435,25 @@ XLog에는 13 가지의 트랜잭션 관련 XLog, 2 가지의 Control 관련 XLo
 LOB은 큰 데이터이므로, LOB에 대한 갱신 작업은 다수의 XLog로 구성될 수 있다. 이
 경우에는 LOB 관련 XLog가 아래와 같은 구조로 수신된다.
 
+```
 XLOG_TYPE_LOB_CURSOR_OPEN
-
 {
-
-XLOG_TYPE_LOB_PREPARE4WRITE
-
-{
-
-XLOG_TYPE_LOB_PARTIAL_WRITE
-
-...
-
-}
-
-XLOG_TYPE_LOB_FINISH2WRITE
-
-...
-
-또는
-
-XLOG_TYPE_LOB_TRIM  
+    XLOG_TYPE_LOB_PREPARE4WRITE
+    {
+        XLOG_TYPE_LOB_PARTIAL_WRITE
+        ...
+    }
+    XLOG_TYPE_LOB_FINISH2WRITE
+    ...
+     또는
+     XLOG_TYPE_LOB_TRIM
 …
-
 }
-
 XLOG_TYPE_LOB_CURSOR_CLOSE
+
+```
+
+
 
 Control 관련 XLog는 KEEP_ALIVE와 REPL_STOP이다.
 
@@ -1258,118 +1471,78 @@ ALA 응용프로그램에 meta정보를 재전송 해주어야 한다. 따라서
 
 #### XLog 구조체
 
-typedef UInt ALA_TID; /\* Transaction ID \*/
-
-typedef ULong ALA_SN; /\* Log Record SN \*/
-
-typedef struct ALA_Value /\* Altibase Internal Data \*/
-
+```
+typedef UInt   ALA_TID;     		/* Transaction ID */
+typedef ULong  ALA_SN;          	/* Log Record SN */
+typedef struct ALA_Value    		/* Altibase Internal Data */
 {
-
-UInt length; /\* Length of value \*/
-
-const void \* value;
-
+    UInt         length;    		/* Length of value */
+    const void * value;
 } ALA_Value;
+```
+
+
 
 | 구조체 멤버   | 설 명                          |
 |---------------|--------------------------------|
 | 길이 (length) | Altibase 내부 데이터 값의 길이 |
 | 값 (value)    | Altibase 내부 데이터 값        |
 
-typedef struct ALA_XLogHeader /\* XLog Header \*/
-
+```
+typedef struct ALA_XLogHeader   	/* XLog Header */
 {
-
-ALA_XLogType mType; /\* XLog Type \*/
-
-ALA_TID mTID; /\* Transaction ID \*/
-
-ALA_SN mSN; /\* SN \*/
-
-ALA_SN mSyncSN; /\* Reserved \*/
-
-ALA_SN mRestartSN; /\* Used internally \*/
-
-ULong mTableOID; /\* Table OID \*/
-
+    ALA_XLogType mType;      	/* XLog Type */
+    ALA_TID      mTID;          	/* Transaction ID */
+    ALA_SN       mSN;         	/* SN */
+    ALA_SN       mSyncSN;    	/* Reserved */
+    ALA_SN       mRestartSN;    	/* Used internally */
+    ULong        mTableOID;     	/* Table OID */
 } ALA_XLogHeader;
 
-typedef struct ALA_XLogPrimaryKey /\* Primary Key \*/
-
+typedef struct ALA_XLogPrimaryKey 	/* Primary Key */
 {
-
-UInt mPKColCnt; /\* Primary Key Column Count \*/
-
-ALA_Value \*mPKColArray; /\* Primary Key Column Value Array \*/
-
+    UInt         mPKColCnt;     	/* Primary Key Column Count */
+    ALA_Value   *mPKColArray; 	/* Primary Key Column Value Array */
 } ALA_XLogPrimaryKey;
 
-typedef struct ALA_XLogColumn /\* Column \*/
-
+typedef struct ALA_XLogColumn   		/* Column */
 {
-
-UInt mColCnt; /\* Column Count \*/
-
-UInt \*mCIDArray; /\* Column ID Array \*/
-
-ALA_Value \*mBColArray; /\* Before Image Column Value Array \*/
-
-ALA_Value \*mAColArray; /\* After Image Column Value Array \*/
-
+    UInt         mColCnt;     	/* Column Count */
+    UInt        *mCIDArray;   	/* Column ID Array */
+    ALA_Value   *mBColArray; 	/* Before Image Column Value Array */
+    ALA_Value   *mAColArray; 	/* After Image Column Value Array */
 } ALA_XLogColumn;
 
-typedef struct ALA_XLogSavepoint /\* Savepoint \*/
-
+typedef struct ALA_XLogSavepoint   		/* Savepoint */
 {
-
-UInt mSPNameLen; /\* Savepoint Name Length \*/
-
-SChar \*mSPName; /\* Savepoint Name \*/
-
+    UInt         mSPNameLen;    		/* Savepoint Name Length */
+    SChar       *mSPName;       		/* Savepoint Name */
 } ALA_XLogSavepoint;
 
-typedef struct ALA_XLogLOB /\* LOB \*/
-
+typedef struct ALA_XLogLOB      		/* LOB */
 {
-
-ULong mLobLocator; /\* LOB Locator of Altibase \*/
-
-UInt mLobColumnID;
-
-UInt mLobOffset;
-
-UInt mLobOldSize;
-
-UInt mLobNewSize;
-
-UInt mLobPieceLen;
-
-UChar \*mLobPiece;
-
+    ULong        mLobLocator;   		/* LOB Locator of Altibase */
+    UInt         mLobColumnID;
+    UInt         mLobOffset;
+    UInt         mLobOldSize;
+    UInt         mLobNewSize;
+    UInt         mLobPieceLen;
+    UChar       *mLobPiece;
 } ALA_XLogLOB;
 
-typedef struct ALA_XLog /\* XLog \*/
-
+typedef struct ALA_XLog         		/* XLog */
 {
+    ALA_XLogHeader      mHeader;
+    ALA_XLogPrimaryKey  mPrimaryKey;
+    ALA_XLogColumn      mColumn;
+    ALA_XLogSavepoint   mSavepoint;
+    ALA_XLogLOB         mLOB;
 
-ALA_XLogHeader mHeader;
-
-ALA_XLogPrimaryKey mPrimaryKey;
-
-ALA_XLogColumn mColumn;
-
-ALA_XLogSavepoint mSavepoint;
-
-ALA_XLogLOB mLOB;
-
-/\* Used internally \*/
-
-struct ALA_XLog \*mPrev;
-
-struct ALA_XLog \*mNext;
-
+    /* Used internally */
+    struct ALA_XLog    *mPrev;
+    struct ALA_XLog    *mNext;
 } ALA_XLog;
+```
 
 XLog구조체는 Header, Primary Key, Column, Savepoint, LOB관련 구조체로 구성된다.
 
@@ -1387,37 +1560,56 @@ XLog의 종류는 ALA_XLogHeader의 mType 멤버로 알 수 있다.
 
 ##### COMMIT XLog
 
+```
 Header (mType, mTID, mSN, mSyncSN)
+```
+
+
 
 ##### ABORT XLog
 
+```
 Header (mType, mTID, mSN, mSyncSN)
+```
+
+
 
 ##### INSERT XLog
 
+```
 Header (mType, mTID, mSN, mSyncSN, mTableOID)
-
 Column (mColCnt, mCIDArray, mAColArray)
+```
+
+
 
 ##### UPDATE XLog
 
+```
 Header (mType, mTID, mSN, mSyncSN, mTableOID)
-
 Primary Key (mPKColCnt, mPKColArray)
-
 Column (mColCnt, mCIDArray, mBColArray, mAColArray)
+```
+
+
 
 ##### DELETE XLog
 
+```
 Header (mType, mTID, mSN, mSyncSN, mTableOID)
-
 Primary Key (mPKColCnt, mPKColArray)
+```
+
+
 
 ##### SP_SET XLog
 
+```
 Header (mType, mTID, mSN, mSyncSN)
-
 Savepoint (mSPNameLen, mSPName)
+```
+
+
 
 -   mSPName이 "\$\$IMPLICIT"로 시작하면, Implict Savepoint 이다.
 
@@ -1425,9 +1617,12 @@ Savepoint (mSPNameLen, mSPName)
 
 ##### SP_ABORT XLog
 
+```
 Header (mType, mTID, mSN, mSyncSN)
-
 Savepoint (mSPNameLen, mSPName)
+```
+
+
 
 -   mSPName이 "\$\$IMPLICIT"로 시작하면, Implict Savepoint이다.
 
@@ -1435,58 +1630,87 @@ Savepoint (mSPNameLen, mSPName)
 
 ##### LOB_CURSOR_OPEN XLog
 
+```
 Header (mType, mTID, mSN, mSyncSN, mTableOID)
-
 Primary Key (mPKColCnt, mPKColArray)
-
 LOB (mLobLocator, mLobColumnID)
+```
+
+
 
 ##### LOB_CURSOR_CLOSE XLog
 
+```
 Header (mType, mTID, mSN, mSyncSN)
-
 LOB (mLobLocator)
+```
+
+
 
 ##### LOB_PREPARE4WRITE XLog
 
+```
 Header (mType, mTID, mSN, mSyncSN)
-
 LOB (mLobLocator, mLobOffset, mLobOldSize, mLobNewSize)
+```
+
+
 
 ##### LOB_PARTIAL_WRITE XLog
 
+```
 Header (mType, mTID, mSN, mSyncSN)
-
 LOB (mLobLocator, mLobOffset, mLobPieceLen, mLobPiece)
+```
+
+
 
 -   mLobOffset는 LOB_PREPARE4WRITE XLog의 mLobOffset을 기준으로 상대적인
     위치이다.
 
 ##### LOB_FINISH2WRITE XLog
 
+```
 Header (mType, mTID, mSN, mSyncSN)
-
 LOB (mLobLocator)
+```
+
+
 
 ##### KEEP_ALIVE XLog
 
+```
 Header (mType, mTID, mSN, mSyncSN)
+```
+
+
 
 ##### REPL_STOP XLog
 
+```
 Header (mType, mTID, mSN, mSyncSN)
+```
+
+
 
 ##### LOB_TRIM XLog
 
+```
 Header (mType, mTID, mSN, mSyncSN)
-
 LOB (mLobLocator, mLobOffset)
+```
+
+
 
 -   mLobOffset은 삭제(trim)된 LOB 데이터 바이트 단위의 시작 위치이다.
 
 ##### CHANGE_META
 
+```
 Header (mType, mTID, mSN, mSyncSN)
+```
+
+
 
 -   mSN은 현재까지 처리한 변경 로그의 마지막 순서번호이며, mTID, mSyncSN은
     사용자에게 의미 없는 값이다.
@@ -1499,103 +1723,60 @@ XLog를 해석할 수 있는 메타 정보를 얻는 방법을 설명한다.
 
 #### Meta 정보 구조체
 
+```
 typedef struct ALA_ProtocolVersion
-
 {
-
-UShort mMajor; /\* Major Version \*/
-
-UShort mMinor; /\* Minor Version \*/
-
-UShort mFix; /\* Fix Version \*/
-
+    UShort      mMajor;             /* Major Version */
+    UShort      mMinor;             /* Minor Version */
+    UShort      mFix;               /* Fix Version */
 } ALA_ProtocolVersion;
 
 typedef struct ALA_Replication
-
 {
-
-SChar mXLogSenderName[ALA_NAME_LEN];
-
-/\* XLog Sender Name \*/
-
-UInt mTableCount; /\* Table Count \*/
-
-ALA_Table \*mTableArray; /\* Table Array \*/
-
-SChar mDBCharSet[ULA_NAME_LEN]; /\* DB Charter Set \*/
-
-SChar mDBNCharSet[ULA_NAME_LEN]; /\* DB National Charter Set \*/
-
+    SChar        mXLogSenderName[ALA_NAME_LEN];   /* XLog Sender Name */
+    UInt         mTableCount;       /* Table Count */
+    ALA_Table   *mTableArray;     /* Table Array */
+    SChar mDBCharSet[ULA_NAME_LEN]; /* DB Charter Set */
+    SChar mDBNCharSet[ULA_NAME_LEN]; /* DB National Charter Set */
 } ALA_Replication;
 
 typedef struct ALA_Table
-
 {
-
-ULong mTableOID; /\* Table OID \*/
-
-SChar mFromUserName[ALA_NAME_LEN]; /\* (From) User Name \*/
-
-SChar mFromTableName[ALA_NAME_LEN]; /\* (From) Table Name \*/
-
-SChar mToUserName[ALA_NAME_LEN]; /\* (To) User Name \*/
-
-SChar mToTableName[ALA_NAME_LEN]; /\* (To) Table Name \*/
-
-UInt mPKIndexID; /\* Index ID of Primary Key \*/
-
-UInt mPKColumnCount; /\* Primary Key Column Count \*/
-
-ALA_Column \*\*mPKColumnArray; /\* Primary Key Column Array \*/
-
-UInt mColumnCount; /\* Column Count \*/
-
-ALA_Column \*mColumnArray; /\* Column Array \*/
-
-UInt mIndexCount; /\* Index Count \*/
-
-ALA_Index \*mIndexArray; /\* Index Array \*/
-
+    ULong      mTableOID;                  /* Table OID */
+    SChar      mFromUserName[ALA_NAME_LEN]; /* (From) User Name */
+    SChar      mFromTableName[ALA_NAME_LEN]; /* (From) Table Name */
+    SChar      mToUserName[ALA_NAME_LEN];  /* (To) User Name */
+    SChar      mToTableName[ALA_NAME_LEN]; /* (To) Table Name */
+    UInt       mPKIndexID;            /* Index ID of Primary Key */
+    UInt       mPKColumnCount;       /* Primary Key Column Count */
+    ALA_Column **mPKColumnArray;   /* Primary Key Column Array */
+    UInt         mColumnCount;        /* Column Count */
+    ALA_Column  *mColumnArray;      /* Column Array */
+    UInt         mIndexCount;         /* Index Count */
+    ALA_Index   *mIndexArray;        /* Index Array */
 } ALA_Table;
 
 typedef struct ALA_Column
-
 {
-
-UInt mColumnID; /\* Column ID \*/
-
-SChar mColumnName[ALA_NAME_LEN]; /\* Column Name \*/
-
-UInt mDataType; /\* Column Data Type \*/
-
-UInt mLanguageID; /\* Column Language ID \*/
-
-UInt mSize; /\* Column Size \*/
-
-SInt mPrecision; /\* Column Precision \*/
-
-SInt mScale; /\* Column Scale \*/
-
-ALA_BOOL mNotNull; /\* Column Not Null? \*/
-
+    UInt            mColumnID;              /* Column ID */
+    SChar        mColumnName[ALA_NAME_LEN]; /* Column Name */
+    UInt            mDataType;              /* Column Data Type */
+    UInt            mLanguageID;            /* Column Language ID */
+    UInt            mSize;                  /* Column Size */
+    SInt            mPrecision;             /* Column Precision */
+    SInt            mScale;                 /* Column Scale */
+    ALA_BOOL     mNotNull;                  /* Column Not Null? */
 } ALA_Column;
 
 typedef struct ALA_Index
-
 {
-
-UInt mIndexID; /\* Index ID \*/
-
-SChar mIndexName[ALA_NAME_LEN]; /\* Index Name \*/
-
-ALA_BOOL mUnique; /\* Index Unique? \*/
-
-UInt mColumnCount; /\* Index Column Count \*/
-
-UInt \*mColumnIDArray; /\* Index Column ID Array \*/
-
+    UInt          mIndexID;                 /* Index ID */
+    SChar         mIndexName[ALA_NAME_LEN]; /* Index Name */
+    ALA_BOOL      mUnique;                  /* Index Unique? */
+    UInt          mColumnCount;             /* Index Column Count */
+    UInt         *mColumnIDArray;           /* Index Column ID Array */
 } ALA_Index;
+```
 
 Meta 정보에는 Protocol Version, Replication, Table, Column, Index가 있다.
 
@@ -1613,27 +1794,177 @@ ALA_Value 구조체의 length 멤버이다.
 
 내부 데이터 타입의 종류는 ALA_Column의 mDataType 값으로 알 수 있다.
 
-| 카테고리  | 내부 데이터의 종류 | 상수       |
-|-----------|--------------------|------------|
-| 숫자      | FLOAT              | 6          |
-|           | NUMERIC            | 2          |
-|           | DOUBLE             | 8          |
-|           | REAL               | 7          |
-|           | BIGINT             | (UInt)-5   |
-|           | INTEGER            | 4          |
-|           | SMALLINT           | 5          |
-| 날짜/시간 | DATE               | 9          |
-| 문자/이진 | CHAR               | 1          |
-|           | VARCHAR            | 12         |
-|           | NCHAR              | (UInt)-8   |
-|           | NVARCHAR           | (UInt)-9   |
-|           | BYTE               | 20001      |
-|           | NIBBLE             | 20002      |
-|           | BIT                | (UInt)-7   |
-|           | VARBIT             | (UInt)-100 |
-|           | BLOB               | 30         |
-|           | CLOB               | 40         |
-| 공간      | GEOMETRY           | 10003      |
+<table>
+<tbody>
+<tr>
+<th>카테고리</th><th>내부 데이터의 종류</th><th>상수</th>
+</tr>
+<tr>
+<td rowspan="7">
+<p>숫자</p>
+</td>
+<td >
+<p>FLOAT</p>
+</td>
+<td >
+<p>6</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>NUMERIC</p>
+</td>
+<td>
+<p>2</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>DOUBLE</p>
+</td>
+<td>
+<p>8</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>REAL</p>
+</td>
+<td>
+<p>7</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>BIGINT</p>
+</td>
+<td>
+<p>(UInt)-5</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>INTEGER</p>
+</td>
+<td>
+<p>4</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>SMALLINT</p>
+</td>
+<td>
+<p>5</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>날짜/시간</p>
+</td>
+<td>
+<p>DATE</p>
+</td>
+<td>
+<p>9</p>
+</td>
+</tr>
+<tr>
+<td rowspan="10">
+<p>문자/이진</p>
+</td>
+<td>
+<p>CHAR</p>
+</td>
+<td>
+<p>1</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>VARCHAR</p>
+</td>
+<td>
+<p>12</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>NCHAR</p>
+</td>
+<td>
+<p>(UInt)-8</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>NVARCHAR</p>
+</td>
+<td>
+<p>(UInt)-9</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>BYTE</p>
+</td>
+<td>
+<p>20001</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>NIBBLE</p>
+</td>
+<td>
+<p>20002</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>BIT</p>
+</td>
+<td>
+<p>(UInt)-7</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>VARBIT</p>
+</td>
+<td>
+<p>(UInt)-100</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>BLOB</p>
+</td>
+<td>
+<p>30</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>CLOB</p>
+</td>
+<td>
+<p>40</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>공간</p>
+</td>
+<td>
+<p>GEOMETRY</p>
+</td>
+<td>
+<p>10003</p>
+</td>
+</tr>
+</tbody>
+</table>
 
 [표 3‑1] Altibase 내부 데이터 종류
 
