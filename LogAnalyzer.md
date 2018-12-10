@@ -4660,73 +4660,54 @@ Altibase 내부 포맷으로 저장된 데이터를ODBC C 값으로 변환한다
 
 #### 예 제
 
-\#include \<alaAPI.h\>
-
+```
+#include <alaAPI.h>
 …
 
-void testODBCCConversion(ALA_Table \* aTable, ALA_XLog \* aXLog)
-
+void testODBCCConversion(ALA_Table * aTable, ALA_XLog * aXLog)
 {
+ALA_Column * sColumn;
+SChar        sBuffer[1024];
+ALA_BOOL     sIsNull;
+UInt         sODBCCValueSize;
+UInt         sPKColumnPos;
 
-ALA_Column \* sColumn;
-
-SChar sBuffer[1024];
-
-ALA_BOOL sIsNull;
-
-UInt sODBCCValueSize;
-
-UInt sPKColumnPos;
-
-/\* Primary Key를 SQL_C_CHAR로 변환 \*/
-
+/* Primary Key를 SQL_C_CHAR로 변환 */
 for(sPKColumnPos = 0;
-
-sPKColumnPos \< aXLog-\>mPrimaryKey.mPKColCnt;
-
+sPKColumnPos < aXLog->mPrimaryKey.mPKColCnt;
 sPKColumnPos++)
-
 {
+/* XLog의 Primary Key 순서와 Table의 Primary Key 순서는 동일 */
+sColumn = aTable->mPKColumnArray[sPKColumnPos];
 
-/\* XLog의 Primary Key 순서와 Table의 Primary Key 순서는 동일 \*/
-
-sColumn = aTable-\>mPKColumnArray[sPKColumnPos];
-
-/\* 내부 데이터를 SQL_C_CHAR로 변환 \*/
-
+/* 내부 데이터를 SQL_C_CHAR로 변환 */
 (void)ALA_GetODBCCValue(sColumn,
-
-&(aXLog-\>mPrimaryKey.mPKColArray[sPKColumnPos],
-
+&(aXLog->mPrimaryKey.mPKColArray[sPKColumnPos],
 SQL_C_CHAR,
-
 1024,
-
 sBuffer,
-
 &sIsNull,
-
 &sODBCCValueSize,
-
 NULL);
-
 }
-
 }
+```
+
+
 
 ### ALA\_ IsNullValue
 
 #### 구 문
 
+```
 ALA_RC ALA_IsNullValue(
+        ALA_Column     * aColumn,
+        ALA_Value      * aValue,
+        ALA_BOOL       * aOutIsNull,
+        ALA_ErrorMgr   * aOutErrorMgr );
+```
 
-ALA_Column \* aColumn,
 
-ALA_Value \* aValue,
-
-ALA_BOOL \* aOutIsNull,
-
-ALA_ErrorMgr \* aOutErrorMgr );
 
 #### 인 자
 
@@ -4754,67 +4735,49 @@ XLog로 넘어온 NULL값은 Altibase 내부에서 사용되는 포맷이어서 
 
 #### 예제
 
-\#include \<alaAPI.h\>
-
+```
+#include <alaAPI.h>
 …
 
-ALA_BOOL isAlaValueNull( ALA_Column \*aColumn,
-
-ALA_Value \*aAlaValue,
-
-ALA_BOOL \*aNullFlag)
-
+ALA_BOOL isAlaValueNull(  ALA_Column *aColumn,
+                          ALA_Value  *aAlaValue,
+                          ALA_BOOL   *aNullFlag)
 {
-
-ALA_RC sAlaRC = ALA_SUCCESS;
-
-ALA_BOOL sIsNull = ALA_FALSE;
-
-/\* TODO: ALA_GetIsNullValue() is not released. \*/
-
-sAlaRC= ALA_IsNullValue(aColumn,
-
-aAlaValue,
-
-&sIsNull,
-
-NULL);
-
-if(sAlaRC != ALA_SUCCESSE)
-
-{
-
-return ALA_FAILURE;
-
+    ALA_RC   sAlaRC  = ALA_SUCCESS;
+    ALA_BOOL sIsNull = ALA_FALSE;
+    /* TODO: ALA_GetIsNullValue() is not released. */
+    sAlaRC= ALA_IsNullValue(aColumn,
+                            aAlaValue,
+                            &sIsNull,
+                            NULL);
+    if(sAlaRC != ALA_SUCCESSE)
+    {
+        return ALA_FAILURE;
+    }
+    if (sIsNull == ALA_TRUE)
+    {
+        *aNullFlag = ACP_TRUE;
+    }
+    else
+    {
+        *aNullFlag = ACP_FALSE;
+    }
+    return ALA_SUCCESS;
 }
+```
 
-if (sIsNull == ALA_TRUE)
 
-{
-
-\*aNullFlag = ACP_TRUE;
-
-}
-
-else
-
-{
-
-\*aNullFlag = ACP_FALSE;
-
-}
-
-return ALA_SUCCESS;
-
-}
 
 ### ALA_ClearErrorMgr
 
 #### 구 문
 
+```
 ALA_RC ALA_ClearErrorMgr(
+         ALA_ErrorMgr * aOutErrorMgr);
+```
 
-ALA_ErrorMgr \* aOutErrorMgr);
+
 
 #### 인 자
 
@@ -4846,53 +4809,47 @@ ALA_GetErrorMessage
 
 #### 예 제
 
-\#include \<alaAPI.h\>
-
+```
+#include <alaAPI.h>
 …
 
 void testErrorHandling()
-
 {
+ALA_ErrorMgr     sErrorMgr
+UInt             sErrorCode;
+ALA_ErrorLevel   sErrorLevel;
+SChar          * sErrorMessage;
 
-ALA_ErrorMgr sErrorMgr
+/* 오류 관리자 초기화 */
+(void)ALA_ClearErrorMgr(&sErrorMgr);
 
-UInt sErrorCode;
-
-ALA_ErrorLevel sErrorLevel;
-
-SChar \* sErrorMessage;
-
-/\* 오류 관리자 초기화 \*/
-
-(void)ALA_ClearErrorMgr(\&sErrorMgr);
-
-/\* Log Analysis API 호출 실패 \*/
-
+/* Log Analysis API 호출 실패 */
 …
 
-/\* Error Code 얻기 \*/
+/* Error Code 얻기 */
+(void)ALA_GetErrorCode(&sErrorMgr, &sErrorCode);
 
-(void)ALA_GetErrorCode(&sErrorMgr, \&sErrorCode);
+/* Error Level 얻기 */
+(void)ALA_GetErrorLevel(&sErrorMgr, &sErrorLevel);
 
-/\* Error Level 얻기 \*/
-
-(void)ALA_GetErrorLevel(&sErrorMgr, \&sErrorLevel);
-
-/\* Error Message 얻기 \*/
-
-(void)ALA_GetErrorMessage(&sErrorMgr, \&sErrorMessage);
-
+/* Error Message 얻기 */
+(void)ALA_GetErrorMessage(&sErrorMgr, &sErrorMessage);
 }
+```
+
+
 
 ### ALA_GetErrorCode
 
 #### 구 문
 
+```
 ALA_RC ALA_GetErrorCode(
+        const ALA_ErrorMgr * aErrorMgr,
+        UInt                   * aOutErrorCode);
+```
 
-const ALA_ErrorMgr \* aErrorMgr,
 
-UInt \* aOutErrorCode);
 
 #### 인 자
 
@@ -4936,11 +4893,13 @@ ALA_ClearErrorMgr를 참고한다.
 
 #### 구 문
 
+```
 ALA_RC ALA_GetErrorLevel(
+        const ALA_ErrorMgr   * aErrorMgr,
+        ALA_ErrorLevel       * aOutErrorLevel);
+```
 
-const ALA_ErrorMgr \* aErrorMgr,
 
-ALA_ErrorLevel \* aOutErrorLevel);
 
 #### 인 자
 
@@ -4988,11 +4947,13 @@ ALA_ClearErrorMgr를 참고한다.
 
 #### 구 문
 
+```
 ALA_RC ALA_GetErrorMessage(
+        const ALA_ErrorMgr  * aErrorMgr,
+        const SChar         ** aOutErrorMessage);
+```
 
-const ALA_ErrorMgr \* aErrorMgr,
 
-const SChar \*\* aOutErrorMessage);
 
 #### 인 자
 
@@ -5037,68 +4998,111 @@ ALA_ClearErrorMgr를 참고한다.
 
 #### FATAL Error
 
-| Error Code | Description                             | Can be returned by                                                                                                                                |
-|------------|-----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| 0x50008    | Active Transaction을 중복 시작하려고 함 | ALA_ReceiveXLog                                                                                                                                   |
-|            |                                         | ALA_GetXLog                                                                                                                                       |
-| 0x5000A    | Mutex 초기화 실패                       | ALA_CreateXLogCollector                                                                                                                           |
-|            |                                         | ALA_Handshake                                                                                                                                     |
-| 0x5000B    | Mutex 제거 실패                         | ALA_Handshake                                                                                                                                     |
-|            |                                         | ALA_DestroyXLogCollector                                                                                                                          |
-| 0x5000C    | Mutex Lock 실패                         | ALA_AddAuthInfo                                                                                                                                   |
-|            |                                         | ALA_RemoveAuthInfo                                                                                                                                |
-|            |                                         | ALA_Handshake                                                                                                                                     |
-|            |                                         | ALA_ReceiveXLog                                                                                                                                   |
-|            |                                         | ALA_GetXLog                                                                                                                                       |
-|            |                                         | ALA_SendACK                                                                                                                                       |
-|            |                                         | ALA_FreeXLog                                                                                                                                      |
-|            |                                         | ALA_DestroyXLogCollector                                                                                                                          |
-|            |                                         | ALA_GetXLogCollectorStatus                                                                                                                        |
-| 0x5000D    | Mutex Unlock 실패                       |                                                                                                                                                   |
+<table>
+<tbody>
+<tr>
+<th>Error Code</th><th>Description</th><th>Can be returned by</th>
+</tr>
+<tr>
+<td>
+<p>0x50008</p>
+</td>
+<td>
+<p>Active Transaction을 중복 시작하려고 함</p>
+</td>
+<td>
+<p>ALA_ReceiveXLog<br />ALA_GetXLog</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0x5000A</p>
+</td>
+<td>
+<p>Mutex 초기화 실패</p>
+</td>
+<td>
+<p>ALA_CreateXLogCollector<br />ALA_Handshake</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0x5000B</p>
+</td>
+<td>
+<p>Mutex 제거 실패</p>
+</td>
+<td>
+<p>ALA_Handshake<br />ALA_DestroyXLogCollector</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0x5000C</p>
+</td>
+<td>
+<p>Mutex Lock 실패</p>
+</td>
+<td rowspan="2" >
+<p>ALA_AddAuthInfo<br />ALA_RemoveAuthInfo<br />ALA_Handshake<br />ALA_ReceiveXLog<br />ALA_GetXLog<br />ALA_SendACK<br />ALA_FreeXLog<br />ALA_DestroyXLogCollector<br />ALA_GetXLogCollectorStatus</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0x5000D</p>
+</td>
+<td>
+<p>Mutex Unlock 실패</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+| Error Code           | Description                             | Can be returned by                                           |
+| -------------------- | --------------------------------------- | ------------------------------------------------------------ |
+| 0x50008              | Active Transaction을 중복 시작하려고 함 | ALA_ReceiveXLog<br />ALA_GetXLog                             |
+| 0x5000A              | Mutex 초기화 실패                       | ALA_CreateXLogCollector<br />ALA_Handshake                   |
+| 0x5000B              | Mutex 제거 실패                         | ALA_Handshake<br />ALA_DestroyXLogCollector                  |
+|                      |                                         |                                                              |
+| 0x5000C<br />0x5000D | Mutex Lock 실패<br />Mutex Unlock 실패  | ALA_AddAuthInfo<br/>ALA_RemoveAuthInfo<br />ALA_Handshake<br />ALA_ReceiveXLog<br />ALA_GetXLog<br />ALA_SendACK<br />ALA_FreeXLog<br />ALA_DestroyXLogCollector<br />ALA_GetXLogCollectorStatus |
+
 
 #### ABORT Error
 
-| Error Code | Description                        | Can be returned by                                                                   |
-|------------|------------------------------------|--------------------------------------------------------------------------------------|
-| 0x51006    | Memory Allocation 실패             | 모든 Log Analysis API                                                                |
-| 0x5101E    | Pool에서 Memory Allocation 실패    | ALA_ReceiveXLog                                                                      |
-| 0x5101F    | Pool에서 Memory Free 실패          | ALA_Handshake                                                                        |
-|            |                                    | ALA_ReceiveXLog                                                                      |
-|            |                                    | ALA_FreeXLog                                                                         |
-|            |                                    | ALA_DestroyXLogCollector                                                             |
-| 0x51020    | Memory Pool 초기화 실패            | ALA_CreateXLogCollector                                                              |
-| 0x51021    | Memory Pool 제거 실패              | ALA_DestroyXLogCollector                                                             |
-| 0x51013    | Network Context 초기화 실패        | ALA_Handshake                                                                        |
-|            |                                    | ALA_ReceiveXLog                                                                      |
-|            |                                    | ALA_SendACK                                                                          |
-| 0x51019    | Network Protocol 제거 실패         |                                                                                      |
-| 0x5101A    | Network Context 종료 실패          |                                                                                      |
-| 0x51017    | Network Session이 이미 종료        | ALA_ReceiveXLog                                                                      |
-|            |                                    | ALA_SendACK                                                                          |
-| 0x51018    | Network Protocol이 이상함          | ALA_Handshake                                                                        |
-|            |                                    | ALA_ReceiveXLog                                                                      |
-| 0x51016    | Network Read 실패                  |                                                                                      |
-| 0x5101B    | Network Write 실패                 | ALA_Handshake                                                                        |
-|            |                                    | ALA_SendACK                                                                          |
-| 0x5101C    | Network Flush 실패                 |                                                                                      |
-| 0x51015    | Network Timeout (네트워크 오류)    | ALA_Handshake                                                                        |
-| 0x5102C    | Network Session 추가 실패          | ALA_Handshake                                                                        |
-| 0x51024    | Protocol Version이 다름            | ALA_Handshake                                                                        |
-| 0x51027    | Link Allocation 실패               | ALA_Handshake                                                                        |
-| 0x51028    | Link Listen 실패                   | ALA_Handshake                                                                        |
-| 0x51029    | Link Wait 실패                     | ALA_Handshake                                                                        |
-| 0x5102A    | Link Accept 실패                   | ALA_Handshake                                                                        |
-| 0x5102B    | Link Set 실패                      | ALA_Handshake                                                                        |
-| 0x51022    | Link Shutdown 실패                 | ALA_Handshake                                                                        |
-|            |                                    | ALA_DestroyXLogCollector                                                             |
-| 0x51023    | Link Free 실패                     |                                                                                      |
-| 0x51012    | Meta Information이 존재하지 않음   | ALA_Handshake                                                                        |
-|            |                                    | ALA_GetXLog                                                                          |
-|            |                                    | ALA_GetReplicationInfo                                                               |
-|            |                                    | ALA_GetTableInfo                                                                     |
-|            |                                    | ALA_GetTableInfoByName                                                               |
-| 0x5103F    | Table Information이 존재하지 않음  | ALA_GetXLog                                                                          |
-| 0x51040    | Column Information이 존재하지 않음 | ALA_GetXLog                                                                          |
+| Error Code | Description                        | Can be returned by                                           |
+| ---------- | ---------------------------------- | ------------------------------------------------------------ |
+| 0x51006    | Memory Allocation 실패             | 모든 Log Analysis API                                        |
+| 0x5101E    | Pool에서 Memory Allocation 실패    | ALA_ReceiveXLog                                              |
+| 0x5101F    | Pool에서 Memory Free 실패          | ALA_Handshake<br />ALA_ReceiveXLog<br />ALA_FreeXLog<br />ALA_DestroyXLogCollector |
+| 0x51020    | Memory Pool 초기화 실패            | ALA_CreateXLogCollector                                      |
+| 0x51021    | Memory Pool 제거 실패              | ALA_DestroyXLogCollector                                     |
+| 0x51013    | Network Context 초기화 실패        | ALA_Handshake<br />ALA_ReceiveXLog                           |
+|            |                                    |                                                              |
+|            |                                    | ALA_SendACK                                                  |
+| 0x51019    | Network Protocol 제거 실패         |                                                              |
+| 0x5101A    | Network Context 종료 실패          |                                                              |
+| 0x51017    | Network Session이 이미 종료        | ALA_ReceiveXLog                                              |
+|            |                                    | ALA_SendACK                                                  |
+| 0x51018    | Network Protocol이 이상함          | ALA_Handshake                                                |
+|            |                                    | ALA_ReceiveXLog                                              |
+| 0x51016    | Network Read 실패                  |                                                              |
+| 0x5101B    | Network Write 실패                 | ALA_Handshake                                                |
+|            |                                    | ALA_SendACK                                                  |
+| 0x5101C    | Network Flush 실패                 |                                                              |
+| 0x51015    | Network Timeout (네트워크 오류)    | ALA_Handshake                                                |
+| 0x5102C    | Network Session 추가 실패          | ALA_Handshake                                                |
+| 0x51024    | Protocol Version이 다름            | ALA_Handshake                                                |
+| 0x51027    | Link Allocation 실패               | ALA_Handshake                                                |
+| 0x51028    | Link Listen 실패                   | ALA_Handshake                                                |
+| 0x51029    | Link Wait 실패                     | ALA_Handshake                                                |
+| 0x5102A    | Link Accept 실패                   | ALA_Handshake                                                |
+| 0x5102B    | Link Set 실패                      | ALA_Handshake                                                |
+| 0x51022    | Link Shutdown 실패                 | ALA_Handshake                                                |
+|            |                                    | ALA_DestroyXLogCollector                                     |
+| 0x51023    | Link Free 실패                     |                                                              |
+| 0x51012    | Meta Information이 존재하지 않음   | ALA_Handshake<br/>ALA_GetXLog<br />ALA_GetReplicationInfo<br />ALA_GetTableInfo<br />ALA_GetTableInfoByName |
+| 0x5103F    | Table Information이 존재하지 않음  | ALA_GetXLog                                                  |
+| 0x51040    | Column Information이 존재하지 않음 | ALA_GetXLog                                                  |
 
 #### INFO Error
 
