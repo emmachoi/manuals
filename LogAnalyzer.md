@@ -2005,25 +2005,20 @@ else /* if(signExponent is 0 ~ 127) */
 
 10진수에 대한 Exponent이다.
 
-if(signExponent is 128 \~ 255)
-
+```
+if(signExponent is 128 ~ 255)
 {
-
->   Exponent = ((SInt)(signExponent & 0x7F) - 64) \* 2
-
-\+ ((mantissa[0] \< 10) ? -1 : 0);
-
+  Exponent = ((SInt)(signExponent & 0x7F) - 64) * 2
+             + ((mantissa[0] < 10) ? -1 : 0);
 }
-
-else /\* if(signExponent is 0 \~ 127) \*/
-
+else /* if(signExponent is 0 ~ 127) */
 {
-
->   Exponent = (64 - (SInt)(signExponent & 0x7F)) \* 2
-
-\+ ((mantissa[0] \>= 90) ? -1 : 0);
-
+  Exponent = (64 - (SInt)(signExponent & 0x7F)) * 2
+             + ((mantissa[0] >= 90) ? -1 : 0);
 }
+```
+
+
 
 ##### mtdNumericType에서 Mantissa 문자열 얻기
 
@@ -2031,93 +2026,58 @@ else /\* if(signExponent is 0 \~ 127) \*/
 
 결과는 0과 1 사이의 수이다.
 
+```
 if(Sign is '+')
-
 {
+/* Example : 01 23 45 67 89 -> 0.123456789
+/*           12 34 56 78 99 -> 0.1234567899
+     */
 
-/\* Example : 01 23 45 67 89 -\> 0.123456789
+/* mantissa[0] */
+    if(mantissa[0] < 10)
+    {
+        MantissaStr = mantissa[0];
+    }
+    else
+    {
+        MantissaStr = mantissa[0] / 10;
+        MantissaStr = MantissaStr + mantissa[0] % 10;
+    }
 
-/\* 12 34 56 78 99 -\> 0.1234567899
-
-\*/
-
-/\* mantissa[0] \*/
-
-if(mantissa[0] \< 10)
-
+    /* mantissa[1] ~ mantissa[mLength - 1] */
+    for(Index = 1; Index < mLength - 1; Index++)
+    {
+        MantissaStr = MantissaStr + mantissa[Index] / 10;
+        MantissaStr = MantissaStr + mantissa[Index] % 10;
+    }
+}
+else /* if(Sign is '-') */
 {
+    /* Example : 98 76 54 32 10 -> 0.123456789
+    /*           09 87 65 43 21 -> 0.9012345678
+     */
 
-MantissaStr = mantissa[0];
+/* mantissa[0] */
+    if(mantissa[0] >= 90)
+    {
+        MantissaStr = MantissaStr + (99 - mantissa[0]);
+    }
+    else
+    {
+        MantissaStr = MantissaStr + (99 - mantissa[0]) / 10;
+        MantissaStr = MantissaStr + (99 - mantissa[0]) % 10;
+    }
 
+    /* mantissa[1] ~ mantissa[mLength - 1] */
+    for(Index = 1; Index < mLength - 1; Index++)
+    {
+        MantissaStr = MantissaStr + (99 - mantissa[Index]) / 10;
+        MantissaStr = MantissaStr + (99 - mantissa[Index]) % 10;
+    }
 }
+```
 
-else
 
-{
-
-MantissaStr = mantissa[0] / 10;
-
-MantissaStr = MantissaStr + mantissa[0] % 10;
-
-}
-
-/\* mantissa[1] \~ mantissa[mLength - 1] \*/
-
-for(Index = 1; Index \< mLength - 1; Index++)
-
-{
-
-MantissaStr = MantissaStr + mantissa[Index] / 10;
-
-MantissaStr = MantissaStr + mantissa[Index] % 10;
-
-}
-
-}
-
-else /\* if(Sign is '-') \*/
-
-{
-
-/\* Example : 98 76 54 32 10 -\> 0.123456789
-
-/\* 09 87 65 43 21 -\> 0.9012345678
-
-\*/
-
-/\* mantissa[0] \*/
-
-if(mantissa[0] \>= 90)
-
-{
-
-MantissaStr = MantissaStr + (99 - mantissa[0]);
-
-}
-
-else
-
-{
-
-MantissaStr = MantissaStr + (99 - mantissa[0]) / 10;
-
-MantissaStr = MantissaStr + (99 - mantissa[0]) % 10;
-
-}
-
-/\* mantissa[1] \~ mantissa[mLength - 1] \*/
-
-for(Index = 1; Index \< mLength - 1; Index++)
-
-{
-
-MantissaStr = MantissaStr + (99 - mantissa[Index]) / 10;
-
-MantissaStr = MantissaStr + (99 - mantissa[Index]) % 10;
-
-}
-
-}
 
 #### DOUBLE, REAL, BIGINT, INTEGER, SMALLINT
 
@@ -2125,15 +2085,15 @@ MantissaStr = MantissaStr + (99 - mantissa[Index]) % 10;
 
 각 타입은 Primitive Data Type과 매핑된다.
 
-typedef SDouble mtdDoubleType; /\* DOUBLE \*/
+```
+typedef SDouble mtdDoubleType;      /* DOUBLE */
+typedef SFloat  mtdRealType;        /* REAL */
+typedef SLong   mtdBigintType;      /* BIGINT */
+typedef SInt    mtdIntegerType;     /* INTEGER */
+typedef SShort  mtdSmallintType;    /* SMALLINT */
+```
 
-typedef SFloat mtdRealType; /\* REAL \*/
 
-typedef SLong mtdBigintType; /\* BIGINT \*/
-
-typedef SInt mtdIntegerType; /\* INTEGER \*/
-
-typedef SShort mtdSmallintType; /\* SMALLINT \*/
 
 #### DATE
 
@@ -2141,16 +2101,18 @@ typedef SShort mtdSmallintType; /\* SMALLINT \*/
 
 시간과 날짜에 관련된 내부 데이터 타입은 하나만 존재한다.
 
+```
 typedef struct mtdDateType
-
-{  
-SShort year; /\* Year(16bit) \*/  
-UShort mon_day_hour; /\* Not Used(2bit), Month(4bit), \*/  
-/\* Day(5bit), Hour(5bit) \*/  
-UInt min_sec_mic; /\* Minute(6bit), Second(6bit), \*/  
-/\* MicroSec(20bit) \*/
-
+{
+  SShort  year;           /* Year(16bit) */
+  UShort  mon_day_hour;   /* Not Used(2bit), Month(4bit), */
+  /* Day(5bit), Hour(5bit) */
+  UInt    min_sec_mic;    /* Minute(6bit), Second(6bit), */
+  /* MicroSec(20bit) */
 } mtdDateType;
+```
+
+
 
 #### CHAR, VARCHAR, NCHAR, NVARCHAR, BYTE, NIBBLE, BIT, VARBIT, BLOB, CLOB
 
@@ -2158,67 +2120,46 @@ UInt min_sec_mic; /\* Minute(6bit), Second(6bit), \*/
 
 각 데이터 타입은 비슷한 구조를 가진다.
 
-typedef struct mtdCharType /\* CHAR, VARCHAR \*/
-
+```
+typedef struct mtdCharType      /* CHAR, VARCHAR */
 {
-
-UShort length; /\* Length of value \*/
-
-UChar value[1]; /\* UChar Array \*/
-
+UShort  length;     		/* Length of value */
+UChar   value[1];   		/* UChar Array */
 } mtdCharType;
 
-typedef struct mtdNcharType { /\*NCHAR, NVARCHAR \*/
-
-UShort length; /\* Length of value \*/
-
-UChar value[1]; /\* UChar Array \*/
-
+typedef struct mtdNcharType 
+{ /*NCHAR, NVARCHAR */
+    UShort length;    	/* Length of value */
+    UChar  value[1];  	/* UChar Array */
 } mtdNcharType;
 
-typedef struct mtdByteType /\* BYTE \*/
-
+typedef struct mtdByteType      /* BYTE */
 {
-
-UShort length; /\* Length of value \*/
-
-UChar value[1]; /\* UChar Array \*/
-
+UShort  length;    		/* Length of value */
+UChar   value[1];   		/* UChar Array */
 } mtdByteType;
 
-typedef struct mtdNibbleType /\* NIBBLE \*/
-
+typedef struct mtdNibbleType    /* NIBBLE */
 {
-
-UChar length; /\* Length of Nibbles \*/
-
-UChar value[1]; /\* UChar Array \*/
-
+UChar   length;     		/* Length of Nibbles */
+UChar   value[1];    	/* UChar Array */
 } mtdNibbleType;
 
-typedef struct mtdBitType /\* BIT, VARBIT \*/
-
+typedef struct mtdBitType       /* BIT, VARBIT */
 {
-
-UInt length; /\* Length of Bits \*/
-
-UChar value[1]; /\* UChar Array \*/
-
+UInt    length;       	/* Length of Bits */
+UChar   value[1];    	/* UChar Array */
 } mtdBitType;
 
 typedef struct mtdLobType
-
 {
-
-UInt length; /\* Length of value \*/
-
-UChar value[1]; /\* UChar Array \*/
-
+UInt    length;      		/* Length of value */
+UChar   value[1];   		/* UChar Array */
 } mtdLobType;
 
-typedef mtdLobType mtdBlobType; /\* BLOB \*/
-
-typedef mtdLobType mtdClobType; /\* CLOB \*/
+typedef mtdLobType mtdBlobType;     /* BLOB */
+typedef mtdLobType mtdClobType;     /* CLOB */
+```
 
 BLOB, CLOB타입의 데이터는 ALA_GetAltibaseText(), ALA_GetAltibaseSQL(),
 ALA_GetODBCCValue()함수의 인자로 사용할 수 없다.
@@ -2265,29 +2206,35 @@ SAVEPOINT는 종류별로 관리되며, savepoint xlog는 애플리케이션 내
 
 #### **예제**
 
-    iSQL\> CREATE TABLE T1 (I1 INTEGER PRIMARY KEY);  
-    Create success.  
-    iSQL\> INSERT INTO T1 VALUES (2);  
-    1 row inserted.  
-    iSQL\> CREATE OR REPLACE PROCEDURE PROC1  
-        2 AS  
-        3 BEGIN  
-        4     INSERT INTO T1 VALUES(1);  
-        5     **SAVEPOINT EXPLICIT_SP;**  
-        6     INSERT INTO T1 VALUES(2);  
-        7     INSERT INTO T1 VALUES(3);  
-        8 END;  
-        9 /  
-    Create success.  
-    iSQL\> AUTOCOMMIT OFF;  
-    Set autocommit off success.  
-    iSQL\> EXEC PROC1;  
-    [ERR-11058 : The row already exists in a unique index.  
-    0006 :     INSERT INTO T1 VALUES(2);  
-            \^                        \^  
-    ]  
-    iSQL\> **ROLLBACK TO SAVEPOINT EXPLICIT_SP;**  
-    Rollback success.
+ 
+
+```
+    iSQL> CREATE TABLE T1 (I1 INTEGER PRIMARY KEY);
+    Create success.
+    iSQL> INSERT INTO T1 VALUES (2);
+    1 row inserted.
+    iSQL> CREATE OR REPLACE PROCEDURE PROC1
+        2 AS
+        3 BEGIN
+        4     INSERT INTO T1 VALUES(1);
+        5     SAVEPOINT EXPLICIT_SP;
+        6     INSERT INTO T1 VALUES(2);
+        7     INSERT INTO T1 VALUES(3);
+        8 END;
+        9 /
+    Create success.
+    iSQL> AUTOCOMMIT OFF;
+    Set autocommit off success.
+    iSQL> EXEC PROC1;
+    [ERR-11058 : The row already exists in a unique index.
+    0006 :     INSERT INTO T1 VALUES(2);
+            ^                        ^
+    ]
+    iSQL> ROLLBACK TO SAVEPOINT EXPLICIT_SP;
+    Rollback success.
+```
+
+
 
 Log Analysis API
 ----------------
@@ -2305,9 +2252,13 @@ Log Analysis API는 C/C++ 언어에서 사용할 수 있다.
 
 #### 구 문
 
-ALA_RC ALA_InitializeAPI(  
-ALA_BOOL aUseAltibaseODBCDriver,  
-ALA_ErrorMgr \* aOutErrorMgr);
+```
+ALA_RC ALA_InitializeAPI(
+      ALA_BOOL       aUseAltibaseODBCDriver,
+      ALA_ErrorMgr * aOutErrorMgr);
+```
+
+
 
 #### 인 자
 
@@ -2341,69 +2292,59 @@ ALA_DestroyAPI
 
 #### 예 제
 
-\#include \<sqlcli.h\>
-
-\#include \<alaAPI.h\>
-
+```
+#include <sqlcli.h>
+#include <alaAPI.h>
 ...
 
-/\* Altibase ODBC Drive를 사용하지 않을 경우 \*/
-
+/* Altibase ODBC Drive를 사용하지 않을 경우 */
 void testAPIEnvironment1()
-
 {
-
-/\* Log Analysis API 환경 생성 \*/
-
+/* Log Analysis API 환경 생성 */
 (void)ALA_InitializeAPI(ALA_FALSE, NULL);
 
-/\* Log Analysis API를 호출 \*/
-
+/* Log Analysis API를 호출 */
 ...
 
-/\* Log Analysis API 환경 제거 \*/
-
+/* Log Analysis API 환경 제거 */
 (void)ALA_DestroyAPI(ALA_FALSE, NULL);
-
 }
 
-/\* Altibase ODBC Drive를 사용할 경우 \*/
-
+/* Altibase ODBC Drive를 사용할 경우 */
 void testAPIEnvironment2(ALA_BOOL aUseAltibaseODBCDriver)
-
 {
-
 SQLHENV sEnv = NULL;
 
-/\* Altibase ODBC 사용 환경 생성 \*/
+/* Altibase ODBC 사용 환경 생성 */
+(void)SQLAllocEnv(&sEnv);
 
-(void)SQLAllocEnv(\&sEnv);
-
-/\* Log Analysis API 환경 생성 \*/
-
+/* Log Analysis API 환경 생성 */
 (void)ALA_InitializeAPI(ALA_TRUE, NULL);
 
-/\* Altibase ODBC API 및 Log Analysis API를 호출 \*/
-
+/* Altibase ODBC API 및 Log Analysis API를 호출 */
 ...
 
-/\* Log Analysis API 환경 제거 \*/
-
+/* Log Analysis API 환경 제거 */
 (void)ALA_DestroyAPI(ALA_TRUE, NULL);
 
-/\* Altibase ODBC 사용 환경 제거 \*/
-
+/* Altibase ODBC 사용 환경 제거 */
 (void)SQLFreeEnv(sEnv);
-
 }
+```
+
+
 
 ### ALA_DestroyAPI
 
 #### 구 문
 
-ALA_RC ALA_DestroyAPI(  
-ALA_BOOL aUseAltibaseODBCDriver,  
-ALA_ErrorMgr \* aOutErrorMgr);
+```
+ALA_RC ALA_DestroyAPI(
+        ALA_BOOL      aUseAltibaseODBCDriver,
+        ALA_ErrorMgr * aOutErrorMgr);
+```
+
+
 
 #### 인 자
 
@@ -2441,12 +2382,16 @@ ALA_InitializeAPI를 참고한다.
 
 #### 구 문
 
-ALA_RC ALA_EnableLogging(  
-const SChar \* aLogDirectory,  
-const SChar \* aLogFileName,  
-UInt aFileSize,  
-UInt aMaxFileNumber,  
-ALA_ErrorMgr \* aOutErrorMgr);
+```
+ALA_RC ALA_EnableLogging(
+      const SChar  * aLogDirectory,
+      const SChar  * aLogFileName,
+      UInt           aFileSize,
+      UInt           aMaxFileNumber,
+      ALA_ErrorMgr * aOutErrorMgr);
+```
+
+
 
 #### 인 자
 
@@ -2504,60 +2449,48 @@ ALA_DisableLogging
 
 #### 예 제
 
-\#include \<alaAPI.h\>
-
+```
+#include <alaAPI.h>
 ...
 
 void testLogging()
-
 {
+/* Log Analysis API 환경 생성 */
+        (void)ALA_InitializeAPI(ALA_FALSE, NULL);
 
-/\* Log Analysis API 환경 생성 \*/
+    /* Logging 활성화
+     * 로그 디렉토리            : 현재 디렉토리
+     * 로그 파일명              : analysis.log
+     * 로그 파일의 크기         : 10 MB
+     * 최대 이전 로그 파일의 수 : 10 개
+ */
+        (void)ALA_EnableLogging(".",
+                               "analysis.log",
+                                10 * 1024 * 1024,
+                                10,
+                                NULL);
 
-(void)ALA_InitializeAPI(ALA_FALSE, NULL);
+    /* Log Analysis API를 호출 */
+        ...
 
-/\* Logging 활성화
+    /* Logging 비활성화 */
+        (void)ALA_DisableLogging(NULL);
 
-\* 로그 디렉토리 : 현재 디렉토리
-
-\* 로그 파일명 : analysis.log
-
-\* 로그 파일의 크기 : 10 MB
-
-\* 최대 이전 로그 파일의 수 : 10 개
-
-\*/
-
-(void)ALA_EnableLogging(".",
-
-"analysis.log",
-
-10 \* 1024 \* 1024,
-
-10,
-
-NULL);
-
-/\* Log Analysis API를 호출 \*/
-
-...
-
-/\* Logging 비활성화 \*/
-
-(void)ALA_DisableLogging(NULL);
-
-/\* Log Analysis API 환경 제거 \*/
-
-(void)ALA_DestroyAPI(ALA_FALSE, NULL);
-
+    /* Log Analysis API 환경 제거 */
+        (void)ALA_DestroyAPI(ALA_FALSE, NULL);
 }
+```
 
 ### ALA_DisableLogging
 
 #### 구 문
 
+```
 ALA_RC ALA_DisableLogging(  
-ALA_ErrorMgr \* aOutErrorMgr);
+      ALA_ErrorMgr * aOutErrorMgr);
+```
+
+
 
 #### 인 자
 
@@ -2594,14 +2527,18 @@ ALA_EnableLogging을 참고한다.
 
 #### 구 문
 
-ALA_RC ALA_CreateXLogCollector(  
-const SChar \* aXLogSenderName,  
-const SChar \* aSocketInfo,  
-SInt aXLogPoolSize,  
-ALA_BOOL aUseCommittedTxBuffer,  
-UInt aACKPerXLogCount,  
-ALA_Handle \* aOutHandle,  
-ALA_ErrorMgr \* aOutErrorMgr);
+```
+ALA_RC ALA_CreateXLogCollector(
+     const SChar  * aXLogSenderName,
+     const SChar  * aSocketInfo,
+     SInt           aXLogPoolSize,
+     ALA_BOOL       aUseCommittedTxBuffer,
+     UInt           aACKPerXLogCount,
+     ALA_Handle   * aOutHandle,
+     ALA_ErrorMgr * aOutErrorMgr);
+```
+
+
 
 #### 인 자
 
@@ -2685,114 +2622,83 @@ ALA_SetXLogPoolSize
 
 #### 예 제
 
-\#include \<alaAPI.h\>
-
+```
+#include <alaAPI.h>
 …
 
 void testXLogCollectorTCP()
-
 {
+    ALA_Handle sHandle;
 
-ALA_Handle sHandle;
+    /* TCP를 사용하는 XLog Collector 생성
+    * XLog Sender의 이름                    : log_analysis
+    * XLog Sender의 인증 정보               : IP=127.0.0.1
+    * 접속 대기 PORT                        : 30300
+    * XLog Pool의 최대 크기                 : 10000
+    * Commit 순서로 Transaction의 XLog 얻기 : 미지정
+    * 실제로 ACK를 보낼 기준 XLog 수        : 100
+    */
+    (void)ALA_CreateXLogCollector("log_analysis",
+                "SOCKET=TCP;PEER_IP=127.0.0.1;MY_PORT=30300",
+                10000,
+                ALA_FALSE,
+                100,
+                &sHandle,
+                NULL);
 
-/\* TCP를 사용하는 XLog Collector 생성
+    /* XLog Sender 인증 정보 추가 */
+    (void) ALA_AddAuthInfo(sHandle, "PEER_IP=127.0.0.2", NULL);
 
-\* XLog Sender의 이름 : log_analysis
+    /* XLog Sender 인증 정보 제거 */
+    (void)ALA_RemoveAuthInfo(sHandle, "PEER_IP=127.0.0.2", NULL);
 
-\* XLog Sender의 인증 정보 : IP=127.0.0.1
+    /* Log Analysis API를 호출 */
+    …
 
-\* 접속 대기 PORT : 30300
-
-\* XLog Pool의 최대 크기 : 10000
-
-\* Commit 순서로 Transaction의 XLog 얻기 : 미지정
-
-\* 실제로 ACK를 보낼 기준 XLog 수 : 100
-
-\*/
-
-(void)ALA_CreateXLogCollector("log_analysis",
-
-"SOCKET=TCP;PEER_IP=127.0.0.1;MY_PORT=30300",
-
-10000,
-
-ALA_FALSE,
-
-100,
-
-&sHandle,
-
-NULL);
-
-/\* XLog Sender 인증 정보 추가 \*/
-
-(void) ALA_AddAuthInfo(sHandle, "PEER_IP=127.0.0.2", NULL);
-
-/\* XLog Sender 인증 정보 제거 \*/
-
-(void)ALA_RemoveAuthInfo(sHandle, "PEER_IP=127.0.0.2", NULL);
-
-/\* Log Analysis API를 호출 \*/
-
-…
-
-/\* XLog Collector 제거 \*/
-
-(void)ALA_DestroyXLogCollector(sHandle, NULL);
-
+    /* XLog Collector 제거 */
+    (void)ALA_DestroyXLogCollector(sHandle, NULL);
 }
 
 void testXLogCollectorUNIX()
-
 {
+    ALA_Handle sHandle;
 
-ALA_Handle sHandle;
+    /* UNIX Domain을 사용하는 XLog Collector 생성
+    * XLog Sender의 이름                    : log_analysis
+    * XLog Pool의 최대 크기                 : 20000
+    * Commit 순서로 Transaction의 XLog 얻기 : 지정
+    * 실제로 ACK를 보낼 기준 XLog 수        : 50
+    */
+    (void)ALA_CreateXLogCollector("log_analysis",
+                "SOCKET=UNIX",
+                20000,
+                ALA_TRUE,
+                50,
+                &sHandle,
+                NULL);
 
-/\* UNIX Domain을 사용하는 XLog Collector 생성
+    /* Log Analysis API를 호출 */
+    …
 
-\* XLog Sender의 이름 : log_analysis
-
-\* XLog Pool의 최대 크기 : 20000
-
-\* Commit 순서로 Transaction의 XLog 얻기 : 지정
-
-\* 실제로 ACK를 보낼 기준 XLog 수 : 50
-
-\*/
-
-(void)ALA_CreateXLogCollector("log_analysis",
-
-"SOCKET=UNIX",
-
-20000,
-
-ALA_TRUE,
-
-50,
-
-&sHandle,
-
-NULL);
-
-/\* Log Analysis API를 호출 \*/
-
-…
-
-/\* XLog Collector 제거 \*/
-
-(void)ALA_DestroyXLogCollector(sHandle, NULL);
-
+    /* XLog Collector 제거 */
+    (void)ALA_DestroyXLogCollector(sHandle, NULL);
 }
+```
+
+
 
 ### ALA_AddAuthInfo
 
 #### 구 문
 
-ALA_RC ALA_AddAuthInfo(  
-ALA_Handle aHandle,  
-const SChar \* aAuthInfo,  
-ALA_ErrorMgr \* aOutErrorMgr);
+```
+ALA_RC ALA_AddAuthInfo(
+     ALA_Handle     aHandle,
+     const SChar  * aAuthInfo,
+     ALA_ErrorMgr * aOutErrorMgr);
+```
+
+
 
 #### 인 자
 
@@ -2837,10 +2743,14 @@ ALA_CreateXLogCollector를 참고한다.
 
 #### 구 문
 
-ALA_RC ALA_RemoveAuthInfo(  
-ALA_Handle aHandle,  
-const SChar \* aAuthInfo,  
-ALA_ErrorMgr \* aOutErrorMgr);
+```
+ALA_RC ALA_RemoveAuthInfo(
+     ALA_Handle     aHandle,
+     const SChar  * aAuthInfo,
+     ALA_ErrorMgr * aOutErrorMgr);
+```
+
+
 
 #### 인 자
 
@@ -2885,19 +2795,22 @@ ALA_CreateXLogCollector를 참고한다.
 
 #### 구 문
 
-ALA_RC ALA_SetHandshakeTimeout(  
-ALA_Handle aHandle,  
-UInt aSecond,  
-ALA_ErrorMgr \* aOutErrorMgr);
+```
+ALA_RC ALA_SetHandshakeTimeout(
+     ALA_Handle     aHandle,
+     UInt           aSecond,
+     ALA_ErrorMgr * aOutErrorMgr);
+```
+
+
 
 #### 인 자
 
-| 인 자        | 설 명                                                |
-|--------------|------------------------------------------------------|
-| aHandle      | XLog Collector 핸들                                  |
-| aSecond      | Handshake Timeout                                    |
-|              | (단위 : 초, 범위 : 1 \~ 0xFFFFFFFE)                  |
-| aOutErrorMgr | 오류 관리자의 구조체                                 |
+| 인 자        | 설 명                                                     |
+| ------------ | --------------------------------------------------------- |
+| aHandle      | XLog Collector 핸들                                       |
+| aSecond      | Handshake Timeout<br />(단위 : 초, 범위 : 1 ~ 0xFFFFFFFE) |
+| aOutErrorMgr | 오류 관리자의 구조체                                      |
 
 #### 결 과
 
@@ -2924,19 +2837,22 @@ ALA_Handshake를 참고한다.
 
 #### 구 문
 
-ALA_RC ALA_SetReceiveXLogTimeout(  
-ALA_Handle aHandle,  
-UInt aSecond,  
-ALA_ErrorMgr \* aOutErrorMgr);
+```
+ALA_RC ALA_SetReceiveXLogTimeout(
+     ALA_Handle      aHandle,
+     UInt              aSecond,
+     ALA_ErrorMgr * aOutErrorMgr);
+```
+
+
 
 #### 인 자
 
-| 인 자        | 설 명                                                |
-|--------------|------------------------------------------------------|
-| aHandle      | XLog Collector 핸들                                  |
-| aSecond      | XLog 수신 Timeout                                    |
-|              | (단위 : 초, 범위 : 1 \~ 0xFFFFFFFE)                  |
-| aOutErrorMgr | 오류 관리자의 구조체                                 |
+| 인 자        | 설 명                                                      |
+| ------------ | ---------------------------------------------------------- |
+| aHandle      | XLog Collector 핸들                                        |
+| aSecond      | XLog 수신 Timeout<br />(단위 : 초, 범위 : 1 \~ 0xFFFFFFFE) |
+| aOutErrorMgr | 오류 관리자의 구조체                                       |
 
 #### 결 과
 
