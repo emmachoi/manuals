@@ -3,7 +3,7 @@ Altibase® Application Development
 Log Analyzer User’s Manual
 ==========================
 
-![](media/e5cfb3761673686d093a3b00c062fe7a.png)
+![](media/LogAnalyzere5cfb3761673686d093a3b00c062fe7a.png)
 
 
 
@@ -102,17 +102,17 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 이 매뉴얼에서는 다음 구성 요소로 구축된 다이어그램을 사용하여, 명령문의 구문을
 설명한다.
 
-| 구성 요소                                                    | 의미                                                         |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![image1](D:\emmachoigit\manuals\media\LogAnalyzer\image1.gif) | 명령문이 시작한다. 완전한 명령문이 아닌 구문 요소는 화살표로 시작한다. |
-| ![image2](D:\emmachoigit\manuals\media\LogAnalyzer\image2.gif) | 명령문이 다음 라인에 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 종료한다. |
-| ![image3](D:\emmachoigit\manuals\media\LogAnalyzer\image3.gif) | 명령문이 이전 라인으로부터 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 시작한다. |
-| ![image4](D:\emmachoigit\manuals\media\LogAnalyzer\image4.gif) | 명령문이 종료한다.                                           |
-| ![image5](D:\emmachoigit\manuals\media\LogAnalyzer\image5.gif) | 필수 항목                                                    |
-| ![image6](D:\emmachoigit\manuals\media\LogAnalyzer\image6.gif) | 선택적 항목                                                  |
-| ![image7](D:\emmachoigit\manuals\media\LogAnalyzer\image7.gif) | 선택사항이 있는 필수 항목. 한 항목만 제공해야 한다.          |
-| ![image8](D:\emmachoigit\manuals\media\LogAnalyzer\image8.gif) | 선택사항이 있는 선택적 항목                                  |
-| ![image9](D:\emmachoigit\manuals\media\LogAnalyzer\image9.gif) | 선택적 항목. 여러 항목이 허용된다. 각 반복 앞부분에 콤마가 와야 한다. |
+| 구성 요소                               | 의미                                                         |
+| --------------------------------------- | ------------------------------------------------------------ |
+| ![image1](media/LogAnalyzer/image1.gif) | 명령문이 시작한다. 완전한 명령문이 아닌 구문 요소는 화살표로 시작한다. |
+| ![image2](media/LogAnalyzer/image2.gif) | 명령문이 다음 라인에 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 종료한다. |
+| ![image3](media/LogAnalyzer/image3.gif) | 명령문이 이전 라인으로부터 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 시작한다. |
+| ![image4](media/LogAnalyzer/image4.gif) | 명령문이 종료한다.                                           |
+| ![image5](media/LogAnalyzer/image5.gif) | 필수 항목                                                    |
+| ![image6](media/LogAnalyzer/image6.gif) | 선택적 항목                                                  |
+| ![image7](media/LogAnalyzer/image7.gif) | 선택사항이 있는 필수 항목. 한 항목만 제공해야 한다.          |
+| ![image8](media/LogAnalyzer/image8.gif) | 선택사항이 있는 선택적 항목                                  |
+| ![image9](media/LogAnalyzer/image9.gif) | 선택적 항목. 여러 항목이 허용된다. 각 반복 앞부분에 콤마가 와야 한다. |
 
 ##### 샘플 코드 규칙
 
@@ -611,7 +611,7 @@ Log Manager에 대한 상세한 사용법은 ALA_EnableLogging()와 ALA_DisableL
 
 아래의 다이어그램은 Log Analysis API를 사용할 때의 순서를 도식화한 것이다.
 
-![basic_use_kor](D:\emmachoigit\manuals\media\LogAnalyzer\basic_use_kor.gif)
+![basic_use_kor](media/LogAnalyzer/basic_use_kor.gif)
 
 Log Analysis API를 사용 시, 아래의 사항을 주의해야 한다.
 
@@ -5060,278 +5060,278 @@ ALA_ClearErrorMgr를 참고한다.
 
 #### ABORT Error
 
-<table width="552">
+<table>
 <tbody>
 <tr>
 <th>Error Code</th><th>Description</th><th>Can be returned by</th></tr>
 <tr>
-<td width="88">
+<td>
 <p>0x51006</p>
 </td>
-<td width="259">
+<td>
 <p>Memory Allocation 실패</p>
 </td>
-<td width="205">
+<td>
 <p>모든 Log Analysis API</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x5101E</p>
 </td>
-<td width="259">
+<td>
 <p>Pool에서 Memory Allocation 실패</p>
 </td>
-<td width="205">
+<td>
 <p>ALA_ReceiveXLog</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x5101F</p>
 </td>
-<td width="259">
+<td>
 <p>Pool에서 Memory Free 실패</p>
 </td>
-<td width="205">
-<p>ALA_Handshake<br /> ALA_ReceiveXLog<br /> ALA_FreeXLog<br /> ALA_DestroyXLogCollector</p>
+<td>
+<p>ALA_Handshake<br />ALA_ReceiveXLog<br />ALA_FreeXLog<br />ALA_DestroyXLogCollector</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x51020</p>
 </td>
-<td width="259">
+<td>
 <p>Memory Pool 초기화 실패</p>
 </td>
-<td width="205">
+<td>
 <p>ALA_CreateXLogCollector</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x51021</p>
 </td>
-<td width="259">
+<td>
 <p>Memory Pool 제거 실패</p>
 </td>
-<td width="205">
+<td>
 <p>ALA_DestroyXLogCollector</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x51013</p>
 </td>
-<td width="259">
+<td>
 <p>Network Context 초기화 실패</p>
 </td>
-<td rowspan="3" width="205">
-<p>ALA_Handshake<br /> ALA_ReceiveXLog<br /> ALA_SendACK</p>
+<td rowspan="3">
+<p>ALA_Handshake<br />ALA_ReceiveXLog<br />ALA_SendACK</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x51019</p>
 </td>
-<td width="259">
+<td>
 <p>Network Protocol 제거 실패</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x5101A</p>
 </td>
-<td width="259">
+<td>
 <p>Network Context 종료 실패</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x51017</p>
 </td>
-<td width="259">
+<td>
 <p>Network Session이 이미 종료</p>
 </td>
-<td width="205">
-<p>ALA_ReceiveXLog<br /> ALA_SendACK</p>
+<td>
+<p>ALA_ReceiveXLog<br />ALA_SendACK</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x51018</p>
 </td>
-<td width="259">
+<td>
 <p>Network Protocol이 이상함</p>
 </td>
-<td rowspan="2" width="205">
-<p>ALA_Handshake<br /> ALA_ReceiveXLog</p>
+<td rowspan="2">
+<p>ALA_Handshake<br />ALA_ReceiveXLog</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x51016</p>
 </td>
-<td width="259">
+<td>
 <p>Network Read 실패</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x5101B</p>
 </td>
-<td width="259">
+<td>
 <p>Network Write 실패</p>
 </td>
-<td rowspan="2" width="205">
-<p>ALA_Handshake<br /> ALA_SendACK</p>
+<td rowspan="2">
+<p>ALA_Handshake<br />ALA_SendACK</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x5101C</p>
 </td>
-<td width="259">
+<td>
 <p>Network Flush 실패</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x51015</p>
 </td>
-<td width="259">
+<td>
 <p>Network Timeout (네트워크 오류)</p>
 </td>
-<td width="205">
+<td>
 <p>ALA_Handshake</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x5102C</p>
 </td>
-<td width="259">
+<td>
 <p>Network Session 추가 실패</p>
 </td>
-<td width="205">
+<td>
 <p>ALA_Handshake</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x51024</p>
 </td>
-<td width="259">
+<td>
 <p>Protocol Version이 다름</p>
 </td>
-<td width="205">
+<td>
 <p>ALA_Handshake</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x51027</p>
 </td>
-<td width="259">
+<td>
 <p>Link Allocation 실패</p>
 </td>
-<td width="205">
+<td>
 <p>ALA_Handshake</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x51028</p>
 </td>
-<td width="259">
+<td>
 <p>Link Listen 실패</p>
 </td>
-<td width="205">
+<td>
 <p>ALA_Handshake</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x51029</p>
 </td>
-<td width="259">
+<td>
 <p>Link Wait 실패</p>
 </td>
-<td width="205">
+<td>
 <p>ALA_Handshake</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x5102A</p>
 </td>
-<td width="259">
+<td>
 <p>Link Accept 실패</p>
 </td>
-<td width="205">
+<td>
 <p>ALA_Handshake</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x5102B</p>
 </td>
-<td width="259">
+<td>
 <p>Link Set 실패</p>
 </td>
-<td width="205">
+<td>
 <p>ALA_Handshake</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x51022</p>
 </td>
-<td width="259">
+<td>
 <p>Link Shutdown 실패</p>
 </td>
-<td rowspan="2" width="205">
-<p>ALA_Handshake<br /> ALA_DestroyXLogCollector</p>
+<td rowspan="2">
+<p>ALA_Handshake<br />ALA_DestroyXLogCollector</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x51023</p>
 </td>
-<td width="259">
+<td>
 <p>Link Free 실패</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x51012</p>
 </td>
-<td width="259">
+<td>
 <p>Meta Information이 존재하지 않음</p>
 </td>
-<td width="205">
-<p>ALA_Handshake<br /> ALA_GetXLog<br /> ALA_GetReplicationInfo<br /> ALA_GetTableInfo<br /> ALA_GetTableInfoByName</p>
+<td>
+<p>ALA_Handshake<br />ALA_GetXLog<br />ALA_GetReplicationInfo<br />ALA_GetTableInfo<br />ALA_GetTableInfoByName</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x5103F</p>
 </td>
-<td width="259">
+<td>
 <p>Table Information이 존재하지 않음</p>
 </td>
-<td width="205">
+<td>
 <p>ALA_GetXLog</p>
 </td>
 </tr>
 <tr>
-<td width="88">
+<td>
 <p>0x51040</p>
 </td>
-<td width="259">
+<td>
 <p>Column Information이 존재하지 않음</p>
 </td>
-<td width="205">
+<td>
 <p>ALA_GetXLog</p>
 </td>
 </tr>
@@ -5340,45 +5340,41 @@ ALA_ClearErrorMgr를 참고한다.
 
 #### INFO Error
 
-| Error Code | Description                                         | Can be returned by                               |
-|------------|-----------------------------------------------------|--------------------------------------------------|
-| 0x52034    | Log Analysis API 환경 생성 실패                     | ALA_InitializeAPI                                |
-| 0x52035    | Log Analysis API 환경 제거 실패                     | ALA_DestroyAPI                                   |
-| 0x52000    | Log Manager 초기화 실패                             | ALA_EnableLogging                                |
-| 0x52001    | Log File 열기 실패                                  | ALA_EnableLogging                                |
-| 0x52004    | Log Manager Lock 실패                               | 모든 Log Analysis API                            |
-| 0x52005    | Log Manager Unlock 실패                             | 모든 Log Analysis API                            |
-| 0x52003    | Log Manager 제거 실패                               | ALA_DisableLogging                               |
-| 0x52002    | Log File 닫기 실패                                  | ALA_DisableLogging                               |
-| 0x52009    | Active Transaction이 아님                           | ALA_GetXLog                                      |
-| 0x5200E    | Linked-List가 비어있지 않음                         | ALA_Handshake                                    |
-|            |                                                     | ALA_DestroyXLogCollector                         |
-| 0x52033    | XLog Pool이 비어 있음                               | ALA_ReceiveXLog                                  |
-| 0x5200F    | NULL 파라미터                                       | 모든 Log Analysis API                            |
-| 0x5201D    | 유효하지 않은 파라미터                              | 모든 Log Analysis API                            |
-| 0x52014    | Network Timeout (재시도 가능)                       | ALA_ReceiveXLog                                  |
-| 0x52026    | 지원하지 않는 Socket Type                           | ALA_Handshake                                    |
-| 0x52025    | Socket Type이 선택되지 않음                         | ALA_Handshake                                    |
-| 0x5202F    | Socket Type이 해당 Log Analysis API를 지원하지 않음 | ALA_AddAuthInfo                                  |
-|            |                                                     | ALA_RemoveAuthInfo                               |
-| 0x5202D    | XLog Sender 이름이 다름                             | ALA_Handshake                                    |
-| 0x52030    | 인증 정보가 하나만 존재                             | ALA_RemoveAuthInfo                               |
-| 0x52031    | 더 이상 인증 정보를 추가할 수 없음                  | ALA_AddAuthInfo                                  |
-| 0x52032    | Peer에 대한 인증 정보가 없음                        | ALA_Handshake                                    |
-| 0x52010    | 유효하지 않은 ROLE                                  | ALA_Handshake                                    |
-| 0x52011    | 유효하지 않은 Replication Flags                     | ALA_Handshake                                    |
-| 0x52007    | Geometry Endian 변환 실패                           | ALA_GetXLog                                      |
-| 0x52036    | MTD Module을 얻을 수 없음                           | ALA_GetXLog                                      |
-|            |                                                     | ALA_GetAltibaseText                              |
-|            |                                                     | ALA_GetAltibaseSQL                               |
-| 0x52037    | MTD Module로 Text 생성 실패                         | ALA_GetAltibaseText                              |
-| 0x52038    | CMT 초기화 실패                                     | ALA_GetODBCCValue                                |
-| 0x52039    | CMT 종료 실패                                       | ALA_GetODBCCValue                                |
-| 0x5203A    | 분석 헤더 생성 실패 (ODBC 변환)                     | ALA_GetODBCCValue                                |
-| 0x5203B    | 분석 헤더 제거 실패 (ODBC 변환)                     | ALA_GetODBCCValue                                |
-| 0x5203C    | MT에서 CMT로 변환 실패                              | ALA_GetODBCCValue                                |
-| 0x5203D    | CMT에서 ulnColumn으로 변환 실패                     | ALA_GetODBCCValue                                |
-| 0x5203E    | ulnColumn에서 ODBC C로 변환 실패                    | ALA_GetODBCCValue                                |
+| Error Code | Description                                         | Can be returned by                                           |
+| ---------- | --------------------------------------------------- | ------------------------------------------------------------ |
+| 0x52034    | Log Analysis API 환경 생성 실패                     | ALA_InitializeAPI                                            |
+| 0x52035    | Log Analysis API 환경 제거 실패                     | ALA_DestroyAPI                                               |
+| 0x52000    | Log Manager 초기화 실패                             | ALA_EnableLogging                                            |
+| 0x52001    | Log File 열기 실패                                  | ALA_EnableLogging                                            |
+| 0x52004    | Log Manager Lock 실패                               | 모든 Log Analysis API                                        |
+| 0x52005    | Log Manager Unlock 실패                             | 모든 Log Analysis API                                        |
+| 0x52003    | Log Manager 제거 실패                               | ALA_DisableLogging                                           |
+| 0x52002    | Log File 닫기 실패                                  | ALA_DisableLogging                                           |
+| 0x52009    | Active Transaction이 아님                           | ALA_GetXLog                                                  |
+| 0x5200E    | Linked-List가 비어있지 않음                         | ALA_Handshake<br />ALA_DestroyXLogCollector                  |
+| 0x52033    | XLog Pool이 비어 있음                               | ALA_ReceiveXLog                                              |
+| 0x5200F    | NULL 파라미터                                       | 모든 Log Analysis API                                        |
+| 0x5201D    | 유효하지 않은 파라미터                              | 모든 Log Analysis API                                        |
+| 0x52014    | Network Timeout (재시도 가능)                       | ALA_ReceiveXLog                                              |
+| 0x52026    | 지원하지 않는 Socket Type                           | ALA_Handshake                                                |
+| 0x52025    | Socket Type이 선택되지 않음                         | ALA_Handshake                                                |
+| 0x5202F    | Socket Type이 해당 Log Analysis API를 지원하지 않음 | ALA_AddAuthInfo<br />ALA_RemoveAuthInfo                      |
+| 0x5202D    | XLog Sender 이름이 다름                             | ALA_Handshake                                                |
+| 0x52030    | 인증 정보가 하나만 존재                             | ALA_RemoveAuthInfo                                           |
+| 0x52031    | 더 이상 인증 정보를 추가할 수 없음                  | ALA_AddAuthInfo                                              |
+| 0x52032    | Peer에 대한 인증 정보가 없음                        | ALA_Handshake                                                |
+| 0x52010    | 유효하지 않은 ROLE                                  | ALA_Handshake                                                |
+| 0x52011    | 유효하지 않은 Replication Flags                     | ALA_Handshake                                                |
+| 0x52007    | Geometry Endian 변환 실패                           | ALA_GetXLog                                                  |
+| 0x52036    | MTD Module을 얻을 수 없음                           | ALA_GetXLog<br />ALA_GetAltibaseText<br />ALA_GetAltibaseSQL |
+| 0x52037    | MTD Module로 Text 생성 실패                         | ALA_GetAltibaseText                                          |
+| 0x52038    | CMT 초기화 실패                                     | ALA_GetODBCCValue                                            |
+| 0x52039    | CMT 종료 실패                                       | ALA_GetODBCCValue                                            |
+| 0x5203A    | 분석 헤더 생성 실패 (ODBC 변환)                     | ALA_GetODBCCValue                                            |
+| 0x5203B    | 분석 헤더 제거 실패 (ODBC 변환)                     | ALA_GetODBCCValue                                            |
+| 0x5203C    | MT에서 CMT로 변환 실패                              | ALA_GetODBCCValue                                            |
+| 0x5203D    | CMT에서 ulnColumn으로 변환 실패                     | ALA_GetODBCCValue                                            |
+| 0x5203E    | ulnColumn에서 ODBC C로 변환 실패                    | ALA_GetODBCCValue                                            |
 
 부록B. Sample Code
 ------------------
@@ -5393,808 +5389,486 @@ ALA_ClearErrorMgr를 참고한다.
 
 ##### XLog Sender 생성
 
-CREATE REPLICATION ALA1 FOR ANALYSIS
-
+```
+CREATE REPLICATION ALA1 FOR ANALYSIS 
 WITH '127.0.0.1', 47146
+FROM ala.ala_t1 TO ala.ala_t1; 
+```
 
-FROM ala.ala_t1 TO ala.ala_t1;
+
 
 ##### XLog Collector 실행
 
+```
 ./ReplToAltiSample
+```
+
+
 
 ##### XLog Sender 시작
 
 ALTER REPLICATION ALA1 START;
 
+
+
 ##### 샘플 코드
 
-\$ALTIBASE_HOME/sample/ALA/Altibase/ReplToAltiSample.c
+```
+$ALTIBASE_HOME/sample/ALA/Altibase/ReplToAltiSample.c
+/******************************************************************************
+ * Replication to Altibase DBMS Sample                                    *
+ *      based on Committed Transaction Only                               *
+ ******************************************************************************/
 
-/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-\* Replication to Altibase DBMS Sample \*
+/* Include Altibase ODBC header */
+#include <sqlcli.h>
 
-\* based on Committed Transaction Only \*
+/* Include Altibase Log Analysis API header */
+#include <alaAPI.h>
 
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/
+/* User-specific Definitions */
+#define QUERY_SIZE      (4196)          /* SQL Query Buffer Size */
+#define ALA_LOG_FILE    "ALA1.log"      /* Log File Name */
+#define ALA_NAME        "ALA1"          /* XLog Sender Name */
+#define SOCKET_TYPE     "TCP"           /* TCP or UNIX */
+#define PEER_IP         "127.0.0.1"     /* TCP : XLog Sender IP */
+#define MY_PORT         (47146)         /* TCP : XLog Collector Listen Port */
+#define SLAVE_IP        "127.0.0.1"     /* ODBC : Target Altibase DBMS IP */
+#define SLAVE_PORT      (43146)         /* ODBC : Target Altibase DBMS Port */
 
-\#include \<string.h\>
+/* Get XLog from XLog Sender, after handshake with XLog Sender */
+ALA_RC runXLogCollector(ALA_Handle, ALA_ErrorMgr *);
 
-\#include \<stdlib.h\>
+/* And, apply XLog to Altibase DBMS */
+ALA_RC applyXLogToAltibase(ALA_Handle, ALA_XLog *, ALA_ErrorMgr *);
 
-\#include \<stdio.h\>
+/* Print error to console */
+void   printSqlErr(SQLHDBC, SQLHSTMT);
+void   printAlaErr(ALA_ErrorMgr * aErrorMgr);
 
-/\* Include Altibase ODBC header \*/
+/* ODBC variables */
+SQLHENV     gEnv;
+SQLHDBC     gDbc;
+SQLHSTMT    gStmt;
 
-\#include \<sqlcli.h\>
-
-/\* Include Altibase Log Analysis API header \*/
-
-\#include \<alaAPI.h\>
-
-/\* User-specific Definitions \*/
-
-\#define QUERY_SIZE (4196) /\* SQL Query Buffer Size \*/
-
-\#define ALA_LOG_FILE "ALA1.log" /\* Log File Name \*/
-
-\#define ALA_NAME "ALA1" /\* XLog Sender Name \*/
-
-\#define SOCKET_TYPE "TCP" /\* TCP or UNIX \*/
-
-\#define PEER_IP "127.0.0.1" /\* TCP : XLog Sender IP \*/
-
-\#define MY_PORT (47146) /\* TCP : XLog Collector Listen Port \*/
-
-\#define SLAVE_IP "127.0.0.1" /\* ODBC : Target Altibase DBMS IP \*/
-
-\#define SLAVE_PORT (43146) /\* ODBC : Target Altibase DBMS Port \*/
-
-/\* Get XLog from XLog Sender, after handshake with XLog Sender \*/
-
-ALA_RC runXLogCollector(ALA_Handle, ALA_ErrorMgr \*);
-
-/\* And, apply XLog to Altibase DBMS \*/
-
-ALA_RC applyXLogToAltibase(ALA_Handle, ALA_XLog \*, ALA_ErrorMgr \*);
-
-/\* Print error to console \*/
-
-void printSqlErr(SQLHDBC, SQLHSTMT);
-
-void printAlaErr(ALA_ErrorMgr \* aErrorMgr);
-
-/\* ODBC variables \*/
-
-SQLHENV gEnv;
-
-SQLHDBC gDbc;
-
-SQLHSTMT gStmt;
-
-/\* Start function \*/
-
+/* Start function */
 int main(void)
-
 {
+    ALA_Handle      sHandle;            /* XLog Collector Handle */
+    ALA_ErrorMgr    sErrorMgr;          /* Error Manager */
+    char            sSocketInfo[128];   /* XLog Sender/Collector Socket Information */
+    SQLCHAR         sConInfo[128];      /* ODBC Connection Information */
+    unsigned int    sStep = 0;
 
-ALA_Handle sHandle; /\* XLog Collector Handle \*/
+    /**************************************************************************
+     * Altibase ODBC Initialization                                          *
+     **************************************************************************/
 
-ALA_ErrorMgr sErrorMgr; /\* Error Manager \*/
+    /* If you call SQLAllocEnv() that is included in Altibase ODBC,
+     * you have to set ALA_TRUE to the first parameter
+   * when you call ALA_IntializeAPI()
+     */
+    if(SQLAllocEnv(&gEnv) != SQL_SUCCESS)
+    {
+        goto FINALYZE;
+    }
+    sStep = 1;
 
-char sSocketInfo[128]; /\* XLog Sender/Collector Socket Information \*/
+    if(SQLAllocConnect(gEnv, &gDbc) != SQL_SUCCESS)
+    {
+        goto FINALYZE;
+    }
+    sStep = 2;
 
-SQLCHAR sConInfo[128]; /\* ODBC Connection Information \*/
-
-unsigned int sStep = 0;
-
-/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
-
-\* Altibase ODBC Initialization \*
-
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/
-
-/\* If you call SQLAllocEnv() that is included in Altibase ODBC,
-
-\* you have to set ALA_TRUE to the first parameter
-
-\* when you call ALA_IntializeAPI()
-
-\*/
-
-if(SQLAllocEnv(&gEnv) != SQL_SUCCESS)
-
-{
-
-goto FINALYZE;
-
-}
-
-sStep = 1;
-
-if(SQLAllocConnect(gEnv, &gDbc) != SQL_SUCCESS)
-
-{
-
-goto FINALYZE;
-
-}
-
-sStep = 2;
-
-memset(sConInfo, 0x00, 128);
-
-sprintf((char \*)sConInfo, "DSN=%s;UID=SYS;PWD=MANAGER;PORT_NO=%d",
-
+    memset(sConInfo, 0x00, 128);
+    sprintf((char *)sConInfo, "DSN=%s;UID=SYS;PWD=MANAGER;PORT_NO=%d",
 SLAVE_IP,
+                              SLAVE_PORT);
 
-SLAVE_PORT);
-
-if(SQLDriverConnect(gDbc, NULL, sConInfo, SQL_NTS, NULL, 0, NULL,
-
+    if(SQLDriverConnect(gDbc, NULL, sConInfo, SQL_NTS, NULL, 0, NULL,
 SQL_DRIVER_NOPROMPT)
+            != SQL_SUCCESS)
+    {
+        printSqlErr(gDbc, gStmt);
+        goto FINALYZE;
+    }
+    sStep = 3;
 
-!= SQL_SUCCESS)
+    /* Autocommit OFF */
+    if(SQLSetConnectAttr(gDbc, SQL_ATTR_AUTOCOMMIT, (SQLPOINTER)SQL_AUTOCOMMIT_OFF, 0)
+            != SQL_SUCCESS)
+    {
+        printSqlErr(gDbc, gStmt);
+        goto FINALYZE;
+    }
 
-{
+    /**************************************************************************
+     * ALA Initialization                                                     *
+     **************************************************************************/
 
-printSqlErr(gDbc, gStmt);
+    /* Initialize Error Manager */
+    (void)ALA_ClearErrorMgr(&sErrorMgr);
 
-goto FINALYZE;
+    /* Initialize ALA API environment */
+    if(ALA_InitializeAPI(ALA_TRUE, &sErrorMgr) != ALA_SUCCESS)
+    {
+        printAlaErr(&sErrorMgr);
+        goto FINALYZE;
+    }
+    sStep = 4;
 
+    /* Initialize ALA Logging */
+    if(ALA_EnableLogging((const signed char *)".",          /* Current Directory */
+                         (const signed char *)ALA_LOG_FILE, /* Log File Name */
+                         10 * 1024 * 1024,                  /* Log File Size */
+                         20,                     /* Maximum Previous Log File Count */
+                         &sErrorMgr)
+            != ALA_SUCCESS)
+    {
+        printAlaErr(&sErrorMgr);
+        goto FINALYZE;
+    }
+    sStep = 5;
+
+    /* Create XLogCollector */
+    memset(sSocketInfo, 0x00, 128);
+    sprintf(sSocketInfo, "SOCKET=%s;PEER_IP=%s;MY_PORT=%d",
+                         SOCKET_TYPE,
+                         PEER_IP,
+                         MY_PORT);
+    if(ALA_CreateXLogCollector((const signed char *)ALA_NAME,
+                               (const signed char *)sSocketInfo,
+                               10000,           /* XLog Pool Size */
+                               ALA_TRUE,        /* Use Committed Transaction Buffer */
+                               100,             /* ACK Per XLog Count */
+                               &sHandle,
+                               &sErrorMgr)
+            != ALA_SUCCESS)
+    {
+        printAlaErr(&sErrorMgr);
+        goto FINALYZE;
+    }
+    sStep = 6;
+
+    /* Set Timeouts */
+    if(ALA_SetHandshakeTimeout(sHandle,  600, &sErrorMgr) != ALA_SUCCESS)
+    {
+        printAlaErr(&sErrorMgr);
+        goto FINALYZE;
+    }
+
+    if(ALA_SetReceiveXLogTimeout(sHandle, 10, &sErrorMgr) != ALA_SUCCESS)
+    {
+        printAlaErr(&sErrorMgr);
+        goto FINALYZE;
+    }
+
+    /**************************************************************************
+     * Using XLog Collector                                                  *
+     **************************************************************************/
+
+    (void)runXLogCollector(sHandle, &sErrorMgr);
+
+  FINALYZE:
+    /**************************************************************************
+     * Finalization                                                           *
+     **************************************************************************/
+
+    switch(sStep)
+    {
+        case 6:
+            /* Destroy XLog Collector */
+            (void)ALA_DestroyXLogCollector(sHandle, &sErrorMgr);
+
+        case 5:
+            /* Finalize Logging */
+            (void)ALA_DisableLogging(&sErrorMgr);
+
+        case 4:
+            /* Destroy ALA API environment */
+            (void)ALA_DestroyAPI(ALA_TRUE, &sErrorMgr);
+
+        case 3:
+            (void)SQLDisconnect(gDbc);
+
+        case 2:
+            (void)SQLFreeConnect(gDbc);
+
+        case 1:
+            (void)SQLFreeEnv(gEnv);
+
+        default:
+            break;
+    }
+    return 0;
 }
 
-sStep = 3;
-
-/\* Autocommit OFF \*/
-
-if(SQLSetConnectAttr(gDbc, SQL_ATTR_AUTOCOMMIT, (SQLPOINTER)SQL_AUTOCOMMIT_OFF,
-0)
-
-!= SQL_SUCCESS)
-
+ALA_RC runXLogCollector(ALA_Handle aHandle, ALA_ErrorMgr * aErrorMgr)
 {
+    ALA_XLog       * sXLog         = NULL;
+    ALA_XLogHeader * sXLogHeader   = NULL;
+    UInt             sErrorCode;
+    ALA_ErrorLevel   sErrorLevel;
+    ALA_BOOL         sReplStopFlag = ALA_FALSE;
+    ALA_BOOL         sDummyFlag    = ALA_FALSE;
+    ALA_BOOL         sAckFlag;
 
-printSqlErr(gDbc, gStmt);
+    /* Run until ALA_ERROR_FATAL Error occurs or REPL_STOP XLog arrives */
+    while(sReplStopFlag != ALA_TRUE)
+    {
+        /* Wait and Handshake with XLog Sender */
+        if(ALA_Handshake(aHandle, aErrorMgr) != ALA_SUCCESS)
+        {
+            printAlaErr(aErrorMgr);
+            (void)ALA_GetErrorLevel(aErrorMgr, &sErrorLevel);
+            if(sErrorLevel == ALA_ERROR_FATAL)
+            {
+                return ALA_FAILURE;
+            }
+            /* Wait and Handshake with XLog Sender */
+            continue;
+        }
 
-goto FINALYZE;
-
-}
-
-/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
-
-\* ALA Initialization \*
-
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/
-
-/\* Initialize Error Manager \*/
-
-(void)ALA_ClearErrorMgr(\&sErrorMgr);
-
-/\* Initialize ALA API environment \*/
-
-if(ALA_InitializeAPI(ALA_TRUE, &sErrorMgr) != ALA_SUCCESS)
-
-{
-
-printAlaErr(\&sErrorMgr);
-
-goto FINALYZE;
-
-}
-
-sStep = 4;
-
-/\* Initialize ALA Logging \*/
-
-if(ALA_EnableLogging((const signed char \*)".", /\* Current Directory \*/
-
-(const signed char \*)ALA_LOG_FILE, /\* Log File Name \*/
-
-10 \* 1024 \* 1024, /\* Log File Size \*/
-
-20, /\* Maximum Previous Log File Count \*/
-
-&sErrorMgr)
-
+        while(sReplStopFlag != ALA_TRUE)
+        {
+            /* Get XLog from XLog Queue */
+            if(ALA_GetXLog(aHandle, (const ALA_XLog **)&sXLog, aErrorMgr)
 != ALA_SUCCESS)
-
-{
-
-printAlaErr(\&sErrorMgr);
-
-goto FINALYZE;
-
-}
-
-sStep = 5;
-
-/\* Create XLogCollector \*/
-
-memset(sSocketInfo, 0x00, 128);
-
-sprintf(sSocketInfo, "SOCKET=%s;PEER_IP=%s;MY_PORT=%d",
-
-SOCKET_TYPE,
-
-PEER_IP,
-
-MY_PORT);
-
-if(ALA_CreateXLogCollector((const signed char \*)ALA_NAME,
-
-(const signed char \*)sSocketInfo,
-
-10000, /\* XLog Pool Size \*/
-
-ALA_TRUE, /\* Use Committed Transaction Buffer \*/
-
-100, /\* ACK Per XLog Count \*/
-
-&sHandle,
-
-&sErrorMgr)
-
+            {
+                printAlaErr(aErrorMgr);
+                (void)ALA_GetErrorLevel(aErrorMgr, &sErrorLevel);
+                if(sErrorLevel == ALA_ERROR_FATAL)
+                {
+                    return ALA_FAILURE;
+                }
+                /* Wait and Handshake with XLog Sender */
+                break;
+            }
+            else
+            {
+                /* If XLog is NULL, then Receive XLog */
+                if(sXLog == NULL)
+                {
+                    /* Receive XLog and Insert into Queue */
+                    if(ALA_ReceiveXLog(aHandle, &sDummyFlag, aErrorMgr)
 != ALA_SUCCESS)
+                    {
+                        printAlaErr(aErrorMgr);
+                        (void)ALA_GetErrorLevel(aErrorMgr, &sErrorLevel);
+                        if(sErrorLevel == ALA_ERROR_FATAL)
+                        {
+                            return ALA_FAILURE;
+                        }
+                        else
+                        {
+                            (void)ALA_GetErrorCode(aErrorMgr, &sErrorCode);
+                            if(sErrorCode == 0x52014)   /* Timeout */
+                            {
+                                /* Receive XLog and Insert into Queue */
+                                continue;
+                            }
+                        }
+                        /* Wait and Handshake with XLog Sender */
+                        break;
+                    }
 
-{
+                    /* Get XLog from XLog Queue */
+                    continue;
+                }
 
-printAlaErr(\&sErrorMgr);
+                /* Get XLog Header */
+                (void)ALA_GetXLogHeader(sXLog,
+                                        (const ALA_XLogHeader **)&sXLogHeader,
+                                        aErrorMgr);
 
-goto FINALYZE;
+                /* Check REPL_STOP XLog */
+                if(sXLogHeader->mType == XLOG_TYPE_REPL_STOP)
+                {
+                    sReplStopFlag = ALA_TRUE;
+                }
 
+                /* Apply XLog to Altibase DBMS */
+                sAckFlag = ALA_FALSE;
+                switch(sXLogHeader->mType)
+                {
+                    case XLOG_TYPE_COMMIT            :
+                    case XLOG_TYPE_ABORT             :  /* Unused in Committed Transaction Only */
+                    case XLOG_TYPE_REPL_STOP         :
+                        (void)applyXLogToAltibase(aHandle, sXLog, aErrorMgr);
+                        sAckFlag = ALA_TRUE;
+                        break;
+
+                    case XLOG_TYPE_INSERT            :
+                    case XLOG_TYPE_UPDATE            :
+                    case XLOG_TYPE_DELETE            :
+                    case XLOG_TYPE_SP_SET            :  /* Unused in Committed Transaction Only */
+                    case XLOG_TYPE_SP_ABORT          :  /* Unused in Committed Transaction Only */
+                        (void)applyXLogToAltibase(aHandle, sXLog, aErrorMgr);
+                        break;
+
+                    case XLOG_TYPE_KEEP_ALIVE        :
+                        sAckFlag = ALA_TRUE;
+                        break;
+
+                    case XLOG_TYPE_LOB_CURSOR_OPEN   :
+                    case XLOG_TYPE_LOB_CURSOR_CLOSE  :
+                    case XLOG_TYPE_LOB_PREPARE4WRITE :
+                    case XLOG_TYPE_LOB_PARTIAL_WRITE :
+                    case XLOG_TYPE_LOB_FINISH2WRITE  :
+                    default :
+                        break;
+                }
+
+                /* Free XLog */
+                if(ALA_FreeXLog(aHandle, sXLog, aErrorMgr) != ALA_SUCCESS)
+                {
+                    printAlaErr(aErrorMgr);
+                    (void)ALA_GetErrorLevel(aErrorMgr, &sErrorLevel);
+                    if(sErrorLevel == ALA_ERROR_FATAL)
+                    {
+                        return ALA_FAILURE;
+                    }
+                    /* Wait and Handshake with XLog Sender */
+                    break;
+                }
+
+                /* Send ACK to XLog Sender */
+                if(sAckFlag != ALA_FALSE)
+                {
+                    if(ALA_SendACK(aHandle, aErrorMgr) != ALA_SUCCESS)
+                    {
+                        printAlaErr(aErrorMgr);
+                        (void)ALA_GetErrorLevel(aErrorMgr, &sErrorLevel);
+                        if(sErrorLevel == ALA_ERROR_FATAL)
+                        {
+                            return ALA_FAILURE;
+                        }
+                        /* Wait and Handshake with XLog Sender */
+                        break;
+                    }
+                }
+            }   /* else */
+        }   /* while */
+
+        /* Rollback Current Transaction */
+        (void)SQLEndTran(SQL_HANDLE_DBC, gDbc, SQL_ROLLBACK);
+
+    }   /* while */
+
+    return ALA_SUCCESS;
 }
 
-sStep = 6;
-
-/\* Set Timeouts \*/
-
-if(ALA_SetHandshakeTimeout(sHandle, 600, &sErrorMgr) != ALA_SUCCESS)
-
+ALA_RC applyXLogToAltibase(ALA_Handle aHandle, ALA_XLog * aXLog, ALA_ErrorMgr * aErrorMgr)
 {
-
-printAlaErr(\&sErrorMgr);
-
-goto FINALYZE;
-
-}
-
-if(ALA_SetReceiveXLogTimeout(sHandle, 10, &sErrorMgr) != ALA_SUCCESS)
-
-{
-
-printAlaErr(\&sErrorMgr);
-
-goto FINALYZE;
-
-}
-
-/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
-
-\* Using XLog Collector \*
-
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/
-
-(void)runXLogCollector(sHandle, \&sErrorMgr);
-
-FINALYZE:
-
-/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
-
-\* Finalization \*
-
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/
-
-switch(sStep)
-
-{
-
-case 6:
-
-/\* Destroy XLog Collector \*/
-
-(void)ALA_DestroyXLogCollector(sHandle, \&sErrorMgr);
-
-case 5:
-
-/\* Finalize Logging \*/
-
-(void)ALA_DisableLogging(\&sErrorMgr);
-
-case 4:
-
-/\* Destroy ALA API environment \*/
-
-(void)ALA_DestroyAPI(ALA_TRUE, \&sErrorMgr);
-
-case 3:
-
-(void)SQLDisconnect(gDbc);
-
-case 2:
-
-(void)SQLFreeConnect(gDbc);
-
-case 1:
-
-(void)SQLFreeEnv(gEnv);
-
-default:
-
-break;
-
-}
-
-return 0;
-
-}
-
-ALA_RC runXLogCollector(ALA_Handle aHandle, ALA_ErrorMgr \* aErrorMgr)
-
-{
-
-ALA_XLog \* sXLog = NULL;
-
-ALA_XLogHeader \* sXLogHeader = NULL;
-
-UInt sErrorCode;
-
-ALA_ErrorLevel sErrorLevel;
-
-ALA_BOOL sReplStopFlag = ALA_FALSE;
-
-ALA_BOOL sDummyFlag = ALA_FALSE;
-
-ALA_BOOL sAckFlag;
-
-/\* Run until ALA_ERROR_FATAL Error occurs or REPL_STOP XLog arrives \*/
-
-while(sReplStopFlag != ALA_TRUE)
-
-{
-
-/\* Wait and Handshake with XLog Sender \*/
-
-if(ALA_Handshake(aHandle, aErrorMgr) != ALA_SUCCESS)
-
-{
-
-printAlaErr(aErrorMgr);
-
-(void)ALA_GetErrorLevel(aErrorMgr, \&sErrorLevel);
-
-if(sErrorLevel == ALA_ERROR_FATAL)
-
-{
-
-return ALA_FAILURE;
-
-}
-
-/\* Wait and Handshake with XLog Sender \*/
-
-continue;
-
-}
-
-while(sReplStopFlag != ALA_TRUE)
-
-{
-
-/\* Get XLog from XLog Queue \*/
-
-if(ALA_GetXLog(aHandle, (const ALA_XLog \*\*)&sXLog, aErrorMgr)
-
-!= ALA_SUCCESS)
-
-{
-
-printAlaErr(aErrorMgr);
-
-(void)ALA_GetErrorLevel(aErrorMgr, \&sErrorLevel);
-
-if(sErrorLevel == ALA_ERROR_FATAL)
-
-{
-
-return ALA_FAILURE;
-
-}
-
-/\* Wait and Handshake with XLog Sender \*/
-
-break;
-
-}
-
-else
-
-{
-
-/\* If XLog is NULL, then Receive XLog \*/
-
-if(sXLog == NULL)
-
-{
-
-/\* Receive XLog and Insert into Queue \*/
-
-if(ALA_ReceiveXLog(aHandle, &sDummyFlag, aErrorMgr)
-
-!= ALA_SUCCESS)
-
-{
-
-printAlaErr(aErrorMgr);
-
-(void)ALA_GetErrorLevel(aErrorMgr, \&sErrorLevel);
-
-if(sErrorLevel == ALA_ERROR_FATAL)
-
-{
-
-return ALA_FAILURE;
-
-}
-
-else
-
-{
-
-(void)ALA_GetErrorCode(aErrorMgr, \&sErrorCode);
-
-if(sErrorCode == 0x52014) /\* Timeout \*/
-
-{
-
-/\* Receive XLog and Insert into Queue \*/
-
-continue;
-
-}
-
-}
-
-/\* Wait and Handshake with XLog Sender \*/
-
-break;
-
-}
-
-/\* Get XLog from XLog Queue \*/
-
-continue;
-
-}
-
-/\* Get XLog Header \*/
-
-(void)ALA_GetXLogHeader(sXLog,
-
-(const ALA_XLogHeader \*\*)&sXLogHeader,
-
-aErrorMgr);
-
-/\* Check REPL_STOP XLog \*/
-
-if(sXLogHeader-\>mType == XLOG_TYPE_REPL_STOP)
-
-{
-
-sReplStopFlag = ALA_TRUE;
-
-}
-
-/\* Apply XLog to Altibase DBMS \*/
-
-sAckFlag = ALA_FALSE;
-
-switch(sXLogHeader-\>mType)
-
-{
-
-case XLOG_TYPE_COMMIT :
-
-case XLOG_TYPE_ABORT : /\* Unused in Committed Transaction Only \*/
-
-case XLOG_TYPE_REPL_STOP :
-
-(void)applyXLogToAltibase(aHandle, sXLog, aErrorMgr);
-
-sAckFlag = ALA_TRUE;
-
-break;
-
-case XLOG_TYPE_INSERT :
-
-case XLOG_TYPE_UPDATE :
-
-case XLOG_TYPE_DELETE :
-
-case XLOG_TYPE_SP_SET : /\* Unused in Committed Transaction Only \*/
-
-case XLOG_TYPE_SP_ABORT : /\* Unused in Committed Transaction Only \*/
-
-(void)applyXLogToAltibase(aHandle, sXLog, aErrorMgr);
-
-break;
-
-case XLOG_TYPE_KEEP_ALIVE :
-
-sAckFlag = ALA_TRUE;
-
-break;
-
-case XLOG_TYPE_LOB_CURSOR_OPEN :
-
-case XLOG_TYPE_LOB_CURSOR_CLOSE :
-
-case XLOG_TYPE_LOB_PREPARE4WRITE :
-
-case XLOG_TYPE_LOB_PARTIAL_WRITE :
-
-case XLOG_TYPE_LOB_FINISH2WRITE :
-
-default :
-
-break;
-
-}
-
-/\* Free XLog \*/
-
-if(ALA_FreeXLog(aHandle, sXLog, aErrorMgr) != ALA_SUCCESS)
-
-{
-
-printAlaErr(aErrorMgr);
-
-(void)ALA_GetErrorLevel(aErrorMgr, \&sErrorLevel);
-
-if(sErrorLevel == ALA_ERROR_FATAL)
-
-{
-
-return ALA_FAILURE;
-
-}
-
-/\* Wait and Handshake with XLog Sender \*/
-
-break;
-
-}
-
-/\* Send ACK to XLog Sender \*/
-
-if(sAckFlag != ALA_FALSE)
-
-{
-
-if(ALA_SendACK(aHandle, aErrorMgr) != ALA_SUCCESS)
-
-{
-
-printAlaErr(aErrorMgr);
-
-(void)ALA_GetErrorLevel(aErrorMgr, \&sErrorLevel);
-
-if(sErrorLevel == ALA_ERROR_FATAL)
-
-{
-
-return ALA_FAILURE;
-
-}
-
-/\* Wait and Handshake with XLog Sender \*/
-
-break;
-
-}
-
-}
-
-} /\* else \*/
-
-} /\* while \*/
-
-/\* Rollback Current Transaction \*/
-
-(void)SQLEndTran(SQL_HANDLE_DBC, gDbc, SQL_ROLLBACK);
-
-} /\* while \*/
-
-return ALA_SUCCESS;
-
-}
-
-ALA_RC applyXLogToAltibase(ALA_Handle aHandle, ALA_XLog \* aXLog, ALA_ErrorMgr
-\* aErrorMgr)
-
-{
-
-ALA_Table \* sTable = NULL;
-
-ALA_XLogHeader \* sXLogHeader = NULL;
-
-char sQuery[QUERY_SIZE];
-
-char \* sImplictSPPos;
-
-/\* Get XLog Header \*/
-
-(void)ALA_GetXLogHeader(aXLog,
-
-(const ALA_XLogHeader \*\*)&sXLogHeader,
-
-aErrorMgr);
-
-/\* if COMMIT XLog, then Commit Current Transaction \*/
-
-if(sXLogHeader-\>mType == XLOG_TYPE_COMMIT)
-
-{
-
-(void)SQLEndTran(SQL_HANDLE_DBC, gDbc, SQL_COMMIT);
-
-}
-
-/\* if ABORT XLog, then Rollback Current Transaction \*/
-
-else if(sXLogHeader-\>mType == XLOG_TYPE_ABORT)
-
-{
-
-(void)SQLEndTran(SQL_HANDLE_DBC, gDbc, SQL_ROLLBACK);
-
-}
-
-/\* if REPL_STOP XLog, then Rollback Current Transaction \*/
-
-else if(sXLogHeader-\>mType == XLOG_TYPE_REPL_STOP)
-
-{
-
-(void)SQLEndTran(SQL_HANDLE_DBC, gDbc, SQL_ROLLBACK);
-
-}
-
-/\* etc. \*/
-
-else
-
-{
-
-/\* Get Table Information \*/
-
-if(ALA_GetTableInfo(aHandle,
-
-sXLogHeader-\>mTableOID,
-
-(const ALA_Table \*\*)&sTable,
-
-aErrorMgr) != ALA_SUCCESS)
-
-{
-
-printAlaErr(aErrorMgr);
-
-return ALA_FAILURE;
-
-}
-
-/\* Get Altibase SQL from XLog \*/
-
-memset(sQuery, 0x00, QUERY_SIZE);
-
-if(ALA_GetAltibaseSQL(sTable,
-
-aXLog,
-
-QUERY_SIZE,
-
-(signed char \*)sQuery, aErrorMgr)
-
-!= ALA_SUCCESS)
-
-{
-
-printAlaErr(aErrorMgr);
-
-return ALA_FAILURE;
-
-}
-
-/\* In order to Apply Implicit Savepoint to Altibase DBMS,
-
-\* '\$' characters of Savepoint's Name has to be changed.
-
-\* Unused in Committed Transaction Only \*/
-
-if((sXLogHeader-\>mType == XLOG_TYPE_SP_SET) \|\|
-
-(sXLogHeader-\>mType == XLOG_TYPE_SP_ABORT))
-
-{
-
-while((sImplictSPPos = strchr(sQuery, '\$')) != NULL)
-
-{
-
-\*sImplictSPPos = '_';
-
-}
-
-}
-
-/\* Apply SQL to DBMS with ODBC \*/
-
-if(SQLAllocStmt(gDbc, &gStmt) != SQL_SUCCESS)
-
-{
-
-return ALA_FAILURE;
-
-}
-
-if(SQLExecDirect(gStmt, (SQLCHAR \*)sQuery, SQL_NTS) != SQL_SUCCESS)
-
-{
-
-printSqlErr(gDbc, gStmt);
-
-(void)SQLFreeStmt(gStmt, SQL_DROP);
-
-return ALA_FAILURE;
-
-}
-
-(void)SQLFreeStmt(gStmt, SQL_DROP);
-
-}
-
-return ALA_SUCCESS;
-
+    ALA_Table      * sTable = NULL;
+    ALA_XLogHeader * sXLogHeader = NULL;
+    char             sQuery[QUERY_SIZE];
+    char           * sImplictSPPos;
+
+    /* Get XLog Header */
+    (void)ALA_GetXLogHeader(aXLog,
+                             (const ALA_XLogHeader **)&sXLogHeader,
+                             aErrorMgr);
+
+    /* if COMMIT XLog, then Commit Current Transaction */
+    if(sXLogHeader->mType == XLOG_TYPE_COMMIT)
+    {
+        (void)SQLEndTran(SQL_HANDLE_DBC, gDbc, SQL_COMMIT);
+    }
+    /* if ABORT XLog, then Rollback Current Transaction */
+    else if(sXLogHeader->mType == XLOG_TYPE_ABORT)
+    {
+        (void)SQLEndTran(SQL_HANDLE_DBC, gDbc, SQL_ROLLBACK);
+    }
+    /* if REPL_STOP XLog, then Rollback Current Transaction */
+    else if(sXLogHeader->mType == XLOG_TYPE_REPL_STOP)
+    {
+        (void)SQLEndTran(SQL_HANDLE_DBC, gDbc, SQL_ROLLBACK);
+    }
+    /* etc. */
+    else
+    {
+        /* Get Table Information */
+        if(ALA_GetTableInfo(aHandle,
+                            sXLogHeader->mTableOID,
+                            (const ALA_Table **)&sTable,
+                            aErrorMgr) != ALA_SUCCESS)
+        {
+            printAlaErr(aErrorMgr);
+            return ALA_FAILURE;
+        }
+
+        /* Get Altibase SQL from XLog */
+        memset(sQuery, 0x00, QUERY_SIZE);
+        if(ALA_GetAltibaseSQL(sTable,
+                              aXLog,
+                              QUERY_SIZE,
+                              (signed char *)sQuery, aErrorMgr)
+           != ALA_SUCCESS)
+        {
+            printAlaErr(aErrorMgr);
+            return ALA_FAILURE;
+        }
+
+        /* In order to Apply Implicit Savepoint to Altibase DBMS,
+         * '$' characters of Savepoint's Name has to be changed.
+         * Unused in Committed Transaction Only */
+        if((sXLogHeader->mType == XLOG_TYPE_SP_SET) ||
+           (sXLogHeader->mType == XLOG_TYPE_SP_ABORT))
+        {
+            while((sImplictSPPos = strchr(sQuery, '$')) != NULL)
+            {
+               *sImplictSPPos = '_';
+            }
+        }
+
+        /* Apply SQL to DBMS with ODBC */
+        if(SQLAllocStmt(gDbc, &gStmt) != SQL_SUCCESS)
+        {
+            return ALA_FAILURE;
+        }
+
+        if(SQLExecDirect(gStmt,  (SQLCHAR *)sQuery, SQL_NTS) != SQL_SUCCESS)
+        {
+            printSqlErr(gDbc, gStmt);
+            (void)SQLFreeStmt(gStmt, SQL_DROP);
+            return ALA_FAILURE;
+        }
+
+        (void)SQLFreeStmt(gStmt, SQL_DROP);
+    }
+
+    return ALA_SUCCESS;
 }
 
 void printSqlErr(SQLHDBC aDbc, SQLHSTMT aStmt)
-
 {
+    SQLINTEGER  errNo;
+    SQLSMALLINT msgLength;
+    SQLCHAR     errMsg[1024];
 
-SQLINTEGER errNo;
-
-SQLSMALLINT msgLength;
-
-SQLCHAR errMsg[1024];
-
-if(SQLError(SQL_NULL_HENV, aDbc, aStmt,
-
-NULL, &errNo,
-
-errMsg, sizeof(errMsg), &msgLength)
-
-== SQL_SUCCESS)
-
-{
-
-printf("SQL Error : %d, %s\\n", (int)errNo, (char \*)errMsg);
-
+    if(SQLError(SQL_NULL_HENV, aDbc, aStmt,
+                NULL, &errNo,
+                errMsg, sizeof(errMsg), &msgLength)
+            == SQL_SUCCESS)
+    {
+        printf("SQL Error : %d, %s\n", (int)errNo, (char *)errMsg);
+    }
 }
 
-}
-
-void printAlaErr(ALA_ErrorMgr \* aErrorMgr)
-
+void printAlaErr(ALA_ErrorMgr * aErrorMgr)
 {
+    char * sErrorMessage = NULL;
+    int    sErrorCode;
 
-char \* sErrorMessage = NULL;
+    (void)ALA_GetErrorCode(aErrorMgr, (unsigned int *)&sErrorCode);
+    (void)ALA_GetErrorMessage(aErrorMgr, (const signed char **)&sErrorMessage);
+    printf("ALA Error : %d, %s\n", sErrorCode, sErrorMessage);
+}
+```
 
-int sErrorCode;
 
-(void)ALA_GetErrorCode(aErrorMgr, (unsigned int \*)\&sErrorCode);
-
-(void)ALA_GetErrorMessage(aErrorMgr, (const signed char \*\*)\&sErrorMessage);
-
-printf("ALA Error : %d, %s\\n", sErrorCode, sErrorMessage);
