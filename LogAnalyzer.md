@@ -266,7 +266,7 @@ Manager생성시 지정한 로그 파일에 기록한다.
 
 전체 구조를 그림으로 나타내면 아래와 같다.
 
-![](media/LOGANALYZER/b06cfb645f01745efa8b8d35557fccde.png)
+![](media/LogAnalyzer/b06cfb645f01745efa8b8d35557fccde.png)
 
 [그림 1‑1] Log Analyzer의 구조
 
