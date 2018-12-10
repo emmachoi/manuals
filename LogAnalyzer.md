@@ -2879,10 +2879,14 @@ ALA_Handshake를 참고한다.
 
 #### 구 문
 
-ALA_RC ALA_SetXLogPoolSize (  
-ALA_Handle aHandle,  
-SInt aXLogPoolSize,  
-ALA_ErrorMgr \* aOutErrorMgr);
+```
+ALA_RC ALA_SetXLogPoolSize (
+     ALA_Handle      aHandle,
+     SInt              aXLogPoolSize,
+     ALA_ErrorMgr * aOutErrorMgr);
+```
+
+
 
 #### 인 자
 
@@ -2908,159 +2912,106 @@ ALA_CreateXLogCollector
 
 #### 예 제
 
-\#include \<alaAPI.h\>
-
+```
+#include <alaAPI.h>
 …
 
 int main()
-
 {
+    ALA_Handle sHandle;
+    ALA_XLog * sXLog = NULL;
+    ALA_XLogHeader * sXLogHeader = NULL;
+    ALA_XLogCollectorStatus sXLogCollectorStatus;
+    ALA_BOOL sInsertXLogInQueue = ALA_FALSE;
+    ALA_BOOL sExitFlag = ALA_FALSE;
 
-ALA_Handle sHandle;
 
-ALA_XLog \* sXLog = NULL;
+    /* TCP를 사용하는 XLog Collector 생성
+    * XLog Sender의 이름                    : log_analysis
+    * XLog Sender의 인증 정보               : IP=127.0.0.1
+    * 접속 대기 PORT                        : 30300
+    * XLog Pool의 최대 크기                 : 10000
+    * Commit 순서로 Transaction의 XLog 얻기 : 미지정
+    * 실제로 ACK를 보낼 기준 XLog 수        : 100
+    */
+    (void)ALA_CreateXLogCollector("log_analysis",
+                "SOCKET=TCP;PEER_IP=127.0.0.1;MY_PORT=30300",
+                10000,
+                ALA_FALSE,
+                100,
+                &sHandle,
+                NULL);
 
-ALA_XLogHeader \* sXLogHeader = NULL;
-
-ALA_XLogCollectorStatus sXLogCollectorStatus;
-
-ALA_BOOL sInsertXLogInQueue = ALA_FALSE;
-
-ALA_BOOL sExitFlag = ALA_FALSE;
-
-/\* TCP를 사용하는 XLog Collector 생성
-
-\* XLog Sender의 이름 : log_analysis
-
-\* XLog Sender의 인증 정보 : IP=127.0.0.1
-
-\* 접속 대기 PORT : 30300
-
-\* XLog Pool의 최대 크기 : 10000
-
-\* Commit 순서로 Transaction의 XLog 얻기 : 미지정
-
-\* 실제로 ACK를 보낼 기준 XLog 수 : 100
-
-\*/
-
-(void)ALA_CreateXLogCollector("log_analysis",
-
-"SOCKET=TCP;PEER_IP=127.0.0.1;MY_PORT=30300",
-
-10000,
-
-ALA_FALSE,
-
-100,
-
-&sHandle,
-
-NULL);
-
-...
-
-/\* XLog Sender가 종료될 때까지 XLog 수신 \*/
-
-while(sExitFlag != ALA_TRUE)
-
-{
-
-/\* XLog 수신 및 XLog Queue에 추가 \*/
-
-sInsertXLogInQueue = ALA_FALSE;
-
-while(sInsertXLogInQueue != ALA_TRUE)
-
-{
-
-if(ALA_ReceiveXLog(aHandle, &sInsertXLogInQueue, NULL) != ALA_SUCCESS)
-
-{
-
-if(sErrorCode == 0x52033) /\* XLog Pool Empty \*/
-
-{
-
-if(ALA_SetXLogPoolSize(aHandle,
-
-20000, /\* Increase XLog Pool Size \*/
-
-aErrorMgr)
-
-!= ALA_SUCCESS)
-
-{
-
-return -1;
-
+    ...    
+    
+    /* XLog Sender가 종료될 때까지 XLog 수신 */
+    while(sExitFlag != ALA_TRUE)
+    {
+        /* XLog 수신 및 XLog Queue에 추가 */
+        sInsertXLogInQueue = ALA_FALSE;
+        while(sInsertXLogInQueue != ALA_TRUE)
+        {
+            if(ALA_ReceiveXLog(aHandle, &sInsertXLogInQueue, NULL) != ALA_SUCCESS)
+            {
+                if(sErrorCode == 0x52033)   /* XLog Pool Empty */
+                {
+                    if(ALA_SetXLogPoolSize(aHandle,
+                                20000, /* Increase XLog Pool Size */
+                                aErrorMgr)
+                                != ALA_SUCCESS)
+                    {
+                        return -1;
+                    }
+                    continue;
+                }
+            }
+        }
+        /* XLog Queue에서 XLog 얻기
+        * 로그 레코드가 기록된 순서로 Transaction의 XLog 얻는 경우를 가정
+        */
+        (void)ALA_GetXLog(aHandle, &sXLog, NULL);
+         
+        /* XLog 분석 및 처리 */
+        (void)ALA_GetXLogHeader(sXLog, &sXLogHeader, NULL);
+        if(sXLogHeader->mType == XLOG_TYPE_REPL_STOP)
+        {
+            sExitFlag = ALA_TRUE;
+        }
+        ...
+         
+        /* XLog Sender에게 ACK 전송 */
+        (void)ALA_SendACK(aHandle, NULL);
+         
+        /* XLog를 XLog Pool에 반환 */
+        (void)ALA_FreeXLog(aHandle, sXLog, NULL);
+         
+        /* XLog Collector의 상태 얻기 */
+        (void)ALA_GetXLogCollectorStatus(aHandle,
+                    &sXLogCollectorStatus,
+                    NULL);
+    }
+    ...
+    /* XLog Collector 제거 */
+    (void)ALA_DestroyXLogCollector(sHandle, NULL);
+    
+    return 0;
 }
 
-continue;
+```
 
-}
 
-}
-
-}
-
-/\* XLog Queue에서 XLog 얻기
-
-\* 로그 레코드가 기록된 순서로 Transaction의 XLog 얻는 경우를 가정
-
-\*/
-
-(void)ALA_GetXLog(aHandle, &sXLog, NULL);
-
-/\* XLog 분석 및 처리 \*/
-
-(void)ALA_GetXLogHeader(sXLog, &sXLogHeader, NULL);
-
-if(sXLogHeader-\>mType == XLOG_TYPE_REPL_STOP)
-
-{
-
-sExitFlag = ALA_TRUE;
-
-}
-
-...
-
-/\* XLog Sender에게 ACK 전송 \*/
-
-(void)ALA_SendACK(aHandle, NULL);
-
-/\* XLog를 XLog Pool에 반환 \*/
-
-(void)ALA_FreeXLog(aHandle, sXLog, NULL);
-
-/\* XLog Collector의 상태 얻기 \*/
-
-(void)ALA_GetXLogCollectorStatus(aHandle,
-
-&sXLogCollectorStatus,
-
-NULL);
-
-}
-
-...
-
-/\* XLog Collector 제거 \*/
-
-(void)ALA_DestroyXLogCollector(sHandle, NULL);
-
-return 0;
-
->   }
 
 ### ALA_Handshake
 
 #### 구 문
 
-ALA_RC ALA_Handshake(  
-ALA_Handle aHandle,  
-ALA_ErrorMgr \* aOutErrorMgr);
+```
+ALA_RC ALA_Handshake(
+     ALA_Handle      aHandle,
+     ALA_ErrorMgr * aOutErrorMgr);
+```
+
+
 
 #### 인 자
 
@@ -3120,104 +3071,78 @@ ALA_GetIndexInfo
 
 #### 예 제
 
-\#include \<alaAPI.h\>
-
+```
+#include <alaAPI.h>
 …
 
 void testXLogCollector(ALA_Handle aHandle)
-
 {
+ALA_XLog                * sXLog                = NULL;
+ALA_XLogHeader          * sXLogHeader          = NULL;
+ALA_XLogCollectorStatus   sXLogCollectorStatus;
+ALA_BOOL                  sInsertXLogInQueue   = ALA_FALSE;
+ALA_BOOL                  sExitFlag            = ALA_FALSE;
 
-ALA_XLog \* sXLog = NULL;
-
-ALA_XLogHeader \* sXLogHeader = NULL;
-
-ALA_XLogCollectorStatus sXLogCollectorStatus;
-
-ALA_BOOL sInsertXLogInQueue = ALA_FALSE;
-
-ALA_BOOL sExitFlag = ALA_FALSE;
-
-/\* Handshake Timeout 설정 : 600 초 \*/
-
+/* Handshake Timeout 설정 : 600 초 */
 (void)ALA_SetHandshakeTimeout(aHandle, 600, NULL);
 
-/\* XLog 수신 Timeout 설정 : 10 초 \*/
-
+/* XLog 수신 Timeout 설정 : 10 초 */
 (void)ALA_SetReceiveXLogTimeout(aHandle, 10, NULL);
 
-/\* XLog Sender 접속 대기 및 Handshake \*/
-
+/* XLog Sender 접속 대기 및 Handshake */
 (void)ALA_Handshake(aHandle, NULL);
 
-/\* XLog Sender가 종료될 때까지 XLog 수신 \*/
-
+/* XLog Sender가 종료될 때까지 XLog 수신 */
 while(sExitFlag != ALA_TRUE)
-
 {
-
-/\* XLog 수신 및 XLog Queue에 추가 \*/
-
+/* XLog 수신 및 XLog Queue에 추가 */
 sInsertXLogInQueue = ALA_FALSE;
-
 while(sInsertXLogInQueue != ALA_TRUE)
-
 {
-
-(void)ALA_ReceiveXLog(aHandle, &sInsertXLogInQueue, NULL);
-
+    (void)ALA_ReceiveXLog(aHandle, &sInsertXLogInQueue, NULL);
 }
 
-/\* XLog Queue에서 XLog 얻기
-
-\* 로그 레코드가 기록된 순서로 Transaction의 XLog 얻는 경우를 가정
-
-\*/
-
+/* XLog Queue에서 XLog 얻기
+ * 로그 레코드가 기록된 순서로 Transaction의 XLog 얻는 경우를 가정
+ */
 (void)ALA_GetXLog(aHandle, &sXLog, NULL);
 
-/\* XLog 분석 및 처리 \*/
-
+/* XLog 분석 및 처리 */
 (void)ALA_GetXLogHeader(sXLog, &sXLogHeader, NULL);
-
-if(sXLogHeader-\>mType == XLOG_TYPE_REPL_STOP)
-
+if(sXLogHeader->mType == XLOG_TYPE_REPL_STOP)
 {
-
 sExitFlag = ALA_TRUE;
-
 }
-
 …
 
-/\* XLog Sender에게 ACK 전송 \*/
-
+/* XLog Sender에게 ACK 전송 */
 (void)ALA_SendACK(aHandle, NULL);
 
-/\* XLog를 XLog Pool에 반환 \*/
-
+/* XLog를 XLog Pool에 반환 */
 (void)ALA_FreeXLog(aHandle, sXLog, NULL);
 
-/\* XLog Collector의 상태 얻기 \*/
-
+/* XLog Collector의 상태 얻기 */
 (void)ALA_GetXLogCollectorStatus(aHandle,
-
-&sXLogCollectorStatus,
-
+                                 &sXLogCollectorStatus,
 NULL);
-
 }
-
 }
+```
+
+
 
 ### ALA_ReceiveXLog
 
 #### 구 문
 
+```
 ALA_RC ALA_ReceiveXLog(  
-ALA_Handle aHandle,  
-ALA_BOOL \* aOutInsertXLogInQueue,  
-ALA_ErrorMgr \* aOutErrorMgr);
+     ALA_Handle aHandle,  
+     ALA_BOOL * aOutInsertXLogInQueue,  
+     ALA_ErrorMgr * aOutErrorMgr);
+```
+
+
 
 #### 인 자
 
@@ -3282,13 +3207,14 @@ ALA_Handshake를 참고한다.
 
 #### 구 문
 
+```
 ALA_RC ALA_GetXLog(
+        ALA_Handle          aHandle,
+        const ALA_XLog ** aOutXLog,
+        ALA_ErrorMgr     * aOutErrorMgr);
+```
 
-ALA_Handle aHandle,
 
-const ALA_XLog \*\* aOutXLog,
-
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -3340,11 +3266,13 @@ ALA_Handshake를 참고한다.
 
 #### 구 문
 
+```
 ALA_RC ALA_SendACK(
+        ALA_Handle      aHandle,
+        ALA_ErrorMgr * aOutErrorMgr);
+```
 
-ALA_Handle aHandle,
 
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -3409,10 +3337,14 @@ ALA_Handshake를 참고한다.
 
 #### 구 문
 
-ALA_RC ALA_FreeXLog(  
-ALA_Handle aHandle,  
-ALA_XLog \* aXLog,  
-ALA_ErrorMgr \* aOutErrorMgr);
+```
+ALA_RC ALA_FreeXLog(
+     ALA_Handle      aHandle,
+     ALA_XLog      * aXLog,
+     ALA_ErrorMgr * aOutErrorMgr);
+```
+
+
 
 #### 인 자
 
@@ -3451,11 +3383,13 @@ ALA_Handshake를 참고한다.
 
 #### 구 문
 
+```
 ALA_RC ALA_DestroyXLogCollector(
+        ALA_Handle      aHandle,
+        ALA_ErrorMgr * aOutErrorMgr);
+```
 
-ALA_Handle aHandle,
 
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -3494,13 +3428,14 @@ ALA_CreateXLogCollector를 참고한다.
 
 #### 구 문
 
+```
 ALA_RC ALA_GetXLogCollectorStatus(
+       ALA_Handle                     aHandle,
+       ALA_XLogCollectorStatus * aOutXLogCollectorStatus,
+       ALA_ErrorMgr                * aOutErrorMgr);
+```
 
-ALA_Handle aHandle,
 
-ALA_XLogCollectorStatus \* aOutXLogCollectorStatus,
-
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -3522,29 +3457,22 @@ XLog Collector의 상태를 얻는다.
 
 XLog Collector의 상태를 저장하는 구조체는 아래와 같이 정의된다.
 
+```
 typedef struct ALA_XLogCollectorStatus
-
 {
-
-SChar mMyIP[ALA_IP_LEN];
-
-SInt mMyPort;
-
-SChar mPeerIP[ALA_IP_LEN];
-
-SInt mPeerPort;
-
-SChar mSocketFile[ALA_SOCKET_FILENAME_LEN];
-
-UInt mXLogCountInPool;
-
-ALA_SN mLastArrivedSN;
-
-ALA_SN mLastProcessedSN;
-
-ALA_BOOL mNetworkValid;
-
+SChar            mMyIP[ALA_IP_LEN];
+    SInt          mMyPort;
+    SChar        mPeerIP[ALA_IP_LEN];
+    SInt          mPeerPort;
+    SChar        mSocketFile[ALA_SOCKET_FILENAME_LEN];
+    UInt          mXLogCountInPool;
+    ALA_SN      mLastArrivedSN;
+    ALA_SN      mLastProcessedSN;
+    ALA_BOOL    mNetworkValid;
 } ALA_XLogCollectorStatus;
+```
+
+
 
 | 구조체 멤버      | 설 명                            |
 |------------------|----------------------------------|
@@ -3597,13 +3525,14 @@ ALA_Handshake를 참고한다.
 
 #### 구 문
 
+```
 ALA_RC ALA_GetXLogHeader(
+        const ALA_XLog          * aXLog,
+        const ALA_XLogHeader ** aOutXLogHeader,
+        ALA_ErrorMgr             * aOutErrorMgr);
+```
 
-const ALA_XLog \* aXLog,
 
-const ALA_XLogHeader \*\* aOutXLogHeader,
-
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -3637,57 +3566,49 @@ ALA_GetXLogLOB
 
 #### 예 제
 
-\#include \<alaAPI.h\>
-
+```
+#include <alaAPI.h>
 …
 
-void testXLogGetPart(const ALA_XLog \* aXLog)
-
+void testXLogGetPart(const ALA_XLog * aXLog)
 {
+    ALA_XLogHeader     * sXLogHeader     = NULL;
+    ALA_XLogPrimaryKey * sXLogPrimaryKey = NULL;
+    ALA_XLogColumn     * sXLogColumn     = NULL;
+    ALA_XLogSavepoint  * sXLogSavepoint  = NULL;
+    ALA_XLogLOB        * sXLogLOB        = NULL;
 
-ALA_XLogHeader \* sXLogHeader = NULL;
+    /* XLog Header 얻기 */
+    (void)ALA_GetXLogHeader(aXLog, &sXLogHeader, NULL);
 
-ALA_XLogPrimaryKey \* sXLogPrimaryKey = NULL;
+    /* XLog Primary Key 얻기 */
+    (void)ALA_GetXLogPrimaryKey(aXLog, &sXLogPrimaryKey, NULL);
 
-ALA_XLogColumn \* sXLogColumn = NULL;
+    /* XLog Column 얻기 */
+    (void)ALA_GetXLogColumn(aXLog, &sXLogColumn, NULL);
 
-ALA_XLogSavepoint \* sXLogSavepoint = NULL;
+    /* XLog Savepoint 얻기 */
+    (void)ALA_GetXLogSavepoint(aXLog, &sXLogSavepoint, NULL);
 
-ALA_XLogLOB \* sXLogLOB = NULL;
-
-/\* XLog Header 얻기 \*/
-
-(void)ALA_GetXLogHeader(aXLog, &sXLogHeader, NULL);
-
-/\* XLog Primary Key 얻기 \*/
-
-(void)ALA_GetXLogPrimaryKey(aXLog, &sXLogPrimaryKey, NULL);
-
-/\* XLog Column 얻기 \*/
-
-(void)ALA_GetXLogColumn(aXLog, &sXLogColumn, NULL);
-
-/\* XLog Savepoint 얻기 \*/
-
-(void)ALA_GetXLogSavepoint(aXLog, &sXLogSavepoint, NULL);
-
-/\* XLog LOB 얻기 \*/
-
-(void)ALA_GetXLogLOB(aXLog, &sXLogLOB, NULL);
-
+    /* XLog LOB 얻기 */
+    (void)ALA_GetXLogLOB(aXLog, &sXLogLOB, NULL);
 }
+```
+
+
 
 ### ALA_GetXLogPrimaryKey
 
 #### 구 문
 
+```
 ALA_RC ALA_GetXLogPrimaryKey(
+        const ALA_XLog               * aXLog,
+        const ALA_XLogPrimaryKey    ** aOutXLogPrimaryKey,
+        ALA_ErrorMgr                 * aOutErrorMgr);
+```
 
-const ALA_XLog \* aXLog,
 
-const ALA_XLogPrimaryKey \*\* aOutXLogPrimaryKey,
-
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -3727,13 +3648,14 @@ ALA_GetXLogHeader를 참고한다.
 
 #### 구 문
 
+```
 ALA_RC ALA_GetXLogColumn(
+        const ALA_XLog        * aXLog,
+        const ALA_XLogColumn ** aOutXLogColumn,
+        ALA_ErrorMgr          * aOutErrorMgr);
+```
 
-const ALA_XLog \* aXLog,
 
-const ALA_XLogColumn \*\* aOutXLogColumn,
-
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -3773,13 +3695,14 @@ ALA_GetXLogHeader를 참고한다.
 
 #### 구 문
 
+```
 ALA_RC ALA_GetXLogSavepoint(
+        const ALA_XLog           * aXLog,
+        const ALA_XLogSavepoint ** aOutXLogSavepoint,
+        ALA_ErrorMgr             * aOutErrorMgr);
+```
 
-const ALA_XLog \* aXLog,
 
-const ALA_XLogSavepoint \*\* aOutXLogSavepoint,
-
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -3819,13 +3742,14 @@ ALA_GetXLogHeader를 참고한다.
 
 #### 구 문
 
+```
 ALA_RC ALA_GetXLogLOB(
+        const ALA_XLog       * aXLog,
+        const ALA_XLogLOB   ** aOutXLogLOB,
+        ALA_ErrorMgr         * aOutErrorMgr);
+```
 
-const ALA_XLog \* aXLog,
 
-const ALA_XLogLOB \*\* aOutXLogLOB,
-
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -3865,11 +3789,13 @@ ALA_GetXLogHeader를 참고한다.
 
 #### 구 문
 
+```
 ALA_RC ALA_GetProtocolVersion(
+         const ALA_ProtocolVersion * aOutProtocolVersion,
+         ALA_ErrorMgr              * aOutErrorMgr);
+```
 
-const ALA_ProtocolVersion \* aOutProtocolVersion,
 
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -3896,33 +3822,33 @@ aOutProtocolVersion의 메모리를 함수 호출전에 할당해야 한다.
 
 #### 예 제
 
-\#include \<alaAPI.h\>
-
+```
+#include <alaAPI.h>
 …
 
 void testProtocolVersion()
-
 {
-
 ALA_ProtocolVersion sProtocolVersion;
 
-/\* Protocol Version 정보 얻기 \*/
-
+/* Protocol Version 정보 얻기 */
 (void)ALA_GetProtocolVersion(&sProtocolVersion, NULL);
-
 }
+```
+
+
 
 ### ALA_GetReplicationInfo
 
 #### 구 문
 
+```
 ALA_RC ALA_GetReplicationInfo(
+        ALA_Handle                 aHandle,
+        const ALA_Replication   ** aOutReplication,
+        ALA_ErrorMgr             * aOutErrorMgr);
+```
 
-ALA_Handle aHandle,
 
-const ALA_Replication \*\* aOutReplication,
-
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -3963,189 +3889,127 @@ ALA_GetIndexInfo
 
 #### 예 제
 
-\#include \<alaAPI.h\>
-
+```
+#include <alaAPI.h>
 …
 
 void testMetaInformation(ALA_Handle aHandle)
-
 {
+    ALA_Replication * sReplication     = NULL;
+    ALA_Table       * sTable           = NULL;
+    ALA_Table       * sTableByTableOID = NULL;
+    ALA_Table       * sTableByName     = NULL;
+    ALA_Column      * sPKColumn        = NULL;
+    ALA_Column      * sColumn          = NULL;
+    ALA_Index       * sIndex           = NULL;
+    UInt              sTablePos;
+    UInt              sPKColumnPos;
+    UInt              sColumnPos;
+    UInt              sIndexPos;
 
-ALA_Replication \* sReplication = NULL;
-
-ALA_Table \* sTable = NULL;
-
-ALA_Table \* sTableByTableOID = NULL;
-
-ALA_Table \* sTableByName = NULL;
-
-ALA_Column \* sPKColumn = NULL;
-
-ALA_Column \* sColumn = NULL;
-
-ALA_Index \* sIndex = NULL;
-
-UInt sTablePos;
-
-UInt sPKColumnPos;
-
-UInt sColumnPos;
-
-UInt sIndexPos;
-
-/\* Replication 정보 얻기 \*/
-
-(void)ALA_GetReplicationInfo(aHandle, &sReplication, NULL);
-
-for(sTablePos = 0; sTablePos \< sReplication-\>mTableCount; sTablePos++)
-
-{
-
-sTable = \&(sReplication-\>mTableArray[sTablePos]);
-
-/\* Table OID로 Table 정보 얻기 \*/
-
-(void)ALA_GetTableInfo(aHandle,
-
-sTable-\>mTableOID,
-
-&sTableByTableOID,
-
-NULL);
-
-if(sTableByTableOID != sTable)
-
-{
-
-/\* 치명적인 오류 : Log Analysis API에 문제가 있음 \*/
-
-break;
-
+    /* Replication 정보 얻기 */
+    (void)ALA_GetReplicationInfo(aHandle, &sReplication, NULL);
+    
+    for(sTablePos = 0; sTablePos < sReplication->mTableCount; sTablePos++)
+    {
+        sTable = &(sReplication->mTableArray[sTablePos]);
+        
+        /* Table OID로 Table 정보 얻기 */
+        (void)ALA_GetTableInfo(aHandle,
+            sTable->mTableOID,
+            &sTableByTableOID,
+            NULL);
+        
+        if(sTableByTableOID != sTable)
+        {
+            /* 치명적인 오류 : Log Analysis API에 문제가 있음 */
+            break;
+        }
+        
+        /* 이름으로 Table 정보 얻기 */
+        (void)ALA_GetTableInfoByName(aHandle,
+            sTable->mFromUserName,
+            sTable->mFromTableName,
+            &sTableByName,
+            NULL);
+    
+        if(sTableByName != sTable)
+        {
+            /* 치명적인 오류 : Log Analysis API에 문제가 있음 */
+            break;
+        }
+        
+        /* Primary Key Column 처리 */
+        for(sPKColumnPos = 0; sPKColumnPos < sTable->mPKColumnCount; sPKColumnPos++)
+        {         /* Primary Key Column ID로 Primary Key Column 정보 얻기 */
+    
+            (void)ALA_GetColumnInfo(sTable,
+                sTable->mPKColumnArray[sPKColumnPos]->mColumnID,
+                &sPKColumn,
+                NULL);
+    
+            if(sPKColumn != sTable->mPKColumnArray[sPKColumnPos])
+            {    /* 치명적인 오류 : Log Analysis API에 문제가 있음 */
+                break;
+            }
+    
+           /* Primary Key Column 처리 */
+            …
+        }
+    
+        /* Column 처리 */
+    
+        for(sColumnPos = 0; sColumnPos < sTable->mColumnCount; sColumnPos++)
+        {        /* Column ID로 Column 정보 얻기 */
+            (void)ALA_GetColumnInfo(sTable,
+                sTable->mColumnArray[sColumnPos].mColumnID,
+                &sColumn,
+                NULL);
+    
+            if(sColumn != &(sTable->mColumnArray[sColumnPos]))
+            {      /* 치명적인 오류 : Log Analysis API에 문제가 있음 */
+                break;
+            }
+    
+            /* Column 처리 */
+            …
+        }
+        
+        /* Index 처리 */
+        for(sIndexPos = 0; sIndexPos < sTable->mIndexCount; sIndexPos++)
+        {        /* Index ID로 Index 정보 얻기 */
+            (void)ALA_GetIndexInfo(sTable,
+                sTable->mIndexArray[sIndexPos].mIndexID,
+                &sIndex,
+                NULL);
+    
+            if(sIndex != &(sTable->mIndexArray[sIndexPos]))
+            {        /* 치명적인 오류 : Log Analysis API에 문제가 있음 */
+                break;
+            }
+    
+            /* Index 처리 */
+            …
+        }
+    }
 }
+```
 
-/\* 이름으로 Table 정보 얻기 \*/
 
-(void)ALA_GetTableInfoByName(aHandle,
-
-sTable-\>mFromUserName,
-
-sTable-\>mFromTableName,
-
-&sTableByName,
-
-NULL);
-
-if(sTableByName != sTable)
-
-{
-
-/\* 치명적인 오류 : Log Analysis API에 문제가 있음 \*/
-
-break;
-
-}
-
-/\* Primary Key Column 처리 \*/
-
-for(sPKColumnPos = 0; sPKColumnPos \< sTable-\>mPKColumnCount; sPKColumnPos++)
-
-{ /\* Primary Key Column ID로 Primary Key Column 정보 얻기 \*/
-
-(void)ALA_GetColumnInfo(sTable,
-
-sTable-\>mPKColumnArray[sPKColumnPos]-\>mColumnID,
-
-&sPKColumn,
-
-NULL);
-
-if(sPKColumn != sTable-\>mPKColumnArray[sPKColumnPos])
-
-{ /\* 치명적인 오류 : Log Analysis API에 문제가 있음 \*/
-
-break;
-
-}
-
-/\* Primary Key Column 처리 \*/
-
-…
-
-}
-
-/\* Column 처리 \*/
-
-for(sColumnPos = 0; sColumnPos \< sTable-\>mColumnCount; sColumnPos++)
-
-{ /\* Column ID로 Column 정보 얻기 \*/
-
-(void)ALA_GetColumnInfo(sTable,
-
-sTable-\>mColumnArray[sColumnPos].mColumnID,
-
-&sColumn,
-
-NULL);
-
-if(sColumn != &(sTable-\>mColumnArray[sColumnPos]))
-
-{ /\* 치명적인 오류 : Log Analysis API에 문제가 있음 \*/
-
-break;
-
-}
-
-/\* Column 처리 \*/
-
-…
-
-}
-
-/\* Index 처리 \*/
-
-for(sIndexPos = 0; sIndexPos \< sTable-\>mIndexCount; sIndexPos++)
-
-{ /\* Index ID로 Index 정보 얻기 \*/
-
-(void)ALA_GetIndexInfo(sTable,
-
-sTable-\>mIndexArray[sIndexPos].mIndexID,
-
-&sIndex,
-
-NULL);
-
-if(sIndex != &(sTable-\>mIndexArray[sIndexPos]))
-
-{ /\* 치명적인 오류 : Log Analysis API에 문제가 있음 \*/
-
-break;
-
-}
-
-/\* Index 처리 \*/
-
-…
-
-}
-
-}
-
-}
 
 ### ALA_GetTableInfo
 
 #### 구 문
 
+```
 ALA_RC ALA_GetTableInfo(
+        ALA_Handle            aHandle,
+        ULong                  aTableOID,
+        const ALA_Table  ** aOutTable,
+        ALA_ErrorMgr       * aOutErrorMgr);
+```
 
-ALA_Handle aHandle,
 
-ULong aTableOID,
-
-const ALA_Table \*\* aOutTable,
-
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -4192,17 +4056,16 @@ ALA_GetReplicationInfo를 참고한다.
 
 #### 구 문
 
+```
 ALA_RC ALA_GetTableInfoByName(
+      ALA_Handle            aHandle,
+      const SChar        * aFromUserName,
+      const SChar        * aFromTableName,
+      const ALA_Table   ** aOutTable,
+      ALA_ErrorMgr       * aOutErrorMgr);
+```
 
-ALA_Handle aHandle,
 
-const SChar \* aFromUserName,
-
-const SChar \* aFromTableName,
-
-const ALA_Table \*\* aOutTable,
-
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -4250,15 +4113,15 @@ ALA_GetReplicationInfo를 참고한다.
 
 #### 구 문
 
+```
 ALA_RC ALA_GetColumnInfo(
+       const ALA_Table    * aTable,
+       UInt                 aColumnID,
+       const ALA_Column  ** aOutColumn,
+       ALA_ErrorMgr       * aOutErrorMgr);
+```
 
-const ALA_Table \* aTable,
 
-UInt aColumnID,
-
-const ALA_Column \*\* aOutColumn,
-
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -4305,15 +4168,15 @@ ALA_GetReplicationInfo를 참고한다.
 
 #### 구 문
 
+```
 ALA_RC ALA_GetIndexInfo(
+        const ALA_Table  * aTable,
+        UInt               aIndexID,
+        const ALA_Index ** aOutIndex,
+        ALA_ErrorMgr     * aOutErrorMgr);
+```
 
-const ALA_Table \* aTable,
 
-UInt aIndexID,
-
-const ALA_Index \*\* aOutIndex,
-
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -4360,10 +4223,14 @@ ALA_GetReplicationInfo를 참고한다.
 
 #### 구 문
 
-ALA_RC ALA_GetReplicationInfo(  
-ALA_Column \* aColumn,  
-ALA_BOOL \* aIsHiddenColumn,  
-ALA_ErrorMgr \* aOutErrorMgr);
+```
+ALA_RC ALA_GetReplicationInfo(
+     ALA_Column   * aColumn,
+     ALA_BOOL     * aIsHiddenColumn,
+     ALA_ErrorMgr * aOutErrorMgr);
+```
+
+
 
 #### 인 자
 
@@ -4393,141 +4260,91 @@ ALA_GetColumnInfo
 
 #### 예 제
 
-\#include \<alaAPI.h\>
-
+```
+#include <alaAPI.h>
 …
-
+ 
 void testColumnInformation(ALA_Handle aHandle)
+ {
+     ALA_Replication * sReplication = NULL;
+     ALA_Table * sTable = NULL;
+     ALA_Column * sColumn = NULL;
+     ALA_BOOL    sIsHiddenColumn = ALA_FALSE;
+     UInt sColumnPos;
 
-{
+      
+     /* Replication 정보 얻기 */
+     (void)ALA_GetReplicationInfo(aHandle, &sReplication, NULL);
+     for(sTablePos = 0; sTablePos < sReplication->mTableCount; sTablePos++)
+     {
+         sTable = &(sReplication->mTableArray[sTablePos]);
+         /* Table OID로 Table 정보 얻기 */
+         (void)ALA_GetTableInfo( aHandle,
+                             sTable->mTableOID,
+                             &sTableByTableOID,
+                             NULL);
+         if(sTableByTableOID != sTable)
+         {
+             /* 치명적인 오류 : Log Analysis API에 문제가 있음 */
+             break;
+         }
 
-ALA_Replication \* sReplication = NULL;
+         /* 이름으로 Table 정보 얻기 */
+         (void)ALA_GetTableInfoByName(aHandle,
+                         sTable->mFromUserName,
+                         sTable->mFromTableName,
+                         &sTableByName,
+                         NULL);
+         if(sTableByName != sTable)
+         {
+             /* 치명적인 오류 : Log Analysis API에 문제가 있음 */
+             break;
+         }
 
-ALA_Table \* sTable = NULL;
-
-ALA_Column \* sColumn = NULL;
-
-ALA_BOOL sIsHiddenColumn = ALA_FALSE;
-
-UInt sColumnPos;
-
-/\* Replication 정보 얻기 \*/
-
-(void)ALA_GetReplicationInfo(aHandle, &sReplication, NULL);
-
-for(sTablePos = 0; sTablePos \< sReplication-\>mTableCount; sTablePos++)
-
-{
-
-sTable = \&(sReplication-\>mTableArray[sTablePos]);
-
-/\* Table OID로 Table 정보 얻기 \*/
-
-(void)ALA_GetTableInfo( aHandle,
-
-sTable-\>mTableOID,
-
-&sTableByTableOID,
-
-NULL);
-
-if(sTableByTableOID != sTable)
-
-{
-
-/\* 치명적인 오류 : Log Analysis API에 문제가 있음 \*/
-
-break;
-
+         /* Column 처리 */
+         for(sColumnPos = 0; sColumnPos < sTable->mColumnCount; sColumnPos++)
+         { /* Column ID로 Column 정보 얻기 */
+             (void)ALA_GetColumnInfo(sTable,
+                             sTable->mColumnArray[sColumnPos].mColumnID,
+                             &sColumn,
+                             NULL);
+             if( sColumn != &(sTable->mColumnArray[sColumnPos]) )
+             { /* 치명적인 오류 : Log Analysis API에 문제가 있음 */
+                 break;
+             }
+             /* Column 처리 */
+             (void)ALA_IsHiddenColumn( sColumn, &sIsHiddenColumn, NULL );
+             if( sIsHiddenColumn != ALA_TRUE )
+             {
+                 /* Column 처리 */
+             }
+             else
+             {
+                 /* Hidden Column 처리 */
+             }
+         }
+         
+         ...
+     }
 }
+```
 
-/\* 이름으로 Table 정보 얻기 \*/
 
-(void)ALA_GetTableInfoByName(aHandle,
-
-sTable-\>mFromUserName,
-
-sTable-\>mFromTableName,
-
-&sTableByName,
-
-NULL);
-
-if(sTableByName != sTable)
-
-{
-
-/\* 치명적인 오류 : Log Analysis API에 문제가 있음 \*/
-
-break;
-
-}
-
-/\* Column 처리 \*/
-
-for(sColumnPos = 0; sColumnPos \< sTable-\>mColumnCount; sColumnPos++)
-
-{ /\* Column ID로 Column 정보 얻기 \*/
-
-(void)ALA_GetColumnInfo(sTable,
-
-sTable-\>mColumnArray[sColumnPos].mColumnID,
-
-&sColumn,
-
-NULL);
-
-if( sColumn != &(sTable-\>mColumnArray[sColumnPos]) )
-
-{ /\* 치명적인 오류 : Log Analysis API에 문제가 있음 \*/
-
-break;
-
-}
-
-/\* Column 처리 \*/
-
-(void)ALA_IsHiddenColumn( sColumn, &sIsHiddenColumn, NULL );
-
-if( sIsHiddenColumn != ALA_TRUE )
-
-{
-
-/\* Column 처리 \*/
-
-}
-
-else
-
-{
-
-/\* Hidden Column 처리 \*/
-
-}
-
-}
-
-...
-
-}
-
-}
 
 ### ALA_GetInternalNumericInfo
 
 #### 구 문
 
+```
 ALA_RC ALA_GetInternalNumericInfo(
+        ALA_Column  * aColumn,
+        ALA_Value    * aAltibaseValue,
+        SInt           * aOutSign,
+        SInt           * aOutExponent,
+        ALA_ErrorMgr * aOutErrorMgr);
+```
 
-ALA_Column \* aColumn,
 
-ALA_Value \* aAltibaseValue,
-
-SInt \* aOutSign,
-
-SInt \* aOutExponent,
-
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -4555,47 +4372,40 @@ aOutExponent는 밑수가 10진수인 수에 대한 지수이다.
 
 #### 예 제
 
-\#include \<alaAPI.h\>
-
+```
+#include <alaAPI.h>
 …
 
-void testInternalNumeric(ALA_Column \* aColumn, ALA_Value \* aAltibaseValue)
-
+void testInternalNumeric(ALA_Column * aColumn, ALA_Value * aAltibaseValue)
 {
+    SInt sNumericSign;
+    SInt sNumericExponent;
 
-SInt sNumericSign;
-
-SInt sNumericExponent;
-
-/\* 내부 Numeric 정보 얻기 \*/
-
-(void)ALA_GetInternalNumericInfo(aColumn,
-
-aAltibaseValue,
-
-&sNumericSign,
-
-&sNumericExponent,
-
-NULL);
-
+    /* 내부 Numeric 정보 얻기 */
+    (void)ALA_GetInternalNumericInfo(aColumn,
+        aAltibaseValue,
+        &sNumericSign,
+        &sNumericExponent,
+        NULL);
 }
+```
+
+
 
 ### ALA_GetAltibaseText
 
 #### 구 문
 
+```
 ALA_RC ALA_GetAltibaseText(
+        ALA_Column   * aColumn,
+        ALA_Value    * aValue,
+        UInt           aBufferSize,
+        SChar        * aOutBuffer,
+        ALA_ErrorMgr * aOutErrorMgr);
+```
 
-ALA_Column \* aColumn,
 
-ALA_Value \* aValue,
-
-UInt aBufferSize,
-
-SChar \* aOutBuffer,
-
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -4650,45 +4460,39 @@ ALA_GetAltibaseSQL
 
 #### 예 제
 
-\#include \<alaAPI.h\>
-
+```
+#include <alaAPI.h>
 …
 
-void testAltibaseText(ALA_Table \* aTable, ALA_XLog \* aXLog)
-
+void testAltibaseText(ALA_Table * aTable, ALA_XLog * aXLog)
 {
+    SChar        sBuffer[1024];
 
-SChar sBuffer[1024];
-
-/\* Altibase SQL 얻기 \*/
-
-(void)ALA_GetAltibaseSQL(aTable,
-
-aXLog,
-
-1024,
-
-sBuffer,
-
-NULL);
-
+    /* Altibase SQL 얻기 */
+    (void)ALA_GetAltibaseSQL(aTable,
+        aXLog,
+        1024,
+        sBuffer,
+        NULL);
 }
+```
+
+
 
 ### ALA_GetAltibaseSQL
 
 #### 구 문
 
+```
 ALA_RC ALA_GetAltibaseSQL(
+        ALA_Table     * aTable,
+        ALA_XLog      * aXLog,
+        UInt            aBufferSize,
+        SChar         * aOutBuffer,
+        ALA_ErrorMgr  * aOutErrorMgr);
+```
 
-ALA_Table \* aTable,
 
-ALA_XLog \* aXLog,
-
-UInt aBufferSize,
-
-SChar \* aOutBuffer,
-
-ALA_ErrorMgr \* aOutErrorMgr);
 
 #### 인 자
 
@@ -4732,115 +4536,76 @@ ALA_GetAltibaseText
 
 #### 예 제
 
-\#include \<alaAPI.h\>
-
+```
+#include <alaAPI.h>
 …
 
-void testAltibaseSQL(ALA_Table \* aTable, ALA_XLog \* aXLog)
-
+void testAltibaseSQL(ALA_Table * aTable, ALA_XLog * aXLog)
 {
+ALA_Column * sColumn;
+SChar        sBuffer[1024];
+UInt         sPKColumnPos;
+UInt         sColumnPos;
 
-ALA_Column \* sColumn;
-
-SChar sBuffer[1024];
-
-UInt sPKColumnPos;
-
-UInt sColumnPos;
-
-/\* Primary Key Column 처리 \*/
-
+/* Primary Key Column 처리 */
 for(sPKColumnPos = 0;
-
-sPKColumnPos \< aXLog-\>mPrimaryKey.mPKColCnt;
-
+sPKColumnPos < aXLog->mPrimaryKey.mPKColCnt;
 sPKColumnPos++)
-
 {
+/* XLog의 Primary Key 순서와 Table의 Primary Key 순서는 동일 */
+sColumn = aTable->mPKColumnArray[sPKColumnPos];
 
-/\* XLog의 Primary Key 순서와 Table의 Primary Key 순서는 동일 \*/
-
-sColumn = aTable-\>mPKColumnArray[sPKColumnPos];
-
-/\* Altibase Text 얻기 \*/
-
+/* Altibase Text 얻기 */
 (void)ALA_GetAltibaseText(sColumn,
-
-&(aXLog-\>mPrimaryKey.mPKColArray[sPKColumnPos]),
-
+&(aXLog->mPrimaryKey.mPKColArray[sPKColumnPos]),
 1024,
-
 sBuffer,
-
 NULL);
-
 }
 
-/\* Column 처리 \*/
-
-for(sColumnPos = 0; sColumnPos \< aXLog-\>mColumn.mColCnt; sColumnPos++)
-
+/* Column 처리 */
+for(sColumnPos = 0; sColumnPos < aXLog->mColumn.mColCnt; sColumnPos++)
 {
-
-/\* Column 정보 얻기 \*/
-
+/* Column 정보 얻기 */
 (void)ALA_GetColumnInfo(aTable,
-
-aXLog-\>mColumn.mCIDArray[sColumnPos],
-
+aXLog->mColumn.mCIDArray[sColumnPos],
 &sColumn,
-
 NULL);
 
-/\* Before Image의 Altibase Text 얻기 \*/
-
+/* Before Image의 Altibase Text 얻기 */
 (void)ALA_GetAltibaseText(sColumn,
-
-&(aXLog-\>mColumn.mBColArray[sColumnPos]),
-
+&(aXLog->mColumn.mBColArray[sColumnPos]),
 1024,
-
 sBuffer,
-
 NULL);
 
-/\* After Image의 Altibase Text 얻기 \*/
-
+/* After Image의 Altibase Text 얻기 */
 (void)ALA_GetAltibaseText(sColumn,
-
-&(aXLog-\>mColumn.mAColArray[sColumnPos]),
-
+&(aXLog->mColumn.mAColArray[sColumnPos]),
 1024,
-
 sBuffer,
-
 NULL);
-
 }
-
 }
+```
+
+
 
 ### ALA_GetODBCCValue
 
 #### 구 문
 
+```
 ALA_RC ALA_GetODBCCValue(
-
-ALA_Column \* aColumn,
-
-ALA_Value \* aAltibaseValue,
-
-SInt aODBCCTypeID,
-
-UInt aODBCCValueBufferSize,
-
-void \* aOutODBCCValueBuffer,
-
-ALA_BOOL \* aOutIsNull,
-
-UInt \* aOutODBCCValueSize,
-
-ALA_ErrorMgr \* aOutErrorMgr);
+        ALA_Column   * aColumn,
+        ALA_Value    * aAltibaseValue,
+        SInt           aODBCCTypeID,
+        UInt           aODBCCValueBufferSize,
+        void         * aOutODBCCValueBuffer,
+        ALA_BOOL     * aOutIsNull,
+        UInt         * aOutODBCCValueSize,
+        ALA_ErrorMgr * aOutErrorMgr);
+```
 
 #### 인 자
 
@@ -4866,24 +4631,24 @@ ALA_FAILURE
 Altibase 내부 포맷으로 저장된 데이터를ODBC C 값으로 변환한다. 아래표는 지원하는
 타입 변환을 보여준다.
 
-| Altibase Data ODBC C Value | SQL_C_CHAR | SQL_C_NUMERIC | SQL_C_BIT | SQL_C_STINYINT SQL_C_UTINYINT | SQL_C_SSHORT SQL_C_USHORT | SQL_C_SLONG SQL_C_ULONG | SQL_C_SBIGINT SQL_C_UBIGINT | SQL_C_FLOAT | SQL_C_DOUBLE | SQL_C_BINARY | SQL_C_TYPE_DATE SQL_C_TYPE_TIME SQL_C_TYPE_TIMESTAMP |
-|----------------------------|------------|---------------|-----------|-------------------------------|---------------------------|-------------------------|-----------------------------|-------------|--------------|--------------|------------------------------------------------------|
-| FLOAT                      | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
-| NUMERIC                    | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
-| DOUBLE                     | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
-| REAL                       | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
-| BIGINT                     | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
-| INTEGER                    | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
-| SMALLINT                   | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
-| DATE                       | ○          |               |           |                               |                           |                         |                             |             |              | ○            | ○                                                    |
-| CHAR                       | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            | ○                                                    |
-| VARCHAR                    | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            | ○                                                    |
-| NCHAR                      | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            | ○                                                    |
-| NVARCHAR                   | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            | ○                                                    |
-| BYTE                       | ○          |               |           |                               |                           |                         |                             |             |              | ○            |                                                      |
-| NIBBLE                     | ○          |               |           |                               |                           |                         |                             |             |              | ○            |                                                      |
-| BIT                        | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
-| VARBIT                     | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
+| Altibase Data(우)<br /> ODBC C Value(하) | SQL_C_CHAR | SQL_C_NUMERIC | SQL_C_BIT | SQL_C_STINYINT SQL_C_UTINYINT | SQL_C_SSHORT SQL_C_USHORT | SQL_C_SLONG SQL_C_ULONG | SQL_C_SBIGINT SQL_C_UBIGINT | SQL_C_FLOAT | SQL_C_DOUBLE | SQL_C_BINARY | SQL_C_TYPE_DATE SQL_C_TYPE_TIME SQL_C_TYPE_TIMESTAMP |
+| ---------------------------------------- | ---------- | ------------- | --------- | ----------------------------- | ------------------------- | ----------------------- | --------------------------- | ----------- | ------------ | ------------ | ---------------------------------------------------- |
+| FLOAT                                    | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
+| NUMERIC                                  | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
+| DOUBLE                                   | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
+| REAL                                     | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
+| BIGINT                                   | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
+| INTEGER                                  | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
+| SMALLINT                                 | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
+| DATE                                     | ○          |               |           |                               |                           |                         |                             |             |              | ○            | ○                                                    |
+| CHAR                                     | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            | ○                                                    |
+| VARCHAR                                  | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            | ○                                                    |
+| NCHAR                                    | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            | ○                                                    |
+| NVARCHAR                                 | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            | ○                                                    |
+| BYTE                                     | ○          |               |           |                               |                           |                         |                             |             |              | ○            |                                                      |
+| NIBBLE                                   | ○          |               |           |                               |                           |                         |                             |             |              | ○            |                                                      |
+| BIT                                      | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
+| VARBIT                                   | ○          | ○             | ○         | ○                             | ○                         | ○                       | ○                           | ○           | ○            | ○            |                                                      |
 
 [표 4‑1] ODBC C Conversion
 
