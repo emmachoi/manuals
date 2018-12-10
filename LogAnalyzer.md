@@ -1974,38 +1974,32 @@ ALA_Value 구조체의 length 멤버이다.
 
 FLOAT와 NUMERIC의 내부 데이터 구조는 같다.
 
+```
 typedef struct mtdNumericType
-
 {
-
-UChar length; /\* Length of (signExponent + mantissa) \*/
-
-UChar signExponent; /\* Sign and Exponent \*/
-
-UChar mantissa[1]; /\* UChar Array (Base 100) \*/
-
+    UChar   length;        /* Length of (signExponent + mantissa) */
+    UChar   signExponent;  /* Sign and Exponent */
+    UChar   mantissa[1];   /* UChar Array (Base 100) */
 } mtdNumericType;
+```
 
 부호와 지수값은 ALA_GetInternalNumericInfo()를 호출하거나, 아래와 같이
 mtdNumericType 구조체의 요소 값을 통해서 구할 수 있다.
 
 ##### mtdNumericType에서 Sign 얻기
 
-if(signExponent is 128 \~ 255)
-
+```
+if(signExponent is 128 ~ 255)
 {
-
->   Sign = '+';
-
+  Sign = '+';
 }
-
-else /\* if(signExponent is 0 \~ 127) \*/
-
+else /* if(signExponent is 0 ~ 127) */
 {
-
->   Sign = '-';
-
+  Sign = '-';
 }
+```
+
+
 
 ##### mtdNumericType에서 Exponent 얻기
 
