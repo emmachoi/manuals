@@ -3,7 +3,7 @@ Altibase® Application Development
 Log Analyzer User’s Manual
 ==========================
 
-![](media/LogAnalyzere5cfb3761673686d093a3b00c062fe7a.png)
+![](media/LogAnalyzer/e5cfb3761673686d093a3b00c062fe7a.png)
 
 
 
@@ -5407,7 +5407,9 @@ FROM ala.ala_t1 TO ala.ala_t1;
 
 ##### XLog Sender 시작
 
+```
 ALTER REPLICATION ALA1 START;
+```
 
 
 
