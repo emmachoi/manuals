@@ -241,7 +241,11 @@ iLoader는 Altibase 패키지를 설치할 때 자동으로 설치된다.
 
 실행 파일의 위치는 다음과 같다.
 
->   \$ALTIBASE_HOME/bin
+```
+$ALTIBASE_HOME/bin
+```
+
+
 
 #### iLoader 설정
 
@@ -276,11 +280,12 @@ port_no와 NLS_USE는 환경 변수 또는 서버 설정 파일(altibase.propert
 이용해서 설정할 수도 있다. 세가지 방법으로 모두 설정되어 있을 경우 적용 우선
 순위는 다음과 같다.
 
-커맨드 라인 옵션
+1. 커맨드 라인 옵션
 
-환경 변수 (ALTIBASE_PORT_NO, ALTIBASE_NLS_USE)
+2. 환경 변수 (ALTIBASE_PORT_NO, ALTIBASE_NLS_USE)
 
-서버 설정 파일(altibase.properties)
+3. 서버 설정 파일(altibase.properties)
+
 
 그러므로 설정된 값과 다른 옵션으로 연결하고자 할 경우, 커맨드 라인 옵션을
 사용하면 서버 설정 파일이나 환경 변수를 다시 변경하지 않아도 된다.
@@ -342,13 +347,11 @@ altibase.properties 파일 내의 프로퍼티 순이다. 만약 아무것도 �
     다를 경우에는 데이터 업로드가 정상적으로 동작하지 않을 수 있다. 반드시
     적절한 값을 설정할 것을 권장한다.
 
-\-NLS_USE 옵션 또는 altibase.properties파일의 프로퍼티를 통해서 지정할 수도
-있다.
+\-NLS_USE 옵션 또는 altibase.properties파일의 프로퍼티를 통해서 지정할 수도 있다.
 
-NLS_USE 설정의 우선순위는 FORM 파일의 DATA_NLS_USE(in 옵션 수행시에만 적용),
--NLS_USE 옵션, 환경변수 ALTIBASE_NLS_USE, altibase.properties 내의 프로퍼티
-순으로 참조 적용되며, 아무것도 설정되지 않았을 경우에는 기본 캐릭터
-셋(US7ASCII)을 사용한다.
+NLS_USE 설정의 우선순위는 FORM 파일의 DATA_NLS_USE(in 옵션 수행시에만 적용), -NLS_USE 옵션, 환경변수 ALTIBASE_NLS_USE, altibase.properties 내의 프로퍼티 순으로 참조 적용되며, 아무것도 설정되지 않았을 경우에는 기본 캐릭터 셋(US7ASCII)을 사용한다.
+
+
 
 2.iLoader 사용 방법
 -----------------
@@ -373,128 +376,105 @@ Altibase가 제공하는 명령행 옵션은 iLoader를 위한 일반적인 옵�
 아래의 옵션들은 iLoader를 위한 일반 옵션과 성능 옵션의 종류를 나타낸 것으로
 각각의 옵션에 대한 설명들은 다음 절에서 설명한다.
 
->   iloader [-h]
+```
+iloader [-h]
+    [-s server_name] [-u user_name] [-p password]
+    [-port port_no] [-silent] [-nst] [-displayquery]
+    [-NLS_USE nls_name]
+    [-prefer_ipv6]
+    [-ssl_ca CA_file_path | -ssl_capath CA_dir_path]
+    [-ssl_cert certificate_file_path]
+    [-ssl_key key_file_path]
+    [-ssl_verify]
+    [-ssl_cipher cipher_list]
+    [{ in | out | formout | structout | help }
+        [-d datafile or datafiles] [-f formatfile]
+        [-T table_name] [-F firstrow] [-L lastrow]
+        [-t field_term] [-r row_term] [-mode mode_type]
+        [-commit commit_unit] [-bad badfile]
+        [-log logfile] [-e enclosing] [-array count]
+        [-replication {true | false}] [-split number]
+        [-readsize size] [-errors count]
+        [-lob lob_option_string] [-atomic]
+        [-parallel count] [-direct]
+        [-rule csv]
+        [-partition]
+        [-dry-run]
+        [-prefetch_rows]
+        [-async_prefetch off|on|auto]]
+```
 
->   [-s server_name] [-u user_name] [-p password]
 
->   [-port port_no] [-silent] [-nst] [-displayquery]
-
->   [-NLS_USE nls_name]
-
->   [-prefer_ipv6]
-
->   [-ssl_ca CA_file_path \| -ssl_capath CA_dir_path]
-
->   [-ssl_cert certificate_file_path]
-
->   [-ssl_key key_file_path]
-
->   [-ssl_verify]
-
->   [-ssl_cipher cipher_list]
-
->   [{ in \| out \| formout \| structout \| help }
-
->   [-d datafile or datafiles] [-f formatfile]
-
->   [-T table_name] [-F firstrow] [-L lastrow]
-
->   [-t field_term] [-r row_term] [-mode mode_type]
-
->   [-commit commit_unit] [-bad badfile]
-
->   [-log logfile] [-e enclosing] [-array count]
-
->   [-replication {true \| false}] [-split number]
-
->   [-readsize size] [-errors count]
-
->   [-lob lob_option_string] [-atomic]
-
->   [-parallel count] [-direct]
-
->   [-rule csv]
-
->   [-partition]
-
->   [-dry-run]
-
->   [-prefetch_rows]
-
->   [-async_prefetch off\|on\|auto]]
 
 #### 주의사항
 
 사용자 이름에 소문자, 특수 문자 또는 공백이 포함된 경우 큰따옴표를 사용해야
 한다.
 
-\$ iloader -U \\"user name\\"
+```
+$ iloader -U \"user name\"
+```
+
+
 
 ### 일반 옵션
 
 Altibase는 다음의 옵션들을 기본적으로 사용해 iLoader를 수행한다.
 
-| 인 자                                     | 설 명                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-|-------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| \-S\|-s *servername*                      | 서버의 호스트 이름 Altibase 서버가 구동되어 있는 컴퓨터 서버의 이름(또는 IP 주소)을 명시한다. 만약 ISQL_CONNECTION 환경 변수가 IPC 또는 UNIX로 되어 있을 때, 이 옵션에 원격 서버를 명시해서 접속을 시도하면, iSQL은 ISQL_CONNECTION의 설정을 무시하고 TCP로 원격 서버에 접속할 것이다. 이 때, ISQL_CONNECTION 설정이 무시되었다는 경고 메시지가 출력된다. IPv4 주소 또는 IPv6 주소를 사용할 수 있다. IPv6 주소는 “[“과 “]”로 에워싸여야 한다. 예를 들어, localhost 를 명시하고자 할 때, 가능한 값은 다음과 같다. localhost (호스트 이름), 127.0.0.1 (IPv4주소), [::1] (IPv6주소) IPv6 주소 표기법에 대한 자세한 내용은 *Administrator’s Manual*을 참고하기 바란다. |
-| \-U\|-u *login_id*                        | 사용자 아이디                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| \-P\|-p *password*                        | 사용자 비밀번호                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| \-PORT *port_no*                          | TCP 또는 IPC로 접속할 때 해당 포트 번호를 명시한다. 단 유닉스 환경에서 IPC로 접속 시 이 옵션은 명시하지 않아야 한다. 만약 명시하면 경고 메시지가 출력된 후, 서버에 접속한다. TCP로 접속하려면 먼저 클라이언트에서 환경 변수 ‘ISQL_CONNECTION=TCP’를 설정하고, 옵션에 PORT_NO를 입력한다.  ISQL_CONNECTION 환경 변수의 값이 IPC가 아니고 -PORT 옵션을 생략한다면, ALTIBASE_PORT_NO와 PORT_NO 프로퍼티를 차례로 참조하고 모두 설정되어 있지 않다면, 포트 번호 입력 프롬프트가 출력된다.                                                                                                                                                                              |
-| \-NLS_USE *charset*                       | 데이터 검색 시, 사용자에게 보여주는 문자 집합(Character Set)이다. iSQL을 실행하는 터미널의 encoding을 명시하여 준다. US7ASCII KO16KSC5601 MS949 BIG5 GB231280 MS936 UTF8 SHIFTJIS MS932 EUCJP 생략 시 환경변수 ALTIBASE_NLS_USE, altibase.properties를 차례로 참조하며, 설정되지 않았을 경우에는 기본 문자 집합 (US7ASCII)을 사용한다.                                                                                                                                                                                                                                                                                                                             |
-| \-prefer_ipv6                             | \-S 옵션으로 호스트 이름을 입력했을 때, 접속할 IP 주소의 버전을 결정하는 옵션이다.  이 옵션을 명시하면, 호스트 이름을 IPv6 주소로 바꾸어 접속한다. 이 옵션을 명시하지 않으면, isql은 IPv4 주소로 접속한다. 선호하는 버전의 IP 주소로의 접속이 실패하면, 다른 IP 버전 주소로 접속을 다시 시도한다. 예를 들어, -S 옵션에 “localhost”를 입력하고 이 옵션을 명시하면, isql 은 처음에 IPv6 주소인 [::1]로 접속하고, 이 접속이 실패하면 IPv4 주소인 127.0.0.1로 접속을 다시 시도한다.                                                                                                                                                                                    |
-| \-ssl_ca *CA_file_path*                   | 접속할 알티베이스 서버의 공개키(public key)가 포함된 CA(인증 기관, Certification Authority) 인증서 파일의 위치를 지정한다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| \-ssl_capath *CA_dir_path*                | 접속할 알티베이스 서버의 공개키가 포함된 CA 인증서 파일이 저장되어 있는 디렉토리를 지정한다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| \-ssl_cert *certificate_file_path*        | 클라이언트 인증서 파일의 위치를 지정한다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| \-ssl_key *key_file_path*                 | 클라이언트 개인키 파일의 위치를 지정한다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| \-ssl_verify                              | 이 옵션을 지정하면 클라이언트가 서버로부터 전달받은 인증서를 검증한다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| \-ssl_cipher *cipher_list*                | SSL 암호화를 위해 사용할 알고리즘의 이름 후보들을 지정한다. General Reference에서 SSL_CIPHER_LIST 프로퍼티를 참고한다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| in \| out \| formout \| structout \| help | 자료 복사의 방향을 지시 (반드시 한가지만 입력) in : 파일에서 데이터베이스 테이블로 복사 out : 데이터베이스 테이블에서 파일로 복사 formout: 테이블의 포맷(format) 파일을 만들 때 사용된다. structout: formout과 비슷한 기능으로 주어진 테이블과 매칭되는 구조체를 파일로 만들 때 사용된다. (클라이언트 프로그램을 작성할 때 사용) help: 도움말 사용법을 보여준다.                                                                                                                                                                                                                                                                                                   |
-| \-T *table_name*                          | 복사할 테이블의 이름, 데이터의 업로드나 다운로드 시에는 FORM 파일에 테이블 이름이 있으므로 이 옵션은 무시된다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| \-d *datafile(datafiles)*                 | 데이터베이스에서 파일로, 또는 파일에서 데이터베이스로 자료를 복사할 때 사용되는 자료 파일의 전체 경로 formout인 경우에는 사용되지 않는다. 입력할 수 있는 파일 수는 최대 32개이며, 업로드 할 때에만 파일들을 연속으로 쓸 수 있다.  -d 옵션에 데이터를 순서대로 입력하여 업로드 할 경우, 순서대로 업로드 된다.  또한 다운로드 할 때 parallel 옵션과 함께 사용하면, 최소한 parallel 옵션에서 지정한 수만큼 파일이 생성된다.                                                                                                                                                                                                                                           |
-| \-rule csv                                | 데이터 파일의 포맷을 csv 형태로 명시한다.  이 옵션은 –t 또는 -e 옵션과 함께 사용할 수 없다. 사용하면 에러가 발생한다. -t, -r, -e, -rule csv 옵션 중 어느 것도 사용하지 않으면 csv가 기본으로 사용된다.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| \-f *formatfile*                          | 이전의 iLoader 호출에 의해 생성된 format 파일의 전체 경로                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| \-F *firstrow*                            | 복사 할 첫 번째 행의 번호 (기본 값은 1) 이 옵션은 데이터를 업로드할 때에만 유효하다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| \-L *lastrow*                             | 복사 할 마지막 행의 번호 (기본 값은 마지막 행의 번호) 이 옵션은 데이터 업로드 시에만 유효하다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| \-t *field_term*                          | 필드 사이의 구분자로, 기본값은 ‘\^’ 이다. %t 는 TAB을 %n은 새로운 줄(newline)을 의미한다. %r은 carriage return을 의미한다. -t, -r, -e 옵션은 각각 다른 값을 가져야 한다. 예) -t \^%t \< 주의 \>  명령행에서 ‘, “, \\, & 등의 문자는 자체적으로 처리하므로 구분자로 사용하지 않는 것이 좋다. 구분자를 명시할 때 (예를 들어 \|) iLoader 프롬프트 상에서는 -t \| 또는 “\|” 로, 일반 명령 프롬프트에서는 -t \|, ‘\|’ 또는 “\|”로 입력할 수 있다.                                                                                                                                                                                                                       |
-| \-r *row_term*                            | 행 사이의 구분자 (기본 값은 ‘\\n’ 이다.) 세부 입력 방법은 -t option과 같다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| \-e *enclosing*                           | 칼럼 사이의 구분자 세부 입력 방법은 -t option과 같다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| \-lob *lob_option_string*                 | LOB 데이터는 최대 4GB의 크기를 가지므로 32-bit OS 에서 2GB 보다 큰 LOB 데이터를 하나의 파일에 저장할 때 문제가 발생할 수 있다. 따라서 이 옵션을 이용해 LOB 타입의 데이터를 다루는 방식을 설정할 수 있다. 이 옵션이 지정되지 않았을 경우 LOB 칼럼도 다른 칼럼과 마찬가지로 처리된다.                                                                                                                                                                                                                                                                                                                                                                                |
-| \-replication true/false                  | 이중화를 off 하고 데이터를 로딩할 수 있는 옵션이다. (생략할 경우 true가 적용된다.)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| \-mode *mode_type*                        | APPEND : 기존의 테이블에 추가하여 삽입(기본값) REPLACE: DELETE 구문을 이용해 기존 테이블의 데이터를 모두 지우고 새로 생성 TRUNCATE: TRUNCATE 구문을 이용해 기존 테이블의 데이터를 모두 지우고 새로 생성                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| \-bad *badfile*                           | 로딩할 때 오류가 발생하여 업로드 되지 못한 행을 저장하며, 지정하지 않으면 저장하지 않는다. 옵션으로 stdout, stderr을 사용(소문자만 지원) 하여 파일을 생성하지 않고 stdout(standard out), stderr(standard error)를 화면으로 출력한다.                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| \-log *logfile*                           | iloader가 수행하면서 발생하는 전반적인 과정을 기록한다. 시작 시간, 종료 시간, 대상 행 수, 처리 행 수, 오류 행 수, 오류 내역 등이 여기에 기록된다. 지정하지 않으면 저장하지 않는다. 옵션으로 stdout, stderr을 사용(소문자만 지원함) 하여 파일을 생성하지 않고 stdout(standard out), stderr(standard error)를 화면으로 출력한다.                                                                                                                                                                                                                                                                                                                                     |
-| \-split *n*                               | 파일마다 저장할 레코드의 개수를 설정(out 커맨드에서만 적용됨)한다. 명령어 실행 후 n개의 레코드가 저장된 파일들이 datafile.dat0 부터 datafile.dat1, … 의 파일 이름으로 생성된다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| \-errors *count*                          | in 모드로 iloader를 실행할 때 허용 가능한 에러 최대 개수를 지정하는 옵션이다. 이 옵션에서 설정한 에러 개수보다 많은 에러가 발생하면 실행을 멈춘다.  기본값은 50이며, 0으로 설정하면 발생한 에러 수에 무관하게 계속 실행된다. -parallel 옵션과 함께 사용될 경우 병렬로 처리되는 쓰레드 중에 한 개라도 이 옵션에서 설정한 에러 값 이상의 에러가 발생하면 모든 쓰레드가 종료된다.                                                                                                                                                                                                                                                                                     |
-| \-partition                               | \-T 옵션에 지정한 테이블이 partitioned 테이블이라면, 그 테이블의 파티션 개수만큼의 FORM 파일이 생성 된다. 각 FORM 파일의 이름은 formfile_name.partition_name이 될 것이다. 만약 지정한 테이블이 partitioned 테이블이 아니면, formfile_name이름으로 한 개의 FORM 파일이 생성 된다.                                                                                                                                                                                                                                                                                                                                                                                   |
+| 인 자                                     | 설 명                                                        |
+| ----------------------------------------- | ------------------------------------------------------------ |
+| \-S\|-s *servername*                      | 서버의 호스트 이름 Altibase 서버가 구동되어 있는 컴퓨터 서버의 이름(또는 IP 주소)을 명시한다. 만약 ISQL_CONNECTION 환경 변수가 IPC 또는 UNIX로 되어 있을 때, 이 옵션에 원격 서버를 명시해서 접속을 시도하면, iSQL은 ISQL_CONNECTION의 설정을 무시하고 TCP로 원격 서버에 접속할 것이다. <br />이 때, ISQL_CONNECTION 설정이 무시되었다는 경고 메시지가 출력된다. IPv4 주소 또는 IPv6 주소를 사용할 수 있다. IPv6 주소는 “[“과 “]”로 에워싸여야 한다. <br />예를 들어, localhost 를 명시하고자 할 때, 가능한 값은 다음과 같다. localhost (호스트 이름), 127.0.0.1 (IPv4주소), [::1] (IPv6주소) IPv6 주소 표기법에 대한 자세한 내용은 *Administrator’s Manual*을 참고하기 바란다. |
+| \-U\|-u *login_id*                        | 사용자 아이디                                                |
+| \-P\|-p *password*                        | 사용자 비밀번호                                              |
+| \-PORT *port_no*                          | TCP 또는 IPC로 접속할 때 해당 포트 번호를 명시한다. 단 유닉스 환경에서 IPC로 접속 시 이 옵션은 명시하지 않아야 한다. 만약 명시하면 경고 메시지가 출력된 후, 서버에 접속한다. <br />TCP로 접속하려면 먼저 클라이언트에서 환경 변수 ‘ISQL_CONNECTION=TCP’를 설정하고, 옵션에 PORT_NO를 입력한다.  <br />ISQL_CONNECTION 환경 변수의 값이 IPC가 아니고 -PORT 옵션을 생략한다면, ALTIBASE_PORT_NO와 PORT_NO 프로퍼티를 차례로 참조하고 모두 설정되어 있지 않다면, 포트 번호 입력 프롬프트가 출력된다. |
+| \-NLS_USE *charset*                       | 데이터 검색 시, 사용자에게 보여주는 문자 집합(Character Set)이다. iSQL을 실행하는 터미널의 encoding을 명시하여 준다. <br />   US7ASCII <br />   KO16KSC5601 <br />   MS949 <br />   BIG5 <br />   GB231280 <br />   MS936 <br />   UTF8 <br />   SHIFTJIS <br />   MS932 <br />   EUCJP <br />생략 시 환경변수 ALTIBASE_NLS_USE, altibase.properties를 차례로 참조하며, 설정되지 않았을 경우에는 기본 문자 집합 (US7ASCII)을 사용한다. |
+| \-prefer_ipv6                             | \-S 옵션으로 호스트 이름을 입력했을 때, 접속할 IP 주소의 버전을 결정하는 옵션이다.  이 옵션을 명시하면, 호스트 이름을 IPv6 주소로 바꾸어 접속한다. 이 옵션을 명시하지 않으면, isql은 IPv4 주소로 접속한다. <br />선호하는 버전의 IP 주소로의 접속이 실패하면, 다른 IP 버전 주소로 접속을 다시 시도한다. 예를 들어, -S 옵션에 “localhost”를 입력하고 이 옵션을 명시하면, isql 은 처음에 IPv6 주소인 [::1]로 접속하고, 이 접속이 실패하면 IPv4 주소인 127.0.0.1로 접속을 다시 시도한다. |
+| \-ssl_ca *CA_file_path*                   | 접속할 알티베이스 서버의 공개키(public key)가 포함된 CA(인증 기관, Certification Authority) 인증서 파일의 위치를 지정한다. |
+| \-ssl_capath *CA_dir_path*                | 접속할 알티베이스 서버의 공개키가 포함된 CA 인증서 파일이 저장되어 있는 디렉토리를 지정한다. |
+| \-ssl_cert *certificate_file_path*        | 클라이언트 인증서 파일의 위치를 지정한다.                    |
+| \-ssl_key *key_file_path*                 | 클라이언트 개인키 파일의 위치를 지정한다.                    |
+| \-ssl_verify                              | 이 옵션을 지정하면 클라이언트가 서버로부터 전달받은 인증서를 검증한다. |
+| \-ssl_cipher *cipher_list*                | SSL 암호화를 위해 사용할 알고리즘의 이름 후보들을 지정한다. General Reference에서 SSL_CIPHER_LIST 프로퍼티를 참고한다. |
+| in \| out \| formout \| structout \| help | 자료 복사의 방향을 지시 (반드시 한가지만 입력) in : 파일에서 데이터베이스 테이블로 복사 out : 데이터베이스 테이블에서 파일로 복사 formout: 테이블의 포맷(format) 파일을 만들 때 사용된다. structout: formout과 비슷한 기능으로 주어진 테이블과 매칭되는 구조체를 파일로 만들 때 사용된다. (클라이언트 프로그램을 작성할 때 사용) help: 도움말 사용법을 보여준다. |
+| \-T *table_name*                          | 복사할 테이블의 이름, 데이터의 업로드나 다운로드 시에는 FORM 파일에 테이블 이름이 있으므로 이 옵션은 무시된다. |
+| \-d *datafile(datafiles)*                 | 데이터베이스에서 파일로, 또는 파일에서 데이터베이스로 자료를 복사할 때 사용되는 자료 파일의 전체 경로 formout인 경우에는 사용되지 않는다. 입력할 수 있는 파일 수는 최대 32개이며, 업로드 할 때에만 파일들을 연속으로 쓸 수 있다.  -d 옵션에 데이터를 순서대로 입력하여 업로드 할 경우, 순서대로 업로드 된다.  또한 다운로드 할 때 parallel 옵션과 함께 사용하면, 최소한 parallel 옵션에서 지정한 수만큼 파일이 생성된다. |
+| \-rule csv                                | 데이터 파일의 포맷을 csv 형태로 명시한다.  이 옵션은 –t 또는 -e 옵션과 함께 사용할 수 없다. 사용하면 에러가 발생한다. -t, -r, -e, -rule csv 옵션 중 어느 것도 사용하지 않으면 csv가 기본으로 사용된다. |
+| \-f *formatfile*                          | 이전의 iLoader 호출에 의해 생성된 format 파일의 전체 경로    |
+| \-F *firstrow*                            | 복사 할 첫 번째 행의 번호 (기본 값은 1) 이 옵션은 데이터를 업로드할 때에만 유효하다. |
+| \-L *lastrow*                             | 복사 할 마지막 행의 번호 (기본 값은 마지막 행의 번호) 이 옵션은 데이터 업로드 시에만 유효하다. |
+| \-t *field_term*                          | 필드 사이의 구분자로, 기본값은 ‘\^’ 이다. %t 는 TAB을 %n은 새로운 줄(newline)을 의미한다. %r은 carriage return을 의미한다. -t, -r, -e 옵션은 각각 다른 값을 가져야 한다. 예) -t \^%t \< 주의 \>  명령행에서 ‘, “, \\, & 등의 문자는 자체적으로 처리하므로 구분자로 사용하지 않는 것이 좋다. 구분자를 명시할 때 (예를 들어 \|) iLoader 프롬프트 상에서는 -t \| 또는 “\|” 로, 일반 명령 프롬프트에서는 -t \|, ‘\|’ 또는 “\|”로 입력할 수 있다. |
+| \-r *row_term*                            | 행 사이의 구분자 (기본 값은 ‘\\n’ 이다.) 세부 입력 방법은 -t option과 같다. |
+| \-e *enclosing*                           | 칼럼 사이의 구분자 세부 입력 방법은 -t option과 같다.        |
+| \-lob *lob_option_string*                 | LOB 데이터는 최대 4GB의 크기를 가지므로 32-bit OS 에서 2GB 보다 큰 LOB 데이터를 하나의 파일에 저장할 때 문제가 발생할 수 있다. 따라서 이 옵션을 이용해 LOB 타입의 데이터를 다루는 방식을 설정할 수 있다. 이 옵션이 지정되지 않았을 경우 LOB 칼럼도 다른 칼럼과 마찬가지로 처리된다. |
+| \-replication true/false                  | 이중화를 off 하고 데이터를 로딩할 수 있는 옵션이다. (생략할 경우 true가 적용된다.) |
+| \-mode *mode_type*                        | APPEND : 기존의 테이블에 추가하여 삽입(기본값) REPLACE: DELETE 구문을 이용해 기존 테이블의 데이터를 모두 지우고 새로 생성 TRUNCATE: TRUNCATE 구문을 이용해 기존 테이블의 데이터를 모두 지우고 새로 생성 |
+| \-bad *badfile*                           | 로딩할 때 오류가 발생하여 업로드 되지 못한 행을 저장하며, 지정하지 않으면 저장하지 않는다. 옵션으로 stdout, stderr을 사용(소문자만 지원) 하여 파일을 생성하지 않고 stdout(standard out), stderr(standard error)를 화면으로 출력한다. |
+| \-log *logfile*                           | iloader가 수행하면서 발생하는 전반적인 과정을 기록한다. 시작 시간, 종료 시간, 대상 행 수, 처리 행 수, 오류 행 수, 오류 내역 등이 여기에 기록된다. 지정하지 않으면 저장하지 않는다. 옵션으로 stdout, stderr을 사용(소문자만 지원함) 하여 파일을 생성하지 않고 stdout(standard out), stderr(standard error)를 화면으로 출력한다. |
+| \-split *n*                               | 파일마다 저장할 레코드의 개수를 설정(out 커맨드에서만 적용됨)한다. 명령어 실행 후 n개의 레코드가 저장된 파일들이 datafile.dat0 부터 datafile.dat1, … 의 파일 이름으로 생성된다. |
+| \-errors *count*                          | in 모드로 iloader를 실행할 때 허용 가능한 에러 최대 개수를 지정하는 옵션이다. 이 옵션에서 설정한 에러 개수보다 많은 에러가 발생하면 실행을 멈춘다.  기본값은 50이며, 0으로 설정하면 발생한 에러 수에 무관하게 계속 실행된다. -parallel 옵션과 함께 사용될 경우 병렬로 처리되는 쓰레드 중에 한 개라도 이 옵션에서 설정한 에러 값 이상의 에러가 발생하면 모든 쓰레드가 종료된다. |
+| \-partition                               | \-T 옵션에 지정한 테이블이 partitioned 테이블이라면, 그 테이블의 파티션 개수만큼의 FORM 파일이 생성 된다. 각 FORM 파일의 이름은 formfile_name.partition_name이 될 것이다. 만약 지정한 테이블이 partitioned 테이블이 아니면, formfile_name이름으로 한 개의 FORM 파일이 생성 된다. |
 
 -   위의 명령행 옵션 중 -S, -U, -P 가 빠져 있는 경우에는 실행 시 사용자에게 직접
     옵션 값을 입력받게 된다.
 
-iSQL\> CREATE TABLE test (i1 INTEGER);
-
+```
+iSQL> CREATE TABLE test (i1 INTEGER);
 Create success.
 
-\$ iloader formout -T test -f test.fmt
-
-\-------------------------------------------------------
-
-Altibase Data Load/Download utility.
-
-Release Version 7.1.0.1
-
-Copyright 2000, Altibase Corporation or its subsidiaries.
-
-All Rights Reserved.
-
-\-------------------------------------------------------
-
-Write Server Name (default:localhost) :
-
+$ iloader formout -T test -f test.fmt
+-------------------------------------------------------
+     Altibase Data Load/Download utility.
+     Release Version 7.1.0.1
+     Copyright 2000, Altibase Corporation or its subsidiaries.
+     All Rights Reserved.
+-------------------------------------------------------
+Write Server Name (default:localhost) : 
 Write UserID : sys
-
-Write Password :
-
+Write Password : 
 ISQL_CONNECTION : TCP
+```
+
+
 
 -   쉘 프롬프트 상에서 iloader만 실행하거나 formout / in / out 의 세가지 명령어
     중 아무 옵션도 입력하지 않으면, iLoader\> 프롬프트가 나타나며 대화형 모드로
@@ -516,7 +496,9 @@ ISQL_CONNECTION : TCP
 예를 들어, 필드 구분자는 ‘-’, 행 구분자는 ‘-\#”일 때, 3개의 칼럼을 가진 다음과
 같은 행이 있다고 하자.
 
-홍길동-027551234-서울-\#
+```
+	홍길동-027551234-서울-# 
+```
 
 이 경우 세번째 ‘-’를 필드 구분자로 인식하여 4개의 칼럼을 가진, 행 구분자가 없는
 행으로 처리하게 된다.
@@ -525,7 +507,9 @@ ISQL_CONNECTION : TCP
 값에 구분자가 포함될 경우에도 두 번째, 세 번째 ‘-’를 필드 구분자로 잘못 인식하게
 된다.
 
-홍길동-02-755-1234-서울\#\#
+```
+	홍길동-02-755-1234-서울## 
+```
 
 이와 같이 구분자가 잘못 처리될 가능성이 있으므로 구분자를 선정할 때 주의가
 필요하다.
@@ -535,15 +519,19 @@ ISQL_CONNECTION : TCP
 테이블 이름에 소문자, 특수 문자 또는 공백이 포함된 경우 큰따옴표를 사용해야
 한다.
 
-iloader\> -T "table name"
-
-\$ -T \\"table name\\"
+```
+iloader> -T "table name"
+$ -T \"table name\"
+```
 
 파일 이름에 특수 문자 또는 공백이 포함된 경우 큰따옴표를 사용해야 한다.
 
-iloader\> -f "fmt file.fmt" -d "dat file.dat"
+```
+iloader> -f "fmt file.fmt" -d "dat file.dat"
+$ -f \"fmt file.fmt\" -d \"dat file.dat\"
+```
 
-\$ -f \\"fmt file.fmt\\" -d \\"dat file.dat\\"
+
 
 #### LOB 옵션
 
@@ -553,11 +541,13 @@ LOB 칼럼을 다루는 방식을 지정하는 옵션으로써 -lob 옵션 뒤�
 
 lob_option_string에 사용할 수 있는 키워드는 다음과 같다:
 
-use_lob_file, lob_file_size, use_separate_files, lob_indicator
+**use_lob_file, lob_file_size, use_separate_files, lob_indicator**
 
 ##### use_lob_file
 
->   use_lob_file = {yes\|no}
+```
+use_lob_file = {yes|no}
+```
 
 LOB 데이터의 표현에 외부 파일(LOB 파일)을 사용할 것인지의 여부.
 
@@ -567,7 +557,9 @@ LOB 파일의 명명법에 대해서는 lob_file_size 옵션의 설명을 참조
 
 ##### lob_file_size
 
->   lob_file_size = *file_size*
+```
+lob_file_size = file_size
+```
 
 LOB 파일의 최대 사이즈가 얼마가 될지를 지정한다. 이 값을 명시하지 않고
 use_lob_file 옵션을 yes로 지정하면, 외부 파일의 크기에는 운영체제의 파일 크기
@@ -604,19 +596,19 @@ LOB 파일명은 데이터 파일명의 확장자를 제외한 몸체 부분에 
 
 단위 파일의 크기: u Gbytes
 
->   dump_000000001.lob (u Gbytes)
-
->   dump_000000002.lob (u Gbytes)
-
->   ...
-
->   dump_n.lob (T - un GBytes)
-
->   where n = int(T / u), preceded by 0
+```
+dump_000000001.lob (u Gbytes)
+dump_000000002.lob (u Gbytes)
+...
+dump_n.lob (T - un GBytes)
+       where n = int(T / u), preceded by 0
+```
 
 ##### Use_separate_files
 
->   use_separate_files = {yes \| no}
+```
+use_separate_files = {yes | no}
+```
 
 LOB 파일을 사용할 때 하나의 LOB entry에 대해 하나의 파일씩 저장할 것인가를
 지정한다.
@@ -659,7 +651,9 @@ LOB 파일을 사용할 때 하나의 LOB entry에 대해 하나의 파일씩 �
 
 ##### lob_indicator
 
->   lob_indicator = *char_sequence*
+```
+lob_indicator = char_sequence
+```
 
 LOB 파일의 offset 과 size 를 표시하기 위한 포인터를 나타내기 위한 구분자를
 지정하는 옵션이다.
@@ -688,16 +682,19 @@ iLoader 의 자료 복사 방향이 in 이고 use_lob_file=yes 일 때 데이터
 1.5 GB 크기의 t1_000000001.lob, t1_000000002.lob, ... 와 같은 외부 파일들에 LOB
 데이터를 덤프한다.
 
-\$ iloader out ... -f t1.fmt -d t1.dat -lob " lob_file_size=1.5G "
+```
+$ iloader out ... -f t1.fmt -d t1.dat -lob " lob_file_size=1.5G "
+```
 
 t1.lob 라는 이름의 단일 파일에 LOB 데이터를 덤프한다.
 
-\$ iloader out ... -f t1.fmt -d t1.dat -lob "use_lob_file=yes"
+```
+$ iloader out ... -f t1.fmt -d t1.dat -lob "use_lob_file=yes"
+$ iloader out ... -f t1.fmt -d t1.dat -lob "use_lob_file=yes" -lob "lob_file_size=1G"
+$ iloader out ... -f t1.fmt -d t1.dat -lob "lob_indicator=%$LOB$%”
+```
 
-\$ iloader out ... -f t1.fmt -d t1.dat -lob "use_lob_file=yes" -lob
-"lob_file_size=1G"
 
-\$ iloader out ... -f t1.fmt -d t1.dat -lob "lob_indicator=%\$LOB\$%”
 
 ##### Data File Format
 
@@ -707,41 +704,29 @@ LOB 이 들어 있는 칼럼을 다운로드 할 때, 외부의 파일에서 LOB
 LOB 데이터의 위치를 가리키는 offset:size 조합은 따로 지정하지 않았을 경우 %%에
 의해서 구분되어진다.
 
+```
 Example)
-
-\$ cat t1.fmt
-
+$ cat t1.fmt
 table t1
-
 {
-
 I1 integer;
-
 I2 blob;
-
 I3 char (10);
-
 }
-
 DATA_NLS_USE=KO16KSC5601
-
-\$ iloader out ... -f t1.fmt -d t1.dat -lob “lob_file_size=3G”
-
-\$ ls
-
+$ iloader out ... -f t1.fmt -d t1.dat -lob “lob_file_size=3G”
+$ ls
 t1_000000001.lob t1_000000002.lob t1.dat t1.fmt
-
-\$ cat t1.dat
-
+$ cat t1.dat
 1,“%%0:2000000000”, “Terminator3”
-
 2,“%%2000000000:1800000000”, “SixSense”
+```
 
 데이터 파일 내부에서는 필드 구분자 사이에(필드 encloser가 설정되어있으면 두
 encloser 사이에) LOB 데이터의 offset 과 size 를 알려주는 정보가 있거나 LOB
 데이터 자체가 오게 된다. 구조는 다음 그림과 같다.
 
-![](media/71b8cbe0c956e1a46237c0f904adab72.png)
+![](media/iLoader/71b8cbe0c956e1a46237c0f904adab72.png)
 
 NULL인 LOB 데이터를 데이터 파일에 저장할 때, 데이터 파일의 해당 LOB 데이터
 위치에는 필드 구분자 사이에(필드 encloser가 설정되어 있으면 두 encloser 사이에)
@@ -751,13 +736,12 @@ NULL인 LOB 데이터를 데이터 파일에 저장할 때, 데이터 파일의 
 
 옵션에 use_separate_files가 설정되어 있을 경우 데이터 파일의 형식은 다음과 같다.
 
+```
 t1/I1/000000001.lob,t1/I2/000000001.lob,t1/I3/000000001.lob
-
 t1/I1/000000002.lob,t1/I2/000000002.lob,t1/I3/000000002.lob
-
 t1/I1/000000003.lob,t1/I2/000000003.lob,t1/I3/000000003.lob
-
 ,,,
+```
 
 위의 경우 모든 칼럼이 LOB 데이터이다.
 
@@ -768,16 +752,16 @@ NULL인 LOB 데이터를 LOB 파일에 저장할 때, 데이터 파일의 해당
 
 iLoader를 수행할 때 다음의 옵션들을 사용해 성능을 높일 수 있다.
 
-| 인 자                                           | 설 명                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-|-------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| \-array *array_size*                            | 데이터 로딩 (in) 시 속도 증가를 위해서 파일에서 읽은 데이터를 배열로 구성하여 서버로 전송한다. 이렇게 하면 서버와의 통신 횟수를 줄여서 성능 향상을 가져올 수 있다.  그러나 이 값을 너무 크게 할 경우에는 오히려 역효과를 가져올 수도 있다. LOB 칼럼이 존재할 경우 이 옵션은 무시한다. 데이터 다운로드(out) 시 한 번에 fetch할 행의 개수를 지정한다. -parallel 옵션과 함께 사용하면 성능 향상을 가져올 수 있다.                                                                                                                                                                                                                                                                                             |
-| \-commit *commit_unit*                          | 업로드 시에 몇 건 단위로 삽입한 다음 커밋할 것인가를 나타내는 단위 옵션이다. 기본값은 1000건을 삽입한 후 커밋한다. *commit_unit* 0은 NON-AUTOCOMMIT 모드로 동작하며, 모든 데이터를 삽입한 후에 커밋한다. *commit_unit* 1은 AUTOCOMMIT 모드로 동작하여 데이터 삽입 시 건별로 커밋한다. array 옵션과 함께 사용할 시에는 *array_size*\* *commit_unit*의 수만큼 삽입 후 커밋한다.                                                                                                                                                                                                                                                                                                                              |
-| \-atomic                                        | Atomic Array INSERT를 수행하도록 설정한다. Atomic Array INSERT는 배열 크기만큼 Insert문을 하나의 트랜잭션으로 처리하기 때문에 Array Insert보다 빠른 성능을 발휘한다. 이 옵션은 반드시 -array 옵션과 함께 사용해야 하며, LOB 칼럼이 있는 테이블은 이 옵션으로 수행할 수 없다.  또한 이 옵션은 데이터를 업로드할 때에만 유효하다.                                                                                                                                                                                                                                                                                                                                                                            |
-| \-direct [log\|nolog] (Direct-Path INSERT 참고) | 디스크 테이블에 업로드 할 때 Direct-Path INSERT 방식을 사용하는 옵션이다. log, nolog를 명시하지 않으면 log 방식으로 수행된다. 만약 nolog 방식을 사용할 때에는 반드시 해당 테이블에 대하여 백업을 해야 한다. nolog 모드로 수행중에 실패할 경우 정상적인 복구가 불가능할 수도 있기 때문이다.  만약 제약조건 (Direct-Path INSERT 참고)에 해당하는 테이블을 로딩할 경우에는 atomic 옵션으로 자동 변환되어 수행된다. -array 옵션을 설정하지 않을 경우에는 array 크기는 최대값 (65535)으로 자동으로 설정된다.  -commit 옵션을 생략할 경우에 그 값은 1이 된다.                                                                                                                                                    |
-| \-parallel *count*                              | 병렬로 처리할 쓰레드의 개수를 지정한다. 최대 32개까지 가능하며, 지정한 값만큼 쓰레드가 생성되어 병렬 처리한다. 다운로드 할 때에는 설정된 값만큼 파일이 생성되어 데이터가 저장된다. -parallel 옵션을 단독으로 사용하여 다운로드 할 경우, bind와 fetch가 반복적으로 이뤄져 성능 저하를 가져온다. 따라서 다운로드 할 때에는 -parallel과 -array 옵션을 함께 사용해야 한다. LOB 칼럼이 존재할 경우 이 옵션은 무시한다. -parallel 옵션을 사용해서 업로드 할 때, iLoader는 *count* + 1 개의 연결을 생성하고, 다운로드 할 때는 항상 2개의 연결만 생성한다. 그러므로 IPC접속을 통해서 이 옵션으로 다운로드 또는 업로드를 할 때, IPC_CHANNEL_COUNT 프로퍼티의 값은 생성되는 연결의 수 이상으로 설정되어 있어야 한다. |
-| \-readsize *integer*                            | in 모드의 옵션으로 사용할 수 있다. 파일을 한 번에 읽어올 수 있는 크기를 지정하는 옵션이다. 크기는 0을 초과해야 하며, 기본값은 1048576byte이다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| \-prefetch_rows                                 | out 명령어와 함께 사용하는 옵션이다. select쿼리 수행 시, 데이터베이스에서 한번에 가져오는 레코드 개수를 지정할 수 있다. 설정 가능한 값의 범위는 0부터 214783647이며, 기본값은 0이다. 0은 네트워크 패킷에 담을 수 있는 최대 크기를 의미한다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| \-async prefetch                                | out 명령어와 함께 사용하는 옵션이다. fetch 성능을 향상하기 위해 비동기 prefetch 기능을 설정할 수 있다. 이 옵션에 설정 가능한 값은 아래와 같다. off: 비동기 prefetch를 하지 않는다. (기본값) on: 비동기 prefetch를 한다. auto: 비동기 prefetch를 위해 auto tuning을 한다. (리눅스만 지원) 비동기 prefetch 에 대한 자세한 설명은 CLI User's Manual에서 prefetch 관련 속성 및 환경 변수인 ALTIBASE_PREFETCH_ASYNC, ALTIBASE_PREFETCH_AUTO_TUNING, ALTIBASE_SOCK_RCVBUF_BLOCK_RATIO을 참고하기 바란다.                                                                                                                                                                                                         |
+| 인 자                                           | 설 명                                                        |
+| ----------------------------------------------- | ------------------------------------------------------------ |
+| \-array *array_size*                            | 데이터 로딩 (in) 시 속도 증가를 위해서 파일에서 읽은 데이터를 배열로 구성하여 서버로 전송한다. 이렇게 하면 서버와의 통신 횟수를 줄여서 성능 향상을 가져올 수 있다.  <br />그러나 이 값을 너무 크게 할 경우에는 오히려 역효과를 가져올 수도 있다. LOB 칼럼이 존재할 경우 이 옵션은 무시한다. 데이터 다운로드(out) 시 한 번에 fetch할 행의 개수를 지정한다. -parallel 옵션과 함께 사용하면 성능 향상을 가져올 수 있다. |
+| \-commit *commit_unit*                          | 업로드 시에 몇 건 단위로 삽입한 다음 커밋할 것인가를 나타내는 단위 옵션이다. 기본값은 1000건을 삽입한 후 커밋한다. <br />*commit_unit* 0은 NON-AUTOCOMMIT 모드로 동작하며, 모든 데이터를 삽입한 후에 커밋한다. <br />*commit_unit* 1은 AUTOCOMMIT 모드로 동작하여 데이터 삽입 시 건별로 커밋한다.<br />array 옵션과 함께 사용할 시에는 *array_size*\* *commit_unit*의 수만큼 삽입 후 커밋한다. |
+| \-atomic                                        | Atomic Array INSERT를 수행하도록 설정한다. Atomic Array INSERT는 배열 크기만큼 Insert문을 하나의 트랜잭션으로 처리하기 때문에 Array Insert보다 빠른 성능을 발휘한다. 이 옵션은 반드시 -array 옵션과 함께 사용해야 하며, LOB 칼럼이 있는 테이블은 이 옵션으로 수행할 수 없다.  또한 이 옵션은 데이터를 업로드할 때에만 유효하다. |
+| \-direct [log\|nolog] (Direct-Path INSERT 참고) | 디스크 테이블에 업로드 할 때 Direct-Path INSERT 방식을 사용하는 옵션이다. log, nolog를 명시하지 않으면 log 방식으로 수행된다. <br />만약 nolog 방식을 사용할 때에는 반드시 해당 테이블에 대하여 백업을 해야 한다. nolog 모드로 수행중에 실패할 경우 정상적인 복구가 불가능할 수도 있기 때문이다.  <br />만약 제약조건 (Direct-Path INSERT 참고)에 해당하는 테이블을 로딩할 경우에는 atomic 옵션으로 자동 변환되어 수행된다. <br />-array 옵션을 설정하지 않을 경우에는 array 크기는 최대값 (65535)으로 자동으로 설정된다.  <br />-commit 옵션을 생략할 경우에 그 값은 1이 된다. |
+| \-parallel *count*                              | 병렬로 처리할 쓰레드의 개수를 지정한다. 최대 32개까지 가능하며, 지정한 값만큼 쓰레드가 생성되어 병렬 처리한다. 다운로드 할 때에는 설정된 값만큼 파일이 생성되어 데이터가 저장된다. -parallel 옵션을 단독으로 사용하여 다운로드 할 경우, bind와 fetch가 반복적으로 이뤄져 성능 저하를 가져온다. 따라서 다운로드 할 때에는 -parallel과 -array 옵션을 함께 사용해야 한다. LOB 칼럼이 존재할 경우 이 옵션은 무시한다. <br />-parallel 옵션을 사용해서 업로드 할 때, iLoader는 *count* + 1 개의 연결을 생성하고, 다운로드 할 때는 항상 2개의 연결만 생성한다. 그러므로 IPC접속을 통해서 이 옵션으로 다운로드 또는 업로드를 할 때, IPC_CHANNEL_COUNT 프로퍼티의 값은 생성되는 연결의 수 이상으로 설정되어 있어야 한다. |
+| \-readsize *integer*                            | in 모드의 옵션으로 사용할 수 있다. 파일을 한 번에 읽어올 수 있는 크기를 지정하는 옵션이다. 크기는 0을 초과해야 하며, 기본값은 1048576byte이다. |
+| \-prefetch_rows                                 | out 명령어와 함께 사용하는 옵션이다. select쿼리 수행 시, 데이터베이스에서 한번에 가져오는 레코드 개수를 지정할 수 있다. 설정 가능한 값의 범위는 0부터 214783647이며, 기본값은 0이다. 0은 네트워크 패킷에 담을 수 있는 최대 크기를 의미한다. |
+| \-async prefetch                                | out 명령어와 함께 사용하는 옵션이다. fetch 성능을 향상하기 위해 비동기 prefetch 기능을 설정할 수 있다. 이 옵션에 설정 가능한 값은 아래와 같다. <br />off: 비동기 prefetch를 하지 않는다. (기본값) <br />on: 비동기 prefetch를 한다. <br />auto: 비동기 prefetch를 위해 auto tuning을 한다 (리눅스만 지원). <br />비동기 prefetch 에 대한 자세한 설명은 CLI User's Manual에서 prefetch 관련 속성 및 환경 변수인 ALTIBASE_PREFETCH_ASYNC, ALTIBASE_PREFETCH_AUTO_TUNING, ALTIBASE_SOCK_RCVBUF_BLOCK_RATIO을 참고하기 바란다. |
 
 #### Atomic Array INSERT
 
@@ -809,7 +793,7 @@ Array INSERT가 실행하려는 구문의 숫자만큼 실행하는 반면, Atom
 | Result 개수 (에러 발생 시) | Array 요소의 개수 | Array 요소의 개수   |
 | 통신 속도                  | 빠름              | 매우 빠름           |
 
->   [표 2‑1] Array INSERT와 Atomic Array INSERT의 차이
+[표 2‑1] Array INSERT와 Atomic Array INSERT의 차이
 
 ##### 제약사항
 
@@ -830,7 +814,7 @@ Atomic Array Insert를 사용할 때 아래의 표와 같이 몇 가지 제약�
 | 프로시져              | 정상 동작함           | 정상 동작함                       |
 | SubQuery              | 매번 새로운 view를 봄 | 처음 수행된 view를 봄             |
 
->   [표 2‑2] Atomic Array Insert의 제약사항 (N=array 요소의 개수)
+[표 2‑2] Atomic Array Insert의 제약사항 (N=array 요소의 개수)
 
 ##### 주의사항
 
@@ -890,15 +874,23 @@ Direct-Path INSERT (-direct 옵션)를 사용해서 데이터를 처리할 때 �
 
 Array 최대값과 로깅(Logging) 모드로 Direct-Path 로딩을 수행한다.
 
+```
 il in t1.form -d t1.dat -direct [log]
+```
 
 Array 최대값, 노로깅(Nologging) 모드로 Direct-Path 로딩을 실행한다.
 
+```
 il in t1.form -d t1.dat -direct nolog
+```
 
 지정한 Array 값, 로깅(Logging) 모드로 Direct-Path 로딩을 실행한다.
 
+```
 il in t1.form -d t1.dat -array 1000 -direct
+```
+
+
 
 ### 일괄식 모드 
 
@@ -915,88 +907,53 @@ FORM 파일은 데이터를 업로드 하거나, 다운로드 할 때 대상 테
 
 FORM파일을 생성하는 구문은 다음과 같다.
 
->   iloader formout -S *servername* -U *user_id* -P *password* -T *table_name*
->   -f *form_file*
+```
+iloader  formout  -S servername  -U user_id  -P password  -T table_name -f form_file
+```
 
 다음은 테이블 T1을 만들고, FORM 파일을 생성하는 예이다.
 
-iSQL\> create table T1(
-
-name varchar(30),
-
-age integer,
-
-gender char(1),
-
-etc nvarchar(30))
-
+```
+iSQL> create table T1(
+name 	varchar(30), 
+age 	integer,
+gender 	char(1), 
+etc 	nvarchar(30))
 tablespace USER_DATA;
-
 Create success.
-
-iSQL\> insert into T1 values ( 'Ju-young', 20, 'M', N'가군') ;
-
+iSQL> insert into T1 values ( 'Ju-young', 20, 'M', N'가군') ;
 1 row inserted.
-
-iSQL\> insert into T1 values ('Chang-ho', 30, 'M', N'다군') ;
-
+iSQL> insert into T1 values ('Chang-ho', 30, 'M', N'다군') ;
 1 row inserted.
-
-iSQL\> insert into T1 values ('Ji-hyun', 24, 'F', N'라군') ;
-
+iSQL> insert into T1 values ('Ji-hyun', 24, 'F', N'라군') ;
 1 row inserted.
-
-iSQL\> select \* from T1;
-
-NAME AGE GENDER ETC
-
-\---------------------------------------------------
-
-Ju-young 20 M  가군
-
-Chang-ho 30 M  다군
-
-Ji-hyun 24 F  라군
-
+iSQL> select * from T1;
+NAME                 	AGE     GENDER  	ETC 
+---------------------------------------------------
+Ju-young                 	20       M    	가군
+Chang-ho                	30       M      	다군
+Ji-hyun                   	24       F      	라군
 3 rows selected.
-
-iSQL\> exit
-
-\$ iloader formout -s 127.0.0.1 -u sys -p manager -T T1 -f T1.fmt
-
-\-------------------------------------------------------
-
-Altibase Data Load/Download utility.
-
-Release Version 7.1.0.1
-
-Copyright 2000, Altibase Corporation or its subsidiaries.
-
-All Rights Reserved.
-
-\-------------------------------------------------------
-
+iSQL> exit
+$ iloader formout -s 127.0.0.1 -u sys -p manager -T T1 -f T1.fmt
+-------------------------------------------------------
+     Altibase Data Load/Download utility.
+     Release Version 7.1.0.1
+     Copyright 2000, Altibase Corporation or its subsidiaries.
+     All Rights Reserved.
+-------------------------------------------------------
 ISQL_CONNECTION : TCP
-
-\$ cat T1.fmt
-
+$ cat T1.fmt
 table T1
-
 {
-
 "NAME" varchar (30);
-
 "AGE" integer;
-
 "GENDER" char (1);
-
 "ETC" nvarchar (100);
-
 }
-
 DATA_NLS_USE=KO16KSC5601
-
 NCHAR_UTF16=YES
+```
 
 DATA_NLS_USE는 다운로드 할 데이터의 인코딩 방식을 보여준다. 일반적으로 FORM
 파일을 생성할 때 클라이언트의 캐릭터 셋이 저장된다.
@@ -1020,42 +977,34 @@ Altibase는 데이터를 다운로드 할 때 레코드 5,000개 마다 테이�
 
 데이터를 다운로드 하는 구문은 다음과 같다.
 
->   iloader out -S *servername* -U *user_id* -P *password* -f *form_file* -d
->   *backup_files* -split *n* -array *count* -parallel *count*
+```
+iloader  out  -S servername -U user_id   -P password          -f  form_file  -d backup_files  -split n   -array count      -parallel count 
+```
 
 다음은 T1.fmt 파일을 이용하여 데이터를 T1.dat 파일에 다운로드 하는 예이다.
 
-\$ iloader out -s 127.0.0.1 -u sys -p manager -f T1.fmt -d T1.dat
-
-\-------------------------------------------------------
-
-Altibase Data Load/Download utility.
-
-Release Version 7.1.0.1
-
-Copyright 2000, Altibase Corporation or its subsidiaries.
-
-All Rights Reserved.
-
-\-------------------------------------------------------
-
+```
+$ iloader out -s 127.0.0.1 -u sys -p manager -f T1.fmt -d T1.dat
+-------------------------------------------------------
+     Altibase Data Load/Download utility.
+     Release Version 7.1.0.1
+     Copyright 2000, Altibase Corporation or its subsidiaries.
+     All Rights Reserved.
+-------------------------------------------------------
 ISQL_CONNECTION : TCP
-
 DATA_NLS_USE: KO16KSC5601
-
 NCHAR_UTF16 : YES
 
-Total 3 record download(T1)
+     Total 3 record download(T1)
 
-DOWNLOAD : 11.2320 msec
-
-\$ cat T1.dat
-
+     DOWNLOAD : 11.2320 msec
+$ cat T1.dat 
 "Ju-young",20,"M","가군"
-
 "Chang-ho",30,"M","다군"
-
 "Ji-hyun",24,"F","라군"
+```
+
+
 
 #### 데이터 업로드
 
@@ -1078,59 +1027,45 @@ iLoader는 데이터를 업로드 할 때 레코드 5,000개 마다 테이블 �
 
 데이터를 업로드 하는 구문은 다음과 같다.
 
->   iloader in -S *servername* -U *user_id* -P *password*  
->   -f *form_file* -d *backup_files*  
->   -mode *mode_type* -F *firstrow*  
->   -commit commit_unit -L *lastrow*  
->   -array *count* -atomic -parallel *count*
+```
+iloader  in  -S servername -U user_id -P password
+-f form_file      -d backup_files 
+-mode mode_type  -F firstrow  
+-commit commit_unit  -L lastrow   
+-array count     -atomic   -parallel count
+```
 
 다음은 T1.fmt 파일과 T1.dat 파일을 이용하여 데이터를 업로드 하는 예이다.
 
-\$ iloader in -s 127.0.0.1 -u sys -p manager -f T1.fmt -d T1.dat -F 1 -L 2
-
-\-------------------------------------------------------
-
-Altibase Data Load/Download utility.
-
-Release Version 7.1.0.1
-
-Copyright 2000, Altibase Corporation or its subsidiaries.
-
-All Rights Reserved.
-
-\-------------------------------------------------------
-
+```
+$ iloader in -s 127.0.0.1 -u sys -p manager -f T1.fmt -d T1.dat -F 1 -L 2
+-------------------------------------------------------
+     Altibase Data Load/Download utility.
+     Release Version 7.1.0.1
+     Copyright 2000, Altibase Corporation or its subsidiaries.
+     All Rights Reserved.
+-------------------------------------------------------
 ISQL_CONNECTION : TCP
-
 DATA_NLS_USE: KO16KSC5601
-
 NCHAR_UTF16 : YES
 
-UPLOAD : 24.4040 msec
+     UPLOAD : 24.4040 msec
 
-Load Count : 2(T1)
+     Load Count  : 2(T1)
+$ isql -s 127.0.0.1 -u sys -p manager -silent
+iSQL> select * from t1;
+select * from t1;
+NAME          	AGE         GENDER  	ETC
+-------------------------------------------------------
+Ju-young          	20          M      	가군
+Chang-ho          	30          M    	다군
+Ji-hyun           	24          F   	라군
+Ju-young           	20          M     	가군
+Chang-ho           	30          M   	다군
+5 rows selected.  
+```
 
-\$ isql -s 127.0.0.1 -u sys -p manager -silent
 
-iSQL\> select \* from t1;
-
-select \* from t1;
-
-NAME AGE GENDER ETC
-
-\-------------------------------------------------------
-
-Ju-young 20 M 가군
-
-Chang-ho 30 M 다군
-
-Ji-hyun 24 F 라군
-
-Ju-young 20 M 가군
-
-Chang-ho 30 M 다군
-
-5 rows selected.
 
 -   미리 생성한 T1.fmt 파일의 테이블 정보를 참조하여 T1.dat 파일의 데이터를 현재
     데이터베이스 T1 테이블로 데이터를 업로드 한다.
@@ -1142,8 +1077,11 @@ Chang-ho 30 M 다군
     firstrow와 lastrow에 100과 1000이 각각 명시되어 있다면 파일 안에 있는
     100번째 데이터부터 1000번째 데이터까지 업로드한다.
 
-\$ iloader in -s 127.0.0.1 -u sys -p manager -f T1.fmt -d T1.dat -array 1000
--commit 1 -atomic
+```
+$ iloader in -s 127.0.0.1 -u sys -p manager -f T1.fmt -d T1.dat -array 1000 -commit 1 -atomic
+```
+
+
 
 -   T1.fmt 파일의 테이블 정보를 참조하여 T1.dat 파일의 데이터를 현재
     데이터베이스 T1 테이블로 1000개씩 Atomic Array Insert로 업로드한다.
@@ -1172,10 +1110,12 @@ iLoader를 실행하기 위해서는 반드시 먼저 Altibase 서버가 시작�
 
 ##### 원격 데이터베이스에 접속하기 위한 명령행 옵션
 
->   **iloader** [-**H**] [**-S** *server_name*] [**-U** *user_id*] [**-P**
->   *password*]
+```
+iloader [-H] [-S server_name] [-U user_id] [-P password]
+[-PORT port_no] [-SILENT] [-NST] [-DISPLAYQUERY]
+```
 
->   [-PORT *port_no*] [-SILENT] [-NST] [**-DISPLAYQUERY**]
+
 
 -   \-H: iLoader의 실행 방법을 보여준다.
 
@@ -1214,138 +1154,100 @@ iLoader를 실행하기 위해서는 반드시 먼저 Altibase 서버가 시작�
 
 원격 서버에서 실행
 
-iSQL\> CREATE TABLE department (
-
-dno SMALLINT PRIMARY KEY,
-
-dname CHAR(30) NOT NULL,
-
-dep_location CHAR(9),
-
-mgr_no INTEGER );
-
+```
+iSQL> CREATE TABLE department (
+dno            SMALLINT     PRIMARY KEY,
+dname          CHAR(30)     NOT NULL,
+dep_location   CHAR(9),
+mgr_no         INTEGER );
 Create success.
-
-iSQL\> INSERT INTO department VALUES (1001, 'technical', 'Mapo', 1);
-
+iSQL> INSERT INTO department VALUES (1001, 'technical', 'Mapo', 1);
 1 row inserted.
-
-iSQL\> INSERT INTO department VALUES (1002, 'engine devt', 'Yeouido', 10);
-
+iSQL> INSERT INTO department VALUES (1002, 'engine devt', 'Yeouido', 10);
 1 row inserted.
-
-iSQL\> INSERT INTO department VALUES (1003, 'marketing', 'Gangnam', 9);
-
+iSQL> INSERT INTO department VALUES (1003, 'marketing', 'Gangnam', 9);
 1 row inserted.
-
-iSQL\> INSERT INTO department VALUES (2001, 'planning', 'Gangnam', 15);
-
+iSQL> INSERT INTO department VALUES (2001, 'planning', 'Gangnam', 15);
 1 row inserted.
+iSQL> INSERT INTO department VALUES (3001, 'operations', 'Sinchon', 9);
+1 row inserted. 
+```
 
-iSQL\> INSERT INTO department VALUES (3001, 'operations', 'Sinchon', 9);
 
-1 row inserted.
 
 ###### 원격 데이터 다운로드
 
 로컬 서버에서 실행
 
-\$ iloader formout -s 192.168.1.71 -u sys -p manager -port 20594 -T department
--f dept.fmt
-
-\-------------------------------------------------------
-
+```
+$ iloader formout -s 192.168.1.71 -u sys -p manager -port 20594 -T department -f dept.fmt
+-------------------------------------------------------     
 Altibase Data Load/Download utility.
-
-Release Version 7.1.0.1
-
-Copyright 2000, Altibase Corporation or its subsidiaries.
-
-All Rights Reserved.
-
-\-------------------------------------------------------
-
+    Release Version 7.1.0.1
+    Copyright 2000, Altibase Corporation or its subsidiaries.
+    All Rights Reserved.
+-------------------------------------------------------
 ISQL_CONNECTION : TCP
-
-\$ ls
-
+$ ls
 dept.fmt
-
-\$ iloader out -s 192.168.1.71 -u sys -p manager -port 20594 -f dept.fmt -d
-dept.dat
-
-\-------------------------------------------------------
-
-Altibase Data Load/Download utility.
-
-Release Version 7.1.0.1
-
-Copyright 2000, Altibase Corporation or its subsidiaries.
-
-All Rights Reserved.
-
-\-------------------------------------------------------
-
+$ iloader out -s 192.168.1.71 -u sys -p manager -port 20594 -f dept.fmt -d dept.dat
+-------------------------------------------------------
+     Altibase Data Load/Download utility.
+     Release Version 7.1.0.1
+     Copyright 2000, Altibase Corporation or its subsidiaries.
+     All Rights Reserved.
+-------------------------------------------------------
 ISQL_CONNECTION : TCP
-
 DATA_NLS_USE: KO16KSC5601
 
-Total 5 record download(department)
+     Total 5 record download(department)
 
-DOWNLOAD : 5.9540 msec
+     DOWNLOAD : 5.9540 msec
+$ ls
+dept.dat   dept.fmt
+```
 
-\$ ls
 
-dept.dat dept.fmt
 
 ###### 원격 데이터 업로드
 
 로컬 서버에서 실행
 
-\$ iloader in -s 192.168.1.71 -u sys -p manager -port 20594 -f dept.fmt -d
-dept.dat -mode replace
-
-\-------------------------------------------------------
-
-Altibase Data Load/Download utility.
-
-Release Version 7.1.0.1
-
-Copyright 2000, Altibase Corporation or its subsidiaries.
-
-All Rights Reserved.
-
-\-------------------------------------------------------
-
+```
+$ iloader in -s 192.168.1.71 -u sys -p manager -port 20594 -f dept.fmt -d dept.dat -mode replace
+-------------------------------------------------------
+     Altibase Data Load/Download utility.
+     Release Version 7.1.0.1
+     Copyright 2000, Altibase Corporation or its subsidiaries.
+     All Rights Reserved.
+-------------------------------------------------------
 ISQL_CONNECTION : TCP
-
 DATA_NLS_USE: KO16KSC5601
 
-UPLOAD : 70.6630 msec
+     UPLOAD : 70.6630 msec
 
-Load Count : 5(department)
+     Load Count  : 5(department) 
+```
+
+
 
 ###### 원격 서버에서 결과
 
 원격 서버에서 실행
 
-iSQL\> select \* from department ;
-
-DNO DNAME DEP_LOCATION MGR_NO
-
-\---------------------------------------------------------------------------
-
-1001 technical Mapo 1
-
-1002 engine devt Yeouido 10
-
-1003 marketing Gangnam 9
-
-2001 planning Gangnam 15
-
-3001 operations Sinchon 9
-
+```
+iSQL> select * from department ;
+DNO         DNAME                           DEP_LOCATION  MGR_NO      
+---------------------------------------------------------------------------
+1001        technical                       Mapo       1           
+1002        engine devt                     Yeouido    10          
+1003        marketing                       Gangnam    9           
+2001        planning                        Gangnam    15          
+3001        operations                      Sinchon    9           
 5 rows selected.
+```
+
+
 
 ### 대화형 모드
 
@@ -1362,96 +1264,89 @@ Line) 상에서 직접 연결 정보를 입력하는 방법과 iLoader 상에서
 
 명령행 상에서 연결 정보를 입력하는 방식
 
-\$ iloader -s 127.0.0.1 -u sys -p manager
-
-\-------------------------------------------------------
-
-Altibase Data Load/Download utility.
-
-Release Version 7.1.0.1
-
-Copyright 2000, Altibase Corporation or its subsidiaries.
-
-All Rights Reserved.
-
-\-------------------------------------------------------
-
+```
+$ iloader -s 127.0.0.1 -u sys -p manager
+-------------------------------------------------------
+     Altibase Data Load/Download utility.
+     Release Version 7.1.0.1
+     Copyright 2000, Altibase Corporation or its subsidiaries.
+     All Rights Reserved.
+-------------------------------------------------------
 ISQL_CONNECTION : TCP
+iLoader>          	-> iLoader 프롬프트가 나타나, 명령어를 입력하여 원하는 작업을 대화형으로 
+                       수행할 수 있는 모드가 된다.
+```
 
->   iLoader\> -\> iLoader 프롬프트가 나타나, 명령어를 입력하여 원하는 작업을
->   대화형으로 수행할 수 있는 모드가 된다.
+
 
 ##### iLoader 상에서 연결 정보를 입력하는 방식
 
-\$ iloader
-
-\-------------------------------------------------------
-
-Altibase Data Load/Download utility.
-
-Release Version 7.1.0.1
-
-Copyright 2000, Altibase Corporation or its subsidiaries.
-
-All Rights Reserved.
-
-\-------------------------------------------------------
-
+```
+$ iloader
+-------------------------------------------------------
+     Altibase Data Load/Download utility.
+     Release Version 7.1.0.1
+     Copyright 2000, Altibase Corporation or its subsidiaries.
+     All Rights Reserved.
+-------------------------------------------------------
 Write Server Name (enter:127.0.0.1) :
-
 Write UserID : sys
-
-Write Password : manager -\> 화면에는 암호가 나타나지 않는다.
-
+Write Password : manager   	-> 화면에는 암호가 나타나지 않는다.
 ISQL_CONNECTION : TCP
+iLoader>          	-> iLoader 프롬프트가 나타나, 명령어를 입력하여 원하는 작업을 대화형으로 
+                       수행할 수 있는 모드가 된다.
 
-iLoader\> -\> iLoader 프롬프트가 나타나, 명령어를 입력하여
+```
 
-원하는 작업을 대화형으로 수행할 수 있는
 
-모드가 된다.
 
 ##### 대화형 모드에서 빠져나오기
 
-iLoader\> exit
+```
+iLoader> exit
+```
+
+
 
 #### Form파일 생성
 
-iLoader\> formout -T employees -f employees.fmt
+```
+iLoader> formout -T employees -f employees.fmt
 
-iLoader\> exit
-
-\$ ls
-
+iLoader> exit
+$ ls
 employees.fmt
+```
+
+
 
 #### 데이터 다운로드
 
-iLoader\> out -f employees.fmt -d employees.dat
-
+```
+iLoader> out -f employees.fmt -d employees.dat
 DATE FORMAT : YYYY/MM/DD HH:MI:SS
+     ..
+    Total 20 record download (EMPLOYEES)
+    DOWNLOAD: 56936
 
-..
+iLoader> exit
+$ ls
+employees.dat   employees.fmt
+```
 
-Total 20 record download (EMPLOYEES)
 
-DOWNLOAD: 56936
-
-iLoader\> exit
-
-\$ ls
-
-employees.dat employees.fmt
 
 #### 데이터 업로드
 
-iLoader\> in -f employees.fmt -d employees.dat -mode replace
-
+```
+iLoader> in -f employees.fmt -d employees.dat -mode replace
 DATE FORMAT : YYYY/MM/DD HH:MI:SS
+     UPLOAD: 13880
 
-UPLOAD: 13880
+     Load Count  : 20 (EMPLOYEES)
+```
 
-Load Count : 20 (EMPLOYEES)
+
 
 #### 실행 결과 코드
 
@@ -1487,129 +1382,93 @@ iLoader 유틸리티를 이용하여 원격 서버에 있는 MANAGER 테이블�
 
 ##### 원격 서버에 데이터 생성
 
-iSQL\> CREATE TABLE manager(
-
+```
+iSQL> CREATE TABLE manager(
 mgr_no INTEGER,
-
 mname VARCHAR(20),
-
 address VARCHAR(60));
-
 Create success.
-
-iSQL\> INSERT INTO manager VALUES (7, 'HJMIN', '44-25 Youido-dong Youngdungpo-gu
-Seoul, Korea');
-
+iSQL> INSERT INTO manager VALUES (7, 'HJMIN', '44-25 Youido-dong Youngdungpo-gu Seoul, Korea');
 1 row inserted.
-
-iSQL\> INSERT INTO manager VALUES(8, 'JDLEE', '3101 N. Wabash Ave. Brooklyn,
-NY');
-
+iSQL> INSERT INTO manager VALUES(8, 'JDLEE', '3101 N. Wabash Ave. Brooklyn, NY');
 1 row inserted.
-
-iSQL\> INSERT INTO manager VALUES(12, 'MYLEE', '130 Gongpyeongno Jung-gu Daegu,
-Korea');
-
+iSQL> INSERT INTO manager VALUES(12, 'MYLEE', '130 Gongpyeongno Jung-gu Daegu, Korea');
 1 row inserted.
-
-iSQL\> SELECT \* FROM manager;
-
-MGR_NO MNAME ADDRESS
-
-\--------------------------------------------------------------------
-
-7 HJMIN 44-25 Youido-dong Youngdungpo-gu Seoul, Korea
-
-8 JDLEE 3101 N. Wabash Ave. Brooklyn, NY
-
-12 MYLEE 130 Gongpyeongno Jung-gu Daegu, Korea
-
+iSQL> SELECT * FROM manager;
+MGR_NO      MNAME      ADDRESS
+--------------------------------------------------------------------
+7           HJMIN      44-25 Youido-dong Youngdungpo-gu Seoul, Korea
+8           JDLEE      3101 N. Wabash Ave. Brooklyn, NY
+12          MYLEE      130 Gongpyeongno Jung-gu Daegu, Korea
 3 rows selected.
+```
+
+
 
 ##### 원격 서버로부터 데이터 다운로드, 업로드
 
-\$ iloader -s 192.168.1.10 -u sys -p manager -port 21300
-
-\-------------------------------------------------------
-
-Altibase Data Load/Download utility.
-
-Release Version 7.1.0.1
-
-Copyright 2000, Altibase Corporation or its subsidiaries.
-
-All Rights Reserved.
-
-\-------------------------------------------------------
-
+```
+$ iloader -s 192.168.1.10 -u sys -p manager -port 21300
+-------------------------------------------------------
+     Altibase Data Load/Download utility.
+     Release Version 7.1.0.1
+     Copyright 2000, Altibase Corporation or its subsidiaries.
+     All Rights Reserved.
+-------------------------------------------------------
 ISQL_CONNECTION : TCP
+iLoader> 		-> iLoader가 서버와 연결된 상태이며, 여기에서 명령어를 입력하여 원하는 작업을 
+                   대화형으로 수행할 수 있는 모드로 된다.
 
-iLoader\> iLoader가 서버와 연결된 상태이며, 여기에서 명령어를 입력하여 원하는
-작업을 대화형으로 수행할 수 있는 모드로 된다.
+```
 
 또는
 
-\$ iloader -port 21300
-
-\-------------------------------------------------------
-
-Altibase Data Load/Download utility.
-
-Release Version 7.1.0.1
-
-Copyright 2000, Altibase Corporation or its subsidiaries.
-
-All Rights Reserved.
-
-\-------------------------------------------------------
-
+```
+$ iloader -port 21300
+-------------------------------------------------------
+     Altibase Data Load/Download utility.
+     Release Version 7.1.0.1
+     Copyright 2000, Altibase Corporation or its subsidiaries.
+     All Rights Reserved.
+-------------------------------------------------------
 Write Server Name (enter:127.0.0.1) : 192.168.1.10
-
 Write UserID : sys
-
-Write Password : manager -\> 화면에는 암호가 나타나지 않는다.
-
+Write Password : manager            -> 화면에는 암호가 나타나지 않는다.
 ISQL_CONNECTION : TCP
 
-iLoader\> formout -T MANAGER -f MANAGER.fmt
+iLoader> formout -T MANAGER -f MANAGER.fmt
 
-iLoader\> out -f MANAGER.fmt -d MANAGER.dat
+iLoader> out -f MANAGER.fmt -d MANAGER.dat
+DATA_NLS_USE: KO16KSC5601
+     Total 3 record download(MANAGER)
+     DOWNLOAD : 16.2420 msec
 
+iLoader> in -f MANAGER.fmt -d MANAGER.dat
 DATA_NLS_USE: KO16KSC5601
 
-Total 3 record download(MANAGER)
+     UPLOAD : 32.5190 msec
+     Load Count  : 3(MANAGER)
+```
 
-DOWNLOAD : 16.2420 msec
 
-iLoader\> in -f MANAGER.fmt -d MANAGER.dat
-
-DATA_NLS_USE: KO16KSC5601
-
-UPLOAD : 32.5190 msec
-
-Load Count : 3(MANAGER)
 
 ##### 원격 서버에서 결과 확인
 
-iSQL\> SELECT \* FROM manager;
+```
+iSQL> SELECT * FROM manager;
+MGR_NO   MNAME     ADRESS
+-----------------------------------------------------------------
+7        HJMIN     44-25 Youido-dong Youngdungpo-gu Seoul, Korea 
+8        JDLEE     3101 N. Wabash Ave. Brooklyn, NY 
+12       MYLEE     130 Gongpyeongno Jung-gu Daegu, Korea 
+7        HJMIN     44-25 Youido-dong Youngdungpo-gu Seoul, Korea 
+8        JDLEE     3101 N. Wabash Ave. Brooklyn, NY 
+12       MYLEE     130 Gongpyeongno Jung-gu Daegu, Korea              
+6 rows selected.      <- 테이블 MANAGER의 데이터가 append된 상태이다.
 
-MGR_NO MNAME ADRESS
+```
 
-\-----------------------------------------------------------------
 
-7 HJMIN 44-25 Youido-dong Youngdungpo-gu Seoul, Korea
-
-8 JDLEE 3101 N. Wabash Ave. Brooklyn, NY
-
-12 MYLEE 130 Gongpyeongno Jung-gu Daegu, Korea
-
-7 HJMIN 44-25 Youido-dong Youngdungpo-gu Seoul, Korea
-
-8 JDLEE 3101 N. Wabash Ave. Brooklyn, NY
-
-12 MYLEE 130 Gongpyeongno Jung-gu Daegu, Korea
-
-6 rows selected. 테이블 MANAGER의 데이터가 append된 상태이다.
 
 ### 도움말 및 기타옵션
 
@@ -1621,136 +1480,82 @@ iLoader가 제공하는 명령에 대한 도움말을 제공한다. HELP 명령�
 
 ##### 예제
 
-iLoader\> help
+```
+iLoader> help
+Usage : { in | out | formout | structout | help }
+        [-d datafile or datafiles] [-f formatfile]
+        [-T table_name] [-F firstrow] [-L lastrow]
+        [-t field_term] [-r row_term] [-mode mode_type]
+        [-commit commit_unit] [-bad badfile]
+        [-log logfile] [-e enclosing] [-array count]
+        [-replication true/false] [-split number]
+        [-readsize size] [-errors count]
+        [-lob lob_option_string] [-atomic]
+        [-parallel count] [-direct]
+        [-rule csv]
+        [-partition]
+        [-dry-run]
+        [-prefetch_rows]
+iLoader> help help
+Ex) help [ in | out | formout | structout | exit | help ]
 
-Usage : { in \| out \| formout \| structout \| help }
+iLoader> help in
+Ex) in -f $formatfile -d $datafile -bad $badfile -log $logfile -e $enclosing
 
-[-d datafile or datafiles] [-f formatfile]
+iLoader> help out
+Ex) out -f $formatfile -d $datafile -split $number
 
-[-T table_name] [-F firstrow] [-L lastrow]
-
-[-t field_term] [-r row_term] [-mode mode_type]
-
-[-commit commit_unit] [-bad badfile]
-
-[-log logfile] [-e enclosing] [-array count]
-
-[-replication true/false] [-split number]
-
-[-readsize size] [-errors count]
-
-[-lob lob_option_string] [-atomic]
-
-[-parallel count] [-direct]
-
-[-rule csv]
-
-[-partition]
-
-[-dry-run]
-
-[-prefetch_rows]
-
-iLoader\> help help
-
-Ex) help [ in \| out \| formout \| structout \| exit \| help ]
-
-iLoader\> help in
-
-Ex) in -f \$formatfile -d \$datafile -bad \$badfile -log \$logfile -e
-\$enclosing
-
-iLoader\> help out
-
-Ex) out -f \$formatfile -d \$datafile -split \$number
-
-iLoader\> help exit
-
-Ex\> exit (or quit)
+iLoader> help exit
+Ex> exit (or quit)
+```
 
 또는
 
-\$ iloader help
-
+```
+$ iloader help
 ===========================================================
-
-ILOADER HELP Screen
-
+                         ILOADER HELP Screen
 ===========================================================
-
-Usage : iloader [-h]
-
-[-s server_name] [-u user_name] [-p password]
-
-[-port port_no] [-silent] [-nst] [-displayquery]
-
-[-NLS_USE nls_name]
-
-[-prefer_ipv6]
-
-[{ in \| out \| formout \| structout \| help }
-
-[-d datafile or datafiles] [-f formatfile]
-
-[-T table_name] [-F firstrow] [-L lastrow]
-
-[-t field_term] [-r row_term] [-mode mode_type]
-
-[-commit commit_unit] [-bad badfile]
-
-[-log logfile] [-e enclosing] [-array count]
-
-[-replication true/false] [-split number]
-
-[-readsize size] [-errors count]
-
-[-lob lob_option_string] [-atomic]
-
-[-parallel count] [-direct]
-
-[-rule csv]
-
-[-partition]
-
-[-dry-run]
-
-[-prefetch_rows]]
-
-\-h : This screen
-
-\-s : Specify server name to connect
-
-\-u : Specify user name to connect
-
-\-p : Specify password of specify user name
-
-\-port : Specify port number to communication
-
-\-silent : No display Copyright
-
-\-nst : No display Elapsed Time
-
-\-displayquery : display query string
-
-\-NLS_USE : Specify NLS
-
-\-prefer_ipv6 : Prefer resolving server_name to IPv6 Address
-
-\-ssl_ca : The path to a CA certificate file
-
-\-ssl_cpath : The path to a directory that contains CA certificates
-
-\-ssl_cert : The path to the client certificate
-
-\-ssl_key : The path to the client private key file
-
-\-ssl_verify : Whether the client is to check certificates
-
-that are sent by the server to the client
-
-\-ssl_cipher : A list of SSL ciphers
-
+  Usage   : iloader [-h]
+                    [-s server_name] [-u user_name] [-p password]
+                    [-port port_no] [-silent] [-nst] [-displayquery]
+                    [-NLS_USE nls_name]
+                    [-prefer_ipv6]
+                    [{ in | out | formout | structout | help }
+                     [-d datafile or datafiles] [-f formatfile]
+                     [-T table_name] [-F firstrow] [-L lastrow]
+                     [-t field_term] [-r row_term] [-mode mode_type]
+                     [-commit commit_unit] [-bad badfile]
+                     [-log logfile] [-e enclosing] [-array count]
+                     [-replication true/false] [-split number]
+                     [-readsize size] [-errors count]
+                     [-lob lob_option_string] [-atomic]
+                     [-parallel count] [-direct]
+                     [-rule csv]
+                     [-partition]
+                     [-dry-run]
+                     [-prefetch_rows]]
+            -h            : This screen
+            -s            : Specify server name to connect
+            -u            : Specify user name to connect
+            -p            : Specify password of specify user name
+            -port         : Specify port number to communication
+            -silent       : No display Copyright
+            -nst          : No display Elapsed Time
+            -displayquery : display query string
+            -NLS_USE      : Specify NLS
+            -prefer_ipv6  : Prefer resolving server_name to IPv6 Address
+            -ssl_ca       : The path to a CA certificate file
+            -ssl_cpath    : The path to a directory that contains CA certificates
+            -ssl_cert     : The path to the client certificate
+            -ssl_key      : The path to the client private key file
+            -ssl_verify   : Whether the client is to check certificates
+                            that are sent by the server to the client
+            -ssl_cipher   : A list of SSL ciphers
 ===========================================================
+```
+
+
 
 #### 기타 옵션
 
@@ -1760,85 +1565,62 @@ that are sent by the server to the client
 
 ##### 사용 예 
 
-\$ isql -s localhost -u sys -p manager -silent
-
-iSQL\> CREATE TABLE test1 (i1 INTEGER);
-
+```
+$ isql -s localhost -u sys -p manager -silent
+iSQL> CREATE TABLE test1 (i1 INTEGER);
 Create success.
-
-iSQL\> CREATE TABLE test2 (c1 CHAR(1));
-
+iSQL> CREATE TABLE test2 (c1 CHAR(1));
 Create success.
-
-iSQL\> INSERT INTO test2 VALUES(1);
-
+iSQL> INSERT INTO test2 VALUES(1);
 1 row inserted.
-
-iSQL\> INSERT INTO test2 VALUES('A');
-
+iSQL> INSERT INTO test2 VALUES('A');
 1 row inserted.
-
-iSQL\> INSERT INTO test2 VALUES(2);
-
+iSQL> INSERT INTO test2 VALUES(2);
 1 row inserted.
+iSQL> exit
 
-iSQL\> exit
+$ iloader -s localhost -u sys -p manager -silent
+iLoader> formout -T test1 -f test1.fmt
 
-\$ iloader -s localhost -u sys -p manager -silent
+iLoader> formout -T test2 -f test2.fmt
 
-iLoader\> formout -T test1 -f test1.fmt
-
-iLoader\> formout -T test2 -f test2.fmt
-
-iLoader\> out -f test2.fmt -d test2.dat
-
+iLoader> out -f test2.fmt -d test2.dat
 DATA_NLS_USE: KO16KSC5601
-
 NCHAR_UTF16 : YES
+     
+     Total 3 record download(TEST2)
 
-Total 3 record download(TEST2)
+     DOWNLOAD : 1.0420 msec
 
-DOWNLOAD : 1.0420 msec
-
-iLoader\> in -f test1.fmt -d test2.dat -log test.log -bad test.bad
-
+iLoader> in -f test1.fmt -d test2.dat -log test.log -bad test.bad
 DATA_NLS_USE: KO16KSC5601
-
 NCHAR_UTF16 : YES
 
 UPLOAD : 6.6670 msec
+     
+     Load Count  : 2(TEST1)
+     Error Count : 1
 
-Load Count : 2(TEST1)
+iLoader> exit
 
-Error Count : 1
-
-iLoader\> exit
-
-\$ cat test.bad
-
+$ cat test.bad 
 A
 
-\$ cat test.log
-
-\<DataLoad\>
-
+$ cat test.log 
+<DataLoad>
 TableName : TEST1
-
 Start Time : Thu Sep 30 10:39:46 2010
-
 Record 2 : A
-
 [ERR-21011 : Invalid literal]
-
 End Time : Thu Sep 30 10:39:46 2010
-
 Total Row Count : 3
-
-Load Row Count : 2
-
+Load Row Count  : 2
 Error Row Count : 1
+```
 
-FORM 파일 
+
+
+3.FORM 파일 
 ----------
 
 ### FORM 파일이란?
@@ -1865,146 +1647,111 @@ FORM 파일을 수정하여 SEQUENCE를 적용할 수 있다.
 FORM 파일 수정 방법은 SEQUENCE 라고 쓴 다음 sequence 이름, 적용될 칼럼 이름,
 nextval 이나 currval 등의 의사 열 순서로 FORM 파일에 맨 앞에 적어준다.
 
->   SEQUENCE *sequence_name column_name* [ NEXTVAL \| CURRVAL ]
+```
+SEQUENCE  sequence_name  column_name  [ NEXTVAL | CURRVAL ]
+```
 
 의사 열의 값의 기본 값은 nextval이다. 적용할 수 있는 최대 칼럼 수는 8개이다.
 
 FORM 파일의 기본적인 형태는 다음과 같으며 테이블에 데이터 타입이 date인 칼럼이
 존재하면 date format이 기본으로 설정된다.
 
+```
 table sample
-
 {
-
 A numeric (10);
-
 B numeric (10, 4);
-
 C char (10);
-
 D varchar (10);
-
 E date;
-
 }
-
 DATEFORM YYYY/MM/DD HH:MI:SS:SSSSSS
+```
+
+
 
 ##### 예제
 
-iSQL\> CREATE TABLE seqTable(
-
-num INTEGER,
-
-name VARCHAR(30));
-
+```
+iSQL> CREATE TABLE seqTable(
+  num INTEGER,
+  name VARCHAR(30));
+Create success.
+iSQL> INSERT INTO seqTable VALUES(1, 'JANE');
+1 row inserted.
+iSQL> INSERT INTO seqTable VALUES(2, 'SARA');
+1 row inserted.
+iSQL> CREATE SEQUENCE seq1
+    START WITH 30 INCREMENT BY 2
+    MINVALUE 0 NOMAXVALUE;
 Create success.
 
-iSQL\> INSERT INTO seqTable VALUES(1, 'JANE');
-
-1 row inserted.
-
-iSQL\> INSERT INTO seqTable VALUES(2, 'SARA');
-
-1 row inserted.
-
-iSQL\> CREATE SEQUENCE seq1
-
-START WITH 30 INCREMENT BY 2
-
-MINVALUE 0 NOMAXVALUE;
-
-Create success.
-
-iLoader\> formout -T seqTable -f seqTable.fmt
-
-\$ vi seqTable.fmt
-
-SEQUENCE seq1 NUM \<- 수정부분
-
+iLoader> formout -T seqTable -f seqTable.fmt
+$ vi seqTable.fmt
+SEQUENCE seq1 NUM		<- 수정부분
 table seqTable
-
 {
-
 "NUM" integer;
-
 "NAME" varchar (30);
-
 }
-
 DATA_NLS_USE=KO16KSC5601
 
-iSQL\> INSERT INTO seqTable(name) VALUES('JOHN');
-
+iSQL> INSERT INTO seqTable(name) VALUES('JOHN');
 1 row inserted.
-
-iSQL\> INSERT INTO seqTable(name) VALUES('JOHNSON');
-
+iSQL> INSERT INTO seqTable(name) VALUES('JOHNSON');
 1 row inserted.
-
-iSQL\> SELECT \* FROM seqTable;
-
-SEQTABLE.NUM SEQTABLE.NAME
-
-\-----------------------------------------------
-
-1 JANE
-
-2 SARA
-
-JOHN
-
-JOHNSON
-
+iSQL> SELECT * FROM seqTable;
+SEQTABLE.NUM SEQTABLE.NAME                   
+-----------------------------------------------
+1           JANE                            
+2           SARA                            
+            JOHN                            
+            JOHNSON                         
 4 rows selected.
+```
 
 FORM 파일을 이용하여 seqTable 테이블을 백업한 후, 백업 파일을 살펴본다.
 
-iLoader\> out -f seqTable.fmt -d seqTable.dat
-
+```
+iLoader> out -f seqTable.fmt -d seqTable.dat
 DATA_NLS_USE: KO16KSC5601
+     
+     Total 4 record download(SEQTABLE)
 
-Total 4 record download(SEQTABLE)
+     DOWNLOAD : 53.4390 msec
 
-DOWNLOAD : 53.4390 msec
-
-\$ cat seqTable.dat
-
+$ cat seqTable.dat
 1,“JANE”
-
 2,“SARA”
-
 ,“JOHN”
-
 ,“JOHNSON”
+```
 
 백업 받은 파일을 현재의 데이터베이스에 업로드 할 때 다음 구문을 이용한다.
 
-iLoader\> in -f seqTable.fmt -d seqTable.dat -mode replace
-
+```
+iLoader> in -f seqTable.fmt -d seqTable.dat -mode replace
 DATA_NLS_USE: KO16KSC5601
-
+     
 UPLOAD: 16467
 
-Load Count : 4
+     Load Count  : 4
+```
 
 seqTable 테이블의 레코드를 검색해 보면 다음과 같은 결과를 얻을 수 있다.
 
-iSQL\> SELECT \* FROM seqTable;
-
-SEQTABLE.NUM SEQTABLE.NAME
-
-\-----------------------------------------------
-
-30 JANE
-
-32 SARA
-
-34 JOHN
-
-36 JOHNSON
-
+```
+iSQL> SELECT * FROM seqTable;
+SEQTABLE.NUM SEQTABLE.NAME                   
+-----------------------------------------------
+30          JANE                            
+32          SARA                            
+34          JOHN                            
+36          JOHNSON                         
 4 rows selected.
+```
+
+
 
 #### DATE FORMAT 작성
 
@@ -2014,144 +1761,107 @@ format을 설정하여 해당 format대로 다운로드 또는 업로드할 수 
 FORM 파일 수정 시 맨 마지막에 기술하여야 하며, 기본 포맷은 DATEFORM YYYY/MM/DD
 HH:MI:SS:SSSSSS 이다.
 
->   dateFORM YYYY-MM-DD HH:MI:SS:SSSSSS
+```
+dateFORM YYYY-MM-DD HH:MI:SS:SSSSSS
+dateFORM YYYY/MM/DD HH:MI:SS:SSSSSS
+dateFORM YY/MM/DD HH:MI:SS:SSSSSS
+dateFORM YY-MM-DD HH:MI:SS:SSSSSS
+dateFORM YYYYMMDDHHMISSSSSSSS
+dateFORM YYMMDDHHMISSSSSSSS
+dateFORM YY
+dateFORM YYYY
+dateFORM YYMMDD
+dateFORM YYYYMMDD
+dateFORM HHMISSSSSSS
+dateFORM HH:MI:SS:SSSSS
+dateFORM HH:MI:SS
+```
 
->   dateFORM YYYY/MM/DD HH:MI:SS:SSSSSS
 
->   dateFORM YY/MM/DD HH:MI:SS:SSSSSS
-
->   dateFORM YY-MM-DD HH:MI:SS:SSSSSS
-
->   dateFORM YYYYMMDDHHMISSSSSSSS
-
->   dateFORM YYMMDDHHMISSSSSSSS
-
->   dateFORM YY
-
->   dateFORM YYYY
-
->   dateFORM YYMMDD
-
->   dateFORM YYYYMMDD
-
->   dateFORM HHMISSSSSSS
-
->   dateFORM HH:MI:SS:SSSSS
-
->   dateFORM HH:MI:SS
 
 주어진 dateformat 이외에 사용자가 새로운 서식을 설정하고 싶은 경우, 작은 따옴표
 ('와 ')를 이용하여 dateformat을 확장해서 사용할 수 있다. 예를 들어 년 월 일 이나
 공백(space) 등 구분자를 사용해 format을 설정하길 원하면 *dateFORM 'YY년 MM월
 DD일'* 또는 *dateFORM 'YYYY MM DD'* 등으로 쓸 수 있다.
 
-iSQL\> CREATE TABLE t1(
-
-i1 INTEGER,
-
-i2 DATE,
-
-i3 INTEGER);
-
+```
+iSQL> CREATE TABLE t1(
+  i1 INTEGER,
+  i2 DATE,
+  i3 INTEGER);
 Create success.
-
-iSQL\> INSERT INTO t1 VALUES(1, to_date(' :222222', 'YYYY-MM-DD
-HH:MI:SS:SSSSSS'), 1);
-
+iSQL> INSERT INTO t1 VALUES(1, to_date('2002-01-23 10:11:12:222222', 'YYYY-MM-DD HH:MI:SS:SSSSSS'), 1);
 1 row inserted.
-
-iSQL\> INSERT INTO t1 VALUES(2, to_date(' :333333', 'YYYY-MM-DD
-HH:MI:SS:SSSSSS'), 2);
-
+iSQL> INSERT INTO t1 VALUES(2, to_date('2002-01-23 13:14:15:333333', 'YYYY-MM-DD HH:MI:SS:SSSSSS'), 2);
 1 row inserted.
-
-iSQL\> INSERT INTO t1 VALUES(3, to_date(' :444444', 'YYYY-MM-DD
-HH:MI:SS:SSSSSS'), 3);
-
+iSQL> INSERT INTO t1 VALUES(3, to_date('2002-01-23 16:17:18:444444',  'YYYY-MM-DD HH:MI:SS:SSSSSS'), 3);
 1 row inserted.
+iSQL> SELECT TO_CHAR(i2, 'YYYY-MM-DD HH:MI:SS:SSSSSS') TESTDATE FROM t1;
 
-iSQL\> SELECT TO_CHAR(i2, 'YYYY-MM-DD HH:MI:SS:SSSSSS') TESTDATE FROM t1;
-
-TESTDATE
-
-\-----------------------------------------------
-
-:222222
-
-:333333
-
-:444444
-
+TESTDATE                                            
+-----------------------------------------------
+2002-01-23 10:11:12:222222                          
+2002-01-23 13:14:15:333333                          
+2002-01-23 16:17:18:444444                          
 3 rows selected.
+```
 
 생성한 FORM 파일을 다음과 같이 수정한다.
 
-iLoader\> formout -T t1 -f t1.fmt
+```
+iLoader> formout -T t1 -f t1.fmt
 
-\$ vi t1.fmt
-
+$ vi t1.fmt 
 table t1
-
 {
-
 I1 integer;
-
 I2 date;
-
 I3 integer;
-
 }
-
-DATEFORM YYYY-MM-DD HH:MI:SS:SSSSSS \<- 수정부분 DATA_NLS_USE=KO16KSC5601
+DATEFORM YYYY-MM-DD HH:MI:SS:SSSSSS	  <- 수정부분 DATA_NLS_USE=KO16KSC5601
+```
 
 FORM 파일을 이용하여 t1 테이블을 파일로 백업한 후 파일을 살펴보면,
 
-iLoader\> out -f t1.fmt -d t1.dat
-
+```
+iLoader> out -f t1.fmt -d t1.dat
 DATE FORMAT : YYYY-MM-DD HH:MI:SS:SSSSSS
-
 DATA_NLS_USE: KO16KSC5601
+     
+     Total 3 record download(T1)
 
-Total 3 record download(T1)
+     DOWNLOAD : 982.0000 usec
 
-DOWNLOAD : 982.0000 usec
-
-\$ cat t1.dat
-
+$ cat t1.dat
 1,”2002-01-23 10:11:12:222222”,1
-
 2,”2002-01-23 13:14:15:333333”,2
-
 3,”2002-01-23 16:17:18:444444”,3
+```
 
 백업을 받은 파일을 현재의 데이터베이스에 업로드할 때 다음 구문을 이용한다.
 
-iLoader\> in -f t1.fmt -d t1.dat -mode replace
-
+```
+iLoader> in -f t1.fmt -d t1.dat -mode replace
 DATE FORMAT : YYYY-MM-DD HH:MI:SS:SSSSSS
-
 DATA_NLS_USE: KO16KSC5601
 
 UPLOAD: 4026
 
-Load Count : 3
+     Load Count  : 3
+```
 
 TO_CHAR 함수를 이용해서 t1 테이블의 레코드를 검색하면 다음과 같은 결과를 얻을 수
 있다.
 
-iSQL\> SELECT TO_CHAR(i2, 'YYYY-MM-DD HH:MI:SS:SSSSSS') TESTDATE FROM t1;
-
-TESTDATE
-
-\-----------------------------------------------
-
-:222222
-
-:333333
-
-:444444
-
+```
+iSQL> SELECT TO_CHAR(i2, 'YYYY-MM-DD HH:MI:SS:SSSSSS') TESTDATE FROM t1;
+TESTDATE                                            
+-----------------------------------------------
+2002-01-23 10:11:12:222222                          
+2002-01-23 13:14:15:333333                          
+2002-01-23 16:17:18:444444                          
 3 rows selected.
+```
 
 단, 데이터를 업로드할 때 주의할 사항은 데이터를 다운받은 후에는 생성된 FORM
 파일의 date format과 같아야 한다.
@@ -2161,7 +1871,11 @@ TESTDATE
 FORM 파일 구조에서 DATEFORM과 같은 역할을 하는 환경 변수를 다음과 같이 설정할 수
 있다. 예를 들어, Born, Korn, 또는 Bash Shell의 경우
 
-\$ export ILO_DATEFORM='YYYY-MM-DD'
+```
+$ export ILO_DATEFORM='YYYY-MM-DD'
+```
+
+
 
 ##### DATE FORMAT을 칼럼 별로 지정하는 방법
 
@@ -2169,125 +1883,77 @@ FORM 파일 구조에서 DATEFORM과 같은 역할을 하는 환경 변수를 �
 FORM 파일 수정 시 DATE 타입 뒤에 DATEFORM “날짜 형식”을 명시하여 해당 형식대로
 다운·업로드 할 수 있다.
 
-iSQL\> CREATE TABLE t1 (i1 INTEGER, i2 DATE, i3 DATE, i4 DATE);
-
+```
+iSQL> CREATE TABLE t1 (i1 INTEGER, i2 DATE, i3 DATE, i4 DATE);
 Create success.
-
-iSQL\> INSERT INTO t1 VALUES (1,
-
+iSQL> INSERT INTO t1 VALUES (1,
 TO_DATE('2004/11/24 09:55:30 181133','YYYY/MM/DD HH:MI:SS SSSSSS'),
-
-TO_DATE(' 181133','YYYY/MM/DD HH:MI:SS SSSSSS'),
-
-TO_DATE(' 181133','YYYY/MM/DD HH:MI:SS SSSSSS'));
-
+TO_DATE('2004/11/25 09:55:30 181133','YYYY/MM/DD HH:MI:SS SSSSSS'),
+TO_DATE('2004/11/26 09:55:30 181133','YYYY/MM/DD HH:MI:SS SSSSSS'));
 1 row inserted.
-
-iSQL\> SELECT \* FROM t1;
-
-T1.I1 T1.I2
-
-T1.I3 T1.I4
-
-\-----------------------------------------------
-
-1
-
+iSQL> SELECT * FROM t1;
+T1.I1       		T1.I2
+T1.I3 		T1.I4                
+-----------------------------------------------
+1           	2004/11/24 09:55:30  2004/11/25 09:55:30     2004/11/26 09:55:30  
 1 row selected.
 
-\$ iloader formout -s 127.0.0.1 -u sys -p manager -T t1 -f t1.fmt;
+$ iloader formout -s 127.0.0.1 -u sys -p manager -T t1 -f t1.fmt;
 
-\$ vi t1.fmt
-
+$ vi t1.fmt 
 table t1
-
 {
-
 "I1" integer;
-
-"I2" date DATEFORM "YYYY-MM-DD"; \<- 수정부분
-
+"I2" date DATEFORM "YYYY-MM-DD"; <- 수정부분
 "I3" date;
-
-"I4" date DATEFORM "YYYY/MM/DD HH:MI:SS SSSSSS"; \<- 수정부분
-
+"I4" date DATEFORM "YYYY/MM/DD HH:MI:SS SSSSSS"; <- 수정부분
 }
-
 DATEFORM YYYY/MM/DD HH:MI:SS:SSSSSS
-
 DATA_NLS_USE=KO16KSC5601
 
-\$ iloader out -s 127.0.0.1 -u sys -p manager -f t1.fmt -d t1.dat;
-
+$ iloader out -s 127.0.0.1 -u sys -p manager -f t1.fmt -d t1.dat;
 DATE FORMAT : YYYY/MM/DD HH:MI:SS
-
 DATA_NLS_USE: KO16KSC5601
+     
+     Total 1 record download
+     DOWNLOAD: 25893
 
-Total 1 record download
-
-DOWNLOAD: 25893
-
-\$ cat t1.dat
-
+$ cat t1.dat
 1,“2004-11-24”,“2004/11/25 09:55:30”,“2004/11/26 09:55:30 181133”
 
-\$ iloader in -s 127.0.0.1 -u sys -p manager -f t1.fmt -d t1.dat;
-
+$ iloader in -s 127.0.0.1 -u sys -p manager -f t1.fmt -d t1.dat;
 DATE FORMAT : YYYY/MM/DD HH:MI:SS
-
 DATA_NLS_USE: KO16KSC5601
-
+     
 UPLOAD: 3556
 
-Load Count : 1
+     Load Count  : 1
 
-iSQL\> SELECT \* FROM t1;
-
-T1.I1 T1.I2 T1.I3 T1.I4
-
-\-----------------------------------------------
-
-1
-
-1
-
+iSQL> SELECT * FROM t1;
+T1.I1       T1.I2                T1.I3                T1.I4                
+-----------------------------------------------
+1           2004/11/24 09:55:30  2004/11/25 09:55:30  2004/11/26 09:55:30  
+1           2004/11/24 00:00:00  2004/11/25 09:55:30  2004/11/26 09:55:30  
 2 rows selected.
-
-iSQL\> SELECT TO_CHAR(I2,'YYYY/MM/DD HH:MI:SS SSSSSS') FROM t1;
-
-TO_CHAR(I2,'YYYY/MM/DD HH:MI:SS SSSSSS')
-
-\-----------------------------------------------
-
-181133
-
-000000
-
+iSQL> SELECT TO_CHAR(I2,'YYYY/MM/DD HH:MI:SS SSSSSS') FROM t1;
+TO_CHAR(I2,'YYYY/MM/DD HH:MI:SS SSSSSS')            
+-----------------------------------------------
+2004/11/24 09:55:30 181133                          
+2004/11/24 00:00:00 000000                          
 2 rows selected.
-
-iSQL\> SELECT TO_CHAR(I3,'YYYY/MM/DD HH:MI:SS SSSSSS') FROM t1;
-
-TO_CHAR(I3,'YYYY/MM/DD HH:MI:SS SSSSSS')
-
-\-----------------------------------------------
-
-181133
-
-000000
-
+iSQL> SELECT TO_CHAR(I3,'YYYY/MM/DD HH:MI:SS SSSSSS') FROM t1;
+TO_CHAR(I3,'YYYY/MM/DD HH:MI:SS SSSSSS')            
+-----------------------------------------------
+2004/11/25 09:55:30 181133                          
+2004/11/25 09:55:30 000000                          
 2 rows selected.
-
-iSQL\> SELECT TO_CHAR(I4,'YYYY/MM/DD HH:MI:SS SSSSSS') FROM t1;
-
-TO_CHAR(I4,'YYYY/MM/DD HH:MI:SS SSSSSS')
-
-\-----------------------------------------------
-
-181133
-
-181133
-
+iSQL> SELECT TO_CHAR(I4,'YYYY/MM/DD HH:MI:SS SSSSSS') FROM t1;
+TO_CHAR(I4,'YYYY/MM/DD HH:MI:SS SSSSSS')            
+-----------------------------------------------
+2004/11/26 09:55:30 181133                          
+2004/11/26 09:55:30 181133                          
 2 rows selected.
+```
 
 \* 참고 : 날짜 포맷 명시 방법은 아래에 나열한 순서대로 우선 순위를 가진다.
 
@@ -2304,19 +1970,17 @@ TO_CHAR(I4,'YYYY/MM/DD HH:MI:SS SSSSSS')
 옵션의 마지막에 넣어야 하며 ""로 감싸주어야 한다. 또한 칼럼이 바인드될 위치는
 ?로 지정해 주어야 한다.
 
-\$ vi t2.fmt
-
+```
+$ vi t2.fmt
 table t2
-
 {
-
-"I1" integer "trim(?)"; \< - 수정부분
-
-"I2" varchar(10) "trim(?)"; \< - 수정부분
-
-"I3" varchar(10) "concat(trim(?),'value')"; \< - 수정부분
-
+"I1" integer "trim(?)";   < - 수정부분
+"I2" varchar(10) "trim(?)";   < - 수정부분
+"I3" varchar(10) "concat(trim(?),'value')";   < - 수정부분
 }
+```
+
+
 
 #### 조건절 작성
 
@@ -2330,8 +1994,9 @@ FORM파일 맨 마지막에 기술한다. 사용자가 지정한 힌트와 조�
 
 ##### 구문
 
->   DOWNLOAD CONDITION "*Where_conditions_clause*"  
->   [HINT "*hint_string*"]
+```
+DOWNLOAD CONDITION  "Where_conditions_clause" [HINT "hint_string"]
+```
 
 *Where_conditions_clause* : SELECT 구문의 WHERE 절과 동일한 형태로 조건을
 지정한다.
@@ -2340,100 +2005,73 @@ FORM파일 맨 마지막에 기술한다. 사용자가 지정한 힌트와 조�
 
 ##### 예 제
 
-iSQL\> CREATE TABLE table1(
-
-t1 INTEGER,
-
-t2 INTEGER,
-
-t3 DATE);
-
+```
+iSQL> CREATE TABLE table1(
+   t1 INTEGER,
+   t2 INTEGER,
+   t3 DATE);
 Create success.
-
-iSQL\> INSERT INTO table1 VALUES(1, 1, '01-May-2002');
-
+iSQL> INSERT INTO table1 VALUES(1, 1, '01-May-2002');
 1 row inserted.
-
-iSQL\> INSERT INTO table1 VALUES(2, 2, '02-Jun-2002');
-
+iSQL> INSERT INTO table1 VALUES(2, 2, '02-Jun-2002');
 1 row inserted.
-
-iSQL\> INSERT INTO table1 VALUES(3, 3, '03-Apr-2002');
-
+iSQL> INSERT INTO table1 VALUES(3, 3, '03-Apr-2002');
 1 row inserted.
-
-iSQL\> INSERT INTO table1 VALUES(4, 4, '04-Sep-2002');
-
+iSQL> INSERT INTO table1 VALUES(4, 4, '04-Sep-2002');
 1 row inserted.
-
-iSQL\> INSERT INTO table1 VALUES(5, 5, '05-Oct-2002');
-
+iSQL> INSERT INTO table1 VALUES(5, 5, '05-Oct-2002');
 1 row inserted.
-
-iSQL\> SELECT \* FROM table1;
-
-TABLE1.T1 TABLE1.T2 TABLE1.T3
-
-\-----------------------------------------------
-
-1 1
-
-2 2
-
-3 3
-
-4 4
-
-5 5
-
+iSQL> SELECT * FROM table1;
+TABLE1.T1   TABLE1.T2   TABLE1.T3            
+-----------------------------------------------
+1           1           2002/05/01 00:00:00  
+2           2           2002/06/02 00:00:00  
+3           3           2002/04/03 00:00:00  
+4           4           2002/09/04 00:00:00  
+5           5           2002/10/05 00:00:00  
 5 rows selected.
+```
 
 FORM 파일을 생성한다.
 
-iLoader\> formout -T table1 -f table1.fmt
+```
+iLoader> formout -T table1 -f table1.fmt
+```
 
 그리고 FORM 파일을 다음과 같이 수정한다.
 
-\$ vi table1.fmt
-
+```
+$ vi table1.fmt 
 table table1
-
 {
-
 "T1" integer;
-
 "T2" integer;
-
 "T3" date;
-
 }
-
 DATEFORM YYYY/MM/DD HH:MI:SS:SSSSSS
-
 DATA_NLS_USE=KO16KSC5601
-
-DOWNLOAD CONDITION "where t1 \> 2" \<- 수정부분
+DOWNLOAD CONDITION "where t1 > 2"	 <- 수정부분
+```
 
 FORM 파일을 이용하여 table1 테이블을 파일로 백업한 후 파일을 살펴보면, 조건절이
 적용된 결과를 확인할 수 있다.
 
-iLoader\> out -f table1.fmt -d table1.dat
-
+```
+iLoader> out -f table1.fmt -d table1.dat
 DATE FORMAT : YYYY/MM/DD HH:MI:SS
-
 DATA_NLS_USE: KO16KSC5601
+     
+     Total 3 record download(TABLE1)
 
-Total 3 record download(TABLE1)
+     DOWNLOAD : 1.4150 msec 
 
-DOWNLOAD : 1.4150 msec
-
-\$ cat table1.dat
-
+$ cat table1.dat
 3,3,”2002/04/03 00:00:00”
-
 4,4,”2002/09/04 00:00:00”
-
 5,5,”2002/10/05 00:00:00”
+```
+
+
 
 #### TIMESTAMP 칼럼 입력 기능
 
@@ -2465,556 +2103,414 @@ TIMESTAMP 칼럼에 해당하는 값을 다음과 같은 옵션을 이용하여 
 
 ##### Data 파일에 TIMESTAMP 칼럼에 해당하는 값이 없는 경우
 
-Data 파일에는 없지만 TIMESTAMP 칼럼에 현재 시간을 입력할 경우: 업로드 할 FORM
-파일의 TIMESTAMP 칼럼 마지막에 “ADD DEFAULT” 기술 (또는 FORM 파일의 TIMESTAMP
-칼럼 라인 삭제)
+- Data 파일에는 없지만 TIMESTAMP 칼럼에 현재 시간을 입력할 경우: 업로드 할 FORM
+  파일의 TIMESTAMP 칼럼 마지막에 “ADD DEFAULT” 기술 (또는 FORM 파일의 TIMESTAMP
+  칼럼 라인 삭제)
 
-Data 파일에는 없지만 TIMESTAMP 칼럼에 널 값을 입력할 경우: 업로드 할 FORM 파일의
-TIMESTAMP 칼럼 마지막에 “ADD NULL” 기술
+- Data 파일에는 없지만 TIMESTAMP 칼럼에 널 값을 입력할 경우: 업로드 할 FORM 파일의
+  TIMESTAMP 칼럼 마지막에 “ADD NULL” 기술
 
-Data 파일에는 없지만 TIMESTAMP 칼럼에 지정한 값을 입력할 경우: 업로드 할 FORM
-파일의 TIMESTAMP 칼럼 마지막에 “ADD YYYYMMDD[HHMISS]” 기술
+- Data 파일에는 없지만 TIMESTAMP 칼럼에 지정한 값을 입력할 경우: 업로드 할 FORM
+  파일의 TIMESTAMP 칼럼 마지막에 “ADD YYYYMMDD[HHMISS]” 기술
 
-예제) YYYYMMDD[HHMISS]
-
-ADD 20040623
-
-ADD 20040623102315
+  ```
+  YYYYMMDD[HHMISS]
+  ADD 20040623
+  ADD 20040623102315
+  ```
 
 ##### Data 파일에 TIMESTAMP 칼럼에 해당하는 값이 있는 경우
 
-Data 파일에 있는 값을 무시하고 현재 시간을 입력할 경우: 업로드 할 FORM 파일의
-TIMESTAMP 칼럼 마지막에 “SKIP DEFAULT” 기술
+- Data 파일에 있는 값을 무시하고 현재 시간을 입력할 경우: 업로드 할 FORM 파일의
+  TIMESTAMP 칼럼 마지막에 “SKIP DEFAULT” 기술
+- Data 파일에 있는 값을 무시하고 널 값을 입력할 경우: 업로드 할 FORM 파일의
+  TIMESTAMP 칼럼 마지막에 “SKIP NULL” 기술
 
-Data 파일에 있는 값을 무시하고 널 값을 입력할 경우: 업로드 할 FORM 파일의
-TIMESTAMP 칼럼 마지막에 “SKIP NULL” 기술
-
-Data 파일에 있는 값을 무시하고 지정한 값을 입력할 경우: 업로드 할 FORM 파일의
-TIMESTAMP 칼럼 마지막에 “SKIP YYYYMMDD[HHMISS]” 기술
-
-편집한 FORM 파일을 이용하여 현재의 데이터베이스에 업로드 한다.
+- Data 파일에 있는 값을 무시하고 지정한 값을 입력할 경우: 업로드 할 FORM 파일의
+  TIMESTAMP 칼럼 마지막에 “SKIP YYYYMMDD[HHMISS]” 기술
 
 ##### 예제
 
+편집한 FORM 파일을 이용하여 현재의 데이터베이스에 업로드 한다.
+
 ###### **ADD DEFAULT**
 
-iSQL\> CREATE TABLE test(i1 INTEGER);
-
+```
+iSQL> CREATE TABLE test(i1 INTEGER);
 Create success.
-
-iSQL\> CREATE TABLE test2 (i1 INTEGER,
-
-i2 TIMESTAMP);
-
+iSQL> CREATE TABLE test2 (i1 INTEGER,
+		i2 TIMESTAMP);
 Create success.
-
-iSQL\> INSERT INTO test VALUES(1);
-
+iSQL> INSERT INTO test VALUES(1);
+1 row inserted.
+iSQL> INSERT INTO test VALUES(2);
+1 row inserted.
+iSQL> INSERT INTO test VALUES(3);
 1 row inserted.
 
-iSQL\> INSERT INTO test VALUES(2);
+$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST -f test.fmt;
 
-1 row inserted.
-
-iSQL\> INSERT INTO test VALUES(3);
-
-1 row inserted.
-
-\$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST -f test.fmt;
-
-\$ iloader out -s 127.0.0.1 -u sys -p manager -f test.fmt -d test.dat;
+$ iloader out -s 127.0.0.1 -u sys -p manager  -f test.fmt -d test.dat;
 
 DATA_NLS_USE: KO16KSC5601
 
-Total 3 record download(TEST)
+     Total 3 record download(TEST)
 
-DOWNLOAD : 728.0000 usec
+     DOWNLOAD : 728.0000 usec
 
-\$ cat test.dat
-
+$ cat test.dat
 1
-
 2
-
 3
 
-\$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST2 -f
-t2_add_default.fmt;
+$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST2 -f t2_add_default.fmt;
 
-\$ vi t2_add_default.fmt
-
+$ vi t2_add_default.fmt
 table TEST2
-
 {
-
 "I1" integer;
-
-"I2" timestamp ADD DEFAULT; \<= 수정 부분
-
+"I2" timestamp ADD DEFAULT; <= 수정 부분
 }
-
 DATEFORM YYYY/MM/DD HH:MI:SS:SSSSSS
-
 DATA_NLS_USE=KO16KSC5601
 
-\$ iloader in -s 127.0.0.1 -u sys -p manager -f t2_add_default.fmt -d test.dat;
+$ iloader in -s 127.0.0.1 -u sys -p manager  -f t2_add_default.fmt -d test.dat;
 
 DATE FORMAT : YYYY/MM/DD HH:MI:SS
-
 DATA_NLS_USE: KO16KSC5601
 
 UPLOAD : 8.8130 msec
 
-Load Count : 3(TEST2)
+     Load Count  : 3(TEST2)
 
-iSQL\> SELECT \* FROM test2;
-
-I1 I2
-
-\---------------------------------
-
-1 4F179985000B5290
-
-2 4F179985000B52E1
-
-3 4F179985000B5310
-
+iSQL> SELECT * FROM test2;
+I1          I2
+---------------------------------
+1           4F179985000B5290
+2           4F179985000B52E1
+3           4F179985000B5310
 3 rows selected.
+```
+
+
 
 ###### ADD NULL
 
-iSQL\> CREATE TABLE test (i1 INTEGER);
-
+```
+iSQL> CREATE TABLE test (i1 INTEGER);
 Create success.
-
-iSQL\> CREATE TABLE test2 (i1 INTEGER,
-
-i2 TIMESTAMP);
-
+iSQL> CREATE TABLE test2 (i1 INTEGER,
+		i2 TIMESTAMP);
 Create success.
-
-iSQL\> INSERT INTO test VALUES(1);
-
+iSQL> INSERT INTO test VALUES(1);
+1 row inserted.
+iSQL> INSERT INTO test VALUES(2);
+1 row inserted.
+iSQL> INSERT INTO test VALUES(3);
 1 row inserted.
 
-iSQL\> INSERT INTO test VALUES(2);
+$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST -f test.fmt;
 
-1 row inserted.
-
-iSQL\> INSERT INTO test VALUES(3);
-
-1 row inserted.
-
-\$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST -f test.fmt;
-
-\$ iloader out -s 127.0.0.1 -u sys -p manager -f test.fmt -d test.dat;
+$ iloader out -s 127.0.0.1 -u sys -p manager  -f test.fmt -d test.dat;
 
 DATA_NLS_USE: KO16KSC5601
 
-Total 3 record download(TEST)
+     Total 3 record download(TEST)
 
-DOWNLOAD : 728.0000 usec
+     DOWNLOAD : 728.0000 usec
 
-\$ cat test.dat
-
+$ cat test.dat
 1
-
 2
-
 3
 
-\$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST2 -f t2_add_null.fmt;
+$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST2 -f t2_add_null.fmt;
 
-\$ vi t2_add_null.fmt
+$ vi t2_add_null.fmt
 
 table TEST2
-
 {
-
 "I1" integer;
-
-"I2" timestamp ADD NULL; \<= 수정 부분
-
+"I2" timestamp ADD NULL;	<= 수정 부분
 }
-
 DATEFORM YYYY/MM/DD HH:MI:SS:SSSSSS
-
 DATA_NLS_USE=KO16KSC5601
 
-\$ iloader in -s 127.0.0.1 -u sys -p manager -f t2_add_null.fmt -d test.dat;
+$ iloader in -s 127.0.0.1 -u sys -p manager  -f t2_add_null.fmt -d test.dat;
 
 DATE FORMAT : YYYY/MM/DD HH:MI:SS
-
 DATA_NLS_USE: KO16KSC5601
 
 UPLOAD : 3.8490 msec
 
-Load Count : 3(TEST2)
+     Load Count  : 3(TEST2)
 
-iSQL\> SELECT \* FROM test2;
-
-I1 I2
-
-\---------------------------------
-
+iSQL> SELECT * FROM test2;
+I1          I2
+---------------------------------
 1
-
 2
-
 3
-
 3 rows selected.
+```
+
+
 
 ###### ADD YYYYMMDD[HHMISS]
 
-iSQL\> CREATE TABLE test(i1 INTEGER);
-
+```
+iSQL> CREATE TABLE test(i1 INTEGER);
 Create success.
-
-iSQL\> CREATE TABLE test2(i1 INTEGER,
-
-i2 TIMESTAMP);
-
+iSQL> CREATE TABLE test2(i1 INTEGER,
+		i2 TIMESTAMP);
 Create success.
-
-iSQL\> INSERT INTO test VALUES(1);
-
+iSQL> INSERT INTO test VALUES(1);
+1 row inserted.
+iSQL> INSERT INTO test VALUES(2);
+1 row inserted.
+iSQL> INSERT INTO test VALUES(3);
 1 row inserted.
 
-iSQL\> INSERT INTO test VALUES(2);
+$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST -f test.fmt;
 
-1 row inserted.
-
-iSQL\> INSERT INTO test VALUES(3);
-
-1 row inserted.
-
-\$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST -f test.fmt;
-
-\$ iloader out -s 127.0.0.1 -u sys -p manager -f test.fmt -d test.dat;
-
+$ iloader out -s 127.0.0.1 -u sys -p manager  -f test.fmt -d test.dat;
+     
 DATA_NLS_USE: KO16KSC5601
 
-Total 3 record download(TEST)
+     Total 3 record download(TEST)
 
-DOWNLOAD : 728.0000 usec
+     DOWNLOAD : 728.0000 usec
 
-\$ cat test.dat
-
+$ cat test.dat
 1
-
 2
-
 3
 
-\$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST2 -f t2_add_val.fmt;
+$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST2 -f t2_add_val.fmt;
 
-\$ vi t2_add_val.fmt
+$ vi t2_add_val.fmt
 
 table TEST2
-
 {
-
 I1 integer;
-
-I2 timestamp ADD 20040623; \<= 수정 부분
-
+I2 timestamp ADD 20040623;	<= 수정 부분
 }
-
 DATEFORM YYYY/MM/DD HH:MI:SS:SSSSSS
-
 DATA_NLS_USE=KO16KSC5601
 
-\$ iloader in -s 127.0.0.1 -u sys -p manager -f t2_add_val.fmt -d test.dat;
+
+$ iloader in -s 127.0.0.1 -u sys -p manager  -f t2_add_val.fmt -d test.dat;
 
 DATE FORMAT : YYYY/MM/DD HH:MI:SS
-
 DATA_NLS_USE: KO16KSC5601
 
 UPLOAD : 12.4080 msec
 
-Load Count : 3(TEST2)
+     Load Count  : 3(TEST2)
 
-iSQL\> SELECT \* FROM test2;
-
-I1 I2
-
-\---------------------------------
-
-1 40D8497000000000
-
-2 40D8497000000000
-
-3 40D8497000000000
-
+iSQL> SELECT * FROM test2;
+I1          I2
+---------------------------------
+1           40D8497000000000
+2           40D8497000000000
+3           40D8497000000000
 3 rows selected.
+```
+
+
 
 ###### SKIP DEFAULT
 
-iSQL\> CREATE TABLE test(i1 INTEGER,
-
-i2 TIMESTAMP);
-
+```
+iSQL> CREATE TABLE test(i1 INTEGER,
+		i2 TIMESTAMP);
 Create success.
-
-iSQL\> CREATE TABLE test2(i1 INTEGER,
-
-i2 TIMESTAMP);
-
+iSQL> CREATE TABLE test2(i1 INTEGER,
+		i2 TIMESTAMP);
 Create success.
-
-iSQL\> INSERT INTO test VALUES(1, BYTE'40D930BF000A7566');
-
+iSQL> INSERT INTO test VALUES(1, BYTE'40D930BF000A7566');
+1 row inserted.
+iSQL> INSERT INTO test VALUES(2, BYTE'40D930BF000A7566');
+1 row inserted.
+iSQL> INSERT INTO test VALUES(3, BYTE'40D930BF000A7566');
 1 row inserted.
 
-iSQL\> INSERT INTO test VALUES(2, BYTE'40D930BF000A7566');
+$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST -f test.fmt;
 
-1 row inserted.
-
-iSQL\> INSERT INTO test VALUES(3, BYTE'40D930BF000A7566');
-
-1 row inserted.
-
-\$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST -f test.fmt;
-
-\$ iloader out -s 127.0.0.1 -u sys -p manager -f test.fmt -d test.dat;
+$ iloader out -s 127.0.0.1 -u sys -p manager  -f test.fmt -d test.dat;
 
 DATE FORMAT : YYYY/MM/DD HH:MI:SS
-
 DATA_NLS_USE: KO16KSC5601
 
-Total 3 record download(TEST)
+     Total 3 record download(TEST)
 
-DOWNLOAD : 941.0000 usec
+     DOWNLOAD : 941.0000 usec
 
-\$ cat test.dat
-
+$ cat test.dat
 1,40D930BF000A7566
-
 2,40D930BF000A7566
-
 3,40D930BF000A7566
 
-\$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST2 -f
-t2_skip_default.fmt;
+$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST2 -f t2_skip_default.fmt;
 
-\$ vi t2_skip_default.fmt
-
+$ vi t2_skip_default.fmt
 table TEST2
-
 {
-
 "I1" integer;
-
-"I2" timestamp SKIP DEFAULT; \<= 수정 부분
-
+"I2" timestamp SKIP DEFAULT;	<= 수정 부분
 }
-
 DATEFORM YYYY/MM/DD HH:MI:SS:SSSSSS
-
 DATA_NLS_USE=KO16KSC5601
 
-\$ iloader in -s 127.0.0.1 -u sys -p manager -f t2_skip_default.fmt -d test.dat;
+$ iloader in -s 127.0.0.1 -u sys -p manager  -f t2_skip_default.fmt -d test.dat;
 
 DATE FORMAT : YYYY/MM/DD HH:MI:SS
-
 DATA_NLS_USE: KO16KSC5601
 
 UPLOAD : 5.0200 msec
 
-Load Count : 3(TEST2)
+     Load Count  : 3(TEST2)
 
-iSQL\> SELECT \* FROM test2;
-
-I1 I2
-
-\---------------------------------
-
-1 4F179CE100035500
-
-2 4F179CE10003554D
-
-3 4F179CE100035577
-
+iSQL> SELECT * FROM test2;
+I1          I2
+---------------------------------
+1           4F179CE100035500
+2           4F179CE10003554D
+3           4F179CE100035577
 3 rows selected.
+```
+
+
 
 ###### SKIP NULL
 
-iSQL\> CREATE TABLE test(i1 INTEGER,
-
-i2 TIMESTAMP);
-
+```
+iSQL> CREATE TABLE test(i1 INTEGER,
+		i2 TIMESTAMP);
 Create success.
-
-iSQL\> CREATE TABLE test2 (i1 INTEGER,
-
-i2 TIMESTAMP);
-
+iSQL> CREATE TABLE test2 (i1 INTEGER,
+		i2 TIMESTAMP);
 Create success.
-
-iSQL\> INSERT INTO test VALUES(1, BYTE'40D930BF000A7566');
-
+iSQL> INSERT INTO test VALUES(1, BYTE'40D930BF000A7566');
+1 row inserted.
+iSQL> INSERT INTO test VALUES(2, BYTE'40D930BF000A7566');
+1 row inserted.
+iSQL> INSERT INTO test VALUES(3, BYTE'40D930BF000A7566');
 1 row inserted.
 
-iSQL\> INSERT INTO test VALUES(2, BYTE'40D930BF000A7566');
+$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST -f test.fmt;
 
-1 row inserted.
-
-iSQL\> INSERT INTO test VALUES(3, BYTE'40D930BF000A7566');
-
-1 row inserted.
-
-\$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST -f test.fmt;
-
-\$ iloader out -s 127.0.0.1 -u sys -p manager -f test.fmt -d test.dat;
+$ iloader out -s 127.0.0.1 -u sys -p manager  -f test.fmt -d test.dat;
 
 DATE FORMAT : YYYY/MM/DD HH:MI:SS
-
 DATA_NLS_USE: KO16KSC5601
 
-Total 3 record download(TEST)
+     Total 3 record download(TEST)
 
-DOWNLOAD : 769.0000 usec
+     DOWNLOAD : 769.0000 usec
 
-\$ cat test.dat
-
+$ cat test.dat
 1,40D930BF000A7566
-
 2,40D930BF000A7566
-
 3,40D930BF000A7566
 
-\$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST2 -f t2_skip_null.fmt;
+$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST2 -f t2_skip_null.fmt;
 
-\$ vi t2_skip_null.fmt
+$ vi t2_skip_null.fmt
 
 table TEST2
-
 {
-
 "I1" integer;
-
-"I2" timestamp SKIP NULL; \<= 수정 부분
-
+"I2" timestamp SKIP NULL;		<= 수정 부분
 }
-
 DATEFORM YYYY/MM/DD HH:MI:SS:SSSSSS
-
 DATA_NLS_USE=KO16KSC5601
 
-\$ iloader in -s 127.0.0.1 -u sys -p manager -f t2_skip_null.fmt -d test.dat;
+$ iloader in -s 127.0.0.1 -u sys -p manager  -f t2_skip_null.fmt -d test.dat;
 
 DATE FORMAT : YYYY/MM/DD HH:MI:SS
-
 DATA_NLS_USE: KO16KSC5601
 
 UPLOAD : 3.7900 msec
 
-Load Count : 3(TEST2)
+     Load Count  : 3(TEST2)
 
-iSQL\> SELECT \* FROM test2;
-
-I1 I2
-
-\---------------------------------
-
+iSQL> SELECT * FROM test2;
+I1          I2
+---------------------------------
 1
-
 2
-
 3
-
 3 rows selected.
+```
+
+
 
 ###### SKIP YYYYMMDD[HHMISS]
 
-iSQL\> CREATE TABLE test(i1 INTEGER,
-
-i2 TIMESTAMP);
-
+```
+iSQL> CREATE TABLE test(i1 INTEGER,
+		i2 TIMESTAMP);
 Create success.
-
-iSQL\> CREATE TABLE test2(i1 INTEGER,
-
-i2 TIMESTAMP);
-
+iSQL> CREATE TABLE test2(i1 INTEGER,
+		i2 TIMESTAMP);
 Create success.
-
-iSQL\> INSERT INTO test VALUES(1, BYTE'40D930BF000A7566');
-
+iSQL> INSERT INTO test VALUES(1, BYTE'40D930BF000A7566');
+1 row inserted.
+iSQL> INSERT INTO test VALUES(2, BYTE'40D930BF000A7566');
+1 row inserted.
+iSQL> INSERT INTO test VALUES(3, BYTE'40D930BF000A7566');
 1 row inserted.
 
-iSQL\> INSERT INTO test VALUES(2, BYTE'40D930BF000A7566');
+$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST -f test.fmt;
 
-1 row inserted.
-
-iSQL\> INSERT INTO test VALUES(3, BYTE'40D930BF000A7566');
-
-1 row inserted.
-
-\$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST -f test.fmt;
-
-\$ iloader out -s 127.0.0.1 -u sys -p manager -f test.fmt -d test.dat;
+$ iloader out -s 127.0.0.1 -u sys -p manager  -f test.fmt -d test.dat;
 
 DATE FORMAT : YYYY/MM/DD HH:MI:SS
-
 DATA_NLS_USE: KO16KSC5601
 
-Total 3 record download(TEST)
+     Total 3 record download(TEST)
 
-DOWNLOAD : 726.0000 usec
+     DOWNLOAD : 726.0000 usec
 
-\$ cat test.dat
-
+$ cat test.dat
 1,40D930BF000A7566
-
 2,40D930BF000A7566
-
 3,40D930BF000A7566
 
-\$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST2 -f t2_skip_val.fmt;
+$ iloader formout -s 127.0.0.1 -u sys -p manager -T TEST2 -f t2_skip_val.fmt;
 
-\$ vi t2_skip_val.fmt
+$ vi t2_skip_val.fmt
 
 table TEST2
-
 {
-
 "I1" integer;
-
-"I2" timestamp SKIP 20040623; \<= 수정 부분
-
+"I2" timestamp SKIP 20040623;	<= 수정 부분
 }
-
 DATEFORM YYYY/MM/DD HH:MI:SS:SSSSSS
-
 DATA_NLS_USE=KO16KSC5601
 
-\$ iloader in -s 127.0.0.1 -u sys -p manager -f t2_skip_val.fmt -d test.dat;
+$ iloader in -s 127.0.0.1 -u sys -p manager  -f t2_skip_val.fmt -d test.dat;
 
 DATE FORMAT : YYYY/MM/DD HH:MI:SS
-
 DATA_NLS_USE: KO16KSC5601
 
 UPLOAD : 15.3680 msec
 
-Load Count : 3(TEST2)
+     Load Count  : 3(TEST2)
 
-iSQL\> SELECT \* FROM test2;
-
-I1 I2
-
-\---------------------------------
-
-1 40D8497000000000
-
-2 40D8497000000000
-
-3 40D8497000000000
-
+iSQL> SELECT * FROM test2;
+I1          I2
+---------------------------------
+1           40D8497000000000
+2           40D8497000000000
+3           40D8497000000000
 3 rows selected.
+```
 
-문제해결 및 FAQ 
+
+
+4.문제해결 및 FAQ 
 ----------------
 
 ### 문제해결
@@ -3025,33 +2521,33 @@ I1 I2
 
 ###### 업로드 할 테이블에 이미 중복된(Primary Key 혹은 Unique Index) 데이터가 존재하는 경우
 
-업로드 할 테이블에 이미 중복된 데이터가 존재하는 경우에는 중복된 데이터만 -bad
-\<badfile\> 옵션에 의해 지정된 Bad log 파일에 저장되고, 중복되지 않은 나머지
-데이터들은 정상적으로 업로드 된다. 이러한 문제가 발생하였을 경우는 적절히
-데이터를 수작업으로 변환하거나, 유일키 제약 조건 위반(unique violation)을
-해결하고 다시 업로드를 시도하여야 한다.
+> 업로드 할 테이블에 이미 중복된 데이터가 존재하는 경우에는 중복된 데이터만 -bad
+> \<badfile\> 옵션에 의해 지정된 Bad log 파일에 저장되고, 중복되지 않은 나머지
+> 데이터들은 정상적으로 업로드 된다. 이러한 문제가 발생하였을 경우는 적절히
+> 데이터를 수작업으로 변환하거나, 유일키 제약 조건 위반(unique violation)을
+> 해결하고 다시 업로드를 시도하여야 한다.
 
 ###### 레코드 데이터 내에 구분자와 동일한 데이터가 존재하는 경우
 
-레코드 데이터 내에 구분자와 동일한 데이터가 존재하는 경우에는 적절히 다른 값의
-구분자로 변경한 후, 다시 업로드를 시도하여야 한다.
+> 레코드 데이터 내에 구분자와 동일한 데이터가 존재하는 경우에는 적절히 다른 값의
+> 구분자로 변경한 후, 다시 업로드를 시도하여야 한다.
 
 ###### 데이터베이스 내에 데이터를 저장할 공간이 부족한 경우
 
-데이터베이스 내에 데이터를 저장할 공간이 부족한 경우에는 데이터베이스나 테이블을
-정리 혹은 compaction후 데이터 공간을 확보한 후 데이터를 중단된 부분부터 다시
-업로드 한다.
+> 데이터베이스 내에 데이터를 저장할 공간이 부족한 경우에는 데이터베이스나 테이블을
+> 정리 혹은 compaction후 데이터 공간을 확보한 후 데이터를 중단된 부분부터 다시
+> 업로드 한다.
 
 ###### 문자 데이터의 값이 “?”로 저장될 경우
 
-입력한 문자 데이터가 데이터베이스 캐릭터 셋으로 표현할 수 없는 문자일 경우
-발생한다. 데이터베이스를 다시 생성해 데이터베이스 캐릭터 셋을 변경한다.
+> 입력한 문자 데이터가 데이터베이스 캐릭터 셋으로 표현할 수 없는 문자일 경우
+> 발생한다. 데이터베이스를 다시 생성해 데이터베이스 캐릭터 셋을 변경한다.
 
 ###### 다국어 레코드만 업로드 되지 않을 경우
 
-실제 저장된 레코드의 캐릭터 셋과 환경변수 ALTIBASE_NLS_USE가 다를 경우에
-업로드가 정상적으로 작동하지 않을 수 있다. 이 때 ALTIBASE_NLS_USE를 실제 저장된
-레코드의 캐릭터 셋으로 변경한다.
+> 실제 저장된 레코드의 캐릭터 셋과 환경변수 ALTIBASE_NLS_USE가 다를 경우에
+> 업로드가 정상적으로 작동하지 않을 수 있다. 이 때 ALTIBASE_NLS_USE를 실제 저장된
+> 레코드의 캐릭터 셋으로 변경한다.
 
 #### FORM파일의 Parsing 오류
 
@@ -3061,8 +2557,36 @@ FORM 파일에서 파싱 오류가 나는 경우, 대부분의 경우는 FORM �
 
 다음은 iLoader에서 사용하는 예약어들의 목록이다.
 
-| ADD APPEND BIGINT  BINARY BIT BLOB BOOLEAN BYTES CHAR CLOB CONDITION CURRVAL DATA_NLS_USE DATE DATEFORM DECIMAL DEFAULT DOUBLE DOWNLOAD EXIT FLOAT FORMOUT GEOMETRY HELP HINT IN INTEGER LOG NCHAR NCHAR_UTF16 NEXTVAL NIBBLE NOEXP NOLOG NULL NUMBER NUMERIC NVARCHAR OUT QUEUE QUIT REAL REPLACE SEQUENCE SKIP SMALLINT STRUCTOUT TABLE TIMESTAMP TRUE TRUNCATE VARBIT VARCHAR YES |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+```
+ADD			APPEND		BIGINT	
+BINARY		BIT			BLOB
+BOOLEAN		BYTES		CHAR
+CLOB		CONDITION
+CURRVAL
+DATA_NLS_USE			DATE
+DATEFORM				DECIMAL
+DEFAULT					DOUBLE
+DOWNLOAD				EXIT
+FLOAT		FORMOUT
+GEOMETRY
+HELP		HINT		IN
+INTEGER		LOG			NCHAR
+NCHAR_UTF16				NEXTVAL
+NIBBLE		NOEXP		NOLOG
+NULL		NUMBER
+NUMERIC
+NVARCHAR				OUT
+QUEUE					QUIT
+REAL					REPLACE
+SEQUENCE
+SKIP		SMALLINT
+STRUCTOUT				TABLE
+TIMESTAMP				TRUE
+TRUNCATE	 			VARBIT
+VARCHAR		YES
+```
+
+
 
 
 #### iLoader 속도 문제
@@ -3073,9 +2597,10 @@ iLoader는 기본적으로 TCP 소켓을 이용해서 Altibase에 접속한다. 
 되는 경우가 있다. 이는 시스템에 따라서 차이가 날 수 있으며 환경 변수
 ISQL_CONNECTION을 UNIX, 혹은 IPC로 설정함으로써 접속 방법을 변경할 수 있다.
 
-sh: \$ ISQL_CONNECTION=IPC; export ISQL_CONNECTION
-
-csh: \$ setenv ISQL_CONNECTION=IPC
+```
+sh: $ ISQL_CONNECTION=IPC; export ISQL_CONNECTION
+csh: $ setenv ISQL_CONNECTION=IPC
+```
 
 iLoader를 업로드 목적으로 사용하는 경우, iLoader는 매 레코드마다 커밋을
 시도한다. 이 경우 -commit 옵션을 통해서 커밋 주기를 크게 하는 것이 어느 정도의
@@ -3085,54 +2610,33 @@ iLoader를 업로드 목적으로 사용하는 경우, iLoader는 매 레코드�
 다음은 100,000만 건의 데이터를 디스크 테이블로 업로드 할 때 commit 조건에 따른
 속도의 변화를 보여준다.
 
-\$ time iloader -s 127.0.0.1 -u sys -p manager in -f test.fmt -d test.dat -mode
-replace -silent
-
+```
+$ time iloader -s 127.0.0.1 -u sys -p manager in -f test.fmt -d test.dat -mode replace -silent
 100000 record load
+     UPLOAD: 1519620035 
+     Load Count  : 100000
+real    25m29.391s
+user    0m7.310s
+sys     0m3.930s
 
-UPLOAD: 1519620035
-
-Load Count : 100000
-
-real **25m29.391s**
-
-user 0m7.310s
-
-sys 0m3.930s
-
-\$ time iloader -s 127.0.0.1 -u sys -p manager in -f test.fmt -d test.dat -mode
-replace -silent **-commit 5000**
-
+$ time iloader -s 127.0.0.1 -u sys -p manager in -f test.fmt -d test.dat -mode replace -silent -commit 5000
 100000 record load
+     UPLOAD: 47475459
+     Load Count  : 100000
+real    0m54.725s
+user    0m3.010s
+sys     0m2.900s
 
-UPLOAD: 47475459
-
-Load Count : 100000
-
-real **0m54.725s**
-
-user 0m3.010s
-
-sys 0m2.900s
-
-\$ time iloader -s 127.0.0.1 -u sys -p manager in -f test.fmt -d test.dat -mode
-replace -silent **-commit 10000**
-
+$ time iloader -s 127.0.0.1 -u sys -p manager in -f test.fmt -d test.dat -mode replace -silent -commit 10000
 100000 record load
+     UPLOAD: 45757975
+     Load Count  : 100000
+real    0m52.652s
+user    0m3.240s
+sys     0m2.990s
+```
 
-UPLOAD: 45757975
-
-Load Count : 100000
-
-real **0m52.652s**
-
-user 0m3.240s
-
-sys 0m2.990s
-
-주의: -s 옵션에 원격 서버를 명시해서 iSQL을 실행하면, ISQL_CONNECTION 설정이
-무시되었다는 경고 메시지가 출력된다. 그리고 iSQL은 ISQL_CONNECTION 환경 변수의
-설정 값에 상관없이 TCP로 원격 서버에 접속한다.
+> **주의**: -s 옵션에 원격 서버를 명시해서 iSQL을 실행하면, ISQL_CONNECTION 설정이 무시되었다는 경고 메시지가 출력된다. 그리고 iSQL은 ISQL_CONNECTION 환경 변수의 설정 값에 상관없이 TCP로 원격 서버에 접속한다.
 
 ### FAQ
 
@@ -3141,21 +2645,16 @@ sys 0m2.990s
 아래와 같은 FORM 파일을 가지고 iLoader를 사용하면 parsing error가 나옵니다.
 원인이 무엇인가요?
 
+```
 table TB_SPEC
-
 {
-
 "CODE" char (6);
-
 "TIME" integer;
-
 "SEQ" integer;
-
 "PROC" integer;
-
 "CONDITION" integer;
-
 }
+```
 
 **답변**
 
@@ -3170,14 +2669,12 @@ iLoader를 사용하여 upload하는데 모두 error로 빠졌습니다. error�
 
 문의하신 내용에 대한 답변은 다음과 같습니다.
 
+```
 iloader in -f form.frm -bad a.bad -log a.log
+```
 
 와 같이 -log의 옵션으로 a.log 파일을 지정하면 에러 내용이 a.log 파일에
-기록됩니다. 형식은
-
-[ERR-errno : error_string]
-
-와 같아서 문제를 파악하는데 도움이 되리라고 봅니다.
+기록됩니다. 형식은 [ERR-errno : error_string]와 같아서 문제를 파악하는데 도움이 되리라고 봅니다.
 
 참고로 -bad 옵션은 실패한 record들이 기록됩니다.
 
@@ -3189,64 +2686,50 @@ iloader in -f form.frm -bad a.bad -log a.log
 
 예 가능합니다. 사용법은 다음의 예와 같습니다.
 
-\$ iloader formout -s 127.0.0.1 -u sys -p manager -f goods.fmt -T goods -silent
-
-\$ iloader out -s 127.0.0.1 -u sys -p manager -f goods.fmt -d goods.dat -r
-'\^%n'
+```
+$ iloader formout -s 127.0.0.1 -u sys -p manager -f goods.fmt -T goods -silent
+$ iloader out -s 127.0.0.1 -u sys -p manager -f goods.fmt -d goods.dat -r '^%n'  
 
 DATA_NLS_USE: KO16KSC5601
 
-Total 30 record download(GOODS)
+     Total 30 record download(GOODS)
 
-DOWNLOAD : 9.4280 msec
+     DOWNLOAD : 9.4280 msec 
 
-\$ cat goods.dat
-
-cat goods.dat
-
-A111100001,IM-300 ,AC0001 ,1000,78000\^
-
-A111100002,IM-310 ,DD0001 ,100,98000\^
-
-B111100001,NT-H5000 ,AC0002 ,780,35800\^
-
-C111100001,IT-U950 ,FA0001 ,35000,7820.55\^
-
-C111100002,IT-U200 ,AC0003 ,1000,9455.21\^
-
+$ cat goods.dat
+cat goods.dat 
+A111100001,IM-300              ,AC0001   ,1000,78000^
+A111100002,IM-310              ,DD0001   ,100,98000^
+B111100001,NT-H5000            ,AC0002   ,780,35800^
+C111100001,IT-U950             ,FA0001   ,35000,7820.55^
+C111100002,IT-U200             ,AC0003   ,1000,9455.21^
 …
+```
 
 **질문**
 
-다음과 같이 FORM 파일에 조건절을 추가하여 다운로드를 하려는데
+FORM 파일에 다음과 같이 조건절을 추가하여 다운로드를 하려는데
 
+```
 table CUST_PROD
-
 {
-
 "SERV_NO" varchar (10);
-
 "PROD_ID" char (5);
-
 "EFF_DATE" char (14);
-
 "EXP_DATE" char (14);
-
 "CUST_TYPE" char (2);
-
 "L_MOD_DATE" date;
-
 }
-
 DATEFORM YYYY/MM/DD HH:MI:SS:SSSSSS
-
-DOWNLOAD CONDITION WHERE EXP_DATE \>= '20050301000000'
+DOWNLOAD CONDITION WHERE EXP_DATE >= '20050301000000'
+```
 
 다음과 같은 에러가 발생하며 수행이 안됩니다.
 
+```
 Input Command Parser Error or Reserved Keyword Used
-
 DOWNLOAD: 338
+```
 
 **답변**
 
@@ -3265,77 +2748,53 @@ by가 지원이 되는지 궁금합니다.
 
 다음 예처럼 download condition을 사용하여 where조건을 주면 됩니다.
 
-\$ iloader formout -s 127.0.0.1 -u sys -p manager -f dept.fmt -T department
--silent
-
-\$ iloader -s 127.0.0.1 -u sys -p manager out -f dept.fmt -d dept.dat -silent
+```
+$ iloader formout -s 127.0.0.1 -u sys -p manager -f dept.fmt -T department -silent
+$ iloader -s 127.0.0.1 -u sys -p manager out -f dept.fmt -d dept.dat -silent
 
 Total 8 record download(DEPARTMENT)
 
-DOWNLOAD : 1.0070 msec
-
-\$ cat dept.dat
-
-1001,"RESEARCH DEVELOPMENT DEPT 1 ","New York ",16
-
-1002,"RESEARCH DEVELOPMENT DEPT 2 ","Sydney ",13
-
-1003,"SOLUTION DEVELOPMENT DEPT ","Japan ",14
-
-2001,"QUALITY ASSURANCE DEPT ","Seoul ",17
-
-3001,"CUSTOMER SUPPORT DEPT ","London ",4
-
-3002,"PRESALES DEPT ","Peking ",5
-
-4001,"MARKETING DEPT ","Seoul ",8
-
-4002,"BUSINESS DEPT ","LA ",7
+     DOWNLOAD : 1.0070 msec
+$ cat dept.dat 
+1001,"RESEARCH DEVELOPMENT DEPT 1   ","New York ",16
+1002,"RESEARCH DEVELOPMENT DEPT 2   ","Sydney   ",13
+1003,"SOLUTION DEVELOPMENT DEPT     ","Japan    ",14
+2001,"QUALITY ASSURANCE DEPT        ","Seoul    ",17
+3001,"CUSTOMER SUPPORT DEPT         ","London   ",4
+3002,"PRESALES DEPT                 ","Peking   ",5
+4001,"MARKETING DEPT                ","Seoul    ",8
+4002,"BUSINESS DEPT                 ","LA       ",7
+```
 
 FORM 파일을 다음과 같이 수정한 다음 다운로드 해보면 Primary Key에 대하여 sort된
 데이터를 얻을 수 있습니다.
 
+```
 table departments
-
 {
-
-"DNO" smallint; \<= Primary Key
-
+"DNO" smallint; 	<= Primary Key
 "DNAME" char (30);
-
 "DEP_LOCATION" char (15);
-
-"MGR_NO" integer;
-
+"MGR_NO" integer;	
 }
-
-download condition "where DNO is not null" \<= 수정된 부분
-
+download condition "where DNO is not null" <= 수정된 부분
 DATA_NLS_USE=KO16KSC5601
 
-\$ iloader -s 127.0.0.1 -u sys -p manager out -f dept.fmt -d dept.dat -silent
+$ iloader -s 127.0.0.1 -u sys -p manager out -f dept.fmt -d dept.dat -silent
 
-Total 8 record download(DEPARTMENT)
+     Total 8 record download(DEPARTMENT)
 
-DOWNLOAD : 1.0200 msec
-
-\$ cat dept.dat
-
-1001,"RESEARCH DEVELOPMENT DEPT 1 ","New York ",16
-
-1002,"RESEARCH DEVELOPMENT DEPT 2 ","Sydney ",13
-
-1003,"SOLUTION DEVELOPMENT DEPT ","Japan ",14
-
-2001,"QUALITY ASSURANCE DEPT ","Seoul ",17
-
-3001,"CUSTOMER SUPPORT DEPT ","London ",4
-
-3002,"PRESALES DEPT ","Peking ",5
-
-4001,"MARKETING DEPT ","Seoul ",8
-
-4002,"BUSINESS DEPT ","LA ",7
+     DOWNLOAD : 1.0200 msec
+$ cat dept.dat 
+1001,"RESEARCH DEVELOPMENT DEPT 1   ","New York ",16
+1002,"RESEARCH DEVELOPMENT DEPT 2   ","Sydney   ",13
+1003,"SOLUTION DEVELOPMENT DEPT     ","Japan    ",14
+2001,"QUALITY ASSURANCE DEPT        ","Seoul    ",17
+3001,"CUSTOMER SUPPORT DEPT         ","London   ",4
+3002,"PRESALES DEPT                 ","Peking   ",5
+4001,"MARKETING DEPT                ","Seoul    ",8
+4002,"BUSINESS DEPT                 ","LA       ",7
+```
 
 **질문**
 
@@ -3349,40 +2808,35 @@ DB에서는 어떤 명령어를 사용할 수 있나요?
 있습니다. 먼저 iLoader를 이용하여 테이블의 FORM 파일을 다음과 같이 생성해야
 합니다.(iLoader를 사용하지 않고 에디터로 직접 작성하는 것도 가능합니다.)
 
-\$ iloader formout -s 127.0.0.1 -u sys -p manager -T test -f test.FORM
+```
+$ iloader formout -s 127.0.0.1 -u sys -p manager -T test -f test.FORM
+```
 
-갖고 계신 데이터 파일(구분자 “\|”로 되어있는)을 업로드는 하는 방법은
+갖고 계신 데이터 파일(구분자 “\|”로 되어있는)을 업로드는 하는 방법은 아래와 같이 하면 데이터 파일을 바로 업로드할 수 있습니다. (단 테이블은 미리 만들어져 있어야 합니다.)
 
-\$ iloader in -s 127.0.0.1 -u sys -p manager -f test.FORM-d datafile -t '\|'
+```
+$ iloader in -s 127.0.0.1 -u sys -p manager -f test.FORM-d datafile -t '|' 
+```
 
-이렇게 하시면 데이터 파일을 바로 업로드할 수 있습니다. (단 테이블은 미리
-만들어져 있어야 합니다.)
+
 
 **질문**
 
-동일 테이블의 두 개의 칼럼의 날짜 형식이 서로 다를 때 import 할 수 있는 방법이
-있습니까?
+동일 테이블의 두 개의 칼럼의 날짜 형식이 서로 다를 때 import 할 수 있는 방법이 있습니까?
 
 **답변**
 
-iLoader에서는 DATEFORM을 다음의 예에서 보시는 바와 같이 칼럼별로 지정할 수
-있습니다.
+iLoader에서는 DATEFORM을 다음의 예에서 보는 것처럼 칼럼별로 지정할 수 있습니다.
 
-예) FORM 파일 내용
-
+```
 table table_name
-
 {
-
 column1 date "YYYY-MM-DD";
-
 column2 date;
-
 ...
-
 }
-
 DATEFORM YYYY/MM/DD HH:MI:SS:SSSSSS
+```
 
 참고로 날짜 포맷 명시 방법의 우선 순위를 정리하면
 
