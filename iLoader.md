@@ -30,9 +30,9 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 - [서문](#서문)
   - [이 매뉴얼에 대하여](#이-매뉴얼에-대하여)
-- [1. iLoader 개요](#iloader-개요)
+- [1. iLoader 개요](#1.iloader-개요)
   - [iLoader의 소개 ](#iloader의-소개)
-- [2. iLoader 사용 방법](#iloader-사용-방법)
+- [2. iLoader 사용 방법](#2.iloader-사용-방법)
   - [명령행 옵션 ](#명령행-옵션)
   - [일반 옵션 ](#일반-옵션)
   - [성능 옵션 ](#성능-옵션)
@@ -350,7 +350,7 @@ NLS_USE 설정의 우선순위는 FORM 파일의 DATA_NLS_USE(in 옵션 수행�
 순으로 참조 적용되며, 아무것도 설정되지 않았을 경우에는 기본 캐릭터
 셋(US7ASCII)을 사용한다.
 
-iLoader 사용 방법
+2.iLoader 사용 방법
 -----------------
 
 이 장에서는 iLoader를 사용하는 방법에 대해 설명한다.
