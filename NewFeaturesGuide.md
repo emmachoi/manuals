@@ -5,7 +5,7 @@ Altibase®
 New Features Guide
 ------------------
 
-![](media/newfeatures/e5cfb3761673686d093a3b00c062fe7a.png)
+![](media/NewFeatures/e5cfb3761673686d093a3b00c062fe7a.png)
 
 
 
