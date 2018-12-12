@@ -35,20 +35,17 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
   - [이 매뉴얼에 대하여 ](#이-매뉴얼에-대하여)
 
-- 1. [소개](#소개)
-
+- [1. 소개](#소개)
   - [Adapter for Oracle ](#adapter-for-oracle)
 
-- 2. [설치와 설정 ](#설치와-설정)
-
+- [2. 설치와 설정 ](#설치와-설정)
   - [설치전 작업 ](#설치전-작업)
   - [설치 ](#설치)
   - [설치 후 작업](#설치-후-작업)
   - [설정 ](#설정)
   - [프로퍼티 ](#프로퍼티)
 
-- 3. [사용법](#사용법)
-
+- [3. 사용법](#사용법)
   - [oraAdapter 제약조건 ](#oraadapter-제약조건)
   - [구동과 종료](#구동과-종료)
   - [데이터 타입](#데이터-타입)
@@ -196,7 +193,7 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 여러분의 의견에 항상 감사드립니다.
 
-1. 소개
+1.소개
 ----
 
 이 장은 Adapter for Oracle 의 개념과 Altibase에서 변경된 데이터가 오라클
