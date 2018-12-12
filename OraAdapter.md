@@ -31,43 +31,35 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 목 차
 -----
 
-[서문 5](#서문)
+- [서문 ](#서문)
 
-[이 매뉴얼에 대하여 6](#이-매뉴얼에-대하여)
+  - [이 매뉴얼에 대하여 ](#이-매뉴얼에-대하여)
 
-[1. 소개 11](#소개)
+- 1. [소개](#소개)
 
-[Adapter for Oracle 12](#adapter-for-oracle)
+  - [Adapter for Oracle ](#adapter-for-oracle)
 
-[2. 설치와 설정 15](#설치와-설정)
+- 2. [설치와 설정 ](#설치와-설정)
 
-[설치전 작업 16](#설치전-작업)
+  - [설치전 작업 ](#설치전-작업)
+  - [설치 ](#설치)
+  - [설치 후 작업](#설치-후-작업)
+  - [설정 ](#설정)
+  - [프로퍼티 ](#프로퍼티)
 
-[설치 18](#설치)
+- 3. [사용법](#사용법)
 
-[설치 후 작업 21](#설치-후-작업)
+  - [oraAdapter 제약조건 ](#oraadapter-제약조건)
+  - [구동과 종료](#구동과-종료)
+  - [데이터 타입](#데이터-타입)
+  - [Adapter for Oracle 유틸리티](#adapter-for-oracle-유틸리티)
+  - [커맨드 라인 옵션 ](#커맨드-라인-옵션)
 
-[설정 22](#설정)
+- A. 부록[FAQ ](#faq)
 
-[프로퍼티 24](#프로퍼티)
+- B. 부록[oraAdapter 사용시 DDL 수행 순서 ](#oraadapter-사용시-ddl-수행-순서)
 
-[3. 사용법 33](#사용법)
 
-[oraAdapter 제약조건 34](#oraadapter-제약조건)
-
-[구동과 종료 36](#구동과-종료)
-
-[데이터 타입 38](#데이터-타입)
-
-[Adapter for Oracle 유틸리티 39](#adapter-for-oracle-유틸리티)
-
-[커맨드 라인 옵션 41](#커맨드-라인-옵션)
-
-[FAQ 44](#faq)
-
-[oraAdapter 사용시 DDL 수행 순서 46](#oraadapter-사용시-ddl-수행-순서)
-
-[찾아보기 49](#_Toc523213000)
 
 서문
 ----
@@ -1271,4 +1263,3 @@ FROM SYS.T1 TO SYS T1; |                                                        
 | 11.이중화 중지 및 재시작 (생략가능)             | (optional) ALTER REPLICATION ALA STOP; ALTER REPLICATION ALA START; |                                                              |                                                          |
 | 12.데이터 복제 여부 확인                        | DML ( Service )                                              |                                                              | 데이터 복제 확인                                         |
 | 13.DDL 중지를 위한 이중화 관련 프로퍼티 값 설정 | ALTER SYSTEM SET REPLICATION_DDL_ENABLE = 0; ALTER SYSTEM SET REPLICATION_DDL_ENABLE_LEVEL = 0; |                                                              |                                                          |
-
