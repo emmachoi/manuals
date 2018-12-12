@@ -998,7 +998,7 @@ oraAdapter가 구동된 후에 어떤 환경 변수 또는 프로퍼티가 변�
    번호로 설정되었는지 확인한다. 이 프로퍼티 설정을 바꿀 필요가 있다면,
    Altibase를 재구동해야 한다.
 
-   [^1]: REPLICATION_PORT_NO는 이중화 연결을 위해서 지역 서버에서 사용하는 이중화 포트 번호를 명시한다. 이 프로퍼티에 대한 설명은 Starting Guide를 참고하기 바란다.   
+   [^1]: REPLICATION_PORT_NO:  이중화 연결을 위해서 지역 서버에서 사용하는 이중화 포트 번호를 명시한다. 이 프로퍼티에 대한 설명은 Starting Guide를 참고하기 바란다.   
 
 2. oraAdapter를 시작하기 전에, Altibase Log Analyzer (ALA)가 사용될 수 있도록
    XLog 송신자를 구성해야 한다. XLog 송신자는 Altibase로부터 XLog와 메타 정보를
@@ -1046,10 +1046,7 @@ oraAdapter가 구동된 후에 어떤 환경 변수 또는 프로퍼티가 변�
    ```
 
 
-\$ cat \$ORA_ADAPTER_HOME/trc/oraAdapter.trc  
-[2016-07-26 20:52:51] Adapter is ready to process logs.
 
-iSQL\> ALTER REPLICATION ala START;
 
 #### 종료
 
@@ -1058,31 +1055,33 @@ oraAdapter를 Adapter for Oracle 유틸리티를 사용해서 강제로 종료�
 성공적으로 종료는 되겠지만 Altibase의 XLog 송신자는 oraAdapter와의 접속을 계속
 시도할 것이다.
 
-iSQL\> ALTER REPLICATION ala STOP;
-
+```
+iSQL> ALTER REPLICATION ala STOP;
 Alter success.
+```
+
+
 
 ### 데이터 타입
 
 Altibase의 데이터가 오라클 DB에 적용될 때, 데이터의 타입은 아래의 표에 보이는
 것처럼 변환된다.
 
-| Altibase | 오라클 DB | 오라클 DB를 위한 추가 정보      |
-|----------|-----------|---------------------------------|
-| FLOAT    | NUMBER    |                                 |
-| NUMERIC  | NUMBER    |                                 |
-| DOUBLE   | NUMBER    | BINARY_DOUBLE이 사용될 수 있다. |
-| REAL     | NUMBER    | BINARY_FLOAT이 사용될 수 있다.  |
-| BIGINT   | NUMBER    |                                 |
-| INTEGER  | NUMBER    |                                 |
-| SMALLINT | NUMBER    |                                 |
-| DATE     | DATE      |                                 |
-| CHAR     | CHAR      |                                 |
-| VARCHAR  | VARCHAR2  |                                 |
-| NCHAR    | NCHAR     |                                 |
-| NVARCHAR | NVARCHAR2 |                                 |
+| Altibase            | 오라클 DB            | 오라클 DB를 위한 추가 정보      |
+| ------------------- | -------------------- | ------------------------------- |
+| FLOAT               | NUMBER               |                                 |
+| NUMERIC             | NUMBER               |                                 |
+| DOUBLE              | NUMBER               | BINARY_DOUBLE이 사용될 수 있다. |
+| REAL                | NUMBER               | BINARY_FLOAT이 사용될 수 있다.  |
+| BIGINT              | NUMBER               |                                 |
+| INTEGER             | NUMBER               |                                 |
+| SMALLINT            | NUMBER               |                                 |
+| DATE                | DATE                 |                                 |
+| CHAR                | CHAR                 |                                 |
+| VARCHAR             | VARCHAR2             |                                 |
+| NCHAR<br />NVARCHAR | NCHAR<br />NVARCHAR2 |                                 |
 
->   표 1 데이터 타입 변환
+표 3-1 데이터 타입 변환
 
 #### 예제
 
@@ -1092,35 +1091,29 @@ Altibase의 데이터가 오라클 DB에 적용될 때, 데이터의 타입은 �
 
 Altibase의 데이터 타입이 아래처럼 명시되어 있다고 가정하면:
 
+```
 CREATE TABLE T1(
-
-A1 INTEGER PRIMARY KEY,
-
-A2 CHAR(20),
-
-A3 VARCHAR(20),
-
-A4 NCHAR(20),
-
-A5 NVARCHAR(20)
-
-);
+    A1 INTEGER PRIMARY KEY,
+    A2  CHAR(20),
+    A3  VARCHAR(20),
+    A4  NCHAR(20),
+    A5  NVARCHAR(20)
+    );
+```
 
 오라클 DB의 데이터 타입은 아래처럼 명시한다.
 
+```
 CREATE TABLE T1(
+    A1 NUMBER PRIMARY KEY,
+    A2 CHAR(20),
+    A3 VARCHAR2(20),
+    A4 NCHAR(20),
+    A5 NVARCHAR2(20)
+    );
+```
 
-A1 NUMBER PRIMARY KEY,
 
-A2 CHAR(20),
-
-A3 VARCHAR2(20),
-
-A4 NCHAR(20),
-
-A5 NVARCHAR2(20)
-
-);
 
 ### Adapter for Oracle 유틸리티
 
@@ -1154,7 +1147,11 @@ oaUtility를 정상적으로 동작하게 하려면 아래의 사항들을 확�
 
 ##### 구문
 
+```
 oaUtility {start}
+```
+
+
 
 ##### 설명
 
@@ -1164,7 +1161,11 @@ oraAdapter를 데몬으로 실행한다.
 
 ##### 구문
 
+```
 oaUtility {stop}
+```
+
+
 
 ##### 설명
 
@@ -1174,7 +1175,11 @@ oaUtility {stop}
 
 ##### 구문
 
+```
 oaUtility {status}
+```
+
+
 
 ##### 설명
 
@@ -1184,7 +1189,11 @@ oraAdapter가 동작 중인지 확인한다.
 
 ##### 구문
 
-oaUtility { check [ alive \| constraints] }
+```
+oaUtility { check [ alive | constraints] }
+```
+
+
 
 ##### 설명
 
@@ -1203,7 +1212,11 @@ oraAdapter는 아래의 커맨드 라인 옵션을 제공한다.
 
 #### 구문
 
-oraAdapter [ -v \| -version ]
+```
+oraAdapter [ -v | -version ]
+```
+
+
 
 #### 설명
 
@@ -1211,11 +1224,13 @@ oraAdapter [ -v \| -version ]
 
 #### 예제
 
-\$./oraAdapter -v
-
+```
+$./oraAdapter -v
 Altibase Adapter for Oracle version 5.5.1.1.2
-
 ...
+```
+
+
 
 A.부록: FAQ
 ---------
@@ -1240,21 +1255,20 @@ B.부록: oraAdapter 사용시 DDL 순서
 
 oraAdapter를 사용할 때 이중화를 수행중인 DDL은 아래의 순서대로 수행해야 한다.
 
-| No                                              | Active Server                                                                                   | jdbcAdapter                                                                               | Standby Server                                           |
-|-------------------------------------------------|-------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|----------------------------------------------------------|
-| 1.양쪽 서버에 스키마 생성                       | CREATE TABLE T1 ( C1 INTEGER PRIMARY KEY, C2 SMALLINT );                                        |                                                                                           | CREATE TABLE T1 ( C1 INTEGER PRIMARY KEY, C2 SMALLINT ); |
-| 2.ANALYSIS로 이중화 생성                        | CREATE REPLICATION ala FOR ANALYSIS                                                             |                                                                                           |                                                          |
-|                                                 | WITH 'Standby IP', Standby Port                                                                 |                                                                                           |                                                          |
-|                                                 | FROM SYS.T1 TO SYS T1;                                                                          |                                                                                           |                                                          |
-| 3.oraAdapter 시작                               |                                                                                                 | \$ oaUtility start                                                                        |                                                          |
-| 4.이중화 시작                                   | ALTER REPLICATION ala START;                                                                    |                                                                                           |                                                          |
-| 5.이중화 Gap 제거를 위해 Flush 구문 수행        | ALTER REPLICATION ALA FLUSH ALL;                                                                |                                                                                           |                                                          |
-| 6.DDL 수행을 위한 이중화 관련 프로퍼티 값 설정  | ALTER SYSTEM SET REPLICATION_DDL_ENABLE = 1; ALTER SYSTEM SET REPLICATION_DDL_ENABLE_LEVEL = 1; |                                                                                           |                                                          |
-| 7.Active 서버에 DDL 수행                        |                                                                                                 | Adapter 종료 (DDL 로그 처리로 인하여)                                                     |                                                          |
-| 8.oraAdapter trc 로그 확인                      | SELECT REP_NAME, STATUS FROM V\$REPSENDER;                                                      | 'Log Record : Meta change xlog was arrived, adapter will be finished'                     |                                                          |
-|                                                 | 로 조회 하여 STATUS 가 2 확인                                                                   | trc 로그 메시지 확인                                                                      |                                                          |
-| 9.Standby 서버에 DDL 수행                       |                                                                                                 |                                                                                           | DDL                                                      |
-| 10.oraAdapter 재실행                            |                                                                                                 | \$ oaUtility start                                                                        |                                                          |
-| 11.이중화 중지 및 재시작 (생략가능)             | (optional) ALTER REPLICATION ALA STOP; ALTER REPLICATION ALA START;                             |                                                                                           |                                                          |
-| 12.데이터 복제 여부 확인                        | DML ( Service )                                                                                 |                                                                                           | 데이터 복제 확인                                         |
-| 13.DDL 중지를 위한 이중화 관련 프로퍼티 값 설정 | ALTER SYSTEM SET REPLICATION_DDL_ENABLE = 0; ALTER SYSTEM SET REPLICATION_DDL_ENABLE_LEVEL = 0; |                                                                                           |                                                          |
+| No                                              | Active Server                                                | jdbcAdapter                                                  | Standby Server                                           |
+| ----------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | -------------------------------------------------------- |
+| 1.양쪽 서버에 스키마 생성                       | CREATE TABLE T1 ( C1 INTEGER PRIMARY KEY, C2 SMALLINT );     |                                                              | CREATE TABLE T1 ( C1 INTEGER PRIMARY KEY, C2 SMALLINT ); |
+| 2.ANALYSIS로 이중화 생성                        | CREATE REPLICATION ala FOR ANALYSIS WITH 'Standby IP', Standby Port
+FROM SYS.T1 TO SYS T1; |                                                              |                                                          |
+| 3.oraAdapter 시작                               |                                                              | \$ oaUtility start                                           |                                                          |
+| 4.이중화 시작                                   | ALTER REPLICATION ala START;                                 |                                                              |                                                          |
+| 5.이중화 Gap 제거를 위해 Flush 구문 수행        | ALTER REPLICATION ALA FLUSH ALL;                             |                                                              |                                                          |
+| 6.DDL 수행을 위한 이중화 관련 프로퍼티 값 설정  | ALTER SYSTEM SET REPLICATION_DDL_ENABLE = 1; ALTER SYSTEM SET REPLICATION_DDL_ENABLE_LEVEL = 1; |                                                              |                                                          |
+| 7.Active 서버에 DDL 수행                        |                                                              | Adapter 종료 (DDL 로그 처리로 인하여)                        |                                                          |
+| 8.oraAdapter trc 로그 확인                      | SELECT REP_NAME, STATUS FROM V\$REPSENDER;<br />로 조회 하여 STATUS 가 2 확인 | 'Log Record : Meta change xlog was arrived, adapter will be finished' trc 로그 메시지 확인 |                                                          |
+| 9.Standby 서버에 DDL 수행                       |                                                              |                                                              | DDL                                                      |
+| 10.oraAdapter 재실행                            |                                                              | \$ oaUtility start                                           |                                                          |
+| 11.이중화 중지 및 재시작 (생략가능)             | (optional) ALTER REPLICATION ALA STOP; ALTER REPLICATION ALA START; |                                                              |                                                          |
+| 12.데이터 복제 여부 확인                        | DML ( Service )                                              |                                                              | 데이터 복제 확인                                         |
+| 13.DDL 중지를 위한 이중화 관련 프로퍼티 값 설정 | ALTER SYSTEM SET REPLICATION_DDL_ENABLE = 0; ALTER SYSTEM SET REPLICATION_DDL_ENABLE_LEVEL = 0; |                                                              |                                                          |
+
