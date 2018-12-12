@@ -196,7 +196,7 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 여러분의 의견에 항상 감사드립니다.
 
-1.소개
+1. 소개
 ----
 
 이 장은 Adapter for Oracle 의 개념과 Altibase에서 변경된 데이터가 오라클
@@ -339,7 +339,7 @@ oraAdapter를 설치하기 전에 Oracle Call Interface (이하 OCI라 칭한다
    보여준다.  
    oraAdapter 의 버전은 같이 수행되는 Altibase의 버전과 같아야 한다.
 
-   ![Altibaseversion](D:\emmachoigit\manuals\media\oraAdapter\Altibaseversion.gif)
+   ![Altibaseversion](media/oraAdapter/Altibaseversion.gif)
 
 2. 인스토러를 실행하면 다이얼로그 박스가 나타난다. 설치하려는 oraAdapter의
    버전이 맞는지 확인한 후, “Next” 버튼을 누른다.
@@ -529,7 +529,7 @@ OCI에서의 데이터 변환 때문에 성능이 다소 느릴 수 있다.
 
 NLS_LANG 환경 변수의 값은 다음의 형식을 가진다.
 
-![nlslang](D:\emmachoigit\manuals\media\oraAdapter\nlslang.gif)
+![nlslang](media/oraAdapter/nlslang.gif)
 
 다음의 표는 Altibase에서 지원하는 문자 집합과 그에 대응하는 오라클 DB 문자 집합
 및 oraAdapter 용 NLS_LANG환경 변수 설정 값을 보여준다.
@@ -1005,7 +1005,7 @@ oraAdapter가 구동된 후에 어떤 환경 변수 또는 프로퍼티가 변�
                                                FROM sys.t1 TO scott.t2;
    ```
 
-   ![start](D:\emmachoigit\manuals\media\oraAdapter\start.gif)
+   ![start](media/oraAdapter/start.gif)
 
 3. 이제 oraAdapter를 시작한다. oraAdapter를 직접 실행할 수도 있고, Adapter for
    Oracle 유틸리티를 사용해서 실행할 수도 있다. Adapter for Oracle 유틸리티를
