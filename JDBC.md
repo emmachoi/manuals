@@ -448,7 +448,7 @@ Altibase에 접속할 때 사용 가능한 연결 속성에 대해 기술한다.
 <table>
 <tbody>
 <tr>
-<td >
+   <td style="width: 95px;">
 <p>기본값</p>
 </td>
 <td>
