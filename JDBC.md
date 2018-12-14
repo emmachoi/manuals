@@ -1801,7 +1801,7 @@ SQL문에 대해서는 JDBC 드라이버가 자신의 데이터베이스에 맞�
 아래는 JDBC 스펙에서 지원하는 escape가 포함된 SQL문과 Altibase JDBC 드라이버가
 이것을 Altibase용으로 변환한 SQL문을 정리한 표이다.
 
-<table width="510">
+<table>
 <tbody>
 <tr>
 <th>
@@ -1815,89 +1815,89 @@ SQL문에 대해서는 JDBC 드라이버가 자신의 데이터베이스에 맞�
 </th>
 </tr>
 <tr>
-<td width="66">
+<td>
 <p>ESCAPE</p>
 </td>
-<td width="208">
+<td>
 <p>SELECT cVARCHAR FROM t1 WHERE cVARCHAR LIKE '%a|%b%' <strong>{escape '|'}</strong></p>
 </td>
-<td width="236">
+<td>
 <p>SELECT cVARCHAR FROM t1 WHERE cVARCHAR LIKE '%a|%b%' <strong>escape '|'</strong></p>
 </td>
 </tr>
 <tr>
-<td width="66">
+<td>
 <p>FN</p>
 </td>
-<td width="208">
+<td>
 <p>SELECT <strong>{fn concat('concat', 'test')}</strong> FROM dual</p>
 </td>
-<td width="236">
+<td>
 <p>SELECT <strong>concat('concat', 'test')</strong> FROM dual</p>
 </td>
 </tr>
 <tr>
-<td rowspan="4" width="66">
+<td rowspan="4">
 <p>DTS</p>
 </td>
-<td width="208">
+<td>
 <p>UPDATE t1 SET cDATE = <strong>{d&nbsp; '1234-12-30'}</strong></p>
 </td>
-<td width="236">
+<td>
 <p>UPDATE t1 SET cDATE = <strong>to_date('1234-12-30', 'yyyy-MM-dd')</strong></p>
 </td>
 </tr>
 <tr>
-<td width="208">
+<td>
 <p>UPDATE t1 SET cDATE = <strong>{t&nbsp; '12:34:56'}</strong></p>
 </td>
-<td width="236">
+<td>
 <p>UPDATE t1 SET cDATE = <strong>to_date('12:34:56', 'hh24:mi:ss')</strong></p>
 </td>
 </tr>
 <tr>
-<td width="208">
+<td>
 <p>UPDATE t1 SET cDATE = <strong>{ts '2010-01-23 12:23:45'}</strong></p>
 </td>
-<td width="236">
+<td>
 <p>UPDATE t1 SET cDATE = <strong>to_date('2010-01-23 12:23:45', 'yyyy-MM-dd hh24:mi:ss')</strong></p>
 </td>
 </tr>
 <tr>
-<td width="208">
+<td>
 <p>UPDATE t1 SET cDATE = <strong>{ts '2010-11-29 23:01:23.971589'}</strong></p>
 </td>
-<td width="236">
+<td>
 <p>UPDATE t1 SET cDATE = <strong>to_date('2010-11-29 23:01:23.971589', 'yyyy-MM-dd hh24:mi:ss.ff6')</strong></p>
 </td>
 </tr>
 <tr>
-<td rowspan="2" width="66">
+<td rowspan="2">
 <p>CALL</p>
 </td>
-<td width="208">
+<td>
 <p><strong>{call p1()}</strong></p>
 </td>
-<td width="236">
+<td>
 <p><strong>execute p1()</strong></p>
 </td>
 </tr>
 <tr>
-<td width="208">
+<td>
 <p><strong>{? = call p2(?)}</strong></p>
 </td>
-<td width="236">
+<td>
 <p><strong>execute ? := p2(?)</strong></p>
 </td>
 </tr>
 <tr>
-<td width="66">
+<td>
 <p>OJ</p>
 </td>
-<td width="208">
+<td>
 <p>SELECT * FROM <strong>{oj t1 LEFT OUTER JOIN t2 ON t1.cINT = t2.cINT}</strong></p>
 </td>
-<td width="236">
+<td>
 <p>SELECT * FROM <strong>t1 LEFT OUTER JOIN t2 ON t1.cINT = t2.cINT</strong></p>
 </td>
 </tr>
