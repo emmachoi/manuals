@@ -199,7 +199,7 @@ Altibase의 JDBC 드라이버는 JDBC 사양을 대부분 준수하나, 경우�
 
 이 매뉴얼에 대한 여러분의 의견을 보내주시기 바랍니다. 사용자의 의견은 다음
 버전의 매뉴얼을 작성하는데 많은 도움이 됩니다. 보내실 때에는 아래 내용과 함께
-고객서비스포털(*http://support.altibase.com/kr/ *)로 보내주시기 바랍니다.
+고객서비스포털(http://support.altibase.com/kr/ )로 보내주시기 바랍니다.
 
 -   사용 중인 매뉴얼의 이름과 버전
 
@@ -221,7 +221,7 @@ Altibase의 JDBC 드라이버는 JDBC 사양을 대부분 준수하나, 경우�
 
 ### JDBC 드라이버 설치
 
-Altibase 홈페이지 (www.altibase.com)에서 다운로드 받은 Altibase 패키지를
+Altibase 홈페이지 (www.altibase.com )에서 다운로드 받은 Altibase 패키지를
 다운로드 하여 설치한다.
 
 Altibase JDBC 드라이버는 패키지를 설치한 후, \$ALTIBASE_HOME/lib 디렉토리에서
