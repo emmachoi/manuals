@@ -445,13 +445,58 @@ Altibase에 접속할 때 사용 가능한 연결 속성에 대해 기술한다.
 
 ##### defer_prepares
 
-| 기본값    | off                                                          |
-| --------- | ------------------------------------------------------------ |
-| 값의 범위 | [on \| off]                                                  |
-| 필수 여부 | No                                                           |
-| 설정 범위 | 세션                                                         |
-| 설명      | PrepareStatement가 호출될 때 서버와의 통신을 보류할지 여부(ON, OFF)를 지정할 수 있다. 이 속성이 ON이면, PrepareStatement가 호출이 되더라도 Execute 함수가 호출될 때까지 prepare 요청이 서버로 전송되지 않는다.<br />그러나 이 속성이 OFF이면, PrepareStatement가 호출될 때 prepare 요청이 즉시 서버로 전송된다. 단 PrepareStatement () 뒤에 다음의 메소드들이 호출되면, prepare 요청이 즉시 서버로 전송된다. <br />getMetData <br />getParameterMetaData <br />setObject(int, Object, int) <br />또한 DBCP의 statement pool이 활성화되어 있을 경우 충돌이 발생할 수 있기 때문에 deferred 옵션이 켜져 있을 경우에는 statement pool 옵션을 꺼야 한다. |
-|           |                                                              |
+<table>
+<tbody>
+<tr>
+<td >
+<p>기본값</p>
+</td>
+<td>
+<p>off</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>값의 범위</p>
+</td>
+<td>
+<p>[on | off]</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>필수 여부</p>
+</td>
+<td>
+<p>No</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>설정 범위</p>
+</td>
+<td>
+<p>세션</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>설명</p>
+</td>
+<td>
+<p>PrepareStatement가 호출될 때 서버와의 통신을 보류할지 여부(ON, OFF)를 지정할 수 있다. 이 속성이 ON이면, PrepareStatement가 호출이 되더라도 Execute 함수가 호출될 때까지 prepare 요청이 서버로 전송되지 않는다. <br /> 그러나 이 속성이 OFF이면, PrepareStatement가 호출될 때 prepare 요청이 즉시 서버로 전송된다.</p>
+<p>단 PrepareStatement () 뒤에 다음의 메소드들이 호출되면, prepare 요청이 즉시 서버로 전송된다.</p>
+<ul>
+<li>getMetData</li>
+<li>getParameterMetaData</li>
+<li>setObject(int, Object, int)</li>
+</ul>
+<p>또한 DBCP의 statement pool이 활성화되어 있을 경우 충돌이 발생할 수 있기 때문에 deferred 옵션이 켜져 있을 경우에는 statement pool 옵션을 꺼야 한다.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
 
 ##### ciphersuite_list
 
