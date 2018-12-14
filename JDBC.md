@@ -486,13 +486,13 @@ Altibase에 접속할 때 사용 가능한 연결 속성에 대해 기술한다.
 <td>
 <p>PrepareStatement가 호출될 때 서버와의 통신을 보류할지 여부(ON, OFF)를 지정할 수 있다.<br /> 
 이 속성이 ON이면, PrepareStatement가 호출이 되더라도 Execute 함수가 호출될 때까지 <br /> prepare 요청이 서버로 전송되지 않는다. <br /> 그러나 이 속성이 OFF이면, PrepareStatement가 호출될 때 prepare 요청이 즉시 서버로 전송된다.</p><br /> 
-<p>단 PrepareStatement () 뒤에 다음의 메소드들이 호출되면, prepare 요청이 즉시 서버로 전송된다.</p>
+단 PrepareStatement () 뒤에 다음의 메소드들이 호출되면, prepare 요청이 즉시 서버로 전송된다.</p>
 <ul>
 <li>getMetData</li>
 <li>getParameterMetaData</li>
 <li>setObject(int, Object, int)</li>
 </ul>
-<p>또한 DBCP의 statement pool이 활성화되어 있을 경우 충돌이 발생할 수 있기 때문에 deferred 옵션이 켜져 있을 경우에는 statement pool 옵션을 꺼야 한다.</p>
+또한 DBCP의 statement pool이 활성화되어 있을 경우 충돌이 발생할 수 있기 때문에 <br /> deferred 옵션이 켜져 있을 경우에는 statement pool 옵션을 꺼야 한다.</p>
 </td>
 </tr>
 </tbody>
