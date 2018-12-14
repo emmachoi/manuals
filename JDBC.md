@@ -497,7 +497,6 @@ Altibase에 접속할 때 사용 가능한 연결 속성에 대해 기술한다.
 </tr>
 </tbody>
 </table>
-<p>&nbsp;</p>
 
 ##### ciphersuite_list
 
@@ -549,8 +548,8 @@ Altibase에 접속할 때 사용 가능한 연결 속성에 대해 기술한다.
 <p>설명</p>
 </td>
 <td style="width: 657px;">
-<p>Autocommit의 동작을 Altibase 서버가 제어할 것인지, JDBC 드라이버가 제어할 것인지를 설정한다.</p>
-<p>auto_commit 속성이 true이거나 auto_commit 속성이 지정되지 않은 경우에만 이 속성의 설정 값이 적용된다.</p>
+<p>Autocommit의 동작을 Altibase 서버가 제어할 것인지, JDBC 드라이버가 제어할 것인지를 설정한다.
+auto_commit 속성이 true이거나 auto_commit 속성이 지정되지 않은 경우에만 이 속성의 설정 값이 적용된다.</p>
 <ul>
 <li>on: JDBC 드라이버가 자동커밋 제어</li>
 <li>off: Altibase 서버가 자동커밋 제어</li>
@@ -560,14 +559,6 @@ Altibase에 접속할 때 사용 가능한 연결 속성에 대해 기술한다.
 </tr>
 </tbody>
 </table>
-<p>&nbsp;</p>
-
-| 기본값    | off                                                          |
-| --------- | ------------------------------------------------------------ |
-| 값의 범위 | [on \| off]                                                  |
-| 필수 여부 | No                                                           |
-| 설정 범위 | 세션                                                         |
-| 설명      | Autocommit의 동작을 Altibase 서버가 제어할 것인지, JDBC 드라이버가 제어할 것인지를 설정한다. auto_commit 속성이 true이거나 auto_commit 속성이 지정되지 않은 경우에만 이 속성의 설정 값이 적용된다. <br />on: JDBC 드라이버가 자동커밋 제어 <br />off: Altibase 서버가 자동커밋 제어 <br />자세한 설명은 3장의 "Autocommit 제어" 절을 참고한다. |
 
 ##### connectionretrycount
 
