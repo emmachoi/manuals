@@ -548,8 +548,7 @@ Altibase에 접속할 때 사용 가능한 연결 속성에 대해 기술한다.
 <p>설명</p>
 </td>
 <td style="width: 657px;">
-<p>Autocommit의 동작을 Altibase 서버가 제어할 것인지, JDBC 드라이버가 제어할 것인지를 설정한다.
-auto_commit 속성이 true이거나 auto_commit 속성이 지정되지 않은 경우에만 이 속성의 설정 값이 적용된다.</p>
+    <p>Autocommit의 동작을 Altibase 서버가 제어할 것인지, JDBC 드라이버가 제어할 것인지를 설정한다.</br> auto_commit 속성이 true이거나 auto_commit 속성이 지정되지 않은 경우에만 이 속성의 설정 값이 적용된다.</p>
 <ul>
 <li>on: JDBC 드라이버가 자동커밋 제어</li>
 <li>off: Altibase 서버가 자동커밋 제어</li>
@@ -562,12 +561,12 @@ auto_commit 속성이 true이거나 auto_commit 속성이 지정되지 않은 �
 
 ##### connectionretrycount
 
-| 기본값    | 0                                                            |
+| 기본값    |0                                                            |
 | --------- | ------------------------------------------------------------ |
 | 값의 범위 | Unsigned Integer 범위내의 숫자값 [1 - 231]                   |
 | 필수 여부 | No                                                           |
 | 설정 범위 |                                                              |
-| 설명      | Connection Failover 발생 시, 타 서버로 재접속을 시도하는 횟수를 지정한다. 이 값이 1일 경우 타서버로 재시도 횟수는 한 번이므로, 총 두 번의 접속 시도를 한다. <br />사용법은 3장의 "JDBC와 Failover" 절을 참고한다. |
+| 설명      | Connection Failover 발생 시, 타 서버로 재접속을 시도하는 횟수를 지정한다. <br />이 값이 1일 경우 타서버로 재시도 횟수는 한 번이므로, 총 두 번의 접속 시도를 한다. <br />사용법은 3장의 "JDBC와 Failover" 절을 참고한다. |
 
 ##### connectionretrydelay
 
