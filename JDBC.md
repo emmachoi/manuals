@@ -1,3 +1,5 @@
+
+
 Altibase® Application Development
 
 JDBC User’s Manual
@@ -30,6 +32,43 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 목 차
 -----
+
+- [서문](#%EC%84%9C%EB%AC%B8)
+  - [이 매뉴얼에 대하여](#%EC%9D%B4-%EB%A7%A4%EB%89%B4%EC%96%BC%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC)
+- [1.JDBC 시작하기](#1jdbc-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0)
+  - [JDBC 드라이버 설치](#jdbc-%EB%93%9C%EB%9D%BC%EC%9D%B4%EB%B2%84-%EC%84%A4%EC%B9%98)
+  - [데이터베이스에 연결하기](#%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%EC%97%90-%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0)
+  - [연결 정보](#%EC%97%B0%EA%B2%B0-%EC%A0%95%EB%B3%B4)
+  - [Statement와 ResultSet 다루기](#statement%EC%99%80-resultset-%EB%8B%A4%EB%A3%A8%EA%B8%B0)
+  - [JDBC Connection Failover](#jdbc-connection-failover)
+- [2.기본 기능](#2%EA%B8%B0%EB%B3%B8-%EA%B8%B0%EB%8A%A5)
+  - [IPv6 접속](#ipv6-%EC%A0%91%EC%86%8D)
+  - [Statement, PreparedStatement 및 CallableStatement](#statement-preparedstatement-%EB%B0%8F-callablestatement)
+  - [내셔널 캐릭터 셋 사용](#%EB%82%B4%EC%85%94%EB%84%90-%EC%BA%90%EB%A6%AD%ED%84%B0-%EC%85%8B-%EC%82%AC%EC%9A%A9)
+- [3.고급 기능](#3%EA%B3%A0%EA%B8%89-%EA%B8%B0%EB%8A%A5)
+  - [자동 생성 키](#%EC%9E%90%EB%8F%99-%EC%83%9D%EC%84%B1-%ED%82%A4)
+  - [타임아웃](#%ED%83%80%EC%9E%84%EC%95%84%EC%9B%83)
+  - [DataSource](#datasource)
+  - [Connection Pool](#connection-pool)
+  - [Multiple ResultSet](#multiple-resultset)
+  - [JDBC와 Failover](#jdbc%EC%99%80-failover)
+  - [JDBC Escapes](#jdbc-escapes)
+  - [ResultSet 사용하기](#resultset-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)
+  - [Atomic Batch](#atomic-batch)
+  - [Date, Time, Timestamp](#date-time-timestamp)
+  - [GEOMETRY](#geometry)
+  - [LOB](#lob)
+  - [Autocommit 제어](#autocommit-%EC%A0%9C%EC%96%B4)
+  - [BIT, VARBIT](#bit-varbit)
+  - [JDBC 로깅](#jdbc-%EB%A1%9C%EA%B9%85)
+- [4.Tips & Recommendation](#4tips--recommendation)
+  - [성능을 위한 팁](#%EC%84%B1%EB%8A%A5%EC%9D%84-%EC%9C%84%ED%95%9C-%ED%8C%81)
+- [5.에러 메시지](#5%EC%97%90%EB%9F%AC-%EB%A9%94%EC%8B%9C%EC%A7%80)
+  - [SQL States](#sql-states)
+- [A.부록: 데이터 타입 맵핑](#a%EB%B6%80%EB%A1%9D-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85-%EB%A7%B5%ED%95%91)
+  - [데이터 타입 맵핑](#%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85-%EB%A7%B5%ED%95%91)
+  - [Java 데이터형을 데이터베이스 데이터형으로 변환하기](#java-%EB%8D%B0%EC%9D%B4%ED%84%B0%ED%98%95%EC%9D%84-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EB%8D%B0%EC%9D%B4%ED%84%B0%ED%98%95%EC%9C%BC%EB%A1%9C-%EB%B3%80%ED%99%98%ED%95%98%EA%B8%B0)
+  - [데이터베이스 데이터형을 Java 데이터형으로 변환하기](#%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EB%8D%B0%EC%9D%B4%ED%84%B0%ED%98%95%EC%9D%84-java-%EB%8D%B0%EC%9D%B4%ED%84%B0%ED%98%95%EC%9C%BC%EB%A1%9C-%EB%B3%80%ED%99%98%ED%95%98%EA%B8%B0)
 
 
 
@@ -116,17 +155,17 @@ Altibase의 JDBC 드라이버는 JDBC 사양을 대부분 준수하나, 경우�
 이 매뉴얼에서는 다음 구성 요소로 구축된 다이어그램을 사용하여, 명령문의 구문을
 설명한다.
 
-| 구성 요소                                               | 의미                                                         |
-| ------------------------------------------------------- | ------------------------------------------------------------ |
-| ![image1](D:\emmachoigit\manuals\media\JDBC\image1.gif) | 명령문이 시작한다. 완전한 명령문이 아닌 구문 요소는 화살표로 시작한다. |
-| ![image2](D:\emmachoigit\manuals\media\JDBC\image2.gif) | 명령문이 다음 라인에 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 종료한다. |
-| ![image3](D:\emmachoigit\manuals\media\JDBC\image3.gif) | 명령문이 이전 라인으로부터 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 시작한다. |
-| ![image4](D:\emmachoigit\manuals\media\JDBC\image4.gif) | 명령문이 종료한다.                                           |
-| ![image5](D:\emmachoigit\manuals\media\JDBC\image5.gif) | 필수 항목                                                    |
-| ![image6](D:\emmachoigit\manuals\media\JDBC\image6.gif) | 선택적 항목                                                  |
-| ![image7](D:\emmachoigit\manuals\media\JDBC\image7.gif) | 선택사항이 있는 필수 항목. 한 항목만 제공해야 한다.          |
-| ![image8](D:\emmachoigit\manuals\media\JDBC\image8.gif) | 선택사항이 있는 선택적 항목                                  |
-| ![image9](D:\emmachoigit\manuals\media\JDBC\image9.gif) | 선택적 항목. 여러 항목이 허용된다. 각 반복 앞부분에 콤마가 와야 한다. |
+| 구성 요소                        | 의미                                                         |
+| -------------------------------- | ------------------------------------------------------------ |
+| ![image1](media/JDBC/image1.gif) | 명령문이 시작한다. 완전한 명령문이 아닌 구문 요소는 화살표로 시작한다. |
+| ![image2](media/JDBC/image2.gif) | 명령문이 다음 라인에 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 종료한다. |
+| ![image3](media/JDBC/image3.gif) | 명령문이 이전 라인으로부터 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 시작한다. |
+| ![image4](media/JDBC/image4.gif) | 명령문이 종료한다.                                           |
+| ![image5](media/JDBC/image5.gif) | 필수 항목                                                    |
+| ![image6](media/JDBC/image6.gif) | 선택적 항목                                                  |
+| ![image7](media/JDBC/image7.gif) | 선택사항이 있는 필수 항목. 한 항목만 제공해야 한다.          |
+| ![image8](media/JDBC/image8.gif) | 선택사항이 있는 선택적 항목                                  |
+| ![image9](media/JDBC/image9.gif) | 선택적 항목. 여러 항목이 허용된다. 각 반복 앞부분에 콤마가 와야 한다. |
 
 ##### 샘플 코드 규칙
 
@@ -1916,23 +1955,21 @@ SQL문에 대해서는 JDBC 드라이버가 자신의 데이터베이스에 맞�
 
 다음은 JDBC에서 ResultSet 객체를 생성하는 메소드들이다.
 
->   public Statement createStatement(int aResultSetType, int
->   aResultSetConcurrency) throws SQLException;
+```
+public Statement createStatement(int aResultSetType, int aResultSetConcurrency) throws SQLException;
+ 
+public Statement createStatement(int aResultSetType, int aResultSetConcurrency, int aResultSetHoldability) throws SQLException;
+ 
+public PreparedStatement prepareStatement(String aSql, int aResultSetType, int aResultSetConcurrency) throws SQLException;
+ 
+public PreparedStatement prepareStatement(String aSql, int aResultSetType, int aResultSetConcurrency, int aResultSetHoldability) throws SQLException;
+ 
+public CallableStatement prepareCall(String aSql, int aResultSetType, int aResultSetConcurrency) throws SQLException
+ 
+public CallableStatement prepareCall(String aSql, int aResultSetType, int aResultSetConcurrency, int aResultSetHoldability) throws SQLExc
+```
 
->   public Statement createStatement(int aResultSetType, int
->   aResultSetConcurrency, int aResultSetHoldability) throws SQLException;
 
->   public PreparedStatement prepareStatement(String aSql, int aResultSetType,
->   int aResultSetConcurrency) throws SQLException;
-
->   public PreparedStatement prepareStatement(String aSql, int aResultSetType,
->   int aResultSetConcurrency, int aResultSetHoldability) throws SQLException;
-
->   public CallableStatement prepareCall(String aSql, int aResultSetType, int
->   aResultSetConcurrency) throws SQLException
-
->   public CallableStatement prepareCall(String aSql, int aResultSetType, int
->   aResultSetConcurrency, int aResultSetHoldability) throws SQLException;
 
 #### ResultSet의 유형
 
@@ -1989,96 +2026,76 @@ ResultSet 객체를 통한 업데이트 허용 여부를 결정하는 옵션이�
     애플리케이션에서 가져갈 수 있다. 만약 커서가 닫힌 걸 애플리케이션에서 바로
     감지하고 싶다면, FetchSize를 1로 설정하면 된다.
 
--   Altibase JDBC 드라이버의 Holdability 기본값은 CLOSE_CURSORS_AT_COMMIT으로,
-    JDBC 스펙의 기본값인 HOLD_CURSORS_OVER_COMMIT와 다르다.  
-    Holdability가 HOLD_CURSORS_OVER_COMMIT인 세션에서는 setAutoCommit() 메소드로
-    자동커밋 모드를 변경하기 전에 열려 있는 ResultSet 객체를 반드시 닫아야 한다.
-    아래는 오류가 발생하는 예제 코드이다.
+- Altibase JDBC 드라이버의 Holdability 기본값은 CLOSE_CURSORS_AT_COMMIT으로,
+  JDBC 스펙의 기본값인 HOLD_CURSORS_OVER_COMMIT와 다르다.  
+  Holdability가 HOLD_CURSORS_OVER_COMMIT인 세션에서는 setAutoCommit() 메소드로
+  자동커밋 모드를 변경하기 전에 열려 있는 ResultSet 객체를 반드시 닫아야 한다.
+  아래는 오류가 발생하는 예제 코드이다.
 
-sCon = getConnection();
+  ```
+  sCon = getConnection();
+  sStmt = sCon.createStatement();
+  byte[] br;
+  byte[] bb = new byte[48];
+  for(byte i = 0; i < bb.length;i++) bb[i] = i;
+  
+  sCon.setAutoCommit(false);
+  
+  sStmt.executeUpdate("insert into Varbinary_Tab values(null)");
+  sCon.commit();
+  
+  sPreStmt = sCon.prepareStatement("update Varbinary_Tab set VARBINARY_VAL=?");
+  sPreStmt.setObject(1, bb, java.sql.Types.VARBINARY);
+  sPreStmt.executeUpdate();
+  
+  sRS = sStmt.executeQuery("Select VARBINARY_VAL from Varbinary_Tab");
+  sRS.next();
+  br = sRS.getBytes(1);
+  
+  sCon.commit();
+  sCon.setAutoCommit(true); -> (1)
+  
+  ```
 
-sStmt = sCon.createStatement();
 
-byte[] br;
+(1)에서 다음과 같은 exception이 발생한다.
 
-byte[] bb = new byte[48];
-
-for(byte i = 0; i \< bb.length;i++) bb[i] = i;
-
-sCon.setAutoCommit(false);
-
-sStmt.executeUpdate("insert into Varbinary_Tab values(null)");
-
-sCon.commit();
-
-sPreStmt = sCon.prepareStatement("update Varbinary_Tab set VARBINARY_VAL=?");
-
-sPreStmt.setObject(1, bb, java.sql.Types.VARBINARY);
-
-sPreStmt.executeUpdate();
-
-sRS = sStmt.executeQuery("Select VARBINARY_VAL from Varbinary_Tab");
-
-sRS.next();
-
-br = sRS.getBytes(1);
-
-sCon.commit();
-
-sCon.setAutoCommit(true); -\>
-
-에서 다음과 같은 exception이 발생한다.
-
+```
 java.sql.SQLException: Several statements still open
+    at Altibase.jdbc.driver.ex.Error.processServerError(Error.java:320)
+    at Altibase.jdbc.driver.AltibaseConnection.setAutoCommit(AltibaseConnection.java:988)
+    at HodabilityTest.testHoldability(HodabilityTest.java:46)
+    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+    at java.lang.reflect.Method.invoke(Method.java:616)
 
-at Altibase.jdbc.driver.ex.Error.processServerError(Error.java:320)
+```
 
-at
-Altibase.jdbc.driver.AltibaseConnection.setAutoCommit(AltibaseConnection.java:988)
+exception이 발생하지 않게 하려면 의 sCon.setAutoCommit(true)에 앞서 sRs.close()를 호출해야 한다.
 
-at HodabilityTest.testHoldability(HodabilityTest.java:46)
-
-at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-
-at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-
-at
-sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-
-at java.lang.reflect.Method.invoke(Method.java:616)
-
-exception이 발생하지 않게 하려면 의 sCon.setAutoCommit(true)에 앞서
-sRs.close()를 호출해야 한다.
-
--   ? Holdability 유형이 HOLD_CURSORS_OVER_COMMIT인 ResultSet 객체를 사용하기
+-   ?  :  Holdability 유형이 HOLD_CURSORS_OVER_COMMIT인 ResultSet 객체를 사용하기
     위해서는 클라이언트 세션이 Non-Autocommit 모드이거나 clientside_auto_commit
-    연결 속성이 on으로 설정되어야 한다. clientside_auto_commit 연결 속성을
-    on으로 설정하면, Holdability 유형이 자동으로 HOLD_CURSORS_OVER_COMMIT으로
-    변경된다.
+    연결 속성이 on으로 설정되어야 한다. 
+    clientside_auto_commit 연결 속성을 on으로 설정하면, Holdability 유형이 자동으로 HOLD_CURSORS_OVER_COMMIT으로 변경된다.
 
 ##### 예제
 
-Statement sUpdStmt = sConn.prepareStatement("UPDATE t1 SET val = ? WHERE id =
-?");
-
-Statement sSelStmt = sConn.createStatement(ResultSet.TYPE_FORWARD_ONLY,
-ResultSet.CONCUR_READ_ONLY, ResultSet.HOLD_CURSORS_OVER_COMMIT);
-
-ResultSet sRS = sSelStmt.executeQuery("SELECT \* FROM t1");
-
+```
+Statement sUpdStmt = sConn.prepareStatement("UPDATE t1 SET val = ? WHERE id = ?");
+Statement sSelStmt = sConn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY, ResultSet.HOLD_CURSORS_OVER_COMMIT);
+ResultSet sRS = sSelStmt.executeQuery("SELECT * FROM t1");
 while (sRS.next())
-
 {
-
-// TODO : set parameters
-
-sUpdStmt.execute();
-
-sConn.commit();
-
+    // TODO : set parameters
+ 
+    sUpdStmt.execute();
+    sConn.commit();
 }
-
 sRS.close();
+```
+
+
 
 #### 제약 사항
 
@@ -2097,7 +2114,7 @@ Scrollable-Sensitive 결과셋을 사용하기 위해서는,
 
 -   FROM 절에 한 개의 테이블만 지정할 수 있다.
 
-PSM을 수행하는 경우에는 기본 유형의 ResultSet 객체만 사용할 수 있다. 만약
+PSM을 수행하는 경우에는 기본 유형의 ResultSet 객체만 사용할 수 있다. 만약 
 사용자가 기본 유형이 아닌 옵션을 지정하면, 그 옵션은 무시된다.
 
 CONCUR_UPDATABLE하고 TYPE_SCROLL_SENSITIVE한 ResultSet 객체는 JDBC 드라이버
@@ -2133,39 +2150,42 @@ TYPE_SCROLL_SENSITIVE 유형의 ResultSet 객체는 fetch할 때 서버로부터
 
 아래는 JDBC에서 Hole을 검출하는 코드 예제이다.
 
+```
 while (sRS.next())
-
 {
-
-if (sRS.rowDeleted())
-
-{
-
-// HOLE DETECTED!!!
-
+    if (sRS.rowDeleted())
+    {
+        // HOLE DETECTED!!!
+    }
+    else
+    {
+        // do something ...
+    }
 }
-
-else
-
-{
-
-// do something ...
-
-}
-
-}
+```
 
 Hole에서는 유효한 데이터를 얻을 수 없으며, Hole에 해당하는 ResultSet의 반환값은
-다음 중 하나이다: SQL 데이터형의 NULL, 참조형으로는 null, 값으로는 0.
+다음 중 하나이다: 
 
-#### Fetch Size
+- SQL 데이터형의 NULL
+
+- 참조형으로는 null
+
+- 값으로는 0
+
+
+
+  #### Fetch Size
+
 
 Altibase JDBC 드라이버는 성능 향상을 위해, ResultSet 객체를 위한 데이터를
 서버로부터 가져올 때 한 행씩 가져오는 대신에 여러 행을 한번에 가져와서
 클라이언트에 캐시한다. 이것을 prefetch라고 하며, Statement객체의 setFetchSize()
 메소드를 이용해서 한번에 가져오는 행의 개수를 설정할 수 있다.
 
->   public void setFetchSize(int aRows) throws SQLException;
+```
+public void setFetchSize(int aRows) throws SQLException;
+```
 
 Altibase JDBC 드라이버에서는 0에서 2147483647까지의 값으로 설정할 수 있다. JDBC
 스펙에는 이 범위를 벗어난 값을 지정할 때 Exception을 발생하도록 되어 있지만,
@@ -2214,14 +2234,18 @@ Atomic Batch 기능을 사용하기 위해서 우선 자바 프로그래밍에�
 
 다음은 Atomic Batch 기능을 사용하기 위해 호출하는 setAtomicBatch() 메소드이다.
 
+```
 public void setAtomicBatch(boolean aValue) throws SQLException
+```
 
 Atomic Batch가 PreparedStatement 객체에 설정되었는지 여부를 확인하려면
 getAtomicBatch() 메소드를 호출한다.
 
+```
 public boolean getAtomicBatch()
+```
 
-1
+
 
 #### 제약 사항
 
@@ -2235,62 +2259,44 @@ Altibase에서 Atomic Batch 기능을 사용할 때 아래의 제약 사항이 �
 
 -   SYSDATE는 1번만 동작한다.
 
-1
+
 
 #### 예제
 
+```
 ......
-
 Connection con = sConn = DriverManager.getConnection(aConnectionStr, mProps);
-
 Statement stmt = con.createStatement();
-
+ 
 try
-
+{ 
+    stmt.execute("Drop table " + TABLE_NAME); } catch (SQLException e) { }
+    stmt.execute("create table " + TABLE_NAME + "(c1 VARCHAR (1000))");
+ 
+    PreparedStatement sPrepareStmt = con.prepareStatement("insert into " + TABLE_NAME + " values(?)");
+    ((AltibasePreparedStatement)sPrepareStmt).setAtomicBatch(true);
+ 
+    for(int i = 1; i <= MAX_RECORD_CNT; i++)
+    {
+        sPrepareStmt.setString(1, String.valueOf(i % 50));
+        sPrepareStmt.addBatch();
+ 
+        if(i%BATCH_SIZE == 0)
+        {
+            sPrepareStmt.executeBatch();       
+            con.commit();
+        }
+    }
+    con.commit();
+} 
+catch (SQLException e) 
 {
-
-stmt.execute("Drop table " + TABLE_NAME); } catch (SQLException e) { }
-
-stmt.execute("create table " + TABLE_NAME + "(c1 VARCHAR (1000))");
-
-PreparedStatement sPrepareStmt = con.prepareStatement("insert into " +
-TABLE_NAME + " values(?)");
-
-((AltibasePreparedStatement)sPrepareStmt).setAtomicBatch(true);
-
-for(int i = 1; i \<= MAX_RECORD_CNT; i++)
-
-{
-
-sPrepareStmt.setString(1, String.valueOf(i % 50));
-
-sPrepareStmt.addBatch();
-
-if(i%BATCH_SIZE == 0)
-
-{
-
-sPrepareStmt.executeBatch();
-
-con.commit();
-
+    System.out.println(e.getMessage());
 }
-
-}
-
-con.commit();
-
-}
-
-catch (SQLException e)
-
-{
-
-System.out.println(e.getMessage());
-
-}
-
 ......
+```
+
+
 
 ### Date, Time, Timestamp
 
@@ -2310,18 +2316,15 @@ JDBC 드라이버에서 지원하는 데이터 변환 범위를 설명한다.
 아래의 표는 setObject 메소드에 전달되는 객체의 타입에 따라 Altibase JDBC
 드라이버가 처리하는 형식을 보여준다.
 
-| 전달객체             | String                                                                                                        | Date                                                       | Time                                      | Timestamp                  |
-|----------------------|---------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|-------------------------------------------|----------------------------|
-| setObject            | 2134-12-23 00:00:00.0 사용자가 시분초 부분을 입력하면 오류 발생. 드라이버가 0으로 설정함.                     | 2134-12-23 00:00:00.0 시분초는 입력해도 드라이버가 무시함. | SQLException: UNSUPPORTED_TYPE_CONVERSION | 2134-12-23 12:34:56.123456 |
-| (DATE)               |                                                                                                               |                                                            |                                           |                            |
-| setObject            | 1970-01-01 12:34:56.0 사용자가 년월일 또는 nano초 부분을 입력하면 오류 발생. 드라이버가 기준 년월일로 설정함. | 2134-12-23 12:34:56.0                                      | 2134-12-23 12:34:56.0                     | 2134-12-23 12:34:56.0      |
-| (TIME)               |                                                                                                               |                                                            |                                           |                            |
-| setObject            | 2134-12-23 12:34:56.123456                                                                                    | 2134-12-23 00:00:00.0 시분초는 입력해도 드라이버가 무시함. | SQLException: UNSUPPORTED_TYPE_CONVERSION | 2134-12-23 12:34:56.123456 |
-| (TIMESTAMP)          |                                                                                                               |                                                            |                                           |                            |
-| setString()          | DATE_FORMAT 속성에 설정한 형식으로 입력해야 함.                                                               | \-                                                         | \-                                        | \-                         |
-| setDate()            | \-                                                                                                            | 2134-12-23 00:00:00.0 시분초는 입력해도 드라이버가 무시함. | \-                                        | \-                         |
-| setTime()            | \-                                                                                                            | \-                                                         | 2134-12-23 12:34:56.0                     | \-                         |
-| setTimestamp()       | \-                                                                                                            | \-                                                         | \-                                        | 2134-12-23 12:34:56.123456 |
+| 전달객체                   | String                                                       | Date                                                         | Time                                      | Timestamp                  |
+| -------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ----------------------------------------- | -------------------------- |
+| setObject<br />(DATE)      | 2134-12-23 00:00:00.0 <br />사용자가 시분초 부분을 입력하면 오류 발생. 드라이버가 0으로 설정함. | 2134-12-23 00:00:00.0 <br />시분초는 입력해도 드라이버가 무시함. | SQLException: UNSUPPORTED_TYPE_CONVERSION | 2134-12-23 12:34:56.123456 |
+| setObject<br />(TIME)      | 1970-01-01 12:34:56.0 <br />사용자가 년월일 또는 nano초 부분을 입력하면 오류 발생. 드라이버가 기준 년월일로 설정함. | 2134-12-23 12:34:56.0                                        | 2134-12-23 12:34:56.0                     | 2134-12-23 12:34:56.0      |
+| setObject<br />(TIMESTAMP) | 2134-12-23 12:34:56.123456                                   | 2134-12-23 00:00:00.0 <br />시분초는 입력해도 드라이버가 무시함. | SQLException: UNSUPPORTED_TYPE_CONVERSION | 2134-12-23 12:34:56.123456 |
+| setString()                | DATE_FORMAT 속성에 설정한 형식으로 입력해야 함.              | \-                                                           | \-                                        | \-                         |
+| setDate()                  | \-                                                           | 2134-12-23 00:00:00.0 <br />시분초는 입력해도 드라이버가 무시함. | \-                                        | \-                         |
+| setTime()                  | \-                                                           | \-                                                           | 2134-12-23 12:34:56.0                     | \-                         |
+| setTimestamp()             | \-                                                           | \-                                                           | \-                                        | 2134-12-23 12:34:56.123456 |
 
 아래는 데이터베이스에 저장되어 있는 DATE 타입의 값(1234-01-23 12:23:34.567123)을
 getDate(), getTime(), 및 getTimestamp() 메소드를 사용해서 가져오는 값을
@@ -2355,20 +2358,19 @@ PreparedStatement의 IN 파라미터를 사용해서 데이터베이스의 GEOME
 다음은 JDBC 애플리케이션에서 GEOMETRY 타입의 칼럼에 데이터를 삽입하는 코드
 예제이다.
 
+```
 int sSize = ... ;
-
 byte[] sGeometryData = new byte[sSize];
-
+ 
 Connection sConn = ... ;
-
-PreparedStatement sPstmt = sConn.prepareStatement("INSERT INTO TEST_TABLE VALUES
-(?)");
-
+PreparedStatement sPstmt = sConn.prepareStatement("INSERT INTO TEST_TABLE VALUES (?)");
 sPstmt.setObject(1, sGeometryData, AltibaseTypes.GEOMETRY);
-
 sPstmt.executeQuery();
-
+ 
 ...
+```
+
+
 
 ### LOB
 
@@ -2397,382 +2399,316 @@ LOB 데이터를 정상적으로 다루기 위해서는 세션의 autocommit 모
 
 다음은 예제에서 사용되는 테이블을 생성하는 구문이다.
 
+```
 CREATE TABLE TEST_TABLE ( C1 BLOB );
+```
+
+
 
 ###### setBinaryStream 메소드와 InputStream객체 사용
 
+```
 InputStream sInputStream = ...
-
 long sLength = ...
-
+... 
+PreparedStatement sPstmt = connection().prepareStatement("INSERT INTO TEST_TABLE VALUES (?)");
 ...
-
-PreparedStatement sPstmt = connection().prepareStatement("INSERT INTO TEST_TABLE
-VALUES (?)");
-
-...
-
 sPstmt.setBinaryStream(1, sInputStream, sLength);
-
 ...
-
 sPstmt.execute();
-
 ...
+```
+
+
 
 ###### setBinaryStream 메소드와 OutputStream객체 사용
 
+```
 byte[] sBuf = ...
-
-...
-
-PreparedStatement sPstmt = connection().prepareStatement("SELECT \* FROM
-TEST_TABLE FOR UPDATE");
-
+... 
+PreparedStatement sPstmt = connection().prepareStatement("SELECT * FROM TEST_TABLE FOR UPDATE");
+ 
 ResultSet sRs = sPstmt.executeQuery();
-
+ 
 while(sRs.next())
-
 {
-
-Blob sBlob = sPstmt.getBlob(1);
-
-OutputStream sOutputStream = sBlob.setBinaryStream(1);
-
-sOutputStream.write(sBuf);
-
-sOutputStream.close();
-
-...
-
+    Blob sBlob = sPstmt.getBlob(1);
+    OutputStream sOutputStream = sBlob.setBinaryStream(1);
+    sOutputStream.write(sBuf);
+    sOutputStream.close();
+    ...
 }
-
 ...
-
 sPstmt.execute();
-
 ...
+```
+
+
 
 ###### setBlob 메소드와 Blob 객체 사용
 
+```
 java.sql.Blob sBlob = ...
-
 ...
-
 PreparedStatement sPstmt = connection().prepareStatement("INSERT INTO TEST_TABLE
 VALUES (?)");
-
 ...
-
 sPstmt.setBlob(1, sBlob);
-
 ...
-
 sPstmt.execute();
-
 ...
+```
+
+
 
 ###### setObject 메소드와 Blob 객체 사용
 
+```
 java.sql.Blob sBlob = ...
-
 ...
-
 PreparedStatement sPstmt = connection().prepareStatement("INSERT INTO TEST_TABLE
 VALUES (?)");
-
 ...
-
 sPstmt.setObject(1, sBlob);
-
 ...
-
 sPstmt.execute();
-
 ...
+```
+
+
 
 ###### setObject 메소드에 SQL 타입 지정
 
+```
 java.sql.Blob sBlob = ...
-
 ...
-
 PreparedStatement sPstmt = connection().prepareStatement("INSERT INTO TEST_TABLE
 VALUES (?)");
-
 ...
-
 sPstmt.setObject(1, sBlob);
-
 ...
-
 sPstmt.execute();
-
 ...
+```
+
+
 
 ##### ResultSet 객체를 통해서 BLOB 데이터 쓰기
 
 다음은 예제에서 사용되는 테이블을 생성하는 구문이다.
 
+```
 CREATE TABLE BLOB_TABLE ( BLOB_COLUMN BLOB );
+```
+
+
 
 ###### updateBinaryStream 메소드와 InputStream 객체 사용
 
+```
 InputStream sInputStream = ...
-
 long sLength = ...
-
 ...
-
-PreparedStatement sPstmt = connection().prepareStatement("SELECT BLOB_COLUMN
-FROM BLOB_TABLE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-
+PreparedStatement sPstmt = connection().prepareStatement("SELECT BLOB_COLUMN FROM BLOB_TABLE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+ 
 ResultSet sRs = sPstmt.executeQuery();
-
+ 
 while(sRs.next())
-
 {
-
-...
-
-sRs.updateBinaryStream(1, sInputStream, sLength);
-
-sRs.updateRow();
-
-...
-
+    ...
+    sRs.updateBinaryStream(1, sInputStream, sLength);
+    sRs.updateRow();
+    ...
 }
-
 ...
+```
+
+
 
 ###### updateBlob 메소드와 Blob 객체 사용
 
+```
 java.sql.Blob sBlob = ...
-
+ 
 ...
-
-PreparedStatement sPstmt = connection().prepareStatement("SELECT BLOB_COLUMN
-FROM BLOB_TABLE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-
+  
+PreparedStatement sPstmt = connection().prepareStatement("SELECT BLOB_COLUMN FROM BLOB_TABLE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+  
 ResultSet sRs = sPstmt.executeQuery();
-
+ 
 while(sRs.next())
-
 {
-
-...
-
-sRs.updateBlob(1, sBlob), ;
-
-sRs.updateRow();
-
-...
-
+    ...
+    sRs.updateBlob(1, sBlob), ;
+    sRs.updateRow();
+    ...
 }
-
+ 
 ...
+```
+
+
 
 ###### updateObject 메소드와 Blob 객체 사용
 
+```
 java.sql.Blob sBlob = ...
-
-...
-
-PreparedStatement sPstmt = connection().prepareStatement("SELECT BLOB_COLUMN
-FROM BLOB_TABLE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-
+...  
+PreparedStatement sPstmt = connection().prepareStatement("SELECT BLOB_COLUMN FROM BLOB_TABLE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+  
 ResultSet sRs = sPstmt.executeQuery();
-
+ 
 while(sRs.next())
-
 {
-
-...
-
-sRs.updateObject(1, sBlob);
-
-sRs.updateRow();
-
-...
-
+    ...
+    sRs.updateObject(1, sBlob);
+    sRs.updateRow();
+    ...
 }
-
 ...
+```
+
+
 
 ###### updateObject 메소드에 SQL 타입 지정
 
+```
 java.sql.Blob sBlob = ...
-
+ 
 ...
-
-PreparedStatement sPstmt = connection().prepareStatement("SELECT BLOB_COLUMN
-FROM BLOB_TABLE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-
+  
+PreparedStatement sPstmt = connection().prepareStatement("SELECT BLOB_COLUMN FROM BLOB_TABLE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+  
 ResultSet sRs = sPstmt.executeQuery();
-
+ 
 while(sRs.next())
-
 {
-
-...
-
-sRs.updateObject(1, sBlob, AltibaseTypes.BLOB);
-
-sRs.updateRow();
-
-...
-
+    ...
+    sRs.updateObject(1, sBlob, AltibaseTypes.BLOB);
+    sRs.updateRow();
+    ...
 }
-
 ...
+```
+
+
 
 ##### SELECT … FOR UPDATE 구문으로 BLOB 데이터 갱신
 
+```
 byte[] sBytes = new byte[sLength];
-
 ...
-
-PreparedStatement sPstmt = connection().prepareStatement("SELECT BLOB_COLUMN
-FROM BLOB_TABLE FOR UPDATE");
-
+  
+PreparedStatement sPstmt = connection().prepareStatement("SELECT BLOB_COLUMN FROM BLOB_TABLE FOR UPDATE");
+  
 ResultSet sRs = sPstmt.executeQuery();
-
+ 
 while(sRs.next())
-
 {
-
-...
-
-Blob sBlob = sRs.getBlob(1);
-
-sBlob.setBytes(0, sBytes);
-
-...
-
+    ...
+    Blob sBlob = sRs.getBlob(1);
+    sBlob.setBytes(0, sBytes);
+    ...
 }
-
 ...
+```
+
+
 
 ##### BLOB 데이터 읽기
 
 ###### getBinaryStream 메소드와 InputStream 객체 사용
 
+```
 ...
-
 PreparedStatement sPstmt = connection().prepareStatement("SELECT BLOB_COLUMN
 FROM BLOB_TABLE");
-
 ResultSet sRs = sPstmt.executeQuery();
-
 while(sRs.next())
-
 {
-
-...
-
-InputStream sInputStream = sRs.getBinaryStream(1);
-
-...
-
+  ...
+  InputStream sInputStream = sRs.getBinaryStream(1);
+  ...
 }
-
 ...
+```
+
+
 
 ###### getBlob 메소드와 InputStream 객체 사용
 
+```
 ...
-
 PreparedStatement sPstmt = connection().prepareStatement("SELECT BLOB_COLUMN
 FROM BLOB_TABLE");
-
 ResultSet sRs = sPstmt.executeQuery();
-
 while(sRs.next())
-
 {
-
-...
-
-Blob sBlob = sRs.getBlob(1);
-
-InputStream sInputStream = sBlob.getBinaryStream();
-
-...
-
+  ...
+  Blob sBlob = sRs.getBlob(1);
+  InputStream sInputStream = sBlob.getBinaryStream();
+  ...
 }
-
 ...
+```
+
+
 
 ###### getBlob 메소드와 byte 배열 사용
 
+```
 ...
-
 final int sReadLength = 100;
-
-PreparedStatement sPstmt = connection().prepareStatement("SELECT BLOB_COLUMN
-FROM BLOB_TABLE");
-
+  
+PreparedStatement sPstmt = connection().prepareStatement("SELECT BLOB_COLUMN FROM BLOB_TABLE");
+  
 ResultSet sRs = sPstmt.executeQuery();
-
+ 
 while(sRs.next())
-
 {
-
-...
-
-Blob sBlob = sRs.getBlob(1);
-
-long sRemains = sBlob.length();
-
-long sOffset = 0;
-
-while(sRemains \> 0)
-
-{
-
-byte[] sReadBytes = sBlob.getBytes(sOffset, sReadLength);
-
-sRemains -= sReadBytes.length;
-
-sOffset += sReadBytes.length;
-
-...
-
+    ...
+    Blob sBlob = sRs.getBlob(1);
+    long sRemains = sBlob.length();
+    long sOffset = 0;
+    while(sRemains > 0)
+    {
+        byte[] sReadBytes = sBlob.getBytes(sOffset, sReadLength);
+        sRemains -= sReadBytes.length;
+        sOffset += sReadBytes.length;
+        ...
+    }
+    ...
 }
-
+ 
 ...
+```
 
-}
 
-...
 
 ##### BLOB 데이터 변경하기
 
 ###### Truncation
 
+```
 Statement sStmt = ...
-
-ResultSet sRs = sStmt.executeQuery("SELECT \* FROM t1 FOR UPDATE");
-
+ 
+ResultSet sRs = sStmt.executeQuery("SELECT * FROM t1 FOR UPDATE");
+ 
 while(sRs.next())
-
 {
-
-...
-
-int sLength = ... ;
-
-Blob sBlob = sRs.getBlob(2);
-
-// After executing this method
-
-// sBlob.length() == sLength
-
-sBlob.truncate(sLength);
-
+    ...
+    int sLength = ... ;
+    Blob sBlob = sRs.getBlob(2);
+ 
+    // After executing this method
+    // sBlob.length() == sLength
+    sBlob.truncate(sLength);
 }
-
+ 
 ...
+```
+
+
 
 #### CLOB 사용하기
 
@@ -2782,382 +2718,332 @@ sBlob.truncate(sLength);
 
 다음은 예제에서 사용되는 테이블을 생성하는 구문이다.
 
+```
 CREATE TABLE TEST_TABLE ( C1 BLOB );
+```
+
+
 
 ###### setCharacterStream 메소드와 Reader 객체 사용
 
+```
 Reader sReader = ...
-
 long sLength = ...
-
 ...
-
 PreparedStatement sPstmt = connection().prepareStatement("INSERT INTO TEST_TABLE
 VALUES (?)");
-
 ...
-
 sPstmt.setCharacterStream(1, sReader, sLength);
-
 ...
-
 sPstmt.execute();
-
 ...
+```
+
+
 
 ###### setCharacterStream 메소드와 Writer 객체 사용
 
+```
 char[] sBuf = ...
-
+  
 ...
-
-PreparedStatement sPstmt = connection().prepareStatement("SELECT \* FROM
-TEST_TABLE FOR UPDATE");
-
+  
+PreparedStatement sPstmt = connection().prepareStatement("SELECT * FROM TEST_TABLE FOR UPDATE");
+  
 ResultSet sRs = sPstmt.executeQuery();
-
+  
 while(sRs.next())
-
 {
-
-Clob sClob = sPstmt.getClob(1);
-
-Writer sWriter = sClob.setCharacterStream(1);
-
-sWriter.write(sBuf);
-
-sWriter.close();
-
-...
-
+    Clob sClob = sPstmt.getClob(1);
+    Writer sWriter = sClob.setCharacterStream(1);
+    sWriter.write(sBuf);
+    sWriter.close();
+    ...
 }
-
+  
 ...
-
+  
 sPstmt.execute();
-
+  
 ...
+```
+
+
 
 ###### setClob 메소드와 Clob 객체 사용
 
+```
 java.sql.Clob sClob = ...
-
 ...
-
 PreparedStatement sPstmt = connection().prepareStatement("INSERT INTO TEST_TABLE
 VALUES (?)");
-
 ...
-
 sPstmt.setClob(1, sClob);
-
 ...
-
 sPstmt.execute();
-
 ...
+```
+
+
 
 ###### setObject 메소드와 Clob 객체 사용
 
+```
 java.sql.Clob sClob = ...
-
 ...
-
 PreparedStatement sPstmt = connection().prepareStatement("INSERT INTO TEST_TABLE
 VALUES (?)");
-
 ...
-
 sPstmt.setObject(1, sClob);
-
 ...
-
 sPstmt.execute();
-
 ...
+```
+
+
 
 ###### setObject 메소드에 SQL 타입 지정
 
+```
 java.sql.Clob sClob = ...
-
 ...
-
 PreparedStatement sPstmt = connection().prepareStatement("INSERT INTO TEST_TABLE
 VALUES (?)");
-
 ...
-
 sPstmt.setObject(1, sClob, AltibaseTypes.Clob);
-
 ...
-
 sPstmt.execute();
-
 ...
+```
+
+
 
 ##### ResultSet 객체를 사용해서 CLOB 데이터 쓰기
 
 다음은 예제에서 사용되는 테이블을 생성하는 구문이다.
 
+```
 CREATE TABLE CLOB_TABLE ( CLOB_COLUMN CLOB );
+```
+
+
 
 ###### updateCharacterStream 메소드와 Reader 객체 사용
 
+```
 Reader sReader = ...
-
 long sLength = ... // The length of source from which Reader is linked
-
+ 
 ...
-
-PreparedStatement sPstmt = connection().prepareStatement("SELECT CLOB_COLUMN
-FROM CLOB_TABLE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-
+ 
+PreparedStatement sPstmt = connection().prepareStatement("SELECT CLOB_COLUMN FROM CLOB_TABLE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+ 
 ResultSet sRs = sPstmt.executeQuery();
-
+ 
 while(sRs.next())
-
 {
-
-...
-
-sRs.updateCharacterStream(1, sReader, sLength);
-
-sRs.updateRow();
-
-...
-
+    ...
+    sRs.updateCharacterStream(1, sReader, sLength);
+    sRs.updateRow();
+    ...
 }
-
+ 
 ...
+```
+
+
 
 ###### updateClob 메소드와 Clob 객체 사용
 
+```
 java.sql.Clob sClob = ...
-
+ 
 ...
-
-PreparedStatement sPstmt = connection().prepareStatement("SELECT CLOB_COLUMN
-FROM CLOB_TABLE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-
+  
+PreparedStatement sPstmt = connection().prepareStatement("SELECT CLOB_COLUMN FROM CLOB_TABLE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+  
 ResultSet sRs = sPstmt.executeQuery();
-
+ 
 while(sRs.next())
-
 {
-
-...
-
-sRs.updateClob(1, sClob);
-
-sRs.updateRow();
-
-...
-
+    ...
+    sRs.updateClob(1, sClob);
+    sRs.updateRow();
+    ...
 }
-
+ 
 ...
+```
+
+
 
 ###### updateObject 메소드와 Clob 객체 사용
 
+```
 java.sql.Clob sClob = ...
-
+ 
 ...
-
-PreparedStatement sPstmt = connection().prepareStatement("SELECT CLOB_COLUMN
-FROM CLOB_TABLE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-
+  
+PreparedStatement sPstmt = connection().prepareStatement("SELECT CLOB_COLUMN FROM CLOB_TABLE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+  
 ResultSet sRs = sPstmt.executeQuery();
-
+ 
 while(sRs.next())
-
 {
-
-...
-
-sRs.updateObject(1, sClob);
-
-sRs.updateRow();
-
-...
-
+    ...
+    sRs.updateObject(1, sClob);
+    sRs.updateRow();
+    ...
 }
-
+ 
 ...
+```
+
+
 
 ###### updateObject 메소드에 SQL 타입 지정
 
+```
 java.sql.Clob sClob = ...
-
+ 
 ...
-
-PreparedStatement sPstmt = connection().prepareStatement("SELECT CLOB_COLUMN
-FROM CLOB_TABLE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-
+  
+PreparedStatement sPstmt = connection().prepareStatement("SELECT CLOB_COLUMN FROM CLOB_TABLE", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+  
 ResultSet sRs = sPstmt.executeQuery();
-
+ 
 while(sRs.next())
-
 {
-
-...
-
-sRs.updateObject(1, sClob, AltibaseTypes.CLOB);
-
-sRs.updateRow();
-
-...
-
+    ...
+    sRs.updateObject(1, sClob, AltibaseTypes.CLOB);
+    sRs.updateRow();
+    ...
 }
-
+ 
 ...
+```
+
+
 
 ##### SELECT … FOR UPDATE 구문으로 CLOB 데이터 삽입
 
+```
 ...
-
-String sStr = ... ;
-
-PreparedStatement sPstmt = connection().prepareStatement("SELECT CLOB_COLUMN
-FROM CLOB_TABLE FOR UPDATE");
-
+ 
+String sStr = ... ; 
+PreparedStatement sPstmt = connection().prepareStatement("SELECT CLOB_COLUMN FROM CLOB_TABLE FOR UPDATE");
+  
 ResultSet sRs = sPstmt.executeQuery();
-
+ 
 while(sRs.next())
-
 {
-
-...
-
-Clob sClob = sRs.getClob(1);
-
-sClob.setString(0, sStr);
-
-...
-
+    ...
+    Clob sClob = sRs.getClob(1);
+    sClob.setString(0, sStr);
+    ...
 }
-
+ 
 ...
+```
+
+
 
 ##### CLOB 데이터 읽기
 
 ###### getCharacterStream 메소드와 Reader 객체 사용
 
+```
 ...
-
-PreparedStatement sPstmt = connection().prepareStatement("SELECT CLOB_COLUMN
-FROM CLOB_TABLE");
-
+PreparedStatement sPstmt = connection().prepareStatement("SELECT CLOB_COLUMN FROM CLOB_TABLE");
+  
 ResultSet sRs = sPstmt.executeQuery();
-
+ 
 while(sRs.next())
-
 {
-
-...
-
-Reader sReader = sRs.getCharacterStream(1);
-
-...
-
+    ...
+    Reader sReader = sRs.getCharacterStream(1);
+    ...
 }
-
 ...
+```
+
+
 
 ###### getClob 메소드와 Reader 객체 사용
 
-...
-
-PreparedStatement sPstmt = connection().prepareStatement("SELECT CLOB_COLUMN
-FROM CLOB_TABLE");
-
+```
+...  
+PreparedStatement sPstmt = connection().prepareStatement("SELECT CLOB_COLUMN FROM CLOB_TABLE");
+  
 ResultSet sRs = sPstmt.executeQuery();
-
+ 
 while(sRs.next())
-
 {
-
-...
-
-Clob sClob = sRs.getClob(1);
-
-Reader sReader = sClob.getCharacterStream();
-
-...
-
+    ...
+    Clob sClob = sRs.getClob(1);
+    Reader sReader = sClob.getCharacterStream();
+    ...
 }
-
 ...
+```
+
+
 
 ###### getClob 메소드와 String 객체 사용
 
+```
 ...
-
 final int sReadLength = 100;
-
-PreparedStatement sPstmt = connection().prepareStatement("SELECT CLOB_COLUMN
-FROM CLOB_TABLE");
-
+  
+PreparedStatement sPstmt = connection().prepareStatement("SELECT CLOB_COLUMN FROM CLOB_TABLE");
+  
 ResultSet sRs = sPstmt.executeQuery();
-
+ 
 while(sRs.next())
-
 {
-
-...
-
-Clob sClob = sRs.getClob(1);
-
-long sRemains = sClob.length();
-
-long sOffset = 0;
-
-while(sRemains \> 0)
-
-{
-
-String sStr = sClob.getSubString(sOffset, sReadLength);
-
-sRemains -= sStr.length;
-
-sOffset += sStr.length;
-
-...
-
+    ...
+    Clob sClob = sRs.getClob(1);
+    long sRemains = sClob.length();
+    long sOffset = 0;
+    while(sRemains > 0)
+    {
+        String sStr = sClob.getSubString(sOffset, sReadLength);
+        sRemains -= sStr.length;
+        sOffset += sStr.length;
+        ...
+    }
+    ...
 }
-
+ 
 ...
+```
 
-}
 
-...
 
 ##### CLOB 데이터 변경하기
 
 ###### **Truncation**
 
+```
 Statement sStmt = ...
-
-ResultSet sRs = sStmt.executeQuery("SELECT \* FROM t1 FOR UPDATE");
-
+ 
+ResultSet sRs = sStmt.executeQuery("SELECT * FROM t1 FOR UPDATE");
+ 
 while(sRs.next())
-
 {
-
-...
-
-int sLength = ... ;
-
-Clob sClob = sRs.getClob(2);
-
-// After executing this method
-
-// sClob.length() == sLength
-
-sClob.truncate(sLength);
-
+    ...
+    int sLength = ... ;
+    Clob sClob = sRs.getClob(2);
+ 
+    // After executing this method
+    // sClob.length() == sLength
+    sClob.truncate(sLength);
 }
-
+ 
 ...
+```
+
+
 
 #### 자원 해제하기
 
@@ -3167,56 +3053,50 @@ sClob.truncate(sLength);
 
 아래는 Blob 객체를 해제하는 코드 예제이다.
 
+```
 ...
-
 Blob sBlob = sRs.getBlob(1);
-
 // Freeing Lob Locator
-
 ((Altibase.jdbc.driver.AltibaseLob)sBlob).free();
-
 ...
+```
 
 Blob 객체를 free 메소드로 해제하면, 대응하는 Lob Locator가 서버에서 해제되므로
 그 객체에 대해서는 더이상 연산 수행이 불가능하다.
 
 아래는 Clob 객체를 해제하는 코드 예제이다.
 
+```
 ...
-
 Clob sClob = sRs.getClob(1);
-
 // Freeing Lob Locator
-
 ((Altibase.jdbc.driver.AltibaseLob)sClob).free();
-
 ...
+```
 
 Clob 객체도 Blob과 마찬가지로 free 메소드로 해제하면, 대응하는 Lob Locator가
 서버에서 해제되므로 그 객체에 대해서는 더 이상 연산 수행이 불가능하다.
 
 아래는 BlobInputStream 객체와 BlobOutputStream 객체를 해제하는 코드 예제이다.
 
+```
 InputStream sInputStream = sRs.getBinaryStream(1);
-
+ 
 // Freeing Lob Locator
-
 ((Altibase.jdbc.driver.BlobInputStream)sInputStream).freeLocator();
 
-CallableStatement sCallStmt = aConn.prepareCall("INSERT INTO TEST_TABLE VALUES
-(?)");
 
+CallableStatement sCallStmt = aConn.prepareCall("INSERT INTO TEST_TABLE VALUES (?)");
 sCallStmt.registerOutParameter(1, Types.BLOB);
-
 sCallStmt.execute();
-
+ 
 Blob sBlob = sCallStmt.getBlob(1);
-
 OutputStream sOutputStream = sBlob.setBinaryStream(1);
-
+ 
 // Freeing Lob Locator
-
 ((Altibase.jdbc.driver.BlobOutputStream)sOutputStream).freeLocator();
+
+```
 
 BlobInputStream 또는 BlobOutputStream 객체를 freeLocator 메소드로 해제하면,
 대응하는 Lob Locator가 서버에서 해제되므로 그 객체에 대해서는 더이상 연산 수행이
@@ -3224,26 +3104,24 @@ BlobInputStream 또는 BlobOutputStream 객체를 freeLocator 메소드로 해�
 
 아래는 ClobReader 객체와 ClobWriter 객체를 해제하는 코드 예제이다.
 
+```
 Reader sClobReader = sRs.getCharacterStream(1);
-
+ 
 // Freeing Lob Locator
-
 ((Altibase.jdbc.driver.ClobReader)sClobReader).freeLocator();
 
-CallableStatement sCallStmt = aConn.prepareCall("INSERT INTO TEST_TABLE VALUES
-(?)");
 
+CallableStatement sCallStmt = aConn.prepareCall("INSERT INTO TEST_TABLE VALUES (?)");
 sCallStmt.registerOutParameter(1, Types.CLOB);
-
 sCallStmt.execute();
-
+ 
 Clob sClob = sCallStmt.getClob(1);
-
 Writer sClobWriter = sClob.setCharacterStream(1);
-
+ 
 // Freeing Lob Locator
-
 ((Altibase.jdbc.driver.ClobWriter)sClobWriter).freeLocator();
+
+```
 
 ClobReader 또는 ClobWriter 객체를 freeLocator 메소드로 해제하면, 대응하는 Lob
 Locator가 서버에서 해제되므로 그 객체에 대해서는 더이상 연산 수행이 불가능하다.
@@ -3258,68 +3136,42 @@ Statement의 executeUpdate() 메소드에 사용하면 Lob locator가 사라지�
 커서로부터 더 이상의 fetch가 불가능해진다. 아래는 이러한 오류 상황이 발생할 수
 있는 예제 코드이다.
 
+```
 PreparedStatement sPreStmt =
-
-sCon.prepareStatement( "INSERT INTO TEST_TEXT " +
-
-"VALUES ( ?, ?, ?, ? )" );
-
+    sCon.prepareStatement( "INSERT INTO TEST_TEXT " +
+                           "VALUES ( ?, ?, ?, ? )" );
 Statement sStmt = sCon.createStatement();
-
 ResultSet sRS = sStmt.executeQuery( "SELECT ID, TEXT " +
-
-" FROM TEST_SAMPLE_TEXT " );
-
-while ( sRS.next() ) -\>
-
+                                    "  FROM TEST_SAMPLE_TEXT " );
+while ( sRS.next() ) -> (2)
 {
-
-sID = sRS.getInt( 1 );
-
-sClob = sRS.getClob( 2 );
-
-switch ( sID )
-
-{
-
-case 1 :
-
-sPreStmt.setInt( 1, 1 );
-
-sPreStmt.setString( 2, "Altibase Greetings" );
-
-sPreStmt.setClob( 3, sClob );
-
-sPreStmt.setInt( 4, (int)sClob.length() );
-
-break;
-
-case 2 :
-
-sPreStmt.setInt( 1, 2 );
-
-sPreStmt.setString( 2, "Main Memory DBMS" );
-
-sPreStmt.setClob( 3, sClob );
-
-sPreStmt.setInt( 4, (int)sClob.length() );
-
-break;
-
-default :
-
-break;
-
+    sID   = sRS.getInt( 1 );
+    sClob = sRS.getClob( 2 );
+    switch ( sID )
+    {
+        case 1 :
+            sPreStmt.setInt(    1, 1 );
+            sPreStmt.setString( 2, "Altibase Greetings" );
+            sPreStmt.setClob(   3, sClob );
+            sPreStmt.setInt(    4, (int)sClob.length() );
+            break;
+        case 2 :
+            sPreStmt.setInt(    1, 2 );
+            sPreStmt.setString( 2, "Main Memory DBMS" );
+            sPreStmt.setClob(   3, sClob );
+            sPreStmt.setInt(    4, (int)sClob.length() );
+            break;
+        default :
+            break;
+    }
+    sPreStmt.executeUpdate(); -> (1)
 }
+```
 
-sPreStmt.executeUpdate(); -\>
-
-}
-
-: ResultSet sRS가 열려 있는 상태에서 sPreStmt.executeUpdate()를 호출하면, JDBC
+(1): ResultSet sRS가 열려 있는 상태에서 sPreStmt.executeUpdate()를 호출하면, JDBC
 드라이버가 트랜잭션을 자동으로 commit하면서 sClob의 Lob locator가 사라진다.
 
-: Lob locator가 사라졌으므로 sRs.next()에서 exception이 발생할 수 있다.
+(2): Lob locator가 사라졌으므로 sRs.next()에서 exception이 발생할 수 있다.
 
 따라서, 이러한 로직에서 LOB 데이터를 다룰 때는 먼저 setAutoCommit(false)를
 호출하여 세션의 자동커밋을 해제해야 한다.
@@ -3380,32 +3232,24 @@ PreparedStatement의 IN 파라미터를 사용할 때는 Types.BIT로 타입을 
 다음은 JDBC 애플리케이션에서 BIT, VARBIT 타입의 칼럼에 데이터를 삽입하는 코드
 예제이다.
 
+```
 ...
-
 BitSet sBitSet1 = new BitSet();
-
 sBitSet1.set(1);
-
 BitSet sBitSet2 = new AltibaseBitSet( 5 );
-
 sBitSet1.set(2);
 
-PreparedStatement sPstmt = sConn.prepareStatement("INSERT INTO TEST_TABLE VALUES
-(?)");
-
+PreparedStatement sPstmt = sConn.prepareStatement("INSERT INTO TEST_TABLE VALUES (?)");
 sPstmt.setObject(1, sBitSet1, Types.BIT);
-
 sPstmt.executeUpdate();
-
 sPstmt.setObject(1, sBitSet2);
-
 sPstmt.executeUpdate();
-
 sPstmt.setObject(1, "0110100", Types.BIT);
-
 sPstmt.executeUpdate();
-
 ...
+```
+
+
 
 ### JDBC 로깅
 
@@ -3428,9 +3272,13 @@ JRE 1.5 이상이 설치되어야 JDBC 로깅을 사용할 수 있으며, 이외
 
 로깅을 사용하려면 CLASSPATH 환경변수에 Altibase_t.jar 파일을 추가해야 한다.
 
->   ex) 유닉스 환경에서 bash 쉘을 사용하는 경우
+ex) 유닉스 환경에서 bash 쉘을 사용하는 경우
 
->   export CLASSPATH=\$ALTIBASE_HOME/lib/Altibase_t.jar:.:\$CLASSPATH
+```
+export CLASSPATH=$ALTIBASE_HOME/lib/Altibase_t.jar:.:$CLASSPATH
+```
+
+
 
 ##### 로깅 활성화
 
@@ -3439,7 +3287,11 @@ JVM 파라미터를 이용하여 ALTIBASE_JDBC_TRACE 환경 변수를 아래와 
 그러나 ALTIBASE_JDBC_TRACE의 변경 값을 적용하려면, 클라이언트 프로그램을
 재시작해야 한다.
 
->   java -DALTIBASE_JDBC_TRACE=true ...
+```
+java -DALTIBASE_JDBC_TRACE=true ...
+```
+
+
 
 #### JDBC 로깅 사용법
 
@@ -3448,9 +3300,9 @@ JVM 파라미터를 이용하여 ALTIBASE_JDBC_TRACE 환경 변수를 아래와 
 java.util.logging 설정은 \$JRE_HOME/lib/logging.properties 파일에서 설정하거나,
 아래와 같이 java.util.logging.config.file를 이용하여 별도로 설정할 수 있다.
 
-java
--Djava.util.logging.config.file=\$ALTIBASE_HOME/sample/JDBC/Logging/logging.properties
--DALTIBASE_JDBC_TRACE=true ...
+```
+java -Djava.util.logging.config.file=$ALTIBASE_HOME/sample/JDBC/Logging/logging.properties -DALTIBASE_JDBC_TRACE=true ...
+```
 
 알티베이스는 \$ALTIBASE_HOME/sample/JDBC/Logging 디렉토리에 logging.properties
 샘플 파일을 제공하고 있으며, 이를 참조하여 사용하거나, 직접 설정 파일을 생성하여
@@ -3477,15 +3329,15 @@ JDBC 드라이버에서 제공하는 레벨은 아래와 같으며, SEVERE에서
 상세한 로그를 남긴다. CONFIG레벨을 설정하면 SEVERE, WARNING, INFO, CONFIG 레벨의
 로그들이 남는다.
 
-| Logger 레벨 | 설명                                                                                                                                                                                                                                          |
-|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| OFF         | 로그를 남기지 않는다.                                                                                                                                                                                                                         |
-| SEVERE      | SQLException이나 내부 에러가 발생했을 때 해당 에러만 로그에 남긴다.                                                                                                                                                                           |
-| WARNING     | SQLWarning을 로그에 남긴다.                                                                                                                                                                                                                   |
-| INFO        | JDBC 드라이버 내부적으로 특정 객체의 상태를 모니터링하여 로그에 남긴다.                                                                                                                                                                       |
+| Logger 레벨 | 설명                                                         |
+| ----------- | ------------------------------------------------------------ |
+| OFF         | 로그를 남기지 않는다.                                        |
+| SEVERE      | SQLException이나 내부 에러가 발생했을 때 해당 에러만 로그에 남긴다. |
+| WARNING     | SQLWarning을 로그에 남긴다.                                  |
+| INFO        | JDBC 드라이버 내부적으로 특정 객체의 상태를 모니터링하여 로그에 남긴다. |
 | CONFIG      | JDBC 드라이버 내부적으로 어떤 SQL문이 실행되는지 확인할 때 주로 사용한다. PreparedStatement같은 경우 prepare할 때 sql이 표시되며, Statement는 execute 할 때 sql이 표시된다. 이때 sql이 실행되는데 걸린 시간이 milli sec 단위로 같이 표시된다. |
-| FINE        | 표준 JDBC API에 진입하고 리턴될 때 해당 인자 값과 반환 값을 로그에 남긴다. API에 진입할 때마다 로그가 남기 때문에 로그의 양이 많아질 수 있으며, Connection이나 Statement가 close되는데 걸린 시간이 추가로 표시된다.                           |
-| FINEST      | JDBC 드라이버와 알티베이스 서버가 주고 받는 패킷 정보를 로그로 남긴다. 로그의 양이 가장 많다.                                                                                                                                                 |
+| FINE        | 표준 JDBC API에 진입하고 리턴될 때 해당 인자 값과 반환 값을 로그에 남긴다. API에 진입할 때마다 로그가 남기 때문에 로그의 양이 많아질 수 있으며, Connection이나 Statement가 close되는데 걸린 시간이 추가로 표시된다. |
+| FINEST      | JDBC 드라이버와 알티베이스 서버가 주고 받는 패킷 정보를 로그로 남긴다. 로그의 양이 가장 많다. |
 
 ##### logging.properties 
 
@@ -3493,68 +3345,43 @@ JDBC 드라이버에서 제공하는 레벨은 아래와 같으며, SEVERE에서
 logging.properties이며, \$ALTIBASE_HOME/sample/JDBC/Logging/logging.properties
 에서도 내용을 참조할 수 있다.
 
-handlers= java.util.logging.FileHandler, java.util.logging.ConsoleHandler --\>
-기본적인 handler로 FileHandler와 ConsoleHandler를 추가한다.
-
-.level = CONFIG --\> 루트 logger 레벨을 CONFIG로 셋팅한다.
-
-\# default file output is in same directory.
-
+```
+handlers= java.util.logging.FileHandler, java.util.logging.ConsoleHandler --> 기본적인 handler로 FileHandler와 ConsoleHandler를 추가한다.
+ 
+.level = CONFIG --> 루트 logger 레벨을 CONFIG로 셋팅한다.
+ 
+# default file output is in same directory.
 java.util.logging.FileHandler.level = CONFIG
-
 java.util.logging.FileHandler.pattern = ./jdbc_trace.log
-
 java.util.logging.FileHandler.limit = 10000000
-
 java.util.logging.FileHandler.count = 1
-
 java.util.logging.FileHandler.append = false
-
-java.util.logging.FileHandler.formatter =
-Altibase.jdbc.driver.logging.SingleLineFormatter
-
-\--\> java.util.logging.FileHandler의 기본셋팅을 설정하는 부분이다. sql정보만
-보면 되기때문에 FileHandler의 레벨을 CONFIG으로 설정했다.
+java.util.logging.FileHandler.formatter = Altibase.jdbc.driver.logging.SingleLineFormatter
+ --> java.util.logging.FileHandler의 기본셋팅을 설정하는 부분이다. sql정보만 보면 되기때문에 FileHandler의 레벨을 CONFIG으로 설정했다.
 
 java.util.logging.ConsoleHandler.level = CONFIG
-
-java.util.logging.ConsoleHandler.formatter =
-Altibase.jdbc.driver.logging.SingleLineFormatter
-
-\--\> java.util.logging.ConsoleHandler를 설정하는 부분이다. 로그를 한 줄로
-출력하기 위해 SingleLineFormatter를 사용했다.
-
+java.util.logging.ConsoleHandler.formatter = Altibase.jdbc.driver.logging.SingleLineFormatter
+ --> java.util.logging.ConsoleHandler를 설정하는 부분이다. 로그를 한 줄로 출력하기 위해 SingleLineFormatter를 사용했다.
+ 
 altibase.jdbc.level = CONFIG
-
 altibase.jdbc.rowset.level = SEVERE
-
 altibase.jdbc.cm.level = FINEST
-
 altibase.jdbc.cm.handlers = Altibase.jdbc.driver.logging.MultipleFileHandler
-
-\#altibase.jdbc.cm.handlers = java.util.logging.FileHandler
-
-\--\> altibase jdbc logger를 설정하는 부분으로 레코드 셋의 정보는 제외해야 하기
-때문에 rowset의 레벨을 SEVERE로 설정했다. 네트워크 패킷 정보는 로그로 남겨야
-하기 때문에 cm의 레벨을 FINEST로 설정했다. 또한 네트워크 패킷같은 경우 세션별로
-파일을 별도 저장하기 위해 handler로 MultipleFileHandler를 사용했다.
-
+#altibase.jdbc.cm.handlers = java.util.logging.FileHandler
+ --> altibase jdbc logger를 설정하는 부분으로 레코드 셋의 정보는 제외해야 하기 때문에 rowset의 레벨을 SEVERE로 설정했다. 네트워크 패킷 정보는 로그로 남겨야 하기 때문에 cm의 레벨을 FINEST로 설정했다. 또한 네트워크 패킷같은 경우 세션별로 파일을 별도 저장하기 위해 handler로 MultipleFileHandler를 사용했다.
+ 
 Altibase.jdbc.driver.logging.MultipleFileHandler.level = FINEST
-
 Altibase.jdbc.driver.logging.MultipleFileHandler.pattern = ./jdbc_net_%s.log
-
 Altibase.jdbc.driver.logging.MultipleFileHandler.limit = 10000000
-
 Altibase.jdbc.driver.logging.MultipleFileHandler.count = 1
+Altibase.jdbc.driver.logging.MultipleFileHandler.formatter = java.util.logging.XMLFormatter
+--> MultipleFileHandler를 설정하는 부분으로 pattern에 jdbc_net_%s.log를 사용해 세션의 아이디별로 파일이 생성되도록 설정했다. 또한 formatter로 XMLFormatter를 사용해 XML형태의 파일에 로그가 생성되도록 설정했다.
 
-Altibase.jdbc.driver.logging.MultipleFileHandler.formatter =
-java.util.logging.XMLFormatter
+```
 
->   \--\> MultipleFileHandler를 설정하는 부분으로 pattern에 jdbc_net_%s.log를
->   사용해 세션의 아이디별로 파일이 생성되도록 설정했다. 또한 formatter로
->   XMLFormatter를 사용해 XML형태의 파일에 로그가 생성되도록 설정했다.
 
-Tips & Recommendation
+
+4.Tips & Recommendation
 ---------------------
 
 이 장은 Altibase JDBC 드라이버를 효율적으로 사용하기 위한 방법을 제시한다.
@@ -3576,7 +3403,7 @@ Tips & Recommendation
     Connection Pool을 사용할 것을 권장한다. Connection을 맺고 끊는 작업은 다른
     연산에 비해 비교적 비용이 크기 때문이다.
 
-에러 메시지
+5.에러 메시지
 -----------
 
 이 장은 Altibase JDBC 드라이버를 사용하면서 발생할 수 있는 오류의 SQL State를
@@ -3693,7 +3520,7 @@ SQLSTATE에 반환되는 문자열 값은 클래스를 나타내는 처음 2개�
 |                                       |       | XA close failed                                                                                          | F02      |
 |                                       |       | XA recover failed                                                                                        | F03      |
 
-부록: 데이터 타입 맵핑
+A.부록: 데이터 타입 맵핑
 ----------------------
 
 이 부록은 Altibase의 데이터 타입과 JDBC 표준 데이터 타입, Java 데이터 타입간에
@@ -3739,8 +3566,7 @@ SQLSTATE에 반환되는 문자열 값은 클래스를 나타내는 처음 2개�
 
 ### Java 데이터형을 데이터베이스 데이터형으로 변환하기
 
-아래의 표는 setObject 메소드를 사용해서 파라미터에 객체를 설정할 경우, 각 객체
-별로 어떠한 데이터베이스 데이터입으로 변환이 가능한지를 보여준다.
+아래의 표는 setObject 메소드를 사용해서 파라미터에 객체를 설정할 경우, 각 객체별로 어떠한 데이터베이스 데이터입으로 변환이 가능한지를 보여준다.
 
 |                    | SMALLINT | INTEGER | BIGINT | REAL | FLOAT | DOUBLE | DECIMAL/NUMERIC | BIT | CHAR | VARCHAR/LONGVARCHAR | BINARY | VARBINARY/LONGVARBINARY | DATE | TIME | TIMESTAMP | BLOB | CLOB |
 |--------------------|----------|---------|--------|------|-------|--------|-----------------|-----|------|---------------------|--------|-------------------------|------|------|-----------|------|------|
@@ -3770,8 +3596,7 @@ SQLSTATE에 반환되는 문자열 값은 클래스를 나타내는 처음 2개�
 
 ### 데이터베이스 데이터형을 Java 데이터형으로 변환하기
 
-아래의 표는 데이터베이스의 각 데이터형에 대해 getXXX 메소드를 사용해서 변환이
-가능한지를 보여준다.
+아래의 표는 데이터베이스의 각 데이터형에 대해 getXXX 메소드를 사용해서 변환이 가능한지를 보여준다.
 
 |                    | SMALLINT | INTEGER | BIGINT | REAL | FLOAT | DOUBLE | DECIMAL/NUMERIC | BIT | CHAR/VARCHAR | LONGVARCHAR | BINARY | VARBINARY/LONGVARBINARY | DATE | TIME | TIMESTAMP | CLOB | BLOB |
 |--------------------|----------|---------|--------|------|-------|--------|-----------------|-----|--------------|-------------|--------|-------------------------|------|------|-----------|------|------|
