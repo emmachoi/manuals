@@ -448,12 +448,12 @@ Altibase에 접속할 때 사용 가능한 연결 속성에 대해 기술한다.
 <table>
 <tbody>
 <tr>
-   <td style="width: 95px;">
+   <th>
 <p>기본값</p>
-</td>
-<td>
+</th>
+<th>
 <p>off</p>
-</td>
+</th>
 </tr>
 <tr>
 <td>
