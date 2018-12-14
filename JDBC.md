@@ -510,6 +510,58 @@ Altibase에 접속할 때 사용 가능한 연결 속성에 대해 기술한다.
 
 ##### clientside_auto_commit
 
+<table style="width: 764px;">
+<tbody>
+<tr>
+<td style="width: 95px;">
+<p>기본값</p>
+</td>
+<td style="width: 657px;">
+<p>off</p>
+</td>
+</tr>
+<tr>
+<td style="width: 95px;">
+<p>값의 범위</p>
+</td>
+<td style="width: 657px;">
+<p>[on | off]</p>
+</td>
+</tr>
+<tr>
+<td style="width: 95px;">
+<p>필수 여부</p>
+</td>
+<td style="width: 657px;">
+<p>No</p>
+</td>
+</tr>
+<tr>
+<td style="width: 95px;">
+<p>설정 범위</p>
+</td>
+<td style="width: 657px;">
+<p>세션</p>
+</td>
+</tr>
+<tr>
+<td style="width: 95px;">
+<p>설명</p>
+</td>
+<td style="width: 657px;">
+<p>Autocommit의 동작을 Altibase 서버가 제어할 것인지, JDBC 드라이버가 제어할 것인지를 설정한다.</p>
+<p>auto_commit 속성이 true이거나 auto_commit 속성이 지정되지 않은 경우에만 이 속성의 설정 값이 적용된다.</p>
+<ul>
+<li>on: JDBC 드라이버가 자동커밋 제어</li>
+<li>off: Altibase 서버가 자동커밋 제어</li>
+</ul>
+<p>자세한 설명은 3장의 "Autocommit 제어" 절을 참고한다.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+
 | 기본값    | off                                                          |
 | --------- | ------------------------------------------------------------ |
 | 값의 범위 | [on \| off]                                                  |
