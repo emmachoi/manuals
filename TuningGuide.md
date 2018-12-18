@@ -3520,7 +3520,8 @@ Merge 조인의 수행 비용은 개략적으로 Access cost + Disk I/O cost로 
 <tbody>
 <tr>
 <td style="width: 124px;">
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 생성노드<br /> 저장공간</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 생성노드(우)<br /> /
+<br />저장공간(하)</p>
 </td>
 <td style="width: 189px;">
 <p>해쉬(HASH)</p>
