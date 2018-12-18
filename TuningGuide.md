@@ -2557,19 +2557,19 @@ SELECT * FROM T1 WHERE T1.i1 = ?
 테이블을 스캔(full table scan)하여 iSQL상에서의 실행 속도에 비해 현격한 속도
 차이가 날 수도 있다.
 
-데이터 타입과 인덱스 사용 가능 여부는 다음과 같다. 검은 부분으로 표시되는 부분은
+데이터 타입과 인덱스 사용 가능 여부는 다음과 같다. 검은 부분으로 표시되는 부분(`O`)은
 비교연산 수행시, 키 칼럼에 타입 변환이 발생하게 된다.
 
 | VALUE (우)<br />\ <br />KEY(하) | CHAR | VARCHAR | SMALLINT | INTEGER | BIGINT | NUMERIC | FLOAT | REAL | DOUBLE | DATE | BLOB | NIBBLE | BYTE | GEOMETRY |
 | ------------------------------- | ---- | ------- | -------- | ------- | ------ | ------- | ----- | ---- | ------ | ---- | ---- | ------ | ---- | -------- |
 | CHAR                            | O    | `O`     | X        | X       | X      | X       | X     | X    | X      | X    | \-   | \-     | \-   | \-       |
 | VARCHAR                         | O    | O       | X        | X       | X      | X       | X     | X    | X      | X    | \-   | \-     | \-   | \-       |
-| SMALLINT                        | X    | X       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
-| INTEGER                         | X    | X       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
-| BIGINT                          | X    | X       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
-| NUMERIC                         | O    | O       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
-| FLOAT                           | O    | O       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
-| REAL                            | X    | X       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
+| SMALLINT                        | X    | X       | O        | `O`     | `O`    | `O`     | `O`   | `O`  | `O`    | \-   | \-   | \-     | \-   | \-       |
+| INTEGER                         | X    | X       | O        | O       | `O`    | `O`     | `O`   | `O`  | `O`    | \-   | \-   | \-     | \-   | \-       |
+| BIGINT                          | X    | X       | O        | O       | O      | `O`     | `O`   | `O`  | `O`    | \-   | \-   | \-     | \-   | \-       |
+| NUMERIC                         | O    | O       | O        | O       | O      | O       | O     | `O`  | `O`    | \-   | \-   | \-     | \-   | \-       |
+| FLOAT                           | O    | O       | O        | O       | O      | `O`     | O     | `O`  | `O`    | \-   | \-   | \-     | \-   | \-       |
+| REAL                            | X    | X       | `O`      | `O`     | `O`    | `O`     | `O`   | O    | `O`    | \-   | \-   | \-     | \-   | \-       |
 | DOUBLE                          | O    | O       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
 | DATE                            | O    | O       | \-       | \-      | \-     | \-      | \-    | \-   | \-     | O    | \-   | \-     | \-   | \-       |
 | BLOB                            | \-   | \-      | \-       | \-      | \-     | \-      | \-    | \-   | \-     | \-   | O    | \-     | \-   | \-       |
@@ -2582,15 +2582,62 @@ SELECT * FROM T1 WHERE T1.i1 = ?
 데이터 타입은 다음과 같이 크게 계열과 숫자형 계열로 구분할 수 있으며, 각 계열에
 속하는 데이터 타입들간의 비교는 모두 인덱스를 사용할 수 있다.
 
-| 계열        | CHAR, VARCHAR |               |                                          |
-|-------------|---------------|---------------|------------------------------------------|
-| 숫자형 계열 | Native        |               | BIGINT, INTEGER, SMALLINT                |
-|             |               | 실수형        | DOUBLE, REAL                             |
-|             | Non-Native () | 고정 소수점형 | NUMERIC, DECIMAL, NUMBER(p), NUMBER(p,s) |
-|             |               | 부동 소수점형 | FLOAT, NUMBER                            |
+<table style="width: 634px;">
+<tbody>
+<tr>
+<td style="width: 293px;" colspan="3">
+<p style="text-align: center;"><strong>문자형 계열</strong></p>
+</td>
+<td style="width: 327px;">
+<p>CHAR, VARCHAR</p>
+</td>
+</tr>
+<tr>
+<td style="width: 89px;" rowspan="4">
+<p><strong>숫자형 계열</strong></p>
+</td>
+<td style="width: 95px;" rowspan="2">
+<p>Native</p>
+</td>
+<td style="width: 109px;">
+<p>정수형</p>
+</td>
+<td style="width: 327px;">
+<p>BIGINT, INTEGER, SMALLINT</p>
+</td>
+</tr>
+<tr>
+<td style="width: 109px;">
+<p>실수형</p>
+</td>
+<td style="width: 327px;">
+<p>DOUBLE, REAL</p>
+</td>
+</tr>
+<tr>
+<td style="width: 95px;" rowspan="2">
+<p>Non-Native</p>
+<p>(지수형)</p>
+</td>
+<td style="width: 109px;">
+<p>고정 소수점형</p>
+</td>
+<td style="width: 327px;">
+<p>NUMERIC, DECIMAL, NUMBER(p), NUMBER(p,s)</p>
+</td>
+</tr>
+<tr>
+<td style="width: 109px;">
+<p>부동 소수점형</p>
+</td>
+<td style="width: 327px;">
+<p>FLOAT, NUMBER</p>
+</td>
+</tr>
+</tbody>
+</table>
 
-즉, 계열에 속하는 CHAR, VARCHAR간의 비교 또는 숫자형 계열에 속하는 , 실수형,
-지수형간의 비교시에는 모두 인덱스 사용이 가능하다.
+즉, 계열에 속하는 CHAR, VARCHAR간의 비교 또는 숫자형 계열에 속하는 , 실수형, 지수형 간의 비교시에는 모두 인덱스 사용이 가능하다.
 
 -   계열  
     char_column = VARCHAR’abc’  
@@ -2601,14 +2648,13 @@ SELECT * FROM T1 WHERE T1.i1 = ?
     number_column = DOUBLE’1’  
     integer_column = NUMBER’1’
 
-숫자형 계열의 서로 다른 데이터 타입간 비교 연산에 대해서는 다음의 변환표를
-기준으로 변환하고 비교한다.
+숫자형 계열의 서로 다른 데이터 타입간 비교 연산에 대해서는 다음의 변환표를 기준으로 변환하고 비교한다.
 
-|        |        | 실수형 |        |
-|--------|--------|--------|--------|
-|        | 정수형 | 실수형 |        |
+|        | 정수형 | 실수형 | 지수형 |
+| ------ | ------ | ------ | ------ |
+| 정수형 | 정수형 | 실수형 | 지수형 |
 | 실수형 | 실수형 | 실수형 | 실수형 |
-|        |        | 실수형 |        |
+| 지수형 | 지수형 | 실수형 | 지수형 |
 
 인덱스 칼럼에 변환이 발생하는 경우가 이에 해당되는데, 인덱스 칼럼의 값에 변환이
 발생한다 할지라도, 이 비교 기준에 의해 내부적으로 인덱스 칼럼의 변환된 값으로
@@ -2628,7 +2674,9 @@ VARCHAR인 경우 가장 짧은 변환 경로를 가진다. 그러나 데이터 
 
 다음은 데이터 타입 변환 경로를 도식화한 그림이다.
 
->   [그림 3‑2] 데이터 변환 타입 경로
+![data_type_conversion_path_kor](D:\emmachoigit\manuals\media\TuningGuide\data_type_conversion_path_kor.gif)
+
+[그림 3‑2] 데이터 변환 타입 경로
 
 위와 같이 인덱스가 사용될 수 있도록 조건절을 기술하는 것은 매우 중요하다.
 조건절의 유형에 따라 성능에 영향을 미칠 수 있으므로 WHERE절의 기술 및 응용
@@ -2676,11 +2724,11 @@ VARCHAR인 경우 가장 짧은 변환 경로를 가진다. 그러나 데이터 
 
 예를 들어, 다음과 같은 질의를 살펴보자.
 
-SELECT \* FROM T1, T2, T3, T4, T5
-
+```
+SELECT * FROM T1, T2, T3, T4, T5
 WHERE T1.i1 = T2.a1 AND T2.a2 = T3.m1
-
 AND T4.x1 = T5.z1;
+```
 
 조인 그룹의 분류: (T1, T2, T3), (T4, T5)
 
@@ -2695,13 +2743,15 @@ AND T4.x1 = T5.z1;
 
 예를 들어 다음과 같은 질의를 살펴 보자
 
-SELECT \* FROM T1, T2, T3, T4
-
+```
+SELECT * FROM T1, T2, T3, T4
 WHERE T1.i1 = T2.a1 AND T2.a2 = T3.m2
-
 AND T3.m3 = T4.x3;
+```
 
 위의 질의에서 조인 관계는 다음과 같이 표현될 수 있다.
+
+![join_kor](D:\emmachoigit\manuals\media\TuningGuide\join_kor.gif)
 
 옵티마이저는 위와 같이 조인 순서 결정 시 조인 관계만을 고려하여 비용을
 평가함으로써 (T1, T4)와 같이 직접적인 조인 관계가 없는 테이블간의 조인이
@@ -2723,7 +2773,9 @@ AND T3.m3 = T4.x3;
 그러나 조인 관계의 순서가 실제 조인 순서는 아니며, 실제 조인 순서는 조인 방법의
 결정을 통해 완성된다.
 
->   [그림 3‑3] 조인 관계의 순서 결정
+![join_order_kor](D:\emmachoigit\manuals\media\TuningGuide\join_order_kor.gif)
+
+[그림 3‑3] 조인 관계의 순서 결정
 
 위의 그림에서 보듯이 이 과정에서의 조인 관계의 순서는 조인 관계의 깊이만을
 결정할 뿐이다. 조인 관계 순서의 가장 중요한 요소는 조인의 선택도
@@ -2735,6 +2787,10 @@ AND T3.m3 = T4.x3;
 옵티마이저는 조인의 선택도를 아래처럼 계산한다. 이 공식의 자세한 설명은 이
 문서의 범위를 벗어난다.
 
+| 개념적인 Join selectivity 계산                    |
+| ------------------------------------------------- |
+| [T(R) * T(S) / MAX[V(R.a), V(S.a)]/ [T(R) + T(S)] |
+
 이와 같은 조인 관계 순서의 결정은 조인의 선택도에 따라 보다 효율적인 비율로 결과
 집합을 줄일 수 있는 조인 관계를 우선적으로 선택하게 된다. 그리고 조인 방법
 결정에 의하여 비교적 정확한 조인 순서가 결정된다.
@@ -2742,9 +2798,10 @@ AND T3.m3 = T4.x3;
 예를 들어, 하나의 질의에 포함된 각 테이블의 레코드 개수와 조인으로 생성되는
 결과의 개수가 다음과 같을 때를 살펴보자.
 
+```
 T(R) = 10, T(S) = 10, T(R JOIN S) = 10
-
 T(T) = 1000, T(U) = 1000, T(T JOIN U) = 100
+```
 
 위의 예에서 테이블 R과 S를 조인한 결과의 개수가 T와 U를 조인한 결과의 개수보다
 적지만, 오히려 결과 집합을 아주 큰 비율로 줄일 수 있는 T와 U의 관계가 더 중요한
@@ -2775,25 +2832,201 @@ Altibase가 지원하는 조인 방법은 다음과 같이 크게 네 가지 계
 
 각 계열 별 조인 방법 및 사용 가능한 조인의 종류 는 다음과 같다.
 
-| 조인 계열                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | 조인 방법                 | 조인 방향        |              |
-|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|------------------|--------------|
-|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |                           | Left=\>Right     | Right=\>Left |
-| Nested                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Full nested loop          | C, I, S, A, L    | C, I, R      |
-|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Full store nested loop    | C, I, S, A, L, F | C, I, R, F   |
-|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Index nested loop         | I, S, A, L       | I, R         |
-|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Anti outer nested loop    | F                | F            |
-|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Inverse index nested loop |                  | S            |
-| Sort-based                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | One pass sort join        | I, S, A, L, F    | I, R, F      |
-|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Two pass sort join        | I, S, A, L, F    | I, R, F      |
-|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Inverse sort join         |                  | S, A         |
-| Hash-based                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | One pass hash join        | I, S, A, L, F    | I, R, F      |
-|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Two pass hash join        | I, S, A, L, F    | I, R, F      |
-|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Inverse hash join         | R                | S, A, L      |
-| Merge-based                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Index merge join          | I, S, A          | I            |
-|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Sort merge join           | I, S, A          | I            |
-| 사용 가능한 조인의 종류 C (Cartesian Product): 조인 관계를 갖지 않는 두 테이블의 조합 I (Inner Join): 조인 관계를 갖는 두 테이블의 일반적인 조인 S (Semi Join): Semi 조인 관계를 갖는 두 테이블의 조인 A (Anti Join): Anti 조인 관계를 갖는 두 테이블의 조인 L (Left outer join): Left outer 조인 관계를 갖는 두 테이블의 조인 R (Right outer join): Right outer 조인 관계를 갖는 두 테이블의 조인 F (Full outer join): Full outer 조인 관계를 갖는 두 테이블의 조인 각 조인에 대한 자세한 설명은 *SQL Reference*에서 SELECT 구문의 설명을 참고한다. |                           |                  |              |
+<table style="width: 619px;">
+<tbody>
+<tr>
+<td style="width: 117px; text-align: center;" rowspan="2">
+<p><strong>조인 계열</strong></p>
+</td>
+<td style="width: 213px; text-align: center;" rowspan="2">
+<p><strong>조인 방법</strong></p>
+</td>
+<td style="width: 279px; text-align: center;" colspan="2">
+<p><strong>조인 방향</strong></p>
+</td>
+</tr>
+<tr>
+<td style="width: 137px; text-align: center;">
+<p><strong>Left=&gt;Right</strong></p>
+</td>
+<td style="width: 142px; text-align: center;">
+<p><strong>Right=&gt;Left</strong></p>
+</td>
+</tr>
+<tr>
+<td style="width: 117px;" rowspan="5">
+<p>Nested Loop</p>
+</td>
+<td style="width: 213px;">
+<p>Full nested loop</p>
+</td>
+<td style="width: 137px;">
+<p>C, I, S, A, L</p>
+</td>
+<td style="width: 142px;">
+<p>C, I, R</p>
+</td>
+</tr>
+<tr>
+<td style="width: 213px;">
+<p>Full store nested loop</p>
+</td>
+<td style="width: 137px;">
+<p>C, I, S, A, L, F</p>
+</td>
+<td style="width: 142px;">
+<p>C, I, R, F</p>
+</td>
+</tr>
+<tr>
+<td style="width: 213px;">
+<p>Index nested loop</p>
+</td>
+<td style="width: 137px;">
+<p>I, S, A, L</p>
+</td>
+<td style="width: 142px;">
+<p>I, R</p>
+</td>
+</tr>
+<tr>
+<td style="width: 213px;">
+<p>Anti outer nested loop</p>
+</td>
+<td style="width: 137px;">
+<p>F</p>
+</td>
+<td style="width: 142px;">
+<p>F</p>
+</td>
+</tr>
+<tr>
+<td style="width: 213px;">
+<p>Inverse index nested loop</p>
+</td>
+<td style="width: 137px;">
+<p>&nbsp;</p>
+</td>
+<td style="width: 142px;">
+<p>S</p>
+</td>
+</tr>
+<tr>
+<td style="width: 117px;" rowspan="3">
+<p>Sort-based</p>
+</td>
+<td style="width: 213px;">
+<p>One pass sort join</p>
+</td>
+<td style="width: 137px;">
+<p>I, S, A, L, F</p>
+</td>
+<td style="width: 142px;">
+<p>I, R, F</p>
+</td>
+</tr>
+<tr>
+<td style="width: 213px;">
+<p>Two pass sort join</p>
+</td>
+<td style="width: 137px;">
+<p>I, S, A, L, F</p>
+</td>
+<td style="width: 142px;">
+<p>I, R, F</p>
+</td>
+</tr>
+<tr>
+<td style="width: 213px;">
+<p>Inverse sort join</p>
+</td>
+<td style="width: 137px;">
+<p>&nbsp;</p>
+</td>
+<td style="width: 142px;">
+<p>S, A</p>
+</td>
+</tr>
+<tr>
+<td style="width: 117px;" rowspan="3">
+<p>Hash-based</p>
+</td>
+<td style="width: 213px;">
+<p>One pass hash join</p>
+</td>
+<td style="width: 137px;">
+<p>I, S, A, L, F</p>
+</td>
+<td style="width: 142px;">
+<p>I, R, F</p>
+</td>
+</tr>
+<tr>
+<td style="width: 213px;">
+<p>Two pass hash join</p>
+</td>
+<td style="width: 137px;">
+<p>I, S, A, L, F</p>
+</td>
+<td style="width: 142px;">
+<p>I, R, F</p>
+</td>
+</tr>
+<tr>
+<td style="width: 213px;">
+<p>Inverse hash join</p>
+</td>
+<td style="width: 137px;">
+<p>R</p>
+</td>
+<td style="width: 142px;">
+<p>S, A, L</p>
+</td>
+</tr>
+<tr>
+<td style="width: 117px;" rowspan="2">
+<p>Merge-based</p>
+</td>
+<td style="width: 213px;">
+<p>Index merge join</p>
+</td>
+<td style="width: 137px;">
+<p>I, S, A</p>
+</td>
+<td style="width: 142px;">
+<p>I</p>
+</td>
+</tr>
+<tr>
+<td style="width: 213px;">
+<p>Sort merge join</p>
+</td>
+<td style="width: 137px;">
+<p>I, S, A</p>
+</td>
+<td style="width: 142px;">
+<p>I</p>
+</td>
+</tr>
+<tr>
+<td style="width: 609px;" colspan="4">
+<p>사용 가능한 조인의 종류</p>
+<ul>
+<li>&nbsp;C (Cartesian Product): 조인 관계를 갖지 않는 두 테이블의 조합</li>
+<li>&nbsp;I (Inner Join): 조인 관계를 갖는 두 테이블의 일반적인 조인</li>
+<li>&nbsp;S (Semi Join): Semi 조인 관계를 갖는 두 테이블의 조인</li>
+<li>&nbsp;A (Anti Join): Anti 조인 관계를 갖는 두 테이블의 조인</li>
+<li>&nbsp;L (Left outer join): Left outer 조인 관계를 갖는 두 테이블의 조인</li>
+<li>&nbsp;R (Right outer join): Right outer 조인 관계를 갖는 두 테이블의 조인</li>
+<li>&nbsp;F (Full outer join): Full outer 조인 관계를 갖는 두 테이블의 조인</li>
+</ul>
+<p>각 조인에 대한 자세한 설명은 <em>SQL Reference</em>에서 SELECT 구문의 설명을 참고한다.</p>
+</td>
+</tr>
+</tbody>
+</table>
 
->   [표 3‑5] 조인방법에 따른 사용 가능한 조인의 종류
+[표 3‑5] 조인방법에 따른 사용 가능한 조인의 종류
 
 옵티마이저는 위와 같은 다양한 조인 방법들 중 적용 가능한 조인 방법에 대한 비용
 평가를 통해 가장 효과적인 조인 방법을 선택하고 조인의 방향을 결정한다. 조인
@@ -2823,31 +3056,39 @@ Full nested loop join은 한 테이블의 모든 레코드를 다른 테이블�
 조인하는 방법이다. 이 방법은 일반적으로 아래 쿼리와 같이 조인 관계가 존재하지
 않는 두 테이블간의 조인시 사용될 가능성이 높다.
 
-SELECT \* FROM T1, T2;
+```
+SELECT * FROM T1, T2;
+```
 
 Full store nested loop join은 반복 테이블(inner table)의 결과를 저장한 후 full
 nested loop join을 적용하는 방법이다. 이 방법은 조인 조건 외의 조건 처리에
 의하여 결과 집합이 매우 줄어드는 경우 적용될 가능성이 높으며, 일반적으로 조인
 그룹간의 Cartesian product (교차 조인)에 의하여 사용될 가능성이 높다.
 
-SELECT \* FROM T1, T2 WHERE T1.i1 = 1 AND T2.i1 = 1;
+```
+SELECT * FROM T1, T2 WHERE T1.i1 = 1 AND T2.i1 = 1;
+```
 
 Index nested loop join은 인덱스를 이용하여 조인 조건을 처리하는 방법이다. 기준
 테이블 (outer table)의 레코드 수가 적고 반복 테이블(inner table)에 인덱스가
 존재하는 경우에 사용될 가능성이 높다.
 
+```
 Index on T2(i1)
 
-SELECT \* FROM T1, T2 WHERE T1.i1 = T2.i1 AND T1.i1 = 1;
+SELECT * FROM T1, T2 WHERE T1.i1 = T2.i1 AND T1.i1 = 1;
+```
 
 Anti outer nested loop join 방법은 FULL OUTER JOIN의 처리를 위해서만 사용된다.
 기준 테이블 (outer table)과 반복 테이블 (inner table) 모두 조인 조건에 해당하는
 칼럼에 인덱스가 정의되어 있을 때 다른 조인 방법에 비해 이 방법이 선택될 가능성이
 높다.
 
+```
 Index on T1(i1), Index on T2(i1)
 
-SELELCT \* FROM T1 FULL OUTER JOIN T2 ON T1.i1 = T2.i1;
+SELELCT * FROM T1 FULL OUTER JOIN T2 ON T1.i1 = T2.i1;
+```
 
 Inverse index nested loop join 방법은 SEMI JOIN의 처리를 위해서만 사용된다. 기준
 테이블(outer table)에 인덱스가 있고 반복 테이블(inner table)에는 인덱스가 없는
@@ -2855,9 +3096,11 @@ Inverse index nested loop join 방법은 SEMI JOIN의 처리를 위해서만 사
 상대적으로 많을 때 더욱 유리하다. 하지만 반복 테이블에 인덱스가 존재한다면 Index
 nested loop join이 선택될 가능성이 높다.
 
+```
 Index on T1(i1)
 
-SELECT \* FROM T1 WHERE T1.i1 IN ( SELECT i1 FROM T2 );
+SELECT * FROM T1 WHERE T1.i1 IN ( SELECT i1 FROM T2 );
+```
 
 각 조인의 수행 비용은 개략적으로 Access cost + Disk I/O cost로 계산된다.
 
@@ -2869,7 +3112,9 @@ Sort-based 조인 방법은 반복 테이블(inner table)을 정렬된 순서로
 조건을 이용하여 범위 검색을 하는 방법이다. 일반적으로 이 방법은 아래와 같이
 쿼리에 부등호 조인 조건이 사용되고 인덱스가 없을 때 선택될 가능성이 높다.
 
-SELECT \* FROM T1, T2 WHERE T1.i1 \> T2.i1;
+```
+SELECT * FROM T1, T2 WHERE T1.i1 > T2.i1;
+```
 
 sort-based 조인 계열에는 다음과 같은 조인 방법들이 있다.
 
@@ -2898,7 +3143,9 @@ sort-based join은 조인 결과를 정렬해서 반환하기 때문에 추가 �
 된다는 장점이 있다. Inverse sort-based join을 강제로 사용하고자 한다면 아래와
 같이 힌트를 사용해야 한다.
 
-SELECT \* FROM T1 WHERE T1.i1 IN ( SELECT /\*+ SORT_SJ \*/ i1 FROM T2 );
+```
+SELECT * FROM T1 WHERE T1.i1 IN ( SELECT /*+ SORT_SJ */ i1 FROM T2 );
+```
 
 각 조인의 수행 비용은 개략적으로 Access cost + Disk I/O cost로 계산된다.
 
@@ -2910,7 +3157,9 @@ Hash-based 조인 방법은 반복 테이블(inner table)을 hash 구조로 저�
 조건을 이용하여 범위 검색을 하는 방법이다. 이 방법은 아래와 같이 쿼리의 조인
 조건에 등호 연산자가 사용되고 인덱스가 없을 때 선택될 가능성이 높다.
 
-SELECT \* FROM T1, T2 WHERE T1.i1 = T2.i1;
+```
+SELECT * FROM T1, T2 WHERE T1.i1 = T2.i1;
+```
 
 hash-based 조인 계열에는 다음과 같은 조인 방법들이 있다.
 
@@ -2948,9 +3197,11 @@ Merge 조인이 사용되기 위해서는 양쪽 테이블이 모두 조인 키�
 한다. 따라서 아래와 같이 각각의 테이블이 인덱스를 통해 정렬되어 있는 경우에
 선택될 확률이 높다.
 
+```
 Index on T1(i1), Index on T2(a1)
 
-SELECT \* FROM T1, T2 WHERE T1.i1 = T2.a1;
+SELECT * FROM T1, T2 WHERE T1.i1 = T2.a1;
+```
 
 Merge 조인의 수행 비용은 개략적으로 Access cost + Disk I/O cost로 계산된다.
 
@@ -2989,46 +3240,262 @@ Merge 조인의 수행 비용은 개략적으로 Access cost + Disk I/O cost로 
 이러한 구분에 따라 Altibase에는 다음 표와 같은 물리 연산자가 존재한다. 각 실행
 노드에 대한 상세한 설명은 EXPLAIN PLAN 장에서 설명한다.
 
-| 구분            | 노드 이름                 | 기능                                                          |
-|-----------------|---------------------------|---------------------------------------------------------------|
-| 단일            | SCAN                      | 다양한 액세스 방법을 사용해서 테이블에서 데이터 검색          |
-| 비저장          |                           |                                                               |
-| 노드            |                           |                                                               |
-|                 | FILTER                    | 액세스 방법으로 filtering 되지 않는 데이터의 filtering 처리   |
-|                 | PROJECT                   | 프로젝션 처리                                                 |
-|                 | GROUPING                  | 그룹 처리                                                     |
-|                 | AGGREGATION               | Aggregation 연산 수행                                         |
-|                 | VIEW                      | 뷰 레코드 구성                                                |
-|                 | VIEW-SCAN                 | 임시 저장 뷰에 대한 검색                                      |
-|                 | COUNT                     | 특수 COUNT(\*)의 처리                                         |
-|                 | PARALLEL-QUEUE            | 병렬 질의 처리                                                |
-| 단일            | SORT                      | 레코드의 정렬                                                 |
-| 저장            |                           |                                                               |
-| 노드            |                           |                                                               |
-|                 | HASH                      | 레코드의 해싱                                                 |
-|                 | GROUP-AGGREGATION         | 해싱 방식에 의한 그룹 구분과 aggregation 연산 수행            |
-|                 | DISTINCT                  | 해싱 방식에 의한 중복 제거                                    |
-|                 | MATERIALIZATION           | 임시 저장 뷰의 관리                                           |
-|                 | STORE                     | 레코드의 저장                                                 |
-|                 | LIMIT-SORT                | LIMIT 절을 위한 정렬                                          |
-|                 | CONNECT BY                | 계층 질의의 처리                                              |
-| 이진            | JOIN                      | 조인 처리                                                     |
-| 비저장          |                           |                                                               |
-| 노드            |                           |                                                               |
-|                 | MERGE-JOIN                | 머지 조인 처리                                                |
-|                 | LEFT-OUTER-JOIN           | LEFT OUTER 조인 처리                                          |
-|                 | FULL-OUTER-JOIN           | FULL OUTER 조인 처리                                          |
-|                 | ANTI-OUTER-JOIN           | ANTI OUTER 조인 처리                                          |
-|                 | CONCATENATION             | 자식 노드의 결과 조합                                         |
-|                 | BAG-UNION                 | BAG UNION의 처리                                              |
-| 이진            | SET-INTERSECT             | SET INTERSECT 집합 연산 수행                                  |
-| 저장 노드       |                           |                                                               |
-|                 | SET-DIFFERENCE            | SET DIFFERENCE 집합 연산 수행                                 |
-| 다중            | PARTITION-COORDINATIOR    | 파티션드 테이블의 각 파티션에 대한 스캔을 관리하는 노드       |
-| 비저장 노드     |                           |                                                               |
-|                 | PARALLEL-SCAN-COORDINATOR | 자식 PARALLEL-QUEUE 노드들을 병렬로 수행하고 수행 결과를 취합 |
+<table style="width: 672px;">
+<tbody>
+<tr>
+<td style="width: 70px; text-align: center;">
+<p><strong>구분</strong></p>
+</td>
+<td style="width: 192px; text-align: center;">
+<p><strong>노드 이름</strong></p>
+</td>
+<td style="width: 398px; text-align: center;">
+<p><strong>기능</strong></p>
+</td>
+</tr>
+<tr>
+<td style="width: 70px;" rowspan="9">
+<p>단일<br /> 비저장<br /> 노드</p>
+</td>
+<td style="width: 192px;">
+<p>SCAN</p>
+</td>
+<td style="width: 398px;">
+<p>다양한 액세스 방법을 사용해서 테이블에서 데이터 검색</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>FILTER</p>
+</td>
+<td style="width: 398px;">
+<p>액세스 방법으로 filtering 되지 않는 데이터의 filtering 처리</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>PROJECT</p>
+</td>
+<td style="width: 398px;">
+<p>프로젝션 처리</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>GROUPING</p>
+</td>
+<td style="width: 398px;">
+<p>그룹 처리</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>AGGREGATION</p>
+</td>
+<td style="width: 398px;">
+<p>Aggregation 연산 수행</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>VIEW</p>
+</td>
+<td style="width: 398px;">
+<p>뷰 레코드 구성</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>VIEW-SCAN</p>
+</td>
+<td style="width: 398px;">
+<p>임시 저장 뷰에 대한 검색</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>COUNT</p>
+</td>
+<td style="width: 398px;">
+<p>특수 COUNT(*)의 처리</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>PARALLEL-QUEUE</p>
+</td>
+<td style="width: 398px;">
+<p>병렬 질의 처리</p>
+</td>
+</tr>
+<tr>
+<td style="width: 70px;" rowspan="8">
+<p>단일<br /> 저장<br /> 노드</p>
+</td>
+<td style="width: 192px;">
+<p>SORT</p>
+</td>
+<td style="width: 398px;">
+<p>레코드의 정렬</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>HASH</p>
+</td>
+<td style="width: 398px;">
+<p>레코드의 해싱</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>GROUP-AGGREGATION</p>
+</td>
+<td style="width: 398px;">
+<p>해싱 방식에 의한 그룹 구분과 aggregation 연산 수행</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>DISTINCT</p>
+</td>
+<td style="width: 398px;">
+<p>해싱 방식에 의한 중복 제거</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>MATERIALIZATION</p>
+</td>
+<td style="width: 398px;">
+<p>임시 저장 뷰의 관리</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>STORE</p>
+</td>
+<td style="width: 398px;">
+<p>레코드의 저장</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>LIMIT-SORT</p>
+</td>
+<td style="width: 398px;">
+<p>LIMIT 절을 위한 정렬</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>CONNECT BY</p>
+</td>
+<td style="width: 398px;">
+<p>계층 질의의 처리</p>
+</td>
+</tr>
+<tr>
+<td style="width: 70px;" rowspan="7">
+<p>이진<br /> 비저장<br /> 노드</p>
+</td>
+<td style="width: 192px;">
+<p>JOIN</p>
+</td>
+<td style="width: 398px;">
+<p>조인 처리</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>MERGE-JOIN</p>
+</td>
+<td style="width: 398px;">
+<p>머지 조인 처리</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>LEFT-OUTER-JOIN</p>
+</td>
+<td style="width: 398px;">
+<p>LEFT OUTER 조인 처리</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>FULL-OUTER-JOIN</p>
+</td>
+<td style="width: 398px;">
+<p>FULL OUTER 조인 처리</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>ANTI-OUTER-JOIN</p>
+</td>
+<td style="width: 398px;">
+<p>ANTI OUTER 조인 처리</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>CONCATENATION</p>
+</td>
+<td style="width: 398px;">
+<p>자식 노드의 결과 조합</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>BAG-UNION</p>
+</td>
+<td style="width: 398px;">
+<p>BAG UNION의 처리</p>
+</td>
+</tr>
+<tr>
+<td style="width: 70px;" rowspan="2">
+<p>이진<br /> 저장 노드</p>
+</td>
+<td style="width: 192px;">
+<p>SET-INTERSECT</p>
+</td>
+<td style="width: 398px;">
+<p>SET INTERSECT 집합 연산 수행</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>SET-DIFFERENCE</p>
+</td>
+<td style="width: 398px;">
+<p>SET DIFFERENCE 집합 연산 수행</p>
+</td>
+</tr>
+<tr>
+<td style="width: 70px;" rowspan="2">
+<p>다중<br /> 비저장 노드</p>
+</td>
+<td style="width: 192px;">
+<p>PARTITION-COORDINATIOR</p>
+</td>
+<td style="width: 398px;">
+<p>파티션드 테이블의 각 파티션에 대한 스캔을 관리하는 노드</p>
+</td>
+</tr>
+<tr>
+<td style="width: 192px;">
+<p>PARALLEL-SCAN-COORDINATOR</p>
+</td>
+<td style="width: 398px;">
+<p>자식 PARALLEL-QUEUE 노드들을 병렬로 수행하고 수행 결과를 취합</p>
+</td>
+</tr>
+</tbody>
+</table>
 
->   [표 3‑6] 실행 노드의 종류
+[표 3‑6] 실행 노드의 종류
 
 #### 저장 노드의 특징
 
