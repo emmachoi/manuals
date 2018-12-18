@@ -918,7 +918,9 @@ Altibase는 새로운 로그파일이 생성될 때, 트랜잭션의 응답 시�
 아래는 미리 만들어둔 로그파일의 여분이 부족해서 로그 파일이 생성되기를 기다린
 횟수를 확인하는 쿼리이다.
 
-SELECT lf_prepare_wait_count FROM v\$lfg;
+```
+SELECT lf_prepare_wait_count FROM v$lfg;
+```
 
 이 값이 크다면 PREPARE_LOG_FILE_COUNT 프로퍼티의 값을 더 큰 값으로 설정하여
 로그파일 매니저가 충분한 개수의 로그파일을 미리 만들도록 한다. 단, 이 값이
@@ -933,31 +935,26 @@ Altibase는 체크포인트를 수행 중 디스크 I/O 부하로 성능이 저�
 아래 메시지를 출력하는 3, 4 단계에 소요되는 시간이 길다면 디스크 I/O를
 모니터링할 필요가 있다.
 
+```
 [CHECKPOINT-step3] Flush Dirty Page(s)
-
 [CHECKPOINT-step4] sync Database File
+```
 
 sar, iostat 등의 커맨드를 사용해서 디스크 I/O의 병목을 확인할 수 있다.
 
-\$ sar 1 3
-
+```
+$ sar 1 3
 02:32:26 PM CPU %user %nice %system %iowait %idle
-
 02:32:30 PM all 0.25 0.00 2.87 1.87 95.01
-
 02:32:31 PM all 0.12 0.00 6.24 6.99 86.64
-
 02:32:32 PM all 0.25 0.00 8.61 3.75 87.39
 
-\$ iostat 1
-
+$ iostat 1
 avg-cpu: %user %nice %sys %iowait %idle
-
 0.13 0.00 8.76 3.88 87.23
-
 Device: tps Blk_read/s Blk_wrtn/s Blk_read Blk_wrtn
-
 sdb1 2821.78 63.37 608388.12 64 614472
+```
 
 만약 디스크 I/O의 병목이 성능 저하의 원인이라면 로그파일과 데이터파일이 저장되는
 디스크를 분리해서 문제를 해결할 수 있다.
@@ -970,8 +967,7 @@ sdb1 2821.78 63.37 608388.12 64 614472
     있다. 이 때 이 프로퍼티는 한 번에 디스크로 기록하는 더티 페이지의 개수를
     설정한다.
 
--   CHECKPOINT_BULK_WRITE_SLEEP_SEC  
-    CHECKPOINT_BULK_WRITE_SLEEP_USEC  
+-   CHECKPOINT_BULK_WRITE_SLEEP_SEC  / CHECKPOINT_BULK_WRITE_SLEEP_USEC  
     CHECKPOINT_BULK_WRITE_PAGE_COUNT의 값이 0이 아닐 때 더티 페이지들을 디스크로
     저장 후 대기하는 시간(초, 마이크로초)을 설정한다.
 
@@ -989,9 +985,10 @@ Altibase 서버는 디스크 테이블의 경우 한정된 메모리 버퍼에 �
 
 버퍼 관련 정보는 V\$BUFFPOOL_STAT 성능 뷰를 조회하여 파악할 수 있다.
 
-SELECT hit_ratio 'HIT_RATIO(%)', victim_search_warp
-
-FROM v\$buffpool_stat;
+```
+SELECT hit_ratio 'HIT_RATIO(%)', victim_search_warp 
+FROM v$buffpool_stat;
+```
 
 V\$BUFFPOOL_STAT 성능 뷰의 HIT_RAIO 칼럼 값이 작으면 메모리 버퍼 대신에
 디스크로부터 읽기(read page) 횟수가 많음을 나타낸다. 즉 이 값이 작으면, Altibase
@@ -1028,27 +1025,19 @@ Altibase는 항상 최적화된 개수의 서비스 쓰레드를 유지하기 �
 서버의 성능이 저하될 수 있다. V\$SERVICE_THREAD 성능 뷰를 조회해서 서비스 쓰레드
 관련 부하를 확인할 수 있다.
 
-iSQL\> SELECT rpad(type, 30), count(\*)
-
-FROM V\$SERVICE_THREAD GROUP BY type
-
-UNION ALL
-
-SELECT rpad(name, 30), value1 FROM V\$PROPERTY
-
-WHERE name LIKE 'MULTIPLEXING%_THREAD_COUNT';
-
-RPAD(TYPE, 30) COUNT
-
-\-----------------------------------------------
-
-SOCKET 44
-
-IPC 10
-
-MULTIPLEXING_THREAD_COUNT 8
-
-MULTIPLEXING_MAX_THREAD_COUNT 1024
+```
+iSQL> SELECT rpad(type, 30), count(*) 
+    FROM V$SERVICE_THREAD GROUP BY type
+    UNION ALL
+    SELECT rpad(name, 30), value1 FROM V$PROPERTY
+    WHERE name LIKE 'MULTIPLEXING%_THREAD_COUNT';
+RPAD(TYPE, 30)                  COUNT
+-----------------------------------------------
+SOCKET                          44
+IPC                             10
+MULTIPLEXING_THREAD_COUNT       8
+MULTIPLEXING_MAX_THREAD_COUNT   1024
+```
 
 위 결과와 같이 SOCKET 항목의 수치가 MULTIPLEXING_THREAD_COUNT 항목의 수치보다
 크다면 아래의 조치를 취할 수 있다.
@@ -1096,30 +1085,25 @@ collector 또는 ager)는 불필요한 오래된 버전의 데이터가 차지�
 확인할 수 있다. GCGAP 값은 가비지 콜렉터가 삭제해야 할 오래된 버전의 양을
 의미한다.
 
-iSQL\> SELECT gc_name, add_oid_cnt, gc_oid_cnt , add_oid_cnt - gc_oid_cnt gcgap
-FROM v\$memgc;
-
-ADD_OID_CNT GC_OID_CNT GCGAP
-
-\----------------------------------------------
-
-113 113 0
+```
+iSQL> SELECT gc_name, add_oid_cnt, gc_oid_cnt , add_oid_cnt - gc_oid_cnt gcgap FROM v$memgc;
+ADD_OID_CNT      GC_OID_CNT      GCGAP 
+---------------------------------------------- 
+113              113             0
+```
 
 아래의 쿼리는 가비지 콜렉터가 메모리 회수를 위해 커밋하기를 대기하고 있는
 트랜잭션을 조회한다. 이렇게 조회되는 트랜잭션에 대해서는 트랜잭션이 수행하는
 쿼리문을 튜닝할 필요가 있다.
 
+```
 SELECT session_id, total_time, execute_time, tx_id, query
-
-FROM v\$statement
-
-WHERE tx_id IN (SELECT id FROM v\$transaction
-
-WHERE memory_view_scn = (SELECT minmemscnintxs FROM v\$memgc LIMIT 1))
-
+FROM v$statement
+WHERE tx_id IN (SELECT id FROM v$transaction
+    WHERE memory_view_scn = (SELECT minmemscnintxs FROM v$memgc LIMIT 1))
 AND execute_flag = 1
-
 ORDER BY 2 DESC;
+```
 
 가비지 콜렉터가 메모리 회수 작업을 자주 수행하도록 AGER_WAIT_MUNIMUM,
 AGER_WAIT_MAXIMUM 프로퍼티 값을 조절하는 것도 MVCC 동작으로 인해 메모리 사용량이
@@ -1142,34 +1126,27 @@ OS별로 쓰레드의 CPU 사용률을 확인하는 명령어는 다음과 같�
 | HPUX  | glance +s +G                  |
 | LINUX | ps -Lfm -p altibase_pid       |
 
-예제)
+예제
 
-\$ ps -mo THREAD -p 1003630
-
+```
+$ ps -mo THREAD -p 1003630
 USER PID PPID TID ST CP PRI SC WCHAN F TT BND COMMAND
-
-snkim 1003630 1 - A 92 60 25 \* 40001 - - /home2..
-
-\- - - 1405123 S 0 60 1 - 410400 - - -
-
-\- - - 1687749 S 0 60 1 f100070f10019c40 8410400 - -
-
-\- - - 3907689 S 92 106 1 f10001004af1b2c0 400000 - -
-
+snkim 1003630 1 - A 92 60 25 * 40001 - - /home2..
+- - - 1405123 S 0 60 1 - 410400 - - -
+- - - 1687749 S 0 60 1 f100070f10019c40 8410400 - -
+- - - 3907689 S 92 106 1 f10001004af1b2c0 400000 - -
 …
+```
 
-CPU 사용률이 높은 쓰레드가 어떤 작업을 하고 있는지 확인하는 명령어는 다음과
-같다.
+CPU 사용률이 높은 쓰레드가 어떤 작업을 하고 있는지 확인하는 명령어는 다음과 같다.
 
 -   HP-UX, Linux
-
-pstack altibase_pid
+    pstack altibase_pid
 
 -   AIX
+    procstack altibase_pid
 
-procstack altibase_pid
-
-쿼리 옵티마이저
+3.쿼리 옵티마이저
 ---------------
 
 이 장은 옵티마이저의 구조를 살펴보고 질의문이 최적화되기 위해 어떤 과정을
@@ -1190,7 +1167,9 @@ procstack altibase_pid
 
 이러한 과정을 수행하는 옵티마이저의 구조는 다음과 같다.
 
->   [그림 3‑1] 옵티마이저 구조
+![optimizer_structure](D:\emmachoigit\manuals\media\TuningGuide\optimizer_structure.gif)
+
+[그림 3‑1] 옵티마이저 구조
 
 옵티마이저는 크게 Query Rewriter, Logical Plan Generator, Physical Plan
 Generator로 구성된다. 각 구성요소의 역할은 다음과 같다.
@@ -1260,24 +1239,24 @@ Generator가 쿼리 플랜을 최적화하는 단계에서 사용한다.
 아래의 예제에서 OR 뒷부분의 ( department_id=60 ) 조건은 앞선 조건에 포함되어
 있으므로 옵티마이저가 해당 조건을 삭제하게 된다.
 
+```
 SELECT department_id, salary
-
-FROM employee
-
-WHERE ( department_id = 60 AND salary = 4200 )
-
-OR ( department_id = 60 );
+FROM   employee
+WHERE  ( department_id = 60 AND salary = 4200 )
+   OR  ( department_id = 60 );
+```
 
 아래의 예제에서는 salary = 4200 조건이 무의미하므로 옵티마이저가 해당 조건을
 삭제하게 된다.
 
+```
 SELECT department_id, salary
+FROM   employee
+WHERE  ( department_id = 60 OR salary = 4200 )
+  AND  ( department_id = 60 );
+```
 
-FROM employee
 
-WHERE ( department_id = 60 OR salary = 4200 )
-
-AND ( department_id = 60 );
 
 #### Constant Filter우선 처리
 
@@ -1293,7 +1272,9 @@ Constant filter는 항상 같은 논리값을 갖기 때문에 질의 수행 과
 그 예로 스키마만 구성하고 데이터는 구축하지 않는 경우에 constant filter를 활용할
 수 있다. 다음과 같은 질의가 이에 해당하는 예이다.
 
-CREATE TABLE T3 AS SELECT \* FROM T1, T2 WHERE 1 \<\> 1;
+```
+CREATE TABLE T3 AS SELECT * FROM T1, T2 WHERE 1 <> 1;
+```
 
 위와 같이 T1과 T2 테이블의 데이터는 가지지 않으면서 모든 칼럼 정보를 가진 T3
 테이블을 만들고 싶을 경우 constant filter를 사용하면 원하는 작업을 수행할 수
@@ -1301,7 +1282,9 @@ CREATE TABLE T3 AS SELECT \* FROM T1, T2 WHERE 1 \<\> 1;
 
 또한, 다음 예와 같이 검색 권한을 제한하는 용도로 활용할 수 있다.
 
-SELECT \* FROM T1, T2 WHERE T1.i1 = T2.a1 AND ? \> 20;
+```
+SELECT * FROM T1, T2 WHERE T1.i1 = T2.a1 AND ? > 20;
+```
 
 위와 같이 나이값에 해당하는 호스트 변수를 지정하여 조건에 부합하지 않는 사용자가
 질의를 수행하거나 결과값이 없는 질의의 수행으로 인한 부하 등을 방지할 수 있다.
@@ -1310,7 +1293,9 @@ SELECT \* FROM T1, T2 WHERE T1.i1 = T2.a1 AND ? \> 20;
 filter로 처리하여 한 번만 수행하고 subquery가 반복적으로 수행되지 않게 할 수
 있다.
 
-SELECT \* FROM T1 WHERE EXISTS ( SELECT \* FROM T2 WHERE T2.date = SYSDATE );
+```
+SELECT * FROM T1 WHERE EXISTS ( SELECT * FROM T2 WHERE T2.date = SYSDATE );
+```
 
 위의 예제에서 EXISTS 조건은 T1의 데이터와 전혀 관계 없는 constant filter이다.
 
@@ -1324,33 +1309,23 @@ SELECT \* FROM T1 WHERE EXISTS ( SELECT \* FROM T2 WHERE T2.date = SYSDATE );
 아래는 emp_engineer 뷰와 departments 테이블을 조인하는 쿼리문이 뷰 Merging에
 의해 변환되는 예제이다.
 
+```
 CREATE OR REPLACE VIEW emp_engineer
-
 AS
-
 SELECT eno, e_lastname, emp_job, salary, dno
-
 FROM employees
-
 WHERE emp_job='engineer';
 
 SELECT e.eno, e.e_lastname, e.salary, d.dname, d.mgr_no
-
 FROM emp_engineer e, departments d
-
-WHERE d.dno=e.dno AND e.salary\>=1500;
-
-=\>
-
+WHERE d.dno=e.dno AND e.salary>=1500;
+=>
 SELECT e.eno, e.e_lastname, e.salary, d.dname, d.mgr_no
-
 FROM employees e, departments d
-
-WHERE d.dno=e.dno
-
+WHERE d.dno=e.dno 
 AND e.emp_job='engineer'
-
-AND e.salary\>=1500;
+AND e.salary>=1500;
+```
 
 \* 관련 힌트: NO_MERGE
 
@@ -1364,17 +1339,14 @@ WHERE절에 포함된 부질의를 중첩된 부질의(Nested Subquery)이라고
 아래는 중첩된 부질의를 포함하는 쿼리가 Subquery unnesting에 의해 변환되는
 예제이다.
 
-SELECT \* FROM employees
-
+```
+SELECT * FROM employees
 WHERE dno IN (SELECT dno FROM departments)
-
-=\>
-
-SELECT \*
-
+=>
+SELECT *
 FROM (SELECT dno FROM departments) d, employees e
-
 WHERE d.dno=e.dno;
+```
 
 \* 관련 힌트: UNNEST, NO_UNNEST
 
@@ -1397,15 +1369,18 @@ WHERE 절에 기술된 조건을 뷰의 내부로 밀어넣는 기법이다.
 
 예를 들어, 다음과 같이 정의된 뷰와 이에 대한 질의가 있다고 하자.
 
-CREATE VIEW V1(a1, a2) AS SELECT i1, i2 FROM T1 WHERE i2 \> 20;
-
-SELECT \* FROM V1 WHERE a1 = 1;
+```
+CREATE VIEW V1(a1, a2) AS SELECT i1, i2 FROM T1 WHERE i2 > 20;
+SELECT * FROM V1 WHERE a1 = 1;
+```
 
 옵티마이저는 해당 질의의 최적화 과정에서 뷰에 대한 조건절 Pushdown을 사용하는
 것이 최적화에 유리하다고 판단하면, WHERE 절의 조건이 내부적으로 다음과 같은
 형태로 처리되도록 결정한다. 이를 개념적으로 표현한 질의는 다음과 같다.
 
-SELECT \* FROM ( SELECT i1, i2 FROM T1 WHERE i2 \> 20 **AND i1 =1** ) V1;
+```
+SELECT * FROM ( SELECT i1, i2 FROM T1  WHERE i2 > 20 AND i1 =1 ) V1;
+```
 
 즉, 위와 같이 질의를 변형시켜 T1.i1 칼럼의 인덱스를 활용할 수 있도록 한다.
 그러나 옵티마이저가 항상 이런 종류의 Pushdown 을 사용하도록 결정하지는 않는다.
@@ -1426,13 +1401,16 @@ FROM 절에 outer join이 사용된 경우 다양한 형태의 조건절 Pushdow
 
 예를 들어 다음과 같은 질의를 살펴 보자
 
-SELECT \* FROM T1 LEFT OUTER JOIN T2 ON T1.i1 = T2.a1 WHERE T1.i1 = 1;
+```
+SELECT * FROM T1 LEFT OUTER JOIN T2 ON T1.i1 = T2.a1 WHERE T1.i1 = 1;
+```
 
 위 질의에 조건절 Pushdown 기법이 적용될 경우 개념적으로 다음과 같은 질의 형태로
 처리된다.
 
-SELECT \* FROM **(SELECT \* FROM T1 WHERE T1.i1 = 1)** T1 LEFT OUTER JOIN T2 ON
-T1.i1 = T2.a1;
+```
+SELECT * FROM (SELECT * FROM T1 WHERE T1.i1 = 1) T1 LEFT OUTER JOIN T2 ON T1.i1 = T2.a1;
+```
 
 즉, left outer join에 대한 조인 조건을 처리하기 전에 T1.i1 = 1 조건을 먼저
 처리하여 T1의 결과 집합을 줄인다.
@@ -1441,27 +1419,30 @@ T1.i1 = T2.a1;
 들어 다음의 세 질의는 경우에 따라 서로 다른 결과를 생성하며, 동일한 질의가
 아니다.
 
-SELECT \* FROM T1 LEFT OUTER JOIN T2 ON T1.i1 = T2.a1 WHERE T2.a1 = 1;
-
-SELECT \* FROM T1 LEFT OUTER JOIN **(SELECT \* FROM T2 WHERE T2.a1 = 1)** T2 ON
-T1.i1 = T2.a1;
-
-SELECT \* FROM T1 LEFT OUTER JOIN T2 ON T1.i1 = T2.a1 **AND T2.a1 = 1**;
+```
+SELECT * FROM T1 LEFT OUTER JOIN T2 ON T1.i1 = T2.a1 WHERE T2.a1 = 1;
+SELECT * FROM T1 LEFT OUTER JOIN (SELECT * FROM T2 WHERE T2.a1 = 1) T2 ON T1.i1 = T2.a1;
+SELECT * FROM T1 LEFT OUTER JOIN T2 ON T1.i1 = T2.a1 AND T2.a1 = 1;
+```
 
 옵티마이저는 수학적 동치인 상태에서 동일한 결과를 얻기 위해서 위의 질의를 다음과
 같은 형태로 조건절 Pushdown을 적용한다.
 
-SELECT \* FROM T1 LEFT OUTER JOIN  
-**(SELECT \* FROM T2 WHERE T2.a1 = 1)** T2  
-ON T1.i1 = T2.a1  
-**WHERE T2.a1 = 1;**
+```
+SELECT *  FROM T1 LEFT OUTER JOIN 
+(SELECT * FROM T2 WHERE T2.a1 = 1) T2 
+ON T1.i1 = T2.a1
+WHERE T2.a1 = 1;
+```
 
 Left outer join의 경우 WHERE 조건을 ON 절에 옮겨 처리하고 싶다면 다음과 같이
 WHERE 절에 반드시 남겨 두어야 동일한 결과를 보장받을 수 있다.
 
-SELECT \* FROM T1 LEFT OUTER JOIN T2  
-ON T1.i1 = T2.a1 **AND T2.a1 = 1**  
-**WHERE T2.a1 = 1**;
+```
+SELECT *  FROM T1 LEFT OUTER JOIN T2 
+ON T1.i1 = T2.a1 AND T2.a1 = 1
+WHERE T2.a1 = 1;
+```
 
 위의 예제에서 알 수 있듯이, 사용자가 임의로 질의 조건을 추가하여 조건절
 Pushdown과 유사한 효과를 기대할 수 있다. 하지만 조건을 추가하여 동일한 결과를
@@ -1472,25 +1453,28 @@ Pushdown과 유사한 효과를 기대할 수 있다. 하지만 조건을 추가
 조건절 Pushdown은 특히 집합 연산을 통해 생성된 뷰를 처리할 때 매우 효과적이다.
 예를 들어 다음과 같은 뷰와 이를 이용한 질의를 살펴 보자.
 
-CREATE VIEW V1(a1, a2) AS ( SELECT m1, m2 FROM T2
-
-UNION ALL SELECT x1, y1 FROM T3 );
-
-SELECT \* FROM T1, V1 WHERE T1.i1 = V1.a1 AND T1.i1 = 1;
+```
+CREATE VIEW V1(a1, a2) AS ( SELECT m1, m2 FROM T2 UNION ALL SELECT x1, y1 FROM T3 );
+SELECT * FROM T1, V1 WHERE T1.i1 = V1.a1 AND T1.i1 = 1;
+```
 
 위의 뷰 정의에서 T2.m1 과 T3.x1 칼럼에 모두 인덱스가 있다고 해도 해당 질의를
 수행할 때 어떤 인덱스도 사용되지 않는다. 이 때 먼저 아래의 절에서 설명하는
 '조건절 이행'을 통해 아래와 같이 V1.a1=1 조건절이 내부적으로 생성된다.
 
-SELECT \* FROM T1, V1 WHERE T1.i1 = V1.a1 AND T1.i1 = 1 **AND V1.a1 = 1**;
+```
+SELECT * FROM T1, V1 WHERE T1.i1 = V1.a1 AND T1.i1 = 1 AND V1.a1 = 1;
+```
 
 이 상태에서 조건절 Pushdown을 통해 쿼리가 다음과 같이 변환되어 T2.m1 과 T3.x1
 칼럼의 인덱스를 모두 사용할 수 있게 된다.
 
-SELECT \* FROM T1, ( SELECT m1, m2 FROM T2 WHERE T2**.m1 = 1**  
-UNION ALL  
-SELECT x1, y1 FROM T3 WHERE **T3.x1 = 1** ) V1  
-WHERE T1.i1 = V1.a1 AND T1.i1 = 1;
+```
+SELECT * FROM T1, ( SELECT m1, m2 FROM T2 WHERE T2.m1 = 1 
+  UNION ALL
+  SELECT x1, y1 FROM T3 WHERE T3.x1 = 1 ) V1
+  WHERE T1.i1 = V1.a1 AND T1.i1 = 1;
+```
 
 위와 같이 조건절의 적절한 기술은 옵티마이저가 보다 효율적인 실행 계획을 작성하는
 데 도움을 주며, 사용자의 명시적인 조건절의 변경을 통해 성능 향상을 꾀할 수 있다.
@@ -1511,12 +1495,16 @@ WHERE T1.i1 = V1.a1 AND T1.i1 = 1;
 
 예를 들어 다음과 같은 질의를 살펴보자
 
-SELECT \* FROM T1, T2 WHERE T1.i1 = T2.a1 AND T1.i1 = 1;
+```
+SELECT * FROM T1, T2 WHERE T1.i1 = T2.a1 AND T1.i1 = 1;
+```
 
 해당 질의를 처리하기 위해 어떠한 인덱스도 사용할 수 없을 경우 다음과 같이 유사한
 단일 테이블 조건을 추가하면, 성능 향상에 도움이 된다.
 
-SELECT \* FROM T1, T2 WHERE T1.i1 = T2.a1 AND T1.i1 = 1 **AND T2.a1 = 1**;
+```
+SELECT * FROM T1, T2 WHERE T1.i1 = T2.a1 AND T1.i1 = 1 AND T2.a1 = 1;
+```
 
 즉, T2 의 결과 집합의 크기를 줄임으로서 성능을 향상시킬 수 있다.
 
@@ -1528,9 +1516,10 @@ SELECT \* FROM T1, T2 WHERE T1.i1 = T2.a1 AND T1.i1 = 1 **AND T2.a1 = 1**;
 
 예를 들어 다음과 같은 뷰의 정의와 관련 질의를 살펴 보자
 
+```
 CREATE VIEW V1(a1, a2) AS SELECT i1, SUM(i2) FROM T1 GROUP BY i1;
-
-SELECT \* FROM V1 WHERE V1.a2 \> (SELECT AVG(a2) FROM V1 WHERE a1 \> 10 );
+SELECT * FROM V1 WHERE V1.a2 > (SELECT AVG(a2) FROM V1 WHERE a1 > 10 );
+```
 
 위와 같은 질의에 대하여 view materialization 기법이 사용되면, V1뷰의 결과는
 임시로 저장되고 최상위 질의와 subquery는 이를 사용하게 된다. 즉, V1의 결과를
@@ -1565,15 +1554,19 @@ CNF 정규화는 주어진 조건절을 AND연산자를 최상위로 하여 하�
 구성되도록 재배치하는 것이다. 다음 예는 조건절이 CNF정규화를 사용해서 변환될 때
 결과로 나타나는 구조를 보여준다.
 
--   WHERE (i1 = 1 AND i2 = 1) OR i3 = 1  
-    CNF: (i1 = 1 OR i3 = 1) AND (i2 = 1 OR i3 = 1)
+```
+WHERE (i1 = 1 AND i2 = 1) OR i3 = 1  
+CNF: (i1 = 1 OR i3 = 1) AND (i2 = 1 OR i3 = 1)
+```
 
 DNF 정규화는 주어진 조건절을 OR 연산자를 최상위로 하여 하위에 AND 논리
 연산자로만 구성되도록 재배치하는 과정이다. 다음 예는 조건절이 DNF 정규화를
 사용해서 변환될 때 결과로 나타나는 구조를 보여준다.
 
--   WHERE (i1 = 1 OR i2 = 1) AND i3 = 1  
-    DNF: (i1 = 1 AND i3 = 1) OR (i2 = 1 AND i3 = 1)
+```
+WHERE (i1 = 1 OR i2 = 1) AND i3 = 1  
+DNF: (i1 = 1 AND i3 = 1) OR (i2 = 1 AND i3 = 1)
+```
 
 즉, 옵티마이저는 주어진 조건절을 CNF로 변환했을 때의 실행 비용과, DNF로 변환했을
 때의 실행 비용을 비교하여 보다 나은 정규화 형태를 선택하게 된다.
@@ -1581,9 +1574,11 @@ DNF 정규화는 주어진 조건절을 OR 연산자를 최상위로 하여 하�
 일반적으로 옵티마이저는 CNF 기반의 실행 계획을 선택하며, 일부의 경우 DNF 기반의
 실행 계획을 선택한다. 예를 들어, 다음과 같은 질의를 살펴보자.
 
--   SELECT \* FROM T1 WHERE i1 = 1 OR i2 = 1;  
-    CNF 정규화: AND (i1 = 1 OR i2 = 1)  
-    DNF 정규화: (i1 = 1 AND ) OR (i2 = 1 AND )
+```
+SELECT * FROM T1 WHERE i1 = 1 OR i2 = 1;
+CNF 정규화: AND (i1 = 1 OR i2 = 1)
+DNF 정규화: (i1 = 1 AND ) OR (i2 = 1 AND )
+```
 
 위의 조건절은 T1 테이블에 인덱스가 없거나 하나의 칼럼에만 인덱스가 있는 경우는
 CNF로 처리된다. 즉, T1 테이블을 전체 스캔하여 질의를 처리하는 것이 가장
@@ -1609,17 +1604,23 @@ DNF를 모두 구성하고 각각의 비용을 비교하여 실행 계획을 생
 예를 들어, 다음 조건절은 CNF 또는 DNF로 수행이 가능하지만, 이는 질의 변경을 통해
 CNF로만 동작하게 할 수 있다.
 
--   WHERE i1 = 1 OR i1 = 2 OR i1 = 3  
-    CNF 정규화: i1 IN (1, 2, 3)
+```
+WHERE i1 = 1 OR i1 = 2 OR i1 = 3  
+CNF 정규화: i1 IN (1, 2, 3)
+```
 
 유사한 예로 다음과 같은 질의는 CNF 또는 DNF로의 질의 변형을 통해 불필요한 정규화
 과정을 제거하고 동일한 조건 비교를 방지하여 성능을 향상할 수 있다.
 
--   WHERE (i1 = 1 AND i2 = 1) OR (i1 = 2 AND i2 = 2)  
-    CNF 정규화: (i1, i2) IN ( (1,1), (2,2) )
+```
+WHERE (i1 = 1 AND i2 = 1) OR (i1 = 2 AND i2 = 2)  
+CNF 정규화: (i1, i2) IN ( (1,1), (2,2) )
+```
 
--   WHERE (i1 = 1 AND i2 = 1) OR ( i3 = 1 AND i4 = 1)  
-    DNF 정규화: (i1, i2) = (1, 1) OR (i3, i4) = (1, 1)
+```
+WHERE (i1 = 1 AND i2 = 1) OR ( i3 = 1 AND i4 = 1)  
+DNF 정규화: (i1, i2) = (1, 1) OR (i3, i4) = (1, 1)
+```
 
 물론 정규화 형태의 기술 시 테이블의 인덱스 정보 등을 반드시 고려하여야 한다.
 사용자가 정규화 형태로 기술하여도, 옵티마이저가 사용자가 원하지 않는 정규화
@@ -1671,26 +1672,20 @@ CNF로만 동작하게 할 수 있다.
 
 아래 예제는 전체 테이블 스캔이 사용되는 쿼리와 실행 계획을 보여준다.
 
-iSQL\> SELECT /\*+ FULL SCAN(employees) \*/ eno, e_firstname, e_lastname,
-emp_job
-
-FROM employees
-
-WHERE sex = 'F';
-
+```
+iSQL> SELECT /*+ FULL SCAN(employees) */ eno, e_firstname, e_lastname, emp_job
+ FROM employees 
+ WHERE sex = 'F';
 .
-
 .
-
 .
-
-\------------------------------------------------
-
+------------------------------------------------
 PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 65 , COST: 0.18 )
+ SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.14 )
+------------------------------------------------
+```
 
-SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.14 )
 
-\------------------------------------------------
 
 ##### 인덱스 스캔
 
@@ -1727,26 +1722,20 @@ BY/GROUP BY절에 있는 경우, 옵티마이저가 불필요한 정렬을 피�
 
 아래 예제는 인덱스 범위 스캔이 사용되는 쿼리와 실행 계획을 보여준다.
 
-iSQL\> SELECT /\*+ INDEX(employees, EMP_IDX1) \*/ eno, e_firstname, e_lastname,
-emp_job
-
-FROM employees
-
-WHERE dno = 1003;
-
+```
+iSQL> SELECT /*+ INDEX(employees, EMP_IDX1) */ eno, e_firstname, e_lastname, emp_job
+ FROM employees 
+ WHERE dno = 1003;
 .
-
 .
-
 .
-
-\----------------------------------------------------------
-
+----------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 65, COST: 0.03 )
+ SCAN ( TABLE: EMPLOYEES, INDEX: EMP_IDX1, RANGE SCAN, ACCESS: 4, COST: 0.00 )
+----------------------------------------------------------
+```
 
-SCAN ( TABLE: EMPLOYEES, INDEX: EMP_IDX1, RANGE SCAN, ACCESS: 4, COST: 0.00 )
 
-\----------------------------------------------------------
 
 ###### **인덱스 전체 스캔**
 
@@ -1773,34 +1762,25 @@ filter의 처리 순서를 결정한다.
 
 아래 예제는 인덱스 전체 스캔이 사용되는 쿼리와 실행 계획을 보여준다.
 
-CREATE TABLE t1(c1 INT, c2 CHAR(10))
-
-TABLESPACE sys_tbs_disk_data;
-
+```
+CREATE TABLE t1(c1 INT, c2 CHAR(10)) 
+  TABLESPACE sys_tbs_disk_data;
 CREATE INDEX t1_idx ON t1(c1);
-
 INSERT INTO t1 VALUES(1,'a');
-
 INSERT INTO t1 VALUES(2,'b');
-
 INSERT INTO t1 VALUES(3,'c');
 
-iSQL\> SELECT \* FROM t1 ORDER BY c1;
-
+iSQL> SELECT * FROM t1 ORDER BY c1;
 .
-
 .
-
 .
-
-\----------------------------------------------------------
-
+----------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 16, COST: 14.02 )
+ SCAN ( TABLE: T1, INDEX: T1_IDX, FULL SCAN, ACCESS: 3, DISK_PAGE_COUNT: 64, COST: 14.00 )
+----------------------------------------------------------
+```
 
-SCAN ( TABLE: T1, INDEX: T1_IDX, FULL SCAN, ACCESS: 3, DISK_PAGE_COUNT: 64,
-COST: 14.00 )
 
-\----------------------------------------------------------
 
 ##### 인덱스 생성 시 고려 사항
 
@@ -1840,7 +1820,17 @@ DELETE, UPDATE)와 전체 시스템 성능간의 영향 등을 고려해서 인�
 옵티마이저가 각 액세스 방법의 비용을 계산하기 위해 사용하는 개념적인 공식은
 다음과 같다.
 
-Access cost + Disk I/O cost
+**Access cost + Disk I/O cost**
+
+| 개념적인 Access cost 계산                                    |
+| ------------------------------------------------------------ |
+| Full scan    : T(R)                                          |
+| Index Scan : log(T(R)) + T(R) * MAX(1/V(Index), selectivity) |
+
+| 개념적인 Disk I/O cost 계산                                  |
+| ------------------------------------------------------------ |
+| Full scan    : B(R)                                          |
+| Index Scan : <br/>Buffer Miss      : [T(R) / V(R.a)] * ( 1- M/B(R) )<br />No Buffer Miss : B(R) * ( 1 - (log V(R.a)/logT(R)) ) |
 
 옵티마이저는 접근 비용(access cost)과 디스크 I/O 비용(disk I/O cost)을 모두
 통합하여 계산한다. 메모리 테이블의 경우 디스크 페이지가 존재하지 않아 디스크 I/O
@@ -1857,16 +1847,19 @@ Access cost + Disk I/O cost
 
 예를 들어 다음과 같은 조건을 살펴 보자.
 
+```
 WHERE i1 = 1 AND i2 = 1
+```
 
 위의 조건에서 i1과 i2 칼럼에 각각 인덱스가 존재한다면 어떠한 인덱스를 선택할
 것인가를 결정할 때 가장 중요한 요소는 해당 조건의 선택도이다. 예를 들어, i1
 컬럼에 서로 다른 값의 종류가 100 [V(i1) = 100] 개가 있고, i2 칼럼에는 서로 다른
 값의 종류가 1000 [V(i2) = 1000] 이라면 각 조건의 선택도는 다음과 같이 계산된다.
 
+```
 (i1 = 1)의 selectivity = 1/V(i1) = 1/100
-
 (i2 = 1)의 selectivity = 1/V(i2) = 1/1000
+```
 
 즉, 해당 질의를 처리하기 위해 i2 칼럼의 인덱스를 사용하는 것이 보다 효율적인
 액세스 방법이다.
@@ -1877,7 +1870,9 @@ WHERE i1 = 1 AND i2 = 1
 
 예를 들어, 다음과 같은 질의를 살펴 보자.
 
-SELECT \* FROM soldier WHERE gender = 'female' AND rank = 'lieutenant';
+```
+SELECT * FROM soldier WHERE gender = 'female' AND rank = 'lieutenant';
+```
 
 위의 질의에서 gender와 rank 칼럼에 모두 인덱스가 있다고 할 때, 옵티마이저는 비용
 계산을 통해 rank 칼럼에 대한 조건을 처리하기 위한 인덱스를 사용하는 것이
@@ -1898,29 +1893,30 @@ SQL 튜닝에 매우 큰 도움이 된다.
 예를 들어, 다음과 같은 composite 인덱스가 존재할 때 다양한 조건들이 어떻게
 처리되는지를 살펴보자.
 
+```
 Composite index on T1(i1, i2, i3, i4)
-
 WHERE i1 = 1 AND i2 = 1 AND i3 = 1 AND i4 = 1
+```
 
 위의 WHERE절에 포함되어 있는 모든 조건은 composite 인덱스를 이용하여 모두 key
 range 처리가 가능하다.
 
-WHERE i1 = 1 AND i2 \> 0 AND i3 = 1 AND i4 = 1
-
-**Key Range** : i1 = 1, i2 \> 0
-
-**Filter**(or **Key filter**) : i3 = 1, i4 = 1
+```
+WHERE i1 = 1 AND i2 > 0 AND i3 = 1 AND i4 = 1
+Key Range              : i1 = 1, i2 > 0
+Filter(or Key filter)  : i3 = 1, i4 = 1
+```
 
 위의 예에서 key range 처리방법이 적용 가능한 조건절은 두 개로 결정되고 나머지는
 filter로 처리된다. 이는 key range 처리는 최소값과 최대값을 결정할 수 있는 영역
 내에서만 가능하기 때문에 부등호 연산 이후의 조건절은 key range 처리를 할 수
 없다.
 
+```
 WHERE i1 = 1 AND i3 = 1 AND i4 = 1
-
-**Key Range** : i1 = 1
-
-**Filter** : i3 = 1, i4 = 1
+Key Range      : i1 = 1
+Filter         : i3 = 1, i4 = 1
+```
 
 위의 예에서는 모두 등호 연산을 사용하고 있지만, key range 처리가 가능한 조건은
 하나뿐이다. 이는 composite 인덱스를 구성하고 있는 칼럼들의 순서에 모두 부합하는
@@ -1934,7 +1930,11 @@ WHERE i1 = 1 AND i3 = 1 AND i4 = 1
 예를 들어 다음과 같은 질의가 빈번하게 사용되어 인덱스를 추가하려고 한다면
 인덱스를 최대한 활용할 수 있도록 생성하는 것이 바람직하다.
 
-WHERE i1 \> 0 AND i2 = 1
+```
+WHERE i1 > 0 AND i2 = 1
+```
+
+
 
 -   바람직한 인덱스: Index on T1(i2, i1)  
     i2 와 i1 칼럼을 참조하는 조건들을 평가하기 위해 filer 없이 key range 처리가
@@ -1955,67 +1955,563 @@ WHERE i1 \> 0 AND i2 = 1
 
 비교 연산자의 종류와 인덱스 사용 가능 여부는 다음과 같다.
 
-| 종류         | 비교 연산자 | 인덱스 사용 가능 여부 | 비고                                        |
-|--------------|-------------|-----------------------|---------------------------------------------|
-| 단순 비교    | =           | O                     |                                             |
-|              | !=          | O                     |                                             |
-|              | \<          | O                     |                                             |
-|              | \<=         | O                     |                                             |
-|              | \>          | O                     |                                             |
-|              | \>=         | O                     |                                             |
-| 범위 비교    | BETWEEN     | O                     |                                             |
-|              | NOT BETWEEN | O                     |                                             |
-| 멤버 비교    | IN          | O                     |                                             |
-|              | NOT IN      | O                     |                                             |
-| 패턴 비교    | LIKE        | O                     | 가능: T1.i1 LIKE abc% 불가: T1.i1 LIKE %abc |
-|              | NOT LIKE    | X                     |                                             |
-| NULL 비교    | IS NULL     | O                     |                                             |
-|              | IS NOT NUL  | O                     |                                             |
-| 존재 비교    | EXISTS      | X                     |                                             |
-|              | NOT EXISTS  | X                     |                                             |
-|              | UNIQUE      | X                     |                                             |
-|              | NOT UNIQUE  | X                     |                                             |
-| Quantify ANY | =ANY        | O                     |                                             |
-|              | !=ANY       | O                     |                                             |
-|              | \<ANY       | O                     |                                             |
-|              | \<=ANY      | O                     |                                             |
-|              | \>ANY       | O                     |                                             |
-|              | \>=ANY      | O                     |                                             |
-| Quantify ALL | =ALL        | O                     |                                             |
-|              | != ALL      | O                     |                                             |
-|              | \< ALL      | O                     |                                             |
-|              | \<= ALL     | O                     |                                             |
-|              | \> ALL      | O                     |                                             |
-|              | \>= ALL     | O                     |                                             |
+<table style="width: 626px;">
+<tbody>
+<tr>
+<td style="width: 113px;">
+<p><strong>종류</strong></p>
+</td>
+<td style="width: 127px;">
+<p><strong>비교 연산자</strong></p>
+</td>
+<td style="width: 148px;">
+<p><strong>인덱스&nbsp;사용 가능 여부</strong></p>
+</td>
+<td style="width: 228px;">
+<p><strong>비고</strong></p>
+</td>
+</tr>
+<tr>
+<td style="width: 113px;" rowspan="6">
+<p>단순 비교</p>
+</td>
+<td style="width: 127px;">
+<p>=</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>!=</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>&lt;&nbsp;</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>&lt;=</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>&gt;&nbsp;</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>&gt;=</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 113px;" rowspan="2">
+<p>범위 비교</p>
+</td>
+<td style="width: 127px;">
+<p>BETWEEN</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>NOT BETWEEN</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 113px;" rowspan="2">
+<p>멤버 비교</p>
+</td>
+<td style="width: 127px;">
+<p>IN</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>NOT IN</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 113px;" rowspan="2">
+<p>패턴 비교</p>
+</td>
+<td style="width: 127px;">
+<p>LIKE</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>가능: T1.i1 LIKE abc%</p>
+<p>불가: T1.i1 LIKE %abc</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>NOT LIKE</p>
+</td>
+<td style="width: 148px;">
+<p>X</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 113px;" rowspan="2">
+<p>NULL 비교</p>
+</td>
+<td style="width: 127px;">
+<p>IS NULL</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>IS NOT NUL</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 113px;" rowspan="4">
+<p>존재 비교</p>
+</td>
+<td style="width: 127px;">
+<p>EXISTS</p>
+</td>
+<td style="width: 148px;">
+<p>X</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>NOT EXISTS</p>
+</td>
+<td style="width: 148px;">
+<p>X</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>UNIQUE</p>
+</td>
+<td style="width: 148px;">
+<p>X</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>NOT UNIQUE</p>
+</td>
+<td style="width: 148px;">
+<p>X</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 113px;" rowspan="6">
+<p>Quantify ANY</p>
+</td>
+<td style="width: 127px;">
+<p>=ANY</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>!=ANY</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>&lt;ANY</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>&lt;=ANY</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>&gt;ANY</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>&gt;=ANY</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 113px;" rowspan="6">
+<p>Quantify ALL</p>
+</td>
+<td style="width: 127px;">
+<p>=ALL</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>!= ALL</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>&lt; ALL</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>&lt;= ALL</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>&gt; ALL</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 127px;">
+<p>&gt;= ALL</p>
+</td>
+<td style="width: 148px;">
+<p>O</p>
+</td>
+<td style="width: 228px;">
+<p>&nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
 
->   [표 3‑1] 비교 연산자에 따른 인덱스 사용 여부
+[표 3‑1] 비교 연산자에 따른 인덱스 사용 여부
 
-Geometry 데이터 타입 관련 비교 연산자는 다음과 같다. R-Tree 인덱스가 존재하는
-경우에만 geometry 데이터 타입 칼럼에 정의된 인덱스를 사용할 수 있다.
+Geometry 데이터 타입 관련 비교 연산자는 다음과 같다. R-Tree 인덱스가 존재하는 경우에만 geometry 데이터 타입 칼럼에 정의된 인덱스를 사용할 수 있다.
 
-| 종류          | 비교 연산자  | 인덱스 사용 가능 여부 | 비고              |
-|---------------|--------------|-----------------------|-------------------|
-| Geometry 비교 | CONTAINS     | O                     | R-Tree index only |
-|               | CROSSES      | O                     |                   |
-|               | DISJOINT     | O                     |                   |
-|               | DISTANCE     | O                     |                   |
-|               | EQUALS       | O                     |                   |
-|               | INTERSECTS   | O                     |                   |
-|               | ISEMPTY      | X                     |                   |
-|               | ISSIMPLE     | X                     |                   |
-|               | NOT CONTAINS | X                     |                   |
-|               | NOT CROSSES  | X                     |                   |
-|               | NOT EQUALS   | X                     |                   |
-|               | NOT OVERLAPS | X                     |                   |
-|               | NOT RELATE   | X                     |                   |
-|               | NOT TOUCHES  | X                     |                   |
-|               | NOT WITHIN   | X                     |                   |
-|               | OVERLAPS     | O                     |                   |
-|               | RELATE       | X                     |                   |
-|               | TOUCHES      | O                     |                   |
-|               | WITHIN       | O                     |                   |
+<table style="width: 596px;">
+<tbody>
+<tr>
+<td style="width: 115px;">
+<p><strong>종류</strong></p>
+</td>
+<td style="width: 141px;">
+<p><strong>비교 연산자</strong></p>
+</td>
+<td style="width: 166px;">
+<p><strong>인덱스 사용&nbsp;가능 여부</strong></p>
+</td>
+<td style="width: 158px;">
+<p><strong>비고</strong></p>
+</td>
+</tr>
+<tr>
+<td style="width: 115px;" rowspan="19">
+<p>Geometry 비교</p>
+</td>
+<td style="width: 141px;">
+<p>CONTAINS</p>
+</td>
+<td style="width: 166px;">
+<p>O</p>
+</td>
+<td style="width: 158px;" rowspan="19">
+<p>R-Tree index only</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>CROSSES</p>
+</td>
+<td style="width: 166px;">
+<p>O</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>DISJOINT</p>
+</td>
+<td style="width: 166px;">
+<p>O</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>DISTANCE</p>
+</td>
+<td style="width: 166px;">
+<p>O</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>EQUALS</p>
+</td>
+<td style="width: 166px;">
+<p>O</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>INTERSECTS</p>
+</td>
+<td style="width: 166px;">
+<p>O</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>ISEMPTY</p>
+</td>
+<td style="width: 166px;">
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>ISSIMPLE</p>
+</td>
+<td style="width: 166px;">
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>NOT CONTAINS</p>
+</td>
+<td style="width: 166px;">
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>NOT CROSSES</p>
+</td>
+<td style="width: 166px;">
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>NOT EQUALS</p>
+</td>
+<td style="width: 166px;">
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>NOT OVERLAPS</p>
+</td>
+<td style="width: 166px;">
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>NOT RELATE</p>
+</td>
+<td style="width: 166px;">
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>NOT TOUCHES</p>
+</td>
+<td style="width: 166px;">
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>NOT WITHIN</p>
+</td>
+<td style="width: 166px;">
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>OVERLAPS</p>
+</td>
+<td style="width: 166px;">
+<p>O</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>RELATE</p>
+</td>
+<td style="width: 166px;">
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>TOUCHES</p>
+</td>
+<td style="width: 166px;">
+<p>O</p>
+</td>
+</tr>
+<tr>
+<td style="width: 141px;">
+<p>WITHIN</p>
+</td>
+<td style="width: 166px;">
+<p>O</p>
+</td>
+</tr>
+</tbody>
+</table>
 
->   [표 3‑2] Geometry 비교 연산자 사용 여부
+[표 3‑2] Geometry 비교 연산자 사용 여부
 
 위와 같이 인덱스가 존재하고 인덱스를 사용할 수 있는 비교 연산자라 하더라도 항상
 인덱스가 사용될 수 있는 것은 아니다.
@@ -2025,14 +2521,14 @@ Geometry 데이터 타입 관련 비교 연산자는 다음과 같다. R-Tree �
 타입임을 가정한다.)
 
 | 조건절의 형태                              | 가능한 예                             | 불가능한 예                           |
-|--------------------------------------------|---------------------------------------|---------------------------------------|
+| ------------------------------------------ | ------------------------------------- | ------------------------------------- |
 | 인덱스 사용이 가능한 비교 연산자여야 한다. | T1.i1 = 1                             | T1.i1 NOT LIKE a                      |
 | 칼럼이 있어야한다.                         | T1.i1 = 1                             | 1 = 3                                 |
 | 칼럼에 대한 연산이 없어야한다.             | T1.i1 = 1 + 1                         | T1.i1 + 1 = 3                         |
 | 연산자의 한쪽에만 칼럼이 있어야한다.       | (T1.i1, T1.i2) = (1, 1) T1.i1 = T2.i1 | (T1.i1, 1) = (1, T1.i2) T1.i1 = T1.i2 |
 | 칼럼의 타입(값)이 변경되지 않아야한다.     | T1.i1 = SMALLINT'1'                   | T1.i1 = 1.0                           |
 
->   [표 3‑3] 조건절에 따른 인덱스 사용 여부
+[표 3‑3] 조건절에 따른 인덱스 사용 여부
 
 위와 같이 인덱스를 사용하기 위해서는 조건절의 기술에 주의를 기울여야 한다. 특히
 칼럼의 값에 대한 연산이나 타입 변환이 발생하지 않도록 주의하여야 한다.
@@ -2046,7 +2542,9 @@ WHERE 절에서 참조하는 칼럼에 인덱스가 생성되어 있다고 해�
 가능한 것은 아니다. 데이터 타입과 데이터 변환에 따라 인덱스 스캔이 가능한 경우도
 있고, 그렇지 않은 경우도 있다.
 
-SELECT \* FROM T1 WHERE T1.i1 = ?
+```
+SELECT * FROM T1 WHERE T1.i1 = ?
+```
 
 위의 질의에서 i1 칼럼이 VARCHAR 타입이고 PRIMARY KEY인 경우, iSQL로 이 쿼리의
 실행 계획을 확인하면 인덱스 스캔이 가능한 것으로 나타난다. 하지만 실제 변수를
@@ -2062,24 +2560,24 @@ SELECT \* FROM T1 WHERE T1.i1 = ?
 데이터 타입과 인덱스 사용 가능 여부는 다음과 같다. 검은 부분으로 표시되는 부분은
 비교연산 수행시, 키 칼럼에 타입 변환이 발생하게 된다.
 
-| VALUE KEY | CHAR | VARCHAR | SMALLINT | INTEGER | BIGINT | NUMERIC | FLOAT | REAL | DOUBLE | DATE | BLOB | NIBBLE | BYTE | GEOMETRY |
-|-----------|------|---------|----------|---------|--------|---------|-------|------|--------|------|------|--------|------|----------|
-| CHAR      | O    | O       | X        | X       | X      | X       | X     | X    | X      | X    | \-   | \-     | \-   | \-       |
-| VARCHAR   | O    | O       | X        | X       | X      | X       | X     | X    | X      | X    | \-   | \-     | \-   | \-       |
-| SMALLINT  | X    | X       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
-| INTEGER   | X    | X       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
-| BIGINT    | X    | X       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
-| NUMERIC   | O    | O       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
-| FLOAT     | O    | O       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
-| REAL      | X    | X       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
-| DOUBLE    | O    | O       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
-| DATE      | O    | O       | \-       | \-      | \-     | \-      | \-    | \-   | \-     | O    | \-   | \-     | \-   | \-       |
-| BLOB      | \-   | \-      | \-       | \-      | \-     | \-      | \-    | \-   | \-     | \-   | O    | \-     | \-   | \-       |
-| NIBBLE    | \-   | \-      | \-       | \-      | \-     | \-      | \-    | \-   | \-     | \-   | \-   | O      | \-   | \-       |
-| BYTE      | \-   | \-      | \-       | \-      | \-     | \-      | \-    | \-   | \-     | \-   | \-   | \-     | O    | \-       |
-| GEOMETRY  | \-   | \-      | \-       | \-      | \-     | \-      | \-    | \-   | \-     | \-   | \-   | \-     | \-   | O        |
+| VALUE (우)<br />\ <br />KEY(하) | CHAR | VARCHAR | SMALLINT | INTEGER | BIGINT | NUMERIC | FLOAT | REAL | DOUBLE | DATE | BLOB | NIBBLE | BYTE | GEOMETRY |
+| ------------------------------- | ---- | ------- | -------- | ------- | ------ | ------- | ----- | ---- | ------ | ---- | ---- | ------ | ---- | -------- |
+| CHAR                            | O    | O       | X        | X       | X      | X       | X     | X    | X      | X    | \-   | \-     | \-   | \-       |
+| VARCHAR                         | O    | O       | X        | X       | X      | X       | X     | X    | X      | X    | \-   | \-     | \-   | \-       |
+| SMALLINT                        | X    | X       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
+| INTEGER                         | X    | X       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
+| BIGINT                          | X    | X       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
+| NUMERIC                         | O    | O       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
+| FLOAT                           | O    | O       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
+| REAL                            | X    | X       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
+| DOUBLE                          | O    | O       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
+| DATE                            | O    | O       | \-       | \-      | \-     | \-      | \-    | \-   | \-     | O    | \-   | \-     | \-   | \-       |
+| BLOB                            | \-   | \-      | \-       | \-      | \-     | \-      | \-    | \-   | \-     | \-   | O    | \-     | \-   | \-       |
+| NIBBLE                          | \-   | \-      | \-       | \-      | \-     | \-      | \-    | \-   | \-     | \-   | \-   | O      | \-   | \-       |
+| BYTE                            | \-   | \-      | \-       | \-      | \-     | \-      | \-    | \-   | \-     | \-   | \-   | \-     | O    | \-       |
+| GEOMETRY                        | \-   | \-      | \-       | \-      | \-     | \-      | \-    | \-   | \-     | \-   | \-   | \-     | \-   | O        |
 
->   [표 3‑4] 데이터 타입에 따른 인덱스 사용 여부
+[표 3‑4] 데이터 타입에 따른 인덱스 사용 여부
 
 데이터 타입은 다음과 같이 크게 계열과 숫자형 계열로 구분할 수 있으며, 각 계열에
 속하는 데이터 타입들간의 비교는 모두 인덱스를 사용할 수 있다.
