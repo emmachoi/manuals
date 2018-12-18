@@ -2562,7 +2562,7 @@ SELECT * FROM T1 WHERE T1.i1 = ?
 
 | VALUE (우)<br />\ <br />KEY(하) | CHAR | VARCHAR | SMALLINT | INTEGER | BIGINT | NUMERIC | FLOAT | REAL | DOUBLE | DATE | BLOB | NIBBLE | BYTE | GEOMETRY |
 | ------------------------------- | ---- | ------- | -------- | ------- | ------ | ------- | ----- | ---- | ------ | ---- | ---- | ------ | ---- | -------- |
-| CHAR                            | O    | O       | X        | X       | X      | X       | X     | X    | X      | X    | \-   | \-     | \-   | \-       |
+| CHAR                            | O    | `O`     | X        | X       | X      | X       | X     | X    | X      | X    | \-   | \-     | \-   | \-       |
 | VARCHAR                         | O    | O       | X        | X       | X      | X       | X     | X    | X      | X    | \-   | \-     | \-   | \-       |
 | SMALLINT                        | X    | X       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
 | INTEGER                         | X    | X       | O        | O       | O      | O       | O     | O    | O      | \-   | \-   | \-     | \-   | \-       |
