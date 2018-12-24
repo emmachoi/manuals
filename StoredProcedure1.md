@@ -1,6 +1,6 @@
 Altibase® Application Development
 
-Stored Procedures Manual 1
+Stored Procedures Manual 
 ========================
 
 ![](media/StoredProcedure/e5cfb3761673686d093a3b00c062fe7a.png)
