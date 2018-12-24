@@ -109,17 +109,17 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 이 매뉴얼에서는 다음 구성 요소로 구축된 다이어그램을 사용하여, 명령문의 구문을
 설명한다.
 
-| 구성 요소                                                    | 의미                                                         |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![image1](D:\emmachoigit\manuals\media\TuningGuide\image1.gif) | 명령문이 시작한다. 완전한 명령문이 아닌 구문 요소는 화살표로 시작한다. |
-| ![image2](D:\emmachoigit\manuals\media\TuningGuide\image2.gif) | 명령문이 다음 라인에 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 종료한다. |
-| ![image3](D:\emmachoigit\manuals\media\TuningGuide\image3.gif) | 명령문이 이전 라인으로부터 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 시작한다. |
-| ![image4](D:\emmachoigit\manuals\media\TuningGuide\image4.gif) | 명령문이 종료한다.                                           |
-| ![image5](D:\emmachoigit\manuals\media\TuningGuide\image5.gif) | 필수 항목                                                    |
-| ![image6](D:\emmachoigit\manuals\media\TuningGuide\image6.gif) | 선택적 항목                                                  |
-| ![image7](D:\emmachoigit\manuals\media\TuningGuide\image7.gif) | 선택사항이 있는 필수 항목. 한 항목만 제공해야 한다.          |
-| ![image8](D:\emmachoigit\manuals\media\TuningGuide\image8.gif) | 선택사항이 있는 선택적 항목.                                 |
-| ![image9](D:\emmachoigit\manuals\media\TuningGuide\image9.gif) | 선택적 항목. 여러 항목이 허용된다. 각 반복 앞부분에 콤마가 와야 한다. |
+| 구성 요소                               | 의미                                                         |
+| --------------------------------------- | ------------------------------------------------------------ |
+| ![image1](media/TuningGuide/image1.gif) | 명령문이 시작한다. 완전한 명령문이 아닌 구문 요소는 화살표로 시작한다. |
+| ![image2](media/TuningGuide/image2.gif) | 명령문이 다음 라인에 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 종료한다. |
+| ![image3](media/TuningGuide/image3.gif) | 명령문이 이전 라인으로부터 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 시작한다. |
+| ![image4](media/TuningGuide/image4.gif) | 명령문이 종료한다.                                           |
+| ![image5](media/TuningGuide/image5.gif) | 필수 항목                                                    |
+| ![image6](media/TuningGuide/image6.gif) | 선택적 항목                                                  |
+| ![image7](media/TuningGuide/image7.gif) | 선택사항이 있는 필수 항목. 한 항목만 제공해야 한다.          |
+| ![image8](media/TuningGuide/image8.gif) | 선택사항이 있는 선택적 항목.                                 |
+| ![image9](media/TuningGuide/image9.gif) | 선택적 항목. 여러 항목이 허용된다. 각 반복 앞부분에 콤마가 와야 한다. |
 
 ##### 샘플 코드 규칙
 
@@ -697,7 +697,7 @@ DBMS에서 SQL문 처리를 담당하는 모듈을 질의 처리기(Query Proces
 
 질의 처리수행 과정을 개략적으로 도식화하면 다음과 같다.
 
-![BASIC_STEPS_IN_QUERY_PROCESSING](D:\emmachoigit\manuals\media\TuningGuide\BASIC_STEPS_IN_QUERY_PROCESSING.gif)
+![BASIC_STEPS_IN_QUERY_PROCESSING](media/TuningGuide/BASIC_STEPS_IN_QUERY_PROCESSING.gif)
 
 [그림 1‑1] Query Processing 순서
 
@@ -1167,7 +1167,7 @@ CPU 사용률이 높은 쓰레드가 어떤 작업을 하고 있는지 확인하
 
 이러한 과정을 수행하는 옵티마이저의 구조는 다음과 같다.
 
-![optimizer_structure](D:\emmachoigit\manuals\media\TuningGuide\optimizer_structure.gif)
+![optimizer_structure](media/TuningGuide/optimizer_structure.gif)
 
 [그림 3‑1] 옵티마이저 구조
 
@@ -2674,7 +2674,7 @@ VARCHAR인 경우 가장 짧은 변환 경로를 가진다. 그러나 데이터 
 
 다음은 데이터 타입 변환 경로를 도식화한 그림이다.
 
-![data_type_conversion_path_kor](D:\emmachoigit\manuals\media\TuningGuide\data_type_conversion_path_kor.gif)
+![data_type_conversion_path_kor](media/TuningGuide/data_type_conversion_path_kor.gif)
 
 [그림 3‑2] 데이터 변환 타입 경로
 
@@ -2751,7 +2751,7 @@ AND T3.m3 = T4.x3;
 
 위의 질의에서 조인 관계는 다음과 같이 표현될 수 있다.
 
-![join_kor](D:\emmachoigit\manuals\media\TuningGuide\join_kor.gif)
+![join_kor](media/TuningGuide/join_kor.gif)
 
 옵티마이저는 위와 같이 조인 순서 결정 시 조인 관계만을 고려하여 비용을
 평가함으로써 (T1, T4)와 같이 직접적인 조인 관계가 없는 테이블간의 조인이
@@ -2773,7 +2773,7 @@ AND T3.m3 = T4.x3;
 그러나 조인 관계의 순서가 실제 조인 순서는 아니며, 실제 조인 순서는 조인 방법의
 결정을 통해 완성된다.
 
-![join_order_kor](D:\emmachoigit\manuals\media\TuningGuide\join_order_kor.gif)
+![join_order_kor](media/TuningGuide/join_order_kor.gif)
 
 [그림 3‑3] 조인 관계의 순서 결정
 
@@ -3567,14 +3567,14 @@ Reference*의 성능 관련 프로퍼티를 참조하기 바란다.
 결과를 저장하는 두 개의 저장 노드를 가지고 있다. 메모리 임시 공간이 사용되는
 경우 디스크 페이지에 대한 정보를 별도로 갖지 않는다.
 
-![select_distinct_1](D:\emmachoigit\manuals\media\TuningGuide\select_distinct_1.gif)
+![select_distinct_1](media/TuningGuide/select_distinct_1.gif)
 
 다음은 디스크 테이블에 대하여 중복 제거 및 정렬을 위하여 중간 결과를 저장하는 두
 개의 저장 노드를 보이고 있다. 디스크 임시 공간이 사용되는 경우 디스크 페이지에
 대한 정보를 갖는다. 즉, 실행 노드의 정보 중 DISK_PAGE_COUNT 정보의 유무를 통해
 임시 공간의 저장 매체 정보(메모리인지 디스크인지)를 판단할 수 있다.
 
-![select_distinct_2](D:\emmachoigit\manuals\media\TuningGuide\select_distinct_2.gif)
+![select_distinct_2](media/TuningGuide/select_distinct_2.gif)
 
 ### 옵티마이저 관련 프로퍼티
 
@@ -3789,7 +3789,7 @@ Fedorov
     -----------------------------------------------
 ```
 
-![plan_tree](D:\emmachoigit\manuals\media\TuningGuide\plan_tree.gif)
+![plan_tree](media/TuningGuide/plan_tree.gif)
 
 1.  orders 테이블에 있는 주문 번호(ono)를 인덱스를 이용하여 검색한다. 인덱스를
     이용한 접근 회수는 20임을 알 수 있다. 인덱스가 생성되지 않은 열을 기준으로
@@ -3815,7 +3815,7 @@ Fedorov
 노드들이 트리 형태로 연결된 전체 실행 계획 트리를 따라가면서 실행 순서가
 결정된다.
 
-![plan_tree_kor](D:\emmachoigit\manuals\media\TuningGuide\plan_tree_kor.gif)
+![plan_tree_kor](media/TuningGuide/plan_tree_kor.gif)
 
 실행 계획 트리에서 하나의 노드는 한 행에 표시된다. 왼쪽으로 들여쓰기가 많이 되어
 있는 노드일수록 하위 노드이며 가장 먼저 수행된다.
@@ -3834,7 +3834,7 @@ T2 SCAN 노드, T3 SCAN 노드의 순서로 수행된다. 노드 옆에 명시�
 
 위의 예제에서 나타난 실행 계획을 트리 형태로 나타내면 다음 그림과 같다.
 
-![fetch_path_kor](D:\emmachoigit\manuals\media\TuningGuide\fetch_path_kor.gif)
+![fetch_path_kor](media/TuningGuide/fetch_path_kor.gif)
 
 [그림 4‑1] 레코드 요구와 페치(fetch) 경로
 
@@ -3908,7 +3908,7 @@ AGGREGATION 실행 노드는 관계형 모델에서 aggregation 연산을 수행
 SUM(i2)와 GROUP BY i3를 사용해서 그룹화된다. 아래 예에서는 16byte의 크기의
 레코드를 포함하는 그룹이 다섯 개가 구성되었음을 알 수 있다.
 
-![aggregate](D:\emmachoigit\manuals\media\TuningGuide\aggregate.gif)
+![aggregate](media/TuningGuide/aggregate.gif)
 
 ###### **DISTINCT를 포함하는 aggregation 수행**
 
@@ -3916,7 +3916,7 @@ Aggregation함수 내에 DISTINCT가 포함되어 있을 경우 중복 제거 �
 경우에 한해 중복 제거를 위한 저장 공간이 사용된다. 아래의 예에서 AGGREGATION
 노드는 SUM(DISTINCT i2)를 처리하기 위해서 사용되었다.
 
-![aggregate_2](D:\emmachoigit\manuals\media\TuningGuide\aggregate_2.gif)
+![aggregate_2](media/TuningGuide/aggregate_2.gif)
 
 ##### 예제
 
@@ -3963,7 +3963,7 @@ ANTI-OUTER-JOIN 노드는 관계형 모델에서 ANTI OUTER JOIN 조인 연산�
 이 노드는 FULL OUTER JOIN만을 위해 사용되며, 아래와 같이 ON 조인 조건에서
 참조되는 모든 칼럼에 대하여 인덱스를 사용할 수 있을 때 사용된다.
 
-![anti_outer_join_1](D:\emmachoigit\manuals\media\TuningGuide\anti_outer_join_1.gif)
+![anti_outer_join_1](media/TuningGuide/anti_outer_join_1.gif)
 
 위의 예에서와 같이 FULL OUTER JOIN을 처리하기 위하여 ANTI-OUTER-JOIN 노드는 항상
 LEFT-OUTER-JOIN 노드와 부모로 CONC 노드를 갖는다. 이 때, ON 절의 조인 조건은
@@ -4024,7 +4024,7 @@ BAG-UNION 노드는 관계형 모델에서 UNION ALL 연산을 수행하는 노�
 
 이 노드가 수행되는 예를 보면 다음과 같다.
 
-![bag_union](D:\emmachoigit\manuals\media\TuningGuide\bag_union.gif)
+![bag_union](media/TuningGuide/bag_union.gif)
 
 위의 예를 보면 BAG-UNION 노드는 두 질의의 결과를 단순히 조합하여 UNION ALL을
 처리한다.
@@ -4083,7 +4083,7 @@ CONCATENATION 실행 노드는 관계형 모델에서 concatenation 연산을 �
 사용은 ANTI-OUTER-JOIN 노드에서 이미 그 예를 설명하였으며, 여기서는 DNF로 처리
 시에 CONCATENATION 노드가 사용되는 예를 살펴 본다.
 
-![concatentation_1](D:\emmachoigit\manuals\media\TuningGuide\concatentation_1.gif)
+![concatentation_1](media/TuningGuide/concatentation_1.gif)
 
 여기서 (i1 = 1000) 조건은 왼쪽 SCAN 실행 노드에서 처리되며, (i2 = 100) 조건은
 오른쪽 SCAN 실행 노드에서 처리된다. 이렇게 함으로서 IDX1 과 IDX2 인덱스가 모두
@@ -4131,7 +4131,7 @@ CONNECT BY 노드는 관계형 모델에 없는 특수한 연산으로 계층 �
 
 계층 질의 수행시 CONNECT BY 노드가 사용된 예는 다음과 같다.
 
-![connect_by](D:\emmachoigit\manuals\media\TuningGuide\connect_by.gif)
+![connect_by](media/TuningGuide/connect_by.gif)
 
 ##### 예제
 
@@ -4212,7 +4212,7 @@ COUNT 노드는 관계형 모델에서 GROUP BY절이 존재하지 않는 COUNT(
 다음은 COUNT 노드가 사용된 예이다. 아래의 예를 살펴보면 인덱스를 사용함으로써
 실제 데이터에는 접근하지 않고 COUNT(\*) 값을 획득하고 있음을 알수 있다.
 
-![count](D:\emmachoigit\manuals\media\TuningGuide\count.gif)
+![count](media/TuningGuide/count.gif)
 
 ##### 예제
 
@@ -4276,7 +4276,7 @@ DISTINCT 노드는 DISTINCT를 처리하기 위하여 사용될 수 있다.
 
 아래의 예는 DISTINCT를 처리하기 위하여 DISTINCT 노드가 사용된 것을 보여준다.
 
-![distinct_node](D:\emmachoigit\manuals\media\TuningGuide\distinct_node.gif)
+![distinct_node](media/TuningGuide/distinct_node.gif)
 
 ###### **UNION 에서의 사용**
 
@@ -4285,7 +4285,7 @@ DISTINCT 노드는 UNION을 처리하기 위하여 사용될 수 있다.
 아래의 예제에서는 UNION을 처리하기 위하여 DISTINCT 노드가 중복 제거를 위해
 사용되었다.
 
-![distinct_node_2](D:\emmachoigit\manuals\media\TuningGuide\distinct_node_2.gif)
+![distinct_node_2](media/TuningGuide/distinct_node_2.gif)
 
 ###### **Subquery key range를 위한 사용**
 
@@ -4296,7 +4296,7 @@ DISTINCT 노드는 subquery key range를 처리하기 위하여 사용될 수 �
 제거를 위해 사용된 예이다. DISTINCT 실행 노드는 T2.i4 값의 중복 제거를 위해서
 사용되었다.
 
-![distinct_node_3](D:\emmachoigit\manuals\media\TuningGuide\distinct_node_3.gif)
+![distinct_node_3](media/TuningGuide/distinct_node_3.gif)
 
 ##### 예제
 
@@ -4351,12 +4351,12 @@ FILTER 노드는 노드 이름 외에 별도의 정보를 포함하지 않는다
 
 다음 예를 보면 FILTER 노드는 이름만을 출력할 뿐 별도의 다른 정보를 출력하지 않는다. 이 예에서 FILTER 노드는 (having i2 \< 2) 조건을 처리하기 위하여 사용되었다.
 
-![filter](D:\emmachoigit\manuals\media\TuningGuide\filter.gif)
+![filter](media/TuningGuide/filter.gif)
 
 이러한 정보를 확인하려면 TRCLOG_DETAIL_PREDICATE 프로퍼티를 1로 설정함으로써
 가능하다. 아래와 같이 FILTER 노드가 (i2 \< 2) 조건을 처리하기 위하여 사용되었음을 확인할 수 있다.
 
-![filter_node_2](D:\emmachoigit\manuals\media\TuningGuide\filter_node_2.gif)
+![filter_node_2](media/TuningGuide/filter_node_2.gif)
 
 ##### 예제
 
@@ -4412,7 +4412,7 @@ FULL-OUTER-JOIN 실행 노드는 일반 조인과 마찬가지로 대부분의 �
 사용되며, 이는 JOIN 노드의 예를 참조한다. 여기서는 FULL-OUTER-JOIN 실행 노드가
 사용되는 간단한 실행 계획 트리만을 살펴본다.
 
-![full_outer_join](D:\emmachoigit\manuals\media\TuningGuide\full_outer_join.gif)
+![full_outer_join](media/TuningGuide/full_outer_join.gif)
 
 FULL OUTER JOIN의 특성 상 우측에 저장을 위한 노드가 생성되며, 위의 예에서 ON
 조건은 SORT 노드에서 처리된다.
@@ -4519,7 +4519,7 @@ GROUP-AGGREGATION 노드는 관계형 모델에서 해싱 방식의 그룹 및 a
 GROUP-AGGREGATION 노드가 사용된 경우이다. GROUP-AGGREGATION 노드는 GROUP BY i4와
 AVG(i1), SUM(i2)를 처리하기 위하여 사용되었다.
 
-![group_aggregation_node_1](D:\emmachoigit\manuals\media\TuningGuide\group_aggregation_node_1.gif)
+![group_aggregation_node_1](media/TuningGuide/group_aggregation_node_1.gif)
 
 ##### 예제
 
@@ -4573,7 +4573,7 @@ GROUPING 노드가 정렬 순서를 이용한 동일한 그룹 여부를 판단�
 별도의 저장 공간을 사용하지 않고 처리되었음을 알 수 있다. 이는 앞서 최적화
 과정의 정렬 순서를 이용한 GROUP BY의 처리를 통해 설명하였다.
 
-![grouping](D:\emmachoigit\manuals\media\TuningGuide\grouping.gif)
+![grouping](media/TuningGuide/grouping.gif)
 
 ###### **정렬 순서를 이용한 중복 제거**
 
@@ -4583,7 +4583,7 @@ GROUPING 노드가 정렬 순서를 이용한 중복 제거를 위해서 사용�
 않았음을 알 수 있다. 이는 앞서 최적화 과정에서 정렬 순서를 이용한 DISTINCT
 최적화에서 설명하였다.
 
-![distinct_node_4](D:\emmachoigit\manuals\media\TuningGuide\distinct_node_4.gif)
+![distinct_node_4](media/TuningGuide/distinct_node_4.gif)
 
 ###### **정렬 순서를 이용한 DISTINCT aggregation 처리**
 
@@ -4593,7 +4593,7 @@ GROUPING 노드가 정렬 순서를 이용한 DISTINCT aggregation을 처리하�
 GROUPING 노드가 사용되었다. 이는 앞서 최적화 과정에서 정렬 순서를 이용한
 DISTINCT aggregation 최적화에서 설명하였다.
 
-![distinct_node_5](D:\emmachoigit\manuals\media\TuningGuide\distinct_node_5.gif)
+![distinct_node_5](media/TuningGuide/distinct_node_5.gif)
 
 ##### 예제
 
@@ -4662,7 +4662,7 @@ HASH 노드는 조인을 수행하기 위하여 사용될 수 있다.
 조인 조건을 검사하기 위하여 hash-based 조인이 수행되는데, 이를 위해 HASH 노드가
 생성되었다.
 
-![hash_1](D:\emmachoigit\manuals\media\TuningGuide\hash_1.gif)
+![hash_1](media/TuningGuide/hash_1.gif)
 
 ###### **Subquery 검색에서의 사용**
 
@@ -4672,7 +4672,7 @@ HASH 노드는 subquery와의 비교 연산을 수행하기 위하여 사용될 
 사용된 경우이다. HASH 노드는 t2.i4 값을 해싱하여 저장하고 각 t1.i4 에 부합하는
 값이 HASH에 존재하는 지를 검사한다.
 
-![hash_2](D:\emmachoigit\manuals\media\TuningGuide\hash_2.gif)
+![hash_2](media/TuningGuide/hash_2.gif)
 
 ##### 예제
 
@@ -4775,14 +4775,14 @@ JOIN 노드는 거의 모든 일반 조인 수행을 위하여 사용된다.
 
 ###### **Full nested loop join의 실행 계획 트리**
 
-![full_nested_loop_join](D:\emmachoigit\manuals\media\TuningGuide\full_nested_loop_join.gif)
+![full_nested_loop_join](media/TuningGuide/full_nested_loop_join.gif)
 
 위의 실행 계획에서 조인 조건은 우측 SCAN 노드에서 처리된다. T2 테이블에 대한
 반복적인 전체 검색을 통해 처리된다.
 
 ###### **Full store nested loop join의 실행 계획 트리**
 
-![full_store_nested_loop_join](D:\emmachoigit\manuals\media\TuningGuide\full_store_nested_loop_join.gif)
+![full_store_nested_loop_join](media/TuningGuide/full_store_nested_loop_join.gif)
 
 위의 실행 계획에서 조인 조건은 JOIN 상위의 FILTER 노드에서 처리된다. T2 테이블에
 대한 검색은 한 번만 이루어지며 그 결과를 저장한 후 반복적으로 전체 검색을 통해
@@ -4790,49 +4790,49 @@ JOIN 노드는 거의 모든 일반 조인 수행을 위하여 사용된다.
 
 ###### **Index nested loop join의 실행 계획 트리**
 
-![index_nested_loop_join](D:\emmachoigit\manuals\media\TuningGuide\index_nested_loop_join.gif)
+![index_nested_loop_join](media/TuningGuide/index_nested_loop_join.gif)
 
 위의 실행 계획에서 조인 조건은 우측 SCAN 노드에서 인덱스를 이용하여 처리된다.
 
 ###### **Inverse index nested loop join의 실행 계획 트리**
 
-![inverse_index_nested_loop_join](D:\emmachoigit\manuals\media\TuningGuide\inverse_index_nested_loop_join.gif)
+![inverse_index_nested_loop_join](media/TuningGuide/inverse_index_nested_loop_join.gif)
 
 ###### **One-pass sort join의 실행 계획 트리**
 
-![one_pass_sort_join](D:\emmachoigit\manuals\media\TuningGuide\one_pass_sort_join.gif)
+![one_pass_sort_join](media/TuningGuide/one_pass_sort_join.gif)
 
 위의 실행 계획에서 조인 조건은 우측 SORT 노드에서 정렬된 데이터를 이용하여
 처리된다.
 
 ###### **Two-pass sort join의 실행 계획 트리**
 
-![two_pass_sort_join](D:\emmachoigit\manuals\media\TuningGuide\two_pass_sort_join.gif)
+![two_pass_sort_join](media/TuningGuide/two_pass_sort_join.gif)
 
 위의 실행 계획에서 조인 조건은 우측 SORT 노드에서 정렬된 데이터를 이용하여
 처리되지만, 좌측에도 SORT 노드가 생성된다.
 
 ###### **Inverse sort join의 실행 계획 트리**
 
-![inverse_sort_join](D:\emmachoigit\manuals\media\TuningGuide\inverse_sort_join.gif)
+![inverse_sort_join](media/TuningGuide/inverse_sort_join.gif)
 
 ###### **One-pass hash join의 실행 계획 트리**
 
-![one_pass_hash_join](D:\emmachoigit\manuals\media\TuningGuide\one_pass_hash_join.gif)
+![one_pass_hash_join](media/TuningGuide/one_pass_hash_join.gif)
 
 위의 실행 계획에서 조인 조건은 우측 HASH 노드에서 해싱된 데이터를 이용하여
 처리된다.
 
 ###### **Two-pass hash join의 실행 계획 트리**
 
-![two_pass_hash_join](D:\emmachoigit\manuals\media\TuningGuide\two_pass_hash_join.gif)
+![two_pass_hash_join](media/TuningGuide/two_pass_hash_join.gif)
 
 위의 실행 계획에서 조인 조건은 우측 HASH 노드에서 정렬된 데이터를 이용하여
 처리되지만, 좌측에도 HASH 노드가 생성된다.
 
 ###### **Inverse hash join의 실행 계획 트리**
 
-![inverse_hash_join](D:\emmachoigit\manuals\media\TuningGuide\inverse_hash_join.gif)
+![inverse_hash_join](media/TuningGuide/inverse_hash_join.gif)
 
 ##### 예제
 
@@ -4891,7 +4891,7 @@ LEFT-OUTER-JOIN 노드는 일반 조인과 마찬가지로 대부분의 조인 �
 이는 JOIN 노드의 예를 참조한다. 여기서는 LEFT-OUTER-JOIN 실행 노드가 사용되는
 간단한 실행 계획 트리만을 살펴본다.
 
-![left_outer_join](D:\emmachoigit\manuals\media\TuningGuide\left_outer_join.gif)
+![left_outer_join](media/TuningGuide/left_outer_join.gif)
 
 ##### 예제
 
@@ -4969,7 +4969,7 @@ LIMIT-SORT 노드는 LIMIT을 포함한 ORDER BY에 사용될 수 있다.
 정보를 살펴 보면, 3개의 저장 공간만 사용하여 16384건의 레코드에 대한 정렬을
 수행함을 알 수 있다.
 
-![limit_sort_order_by](D:\emmachoigit\manuals\media\TuningGuide\limit_sort_order_by.gif)
+![limit_sort_order_by](media/TuningGuide/limit_sort_order_by.gif)
 
 ###### **Subquery 검색에서의 사용**
 
@@ -4979,7 +4979,7 @@ LIMIT-SORT 노드는 subquery 검색을 위하여 사용될 수 있다.
 수행하고 있음을 보이고 있다. 여기서 LIMIT-SORT 노드는 질의 처리에 필요한 t2.i4
 값 중 일부만을 저장하여 이에 대한 비교 연산의 비용을 줄이고 있다.
 
-![limit_sort_subquery](D:\emmachoigit\manuals\media\TuningGuide\limit_sort_subquery.gif)
+![limit_sort_subquery](media/TuningGuide/limit_sort_subquery.gif)
 
 ##### 예제
 
@@ -5113,14 +5113,14 @@ MERGE-JOIN 노드는 일반 조인 수행을 위하여 사용되며, 좌우 자�
 
 ###### **인덱스를 이용한 머지 조인**
 
-![merge_join_using_index](D:\emmachoigit\manuals\media\TuningGuide\merge_join_using_index.gif)
+![merge_join_using_index](media/TuningGuide/merge_join_using_index.gif)
 
 위의 실행 계획에서 조인 조건은 MERGE-JOIN 노드에서 처리되며 기본 테이블과 반복
 테이블의 개념 없이 조인 조건에 포함된 칼럼의 인덱스가 모두 사용된다.
 
 ###### **정렬을 이용한 머지 조인**
 
-![merge_join_sort](D:\emmachoigit\manuals\media\TuningGuide\merge_join_sort.gif)
+![merge_join_sort](media/TuningGuide/merge_join_sort.gif)
 
 위의 실행 계획에서 조인 조건은 MERGE-JOIN 노드에서 처리되며 조인 조건에 포함된
 칼럼을 기준으로 정렬한 후 이를 이용한다.
@@ -5185,7 +5185,7 @@ PARALLEL-QUEUE 노드에 할당된 식별번호(TID)로 첫 번째 PARALLEL-QUEU
 파티션 P1, P3, P4 를 두 번째 PARALLEL-QUEUE 노드가 파티션 P2를 스캔한 것을
 확인할 수 있다.
 
-![PCRD_2](D:\emmachoigit\manuals\media\TuningGuide\PCRD_2.gif)
+![PCRD_2](media/TuningGuide/PCRD_2.gif)
 
 ##### 예제1
 
@@ -5275,7 +5275,7 @@ PARALLEL-SCAN-COORDINATOR 노드는 병렬 질의 수행을 위해 사용되며,
 다음은 PARALLEL-SCAN-COORDINATOR 노드가 사용된 예이다. 자식 노드를 병렬로
 수행하고 그 결과를 수집하여 상위 노드로 전달한다.
 
-![PSCRD](D:\emmachoigit\manuals\media\TuningGuide\PSCRD.gif)
+![PSCRD](media/TuningGuide/PSCRD.gif)
 
 ##### 예제
 
@@ -5345,14 +5345,14 @@ PARTITION-COORDINATIOR 노드는 파티션드 테이블의 각각의 파티션�
 기본적인 PARTITION-COORDINATIOR 노드가 수행되는 예는 다음과 같다. 자식 노드인
 파티션에 대한 스캔 결과를 상위 노드로 전달한다.
 
-![PCRD](D:\emmachoigit\manuals\media\TuningGuide\PCRD.gif)
+![PCRD](media/TuningGuide/PCRD.gif)
 
 병렬 질의를 통해 PARTITION-COORDINATIOR 노드가 수행되는 예는 다음과 같다.
 PARTITION-COORDINATIOR 노드에 PARALLEL 항목이 있는 것을 볼 수 있다.
 PARTITION-COORDINATIOR 노드가 파티션을 스캔하는 자식 노드의 실행 결과를 상위
 노드에 전달한다.
 
-![PCRD_2](D:\emmachoigit\manuals\media\TuningGuide\PCRD_2.gif)
+![PCRD_2](media/TuningGuide/PCRD_2.gif)
 
 ##### 예제 1
 
@@ -5441,7 +5441,7 @@ PROJECT 노드는 질의의 최종 결과를 구성하는 노드이다. PROJECT 
 같이 실행 계획 내에서 볼 수 있다. 질의 결과가 두 개의 칼럼으로 구성되며, 결과
 레코드의 크기가 8 byte임을 알 수 있다.
 
-![project](D:\emmachoigit\manuals\media\TuningGuide\project.gif)
+![project](media/TuningGuide/project.gif)
 
 ##### 예제
 
@@ -5525,20 +5525,20 @@ SCAN 노드에서 검사되는 조건은 다음과 같이 5가지의 처리 방�
 다음 예는 SYS 사용자의 기본 테이블스페이스가 SYS_TBS_MEMORY로 지정되어 있는
 경우이며, 메모리 테이블의 SCAN 노드 정보를 보이고 있다.
 
-![scan_memory_table](D:\emmachoigit\manuals\media\TuningGuide\scan_memory_table.gif)
+![scan_memory_table](media/TuningGuide/scan_memory_table.gif)
 
 다음 예는 명시적으로 SYS_TBS_DATA인 디스크 테이블스페이스에 생성된 테이블의 SCAN
 노드 정보이다. 아래와 같이 디스크 테이블의 경우 테이블이 점유하고 있는 디스크
 페이지의 개수를 보여준다.
 
-![scan_memory_table_1](D:\emmachoigit\manuals\media\TuningGuide\scan_memory_table_1.gif)
+![scan_memory_table_1](media/TuningGuide/scan_memory_table_1.gif)
 
 ###### **테이블 이름**
 
 아래의 예에서와 같이 SCAN 노드가 접근하고 있는 테이블의 이름을 보여주며, 질의에
 alias 이름을 지정할 경우 다음과 같이 출력된다.
 
-![scan_table](D:\emmachoigit\manuals\media\TuningGuide\scan_table.gif)
+![scan_table](media/TuningGuide/scan_table.gif)
 
 ###### **액세스 방법 및 레코드 액세스 횟수**
 
@@ -5549,29 +5549,29 @@ alias 이름을 지정할 경우 다음과 같이 출력된다.
 다음은 전체 스캔에 의하여 해당 질의를 처리한 경우이다. WHERE절을 비교하기 위하여
 레코드에 접근한 수를 보이고 있다.
 
-![scan_access_method](D:\emmachoigit\manuals\media\TuningGuide\scan_access_method.gif)
+![scan_access_method](media/TuningGuide/scan_access_method.gif)
 
 동일한 테이블에 대하여 다음과 같이 인덱스를 사용한 경우의 실행 계획 정보의 예는
 다음과 같다. IDX1 인덱스를 사용하여 조건 비교를 위하여 한 건만 접근하고 있음을
 알 수 있다.
 
-![scan_access_method_2](D:\emmachoigit\manuals\media\TuningGuide\scan_access_method_2.gif)
+![scan_access_method_2](media/TuningGuide/scan_access_method_2.gif)
 
 동일한 조건에서 다른 칼럼에 대한 조건을 추가할 경우도 동일한 실행 계획이
 생성됨을 알 수 있다.
 
-![scan_access_method_3](D:\emmachoigit\manuals\media\TuningGuide\scan_access_method_3.gif)
+![scan_access_method_3](media/TuningGuide/scan_access_method_3.gif)
 
 이 때, T1.i2 칼럼에 인덱스를 추가하고 해당 인덱스를 사용하도록 질의를 수행하면
 다음과 같은 실행 계획을 볼 수 있다. 동일한 질의임에도 불구하고 다른 인덱스를
 사용하면 접근 효율이 떨어짐을 볼 수 있다.
 
-![scan_access_method_4](D:\emmachoigit\manuals\media\TuningGuide\scan_access_method_4.gif)
+![scan_access_method_4](media/TuningGuide/scan_access_method_4.gif)
 
 아래와 같이 별도의 힌트를 주지 않을 경우, 옵티마이저는 비용 비교를 통해 보다
 우수한 인덱스를 선택하게 된다.
 
-![scan_access_method_5](D:\emmachoigit\manuals\media\TuningGuide\scan_access_method_5.gif)
+![scan_access_method_5](media/TuningGuide/scan_access_method_5.gif)
 
 위와 같이 SCAN 노드의 정보를 통해 올바른 액세스 방법이 선택되고 있는지를
 확인하고, 인덱스가 없는 경우 질의에 따라 적절한 인덱스를 생성해 주는 것이
@@ -5587,13 +5587,13 @@ TRCLOG_DETAIL_PREDICATE 프로퍼티를 1로 지정하면 SCAN노드에서 조�
 즉, 아래의 예에서는 (i1 = 1000) 조건은 인덱스를 사용한 fixed key range로
 처리되고, (i2 = 0) 조건은 filter로 처리됨을 알 수 있다.
 
-![trclog_detail_predicate](D:\emmachoigit\manuals\media\TuningGuide\trclog_detail_predicate.gif)
+![trclog_detail_predicate](media/TuningGuide/trclog_detail_predicate.gif)
 
 다음은 동일한 질의를 처리하는데 다른 인덱스가 사용된 예제이다. IDX2 인덱스를
 사용 시 인덱스를 사용하는 조건과 인덱스를 사용하지 않는 조건이 바뀌었음을 알 수
 있다.
 
-![trclog_detail_predicate_1](D:\emmachoigit\manuals\media\TuningGuide\trclog_detail_predicate_1.gif)
+![trclog_detail_predicate_1](media/TuningGuide/trclog_detail_predicate_1.gif)
 
 위와 같이 WHERE 절에 기술된 어떠한 조건이 인덱스를 사용하고 그렇지 않은 지를
 판단하는 것 또한 질의 튜닝에 많은 도움을 준다. 단, 옵티마이저의 최적화 과정에서
@@ -5677,13 +5677,13 @@ VIEW 노드는 관계형 모델에서 가상 테이블을 표현하기 위해 �
 아래와 같다. VIEW 노드의 하위 노드들은 사용자가 정의한 뷰의 SELECT문에 대한 실행
 계획을 의미한다.
 
-![view_1](D:\emmachoigit\manuals\media\TuningGuide\view_1.gif)
+![view_1](media/TuningGuide/view_1.gif)
 
 집합 연산이 사용된 질의에서도 VIEW 노드를 사용하게 되는 데, 그 예는 다음과 같다.
 VIEW 노드는 INTERSECT의 결과를 하나의 테이블의 개념으로 관리하기 위해
 생성되었다. 이 경우 별도의 이름을 갖지 않는다.
 
-![view_2](D:\emmachoigit\manuals\media\TuningGuide\view_2.gif)
+![view_2](media/TuningGuide/view_2.gif)
 
 ##### 예제
 
@@ -5754,7 +5754,7 @@ VIEW-SCAN 노드가 사용되는 예는 아래와 같다. 아래 질의에는 �
 MATERIALIZATION 노드를 이용하여 저장한다. 아래는 저장된 뷰의 내용을 VIEW-SCAN
 노드로 접근하고 있는 실행 계획을 나타낸다.
 
-![view_scan](D:\emmachoigit\manuals\media\TuningGuide\view_scan.gif)
+![view_scan](media/TuningGuide/view_scan.gif)
 
 위의 실행 계획에서 (V1 X) 뷰에 대한 VIEW-SCAN 노드는 자식 노드를 갖지 않는
 것으로 보인다. 그러나, 해당 VIEW-SCAN 노드는 MATERIALIZATION 노드를 자식 노드로
@@ -5764,7 +5764,7 @@ MATERIALIZATION 노드를 이용하여 저장한다. 아래는 저장된 뷰의 
 위의 그림에서와 같이 VSCN(V1 X)와 VSCN(V1 Y) 실행 노드는 동일한 자식 노드를 갖고
 있다.
 
-![view_scan_node](D:\emmachoigit\manuals\media\TuningGuide\view_scan_node.gif)
+![view_scan_node](media/TuningGuide/view_scan_node.gif)
 
 ##### 예제
 
@@ -5808,7 +5808,7 @@ SET-DIFFERENCE 노드가 MINUS를 위해 수행되는 예는 다음과 같다. �
 중복 제거하여 저장하고, 우측 질의의 결과를 이용하여 교집합을 구한 후 교집합에
 포함되지 않은 결과만을 검색한다.
 
-![set_difference](D:\emmachoigit\manuals\media\TuningGuide\set_difference.gif)
+![set_difference](media/TuningGuide/set_difference.gif)
 
 ##### 예제
 
@@ -5886,7 +5886,7 @@ SET-INTERSECT 노드가 INTERSECT를 위해 수행되는 예는 다음과 같다
 결과 데이터를 중복 제거하여 저장하고, 우측 질의의 결과 데이터를 이용하여
 교집합에 해당하는 결과를 검색하게 된다.
 
-![set_intersect](D:\emmachoigit\manuals\media\TuningGuide\set_intersect.gif)
+![set_intersect](media/TuningGuide/set_intersect.gif)
 
 ##### 예제
 
@@ -5967,7 +5967,7 @@ SORT 노드는 매우 다양한 용도로 사용된다. 아래에서 각 용도�
 ORDER BY 절이 존재하고 별도의 정렬이 필요한 경우 SORT 노드가 사용된다. 아래의
 예에서 SORT 노드는 ORDER BY절을 처리하기 위하여 사용되었다.
 
-![sort_order_by](D:\emmachoigit\manuals\media\TuningGuide\sort_order_by.gif)
+![sort_order_by](media/TuningGuide/sort_order_by.gif)
 
 ###### **GROUP BY에서의 사용**
 
@@ -5975,14 +5975,14 @@ SORT 노드는 GROUP BY 절의 동일한 그룹을 분류하기 위한 정렬을
 생성될 수 있다. 아래의 예는 GROUP BY i4 를 처리하기 위하여 SORT 노드가 생성된
 경우이다.
 
-![sort_group_by](D:\emmachoigit\manuals\media\TuningGuide\sort_group_by.gif)
+![sort_group_by](media/TuningGuide/sort_group_by.gif)
 
 ###### **DISTINCT절에서의 사용**
 
 SORT 노드는 DISTINCT 처리시 정렬 방식으로 중복 제거를 하기 위하여 사용될 수
 있다. 아래의 예는 DISTINCT i4 를 처리하기 위하여 SORT 노드가 생성된 경우이다.
 
-![sort_distinct](D:\emmachoigit\manuals\media\TuningGuide\sort_distinct.gif)
+![sort_distinct](media/TuningGuide/sort_distinct.gif)
 
 ###### **조인에서의 사용**
 
@@ -5992,7 +5992,7 @@ SORT 노드는 조인을 수행하기 위하여 사용될 수 있다.
 조인 조건을 검사하기 위한 sort-based 조인을 수행하기 위해 SORT 노드가
 생성되었다.
 
-![sort_join](D:\emmachoigit\manuals\media\TuningGuide\sort_join.gif)
+![sort_join](media/TuningGuide/sort_join.gif)
 
 ##### 예제
 
@@ -6061,7 +6061,7 @@ STORE 노드는 조인에 사용될 수 있다.
 대한 검색이 완료된 결과를 저장함으로서 반복적인 인덱스 사용을 방지하는 효과를
 얻을 수 있다.
 
-![store](D:\emmachoigit\manuals\media\TuningGuide\store.gif)
+![store](media/TuningGuide/store.gif)
 
 5.옵티마이저와 통계정보
 ---------------------
@@ -6602,7 +6602,7 @@ Plan)을 세션 간에 공유한다. 공유된 실행 계획(SQL Plan)이 실행
 
 #### Altibase SQL Plan Cache 구조
 
-![sql_plan_cache](D:\emmachoigit\manuals\media\TuningGuide\sql_plan_cache.gif)
+![sql_plan_cache](media/TuningGuide/sql_plan_cache.gif)
 
 [그림 7‑1] Altibase 공유 캐쉬 구성도
 
@@ -6979,253 +6979,134 @@ Commit 모드에 따라 Result Cache를 사용할 수 있는 범위가 달라진
 
 \<질의 1\> Result Cache를 사용하여 실행계획이 변경되었는지 확인한다.
 
-iSQL\> alter session set explain plan = on;
-
+```
+iSQL> alter session set explain plan = on;
 Alter success.
-
-iSQL\> alter system set trclog_detail_mtrnode = 1;
-
+iSQL> alter system set trclog_detail_mtrnode = 1;
 Alter success.
-
-iSQL\> SELECT /\*+ RESULT_CACHE \*/ E.E_LASTNAME, E.ENO FROM EMPLOYEES E ORDER
-
-2 BY E.DNO, E.E_FIRSTNAME LIMIT 3;
-
-E_LASTNAME ENO
-
-\-------------------------------------
-
-Kobain 3
-
-Chen 16
-
-Jones 13
-
+iSQL> SELECT /*+ RESULT_CACHE */ E.E_LASTNAME, E.ENO FROM EMPLOYEES E ORDER
+    2 BY E.DNO, E.E_FIRSTNAME LIMIT 3;
+E_LASTNAME            ENO
+-------------------------------------
+Kobain                3
+Chen                  16
+Jones                 13
 3 rows selected.
-
-\-----------------------------------------------------------
-
+-----------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 28, COST: 0.03 )
-
 [ TARGET INFO ]
+sTargetColumn[0] : [0, 1],sTargetColumn->arg[X, X]
+sTargetColumn[1] : [0, 0],sTargetColumn->arg[X, X]
+ LIMIT-SORT ( ITEM_SIZE: 16, ITEM_COUNT: 20, STORE_COUNT: 3, ACCESS: 3, COST: 0.02 )
+ [ RESULT CACHE HIT: 0, MISS: 0, SIZE: 65536, STATUS: INIT ]
+ [ myNode NODE INFO, SELF: 1, REF1: 0, REF2: -1 ]
+ sMtrNode[0] : src[0, ROWPTR],dst[1, 0]
+ sMtrNode[1] : src[0, *5],dst[1, 1]
+ sMtrNode[2] : src[0, *2],dst[1, 2]
+  SCAN ( TABLE: SYS.EMPLOYEES E, FULL SCAN, ACCESS: 20, COST: 0.02 )
+  [ SELF NODE INFO, SELF: 0 ]
+-----------------------------------------------------------
+* AUTO STATISTICS USED: 2
 
-sTargetColumn[0] : [0, 1],sTargetColumn-\>arg[X, X]
-
-sTargetColumn[1] : [0, 0],sTargetColumn-\>arg[X, X]
-
-LIMIT-SORT ( ITEM_SIZE: 16, ITEM_COUNT: 20, STORE_COUNT: 3, ACCESS: 3, COST:
-0.02 )
-
-[ RESULT CACHE HIT: 0, MISS: 0, SIZE: 65536, STATUS: INIT ]
-
-[ myNode NODE INFO, SELF: 1, REF1: 0, REF2: -1 ]
-
-sMtrNode[0] : src[0, ROWPTR],dst[1, 0]
-
-sMtrNode[1] : src[0, \*5],dst[1, 1]
-
-sMtrNode[2] : src[0, \*2],dst[1, 2]
-
-SCAN ( TABLE: SYS.EMPLOYEES E, FULL SCAN, ACCESS: 20, COST: 0.02 )
-
-[ SELF NODE INFO, SELF: 0 ]
-
-\-----------------------------------------------------------
-
-\* AUTO STATISTICS USED: 2
-
-iSQL\> SELECT /\*+ RESULT_CACHE \*/ E.E_LASTNAME, E.ENO FROM EMPLOYEES E ORDER
-BY E.DNO, E.E_FIRSTNAME LIMIT 3;
-
-E_LASTNAME ENO
-
-\-------------------------------------
-
-Kobain 3
-
-Chen 16
-
-Jones 13
-
+iSQL> SELECT /*+ RESULT_CACHE */ E.E_LASTNAME, E.ENO FROM EMPLOYEES E ORDER BY E.DNO, E.E_FIRSTNAME LIMIT 3;
+E_LASTNAME            ENO
+-------------------------------------
+Kobain                3
+Chen                  16
+Jones                 13
 3 rows selected.
-
-\-----------------------------------------------------------
-
+-----------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 28, COST: 0.03 )
-
 [ TARGET INFO ]
-
-sTargetColumn[0] : [0, 1],sTargetColumn-\>arg[X, X]
-
-sTargetColumn[1] : [0, 0],sTargetColumn-\>arg[X, X]
-
-LIMIT-SORT ( ITEM_SIZE: 16, ITEM_COUNT: 20, STORE_COUNT: 3, ACCESS: 3, COST:
-0.02 )
-
-[ RESULT CACHE HIT: 1, MISS: 0, SIZE: 65536, STATUS: HIT ]
-
-[ myNode NODE INFO, SELF: 1, REF1: 0, REF2: -1 ]
-
-sMtrNode[0] : src[0, ROWPTR],dst[1, 0]
-
-sMtrNode[1] : src[0, \*5],dst[1, 1]
-
-sMtrNode[2] : src[0, \*2],dst[1, 2]
-
-SCAN ( TABLE: SYS.EMPLOYEES E, FULL SCAN, ACCESS: 0, COST: 0.02 )
-
-[ SELF NODE INFO, SELF: 0 ]
-
-\-----------------------------------------------------------
-
-\* AUTO STATISTICS USED: 2
+sTargetColumn[0] : [0, 1],sTargetColumn->arg[X, X]
+sTargetColumn[1] : [0, 0],sTargetColumn->arg[X, X]
+ LIMIT-SORT ( ITEM_SIZE: 16, ITEM_COUNT: 20, STORE_COUNT: 3, ACCESS: 3, COST: 0.02 )
+ [ RESULT CACHE HIT: 1, MISS: 0, SIZE: 65536, STATUS: HIT ]
+ [ myNode NODE INFO, SELF: 1, REF1: 0, REF2: -1 ]
+ sMtrNode[0] : src[0, ROWPTR],dst[1, 0]
+ sMtrNode[1] : src[0, *5],dst[1, 1]
+ sMtrNode[2] : src[0, *2],dst[1, 2]
+  SCAN ( TABLE: SYS.EMPLOYEES E, FULL SCAN, ACCESS: 0, COST: 0.02 )
+  [ SELF NODE INFO, SELF: 0 ]
+-----------------------------------------------------------
+* AUTO STATISTICS USED: 2
+```
 
 \<질의 2\> Top Result Cache를 사용하여 실행계획이 변경되었는지 확인한다.
 
-iSQL\> alter session set explain plan = on;
-
+```
+iSQL> alter session set explain plan = on;
 Alter success.
-
-iSQL\> alter system set trclog_detail_mtrnode = 1;
-
+iSQL> alter system set trclog_detail_mtrnode = 1;
 Alter success.
-
-iSQL\> SELECT /\*+ TOP_RESULT_CACHE \*/ E.E_LASTNAME, E.ENO FROM EMPLOYEES E
-ORDER BY E.DNO, E.E_FIRSTNAME LIMIT 3;
-
-E_LASTNAME ENO
-
-\-------------------------------------
-
-Kobain 3
-
-Chen 16
-
-Jones 13
-
+iSQL> SELECT /*+ TOP_RESULT_CACHE */ E.E_LASTNAME, E.ENO FROM EMPLOYEES E ORDER BY E.DNO, E.E_FIRSTNAME LIMIT 3;
+E_LASTNAME            ENO
+-------------------------------------
+Kobain                3
+Chen                  16
+Jones                 13
 3 rows selected.
-
-\-----------------------------------------------------------
-
+-----------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 28, COST: 0.03 )
-
 [ TARGET INFO ]
-
-sTargetColumn[0] : [3, 0],sTargetColumn-\>arg[X, X]
-
-sTargetColumn[1] : [3, 1],sTargetColumn-\>arg[X, X]
-
-MATERIALIZATION ( ITEM_SIZE: 40, ITEM_COUNT: 3, COST: 0.00 )
-
-[ RESULT CACHE HIT: 0, MISS: 0, SIZE: 65536, STATUS: INIT ]
-
-[ myNode NODE INFO, SELF: 3, REF1: 0, REF2: -1 ]
-
-sMtrNode[0] : src[2, 0],dst[3, 0]
-
-sMtrNode[1] : src[2, 1],dst[3, 1]
-
-VIEW ( ACCESS: 3, COST: 0.00 )
-
-[ MTRNODE INFO ]
-
-sNode[0] : [2, 0]
-
-sNode[1] : [2, 1]
-
-PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 28, COST: 0.03 )
-
-[ TARGET INFO ]
-
-sTargetColumn[0] : [0, 1],sTargetColumn-\>arg[X, X]
-
-sTargetColumn[1] : [0, 0],sTargetColumn-\>arg[X, X]
-
-LIMIT-SORT ( ITEM_SIZE: 16, ITEM_COUNT: 20, STORE_COUNT: 3, ACCESS: 3, COST:
-0.02 )
-
-[ myNode NODE INFO, SELF: 1, REF1: 0, REF2: -1 ]
-
-sMtrNode[0] : src[0, ROWPTR],dst[1, 0]
-
-sMtrNode[1] : src[0, \*5],dst[1, 1]
-
-sMtrNode[2] : src[0, \*2],dst[1, 2]
-
-SCAN ( TABLE: SYS.EMPLOYEES E, FULL SCAN, ACCESS: 20, COST: 0.02 )
-
-[ SELF NODE INFO, SELF: 0 ]
-
-\-----------------------------------------------------------
-
-\* AUTO STATISTICS USED: 2
-
-iSQL\> SELECT /\*+ TOP_RESULT_CACHE \*/ E.E_LASTNAME, E.ENO FROM EMPLOYEES E
-ORDER BY E.DNO, E.E_FIRSTNAME LIMIT 3;
-
-E_LASTNAME ENO
-
-\-------------------------------------
-
-Kobain 3
-
-Chen 16
-
-Jones 13
-
+sTargetColumn[0] : [3, 0],sTargetColumn->arg[X, X]
+sTargetColumn[1] : [3, 1],sTargetColumn->arg[X, X]
+ MATERIALIZATION ( ITEM_SIZE: 40, ITEM_COUNT: 3, COST: 0.00 )
+ [ RESULT CACHE HIT: 0, MISS: 0, SIZE: 65536, STATUS: INIT ]
+ [ myNode NODE INFO, SELF: 3, REF1: 0, REF2: -1 ]
+ sMtrNode[0] : src[2, 0],dst[3, 0]
+ sMtrNode[1] : src[2, 1],dst[3, 1]
+  VIEW ( ACCESS: 3, COST: 0.00 )
+  [ MTRNODE INFO ]
+  sNode[0] : [2, 0]
+  sNode[1] : [2, 1]
+   PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 28, COST: 0.03 )
+   [ TARGET INFO ]
+   sTargetColumn[0] : [0, 1],sTargetColumn->arg[X, X]
+   sTargetColumn[1] : [0, 0],sTargetColumn->arg[X, X]
+    LIMIT-SORT ( ITEM_SIZE: 16, ITEM_COUNT: 20, STORE_COUNT: 3, ACCESS: 3, COST: 0.02 )
+    [ myNode NODE INFO, SELF: 1, REF1: 0, REF2: -1 ]
+    sMtrNode[0] : src[0, ROWPTR],dst[1, 0]
+    sMtrNode[1] : src[0, *5],dst[1, 1]
+    sMtrNode[2] : src[0, *2],dst[1, 2]
+     SCAN ( TABLE: SYS.EMPLOYEES E, FULL SCAN, ACCESS: 20, COST: 0.02 )
+     [ SELF NODE INFO, SELF: 0 ]
+-----------------------------------------------------------
+* AUTO STATISTICS USED: 2
+iSQL> SELECT /*+ TOP_RESULT_CACHE */ E.E_LASTNAME, E.ENO FROM EMPLOYEES E ORDER BY E.DNO, E.E_FIRSTNAME LIMIT 3;
+E_LASTNAME            ENO
+-------------------------------------
+Kobain                3
+Chen                  16
+Jones                 13
 3 rows selected.
-
-\-----------------------------------------------------------
-
+-----------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 28, COST: 0.03 )
-
 [ TARGET INFO ]
+sTargetColumn[0] : [3, 0],sTargetColumn->arg[X, X]
+sTargetColumn[1] : [3, 1],sTargetColumn->arg[X, X]
+ MATERIALIZATION ( ITEM_SIZE: 40, ITEM_COUNT: 3, COST: 0.00 )
+ [ RESULT CACHE HIT: 1, MISS: 0, SIZE: 65536, STATUS: HIT ]
+ [ myNode NODE INFO, SELF: 3, REF1: 0, REF2: -1 ]
+ sMtrNode[0] : src[2, 0],dst[3, 0]
+ sMtrNode[1] : src[2, 1],dst[3, 1]
+  VIEW ( ACCESS: 0, COST: 0.00 )
+  [ MTRNODE INFO ]
+  sNode[0] : [2, 0]
+  sNode[1] : [2, 1]
+   PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 28, COST: 0.03 )
+   [ TARGET INFO ]
+   sTargetColumn[0] : [0, 1],sTargetColumn->arg[X, X]
+   sTargetColumn[1] : [0, 0],sTargetColumn->arg[X, X]
+    LIMIT-SORT ( ITEM_SIZE: 0, ITEM_COUNT: 0, STORE_COUNT: 0, ACCESS: 0, COST: 0.02 )
+    [ myNode NODE INFO, SELF: 1, REF1: 0, REF2: -1 ]
+    sMtrNode[0] : src[0, ROWPTR],dst[1, 0]
+    sMtrNode[1] : src[0, *5],dst[1, 1]
+    sMtrNode[2] : src[0, *2],dst[1, 2]
+     SCAN ( TABLE: SYS.EMPLOYEES E, FULL SCAN, ACCESS: 0, COST: 0.02 )
+     [ SELF NODE INFO, SELF: 0 ]
+-----------------------------------------------------------
+* AUTO STATISTICS USED: 2
+```
 
-sTargetColumn[0] : [3, 0],sTargetColumn-\>arg[X, X]
 
-sTargetColumn[1] : [3, 1],sTargetColumn-\>arg[X, X]
-
-MATERIALIZATION ( ITEM_SIZE: 40, ITEM_COUNT: 3, COST: 0.00 )
-
-[ RESULT CACHE HIT: 1, MISS: 0, SIZE: 65536, STATUS: HIT ]
-
-[ myNode NODE INFO, SELF: 3, REF1: 0, REF2: -1 ]
-
-sMtrNode[0] : src[2, 0],dst[3, 0]
-
-sMtrNode[1] : src[2, 1],dst[3, 1]
-
-VIEW ( ACCESS: 0, COST: 0.00 )
-
-[ MTRNODE INFO ]
-
-sNode[0] : [2, 0]
-
-sNode[1] : [2, 1]
-
-PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 28, COST: 0.03 )
-
-[ TARGET INFO ]
-
-sTargetColumn[0] : [0, 1],sTargetColumn-\>arg[X, X]
-
-sTargetColumn[1] : [0, 0],sTargetColumn-\>arg[X, X]
-
-LIMIT-SORT ( ITEM_SIZE: 0, ITEM_COUNT: 0, STORE_COUNT: 0, ACCESS: 0, COST: 0.02
-)
-
-[ myNode NODE INFO, SELF: 1, REF1: 0, REF2: -1 ]
-
-sMtrNode[0] : src[0, ROWPTR],dst[1, 0]
-
-sMtrNode[1] : src[0, \*5],dst[1, 1]
-
-sMtrNode[2] : src[0, \*2],dst[1, 2]
-
-SCAN ( TABLE: SYS.EMPLOYEES E, FULL SCAN, ACCESS: 0, COST: 0.02 )
-
-[ SELF NODE INFO, SELF: 0 ]
-
-\-----------------------------------------------------------
-
-\* AUTO STATISTICS USED: 2
