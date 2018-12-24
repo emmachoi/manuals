@@ -3520,7 +3520,7 @@ Merge 조인의 수행 비용은 개략적으로 Access cost + Disk I/O cost로 
 <tbody>
 <tr>
 <td style="width: 124px;">
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 생성노드(우)<br /> /
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 생성노드(우)<br /> \
 <br />저장공간(하)</p>
 </td>
 <td style="width: 189px;">
@@ -3567,12 +3567,14 @@ Reference*의 성능 관련 프로퍼티를 참조하기 바란다.
 결과를 저장하는 두 개의 저장 노드를 가지고 있다. 메모리 임시 공간이 사용되는
 경우 디스크 페이지에 대한 정보를 별도로 갖지 않는다.
 
-
+![select_distinct_1](D:\emmachoigit\manuals\media\TuningGuide\select_distinct_1.gif)
 
 다음은 디스크 테이블에 대하여 중복 제거 및 정렬을 위하여 중간 결과를 저장하는 두
 개의 저장 노드를 보이고 있다. 디스크 임시 공간이 사용되는 경우 디스크 페이지에
 대한 정보를 갖는다. 즉, 실행 노드의 정보 중 DISK_PAGE_COUNT 정보의 유무를 통해
 임시 공간의 저장 매체 정보(메모리인지 디스크인지)를 판단할 수 있다.
+
+![select_distinct_2](D:\emmachoigit\manuals\media\TuningGuide\select_distinct_2.gif)
 
 ### 옵티마이저 관련 프로퍼티
 
@@ -3590,7 +3592,7 @@ Reference*의 성능 관련 프로퍼티를 참조하기 바란다.
 
 -   OPTIMIZER_UNNEST_SUBQUERY
 
-EXPLAIN PLAN 사용하기
+4.EXPLAIN PLAN 사용하기
 ---------------------
 
 이 장은 Altibase 서버가 최적화된 질의를 실행하기 위해 수행하는 접근 경로를
@@ -3627,7 +3629,9 @@ EXPLAIN PLAN 프로퍼티를 적절히 설정하면 SQL문의 plan tree를 볼 �
 대해서만 제공된다. 이를 얻기 위해서는 SELECT 구문의 수행 전에 iSQL에서 다음
 명령을 수행하여야 한다.
 
+```
 ALTER SESSION SET EXPLAIN PLAN = option;
+```
 
 option에는 ON, OFF, 또는 ONLY가 올 수 있다. 기본 설정값은 OFF이다.
 
@@ -3649,7 +3653,9 @@ option에는 ON, OFF, 또는 ONLY가 올 수 있다. 기본 설정값은 OFF이�
 사용자가 기술한 WHERE절에 존재하는 조건들의 처리 방법에 대한 정보 등 보다 자세한
 정보가 필요한 경우는 다음 명령을 사용한다.
 
+```
 ALTER SYSTEM SET TRCLOG_DETAIL_PREDICATE = 1;
+```
 
 TRCLOG_DETAIL_PREDICATE 프로퍼티의 값을 1로 설정하면, 실행 계획 정보에 WHERE절의
 조건들이 FIXED KEY RANGE, VARIABLE KEY RANGE, 또는 FILTER 등으로 자세하게
@@ -3659,127 +3665,98 @@ TRCLOG_DETAIL_PREDICATE 프로퍼티의 값을 1로 설정하면, 실행 계획 
 
 다음은 쿼리 문의 실행 결과 출력 예이다.
 
-iSQL\> alter system set trclog_detail_predicate = 1;
-
+```
+iSQL> alter system set trclog_detail_predicate = 1;
 Alter success.
-
-iSQL\> alter session set explain plan = on;
-
+iSQL> alter session set explain plan = on;
 Alter success.
-
-iSQL\> select \* from t1 where i1 = 1;
-
-T1.I1
-
-\--------------
-
-1
-
+iSQL> select * from t1 where i1 = 1;
+T1.I1       
+--------------
+1           
 1 row selected.
+```
 
-[TRCLOG_DETAIL_PREDICATE = 1 이고 EXPLAIN PLAN = ON인 경우]
+[TRCLOG_DETAIL_PREDICATE = 1 이고 EXPLAIN PLAN = ON인 경우]   
 
+```
 PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 4, COST: 0.00 )
-
-SCAN ( TABLE: T1, INDEX: IDX1, RANGE SCAN, ACCESS: 1, COST: 0.00 )
-
-[ FIXED KEY ]
-
-AND
-
-OR
-
-I1 = 1
+ SCAN ( TABLE: T1, INDEX: IDX1, RANGE SCAN, ACCESS: 1, COST: 0.00 )
+  [ FIXED KEY ]
+  AND
+   OR
+    I1 = 1
+```
 
 [TRCLOG_DETAIL_PREDICATE = 0 이고 EXPLAIN PLAN = ON인 경우]
 
-PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 4, COST: 0.00 )
+```
+ PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 4, COST: 0.00 )
+ SCAN ( TABLE: T1, INDEX: IDX1, RANGE SCAN, ACCESS: 1, COST: 0.00 )
+```
 
-SCAN ( TABLE: T1, INDEX: IDX1, RANGE SCAN, ACCESS: 1, COST: 0.00 )
+  [TRCLOG_DETAIL_PREDICATE = 0 이고 EXPLAIN PLAN = ONLY인 경우]
 
-[TRCLOG_DETAIL_PREDICATE = 0 이고 EXPLAIN PLAN = ONLY인 경우]
+```
+ PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 4, COST: 0.00 )
+ SCAN ( TABLE: T1, INDEX: IDX1, RANGE SCAN, ACCESS: ??, COST: 0.00 )
+```
 
-PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 4, COST: 0.00 )
 
-SCAN ( TABLE: T1, INDEX: IDX1, RANGE SCAN, ACCESS: ??, COST: 0.00 )
 
 ##### 예제
 
 \<예제 1\> 실행 계획을 출력하도록 설정하라.
 
-iSQL\> ALTER SESSION SET EXPLAIN PLAN = ON;
-
-iSQL\> SELECT e_firstname, e_lastname
-
-FROM employees
-
-WHERE emp_job = 'programmer';
-
-E_FIRSTNAME E_LASTNAME
-
-\-----------------------------------------------
-
-Ryu Momoi
-
-Elizabeth Bae
-
+```
+iSQL> ALTER SESSION SET EXPLAIN PLAN = ON;
+iSQL> SELECT e_firstname, e_lastname 
+ FROM employees 
+ WHERE emp_job = 'programmer';
+E_FIRSTNAME           E_LASTNAME
+-----------------------------------------------
+Ryu                   Momoi
+Elizabeth             Bae
 2 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 44, COST: 0.15 )
-
-SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.14 )
-
-\------------------------------------------------------------
+ SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.14 )
+------------------------------------------------------------
+```
 
 \<예제 2\> 실행 계획을 출력하지 않도록 설정하라.
 
-iSQL\> ALTER SESSION SET EXPLAIN PLAN = OFF;
-
+```
+iSQL> ALTER SESSION SET EXPLAIN PLAN = OFF;
 Alter success.
-
-iSQL\> SELECT e_firstname, e_lastname
-
-FROM employees
-
-WHERE emp_job = 'programmer';
-
-E_FIRSTNAME E_LASTNAME
-
-\-----------------------------------------------
-
-Ryu Momoi
-
-Elizabeth Bae
-
+iSQL> SELECT e_firstname, e_lastname 
+ FROM employees 
+ WHERE emp_job = 'programmer';
+E_FIRSTNAME           E_LASTNAME
+-----------------------------------------------
+Ryu                   Momoi
+Elizabeth             Bae
 2 rows selected.
+```
 
 \<예제 3\> 질의문은 실행하지 않고, 실행 계획만 출력하도록 설정하라.
 
-iSQL\> ALTER SESSION SET EXPLAIN PLAN = ONLY;
-
+```
+iSQL> ALTER SESSION SET EXPLAIN PLAN = ONLY;
 Alter success.
-
-iSQL\> SELECT e_firstname, e_lastname
-
-FROM employees
-
-WHERE emp_job = 'programmer';
-
-E_FIRSTNAME E_LASTNAME
-
-\-----------------------------------------------
-
+iSQL> SELECT e_firstname, e_lastname 
+ FROM employees 
+ WHERE emp_job = 'programmer';
+E_FIRSTNAME           E_LASTNAME
+-----------------------------------------------
 No rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 44, COST: 0.15 )
+ SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: ??, COST: 0.14 )
+------------------------------------------------------------
+```
 
-SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: ??, COST: 0.14 )
 
-\------------------------------------------------------------
 
 ### Plan Tree 읽기
 
@@ -3788,45 +3765,31 @@ Plan tree는 plan 노드들과 각 노드 간의 연결 관계로 이루어진�
 안으로 들어가 출력된다. 또한 subquery는 ::SUB-QUERY BEGIN과 ::SUB-QUERY END
 사이에 보여진다.
 
-iSQL\> SELECT c.c_lastname
-
-FROM customers c
-
-WHERE c.cno IN
-
-(SELECT /\*+ no_unnest \*/ o.cno
-
-FROM orders o
-
-WHERE o.ono = 12310001);
-
+```
+iSQL> SELECT c.c_lastname
+    FROM customers c
+    WHERE c.cno IN
+      (SELECT /*+ no_unnest */ o.cno
+      FROM orders o
+      WHERE o.ono = 12310001);
 C_LASTNAME
-
-\------------------------
-
-Fedorov
-
+------------------------
+Fedorov 
 1 row selected.
 
-\-----------------------------------------------
+    -----------------------------------------------
+4   PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 22, COST: 0.20 )
+3    SCAN ( TABLE: CUSTOMERS C, FULL SCAN, ACCESS: 20,
+              COST: 0.19 )
+      ::SUB-QUERY BEGIN
+2     PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 3, COST: 0.04 )
+1       SCAN ( TABLE: ORDERS O, INDEX: ODR_IDX2, 
+                 RANGE SCAN, ACCESS: 29, COST: 0.04 )
+      ::SUB-QUERY END
+    -----------------------------------------------
+```
 
-4 PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 22, COST: 0.20 )
-
-3 SCAN ( TABLE: CUSTOMERS C, FULL SCAN, ACCESS: 20,
-
-COST: 0.19 )
-
-::SUB-QUERY BEGIN
-
-2 PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 3, COST: 0.04 )
-
-1 SCAN ( TABLE: ORDERS O, INDEX: ODR_IDX2,
-
-RANGE SCAN, ACCESS: 29, COST: 0.04 )
-
-::SUB-QUERY END
-
-\-----------------------------------------------
+![plan_tree](D:\emmachoigit\manuals\media\TuningGuide\plan_tree.gif)
 
 1.  orders 테이블에 있는 주문 번호(ono)를 인덱스를 이용하여 검색한다. 인덱스를
     이용한 접근 회수는 20임을 알 수 있다. 인덱스가 생성되지 않은 열을 기준으로
@@ -3852,6 +3815,8 @@ RANGE SCAN, ACCESS: 29, COST: 0.04 )
 노드들이 트리 형태로 연결된 전체 실행 계획 트리를 따라가면서 실행 순서가
 결정된다.
 
+![plan_tree_kor](D:\emmachoigit\manuals\media\TuningGuide\plan_tree_kor.gif)
+
 실행 계획 트리에서 하나의 노드는 한 행에 표시된다. 왼쪽으로 들여쓰기가 많이 되어
 있는 노드일수록 하위 노드이며 가장 먼저 수행된다.
 
@@ -3869,7 +3834,9 @@ T2 SCAN 노드, T3 SCAN 노드의 순서로 수행된다. 노드 옆에 명시�
 
 위의 예제에서 나타난 실행 계획을 트리 형태로 나타내면 다음 그림과 같다.
 
->   [그림 4‑1] 레코드 요구와 페치(fetch) 경로
+![fetch_path_kor](D:\emmachoigit\manuals\media\TuningGuide\fetch_path_kor.gif)
+
+[그림 4‑1] 레코드 요구와 페치(fetch) 경로
 
 ### Plan Tree 활용
 
@@ -3907,8 +3874,11 @@ Plan tree에서 다음과 같은 정보를 얻을 수 있다:
 
 ##### 출력 형식
 
-**AGGREGATION** ( ITEM_SIZE: *item_size*, GROUP_COUNT: *group_count*, COST:
-*cost* )
+```
+AGGREGATION ( ITEM_SIZE: item_size, GROUP_COUNT: group_count, COST: cost )
+```
+
+
 
 | 항목        | 설명                                |
 |-------------|-------------------------------------|
@@ -3916,7 +3886,7 @@ Plan tree에서 다음과 같은 정보를 얻을 수 있다:
 | GROUP_COUNT | 실행 노드에 의해 생성된 그룹의 개수 |
 | COST        | 추산 비용                           |
 
->   [표 4‑1] AGGREGATION 노드의 정보
+[표 4‑1] AGGREGATION 노드의 정보
 
 ##### 설명
 
@@ -3938,48 +3908,51 @@ AGGREGATION 실행 노드는 관계형 모델에서 aggregation 연산을 수행
 SUM(i2)와 GROUP BY i3를 사용해서 그룹화된다. 아래 예에서는 16byte의 크기의
 레코드를 포함하는 그룹이 다섯 개가 구성되었음을 알 수 있다.
 
+![aggregate](D:\emmachoigit\manuals\media\TuningGuide\aggregate.gif)
+
 ###### **DISTINCT를 포함하는 aggregation 수행**
 
 Aggregation함수 내에 DISTINCT가 포함되어 있을 경우 중복 제거 작업이 필요하며 이
 경우에 한해 중복 제거를 위한 저장 공간이 사용된다. 아래의 예에서 AGGREGATION
 노드는 SUM(DISTINCT i2)를 처리하기 위해서 사용되었다.
 
+![aggregate_2](D:\emmachoigit\manuals\media\TuningGuide\aggregate_2.gif)
+
 ##### 예제
 
 총 부서의 수와 모든 사원들의 평균 급여를 출력하라.
 
-iSQL\> SELECT COUNT(DISTINCT dno), AVG(salary) FROM employees;
-
-COUNT(DISTINCT DNO) AVG(SALARY)
-
-\------------------------------------
-
-8 1836.64706
-
+```
+iSQL> SELECT COUNT(DISTINCT dno), AVG(salary) FROM employees;
+COUNT(DISTINCT DNO)  AVG(SALARY) 
+------------------------------------
+8                    1836.64706  
 1 row selected.
-
-\-----------------------------------------------
-
+-----------------------------------------------
 PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 31, COST: 0.03 )
+ AGGREGATION ( ITEM_SIZE: 72, GROUP_COUNT: 1, COST: 0.02 )
+  SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.01 )
+-----------------------------------------------
+```
 
-AGGREGATION ( ITEM_SIZE: 72, GROUP_COUNT: 1, COST: 0.02 )
 
-SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.01 )
-
-\-----------------------------------------------
 
 #### ANTI-OUTER-JOIN
 
 ##### 출력 형식
 
-ANTI-OUTER-JOIN ( METHOD: *method*, COST: *cost* )
+```
+ANTI-OUTER-JOIN ( METHOD: method, COST: cost )
+```
+
+
 
 | 항목   | 설명      |
 |--------|-----------|
 | METHOD | 조인 방법 |
 | COST   | 추산 비용 |
 
->   [표 4‑2] ANTI-OUTER-JOIN 노드의 정보
+[표 4‑2] ANTI-OUTER-JOIN 노드의 정보
 
 ##### 설명
 
@@ -3990,6 +3963,8 @@ ANTI-OUTER-JOIN 노드는 관계형 모델에서 ANTI OUTER JOIN 조인 연산�
 이 노드는 FULL OUTER JOIN만을 위해 사용되며, 아래와 같이 ON 조인 조건에서
 참조되는 모든 칼럼에 대하여 인덱스를 사용할 수 있을 때 사용된다.
 
+![anti_outer_join_1](D:\emmachoigit\manuals\media\TuningGuide\anti_outer_join_1.gif)
+
 위의 예에서와 같이 FULL OUTER JOIN을 처리하기 위하여 ANTI-OUTER-JOIN 노드는 항상
 LEFT-OUTER-JOIN 노드와 부모로 CONC 노드를 갖는다. 이 때, ON 절의 조인 조건은
 LEFT-OUTER-JOIN과 ANTI-OUTER-JOIN에서 모두 처리된다.
@@ -3999,66 +3974,47 @@ LEFT-OUTER-JOIN과 ANTI-OUTER-JOIN에서 모두 처리된다.
 부서의 위치와 상품을 모아 놓은 장소가 같은 곳의 부서 번호, 부서 이름, 상품
 번호를 출력하라.
 
-iSQL\> CREATE INDEX dep_idx2 ON departments(dep_location);
-
+```
+iSQL> CREATE INDEX dep_idx2 ON departments(dep_location);
 Create success.
-
-iSQL\> CREATE INDEX gds_idx1 ON goods(goods_location);
-
+iSQL> CREATE INDEX gds_idx1 ON goods(goods_location);
 Create success.
-
-iSQL\> SELECT d.dno, d.dname, g.gno
-
-FROM departments d FULL OUTER JOIN goods g
-
-ON d.dep_location = g.goods_location;
-
-DNO DNAME GNO
-
-\-----------------------------------------------------------
-
+iSQL> SELECT d.dno, d.dname, g.gno
+ FROM departments d FULL OUTER JOIN goods g
+ ON d.dep_location = g.goods_location;
+DNO         DNAME                           GNO
+-----------------------------------------------------------
 .
-
 .
-
 .
-
 38 rows selected.
-
-\-----------------------------------------------------------
-
+-----------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 3, TUPLE_SIZE: 46, COST: 0.29 )
-
-CONCATENATION
-
-LEFT-OUTER-JOIN ( METHOD: INDEX_NL, COST: 0.01 )
-
-SCAN ( TABLE: DEPARTMENTS D, FULL SCAN, ACCESS: 38, COST: 0.00 )
-
-SCAN ( TABLE: GOODS G, INDEX: GDS_IDX1, RANGE SCAN, ACCESS: 38, COST: 0.02 )
-
-ANTI-OUTER-JOIN( METHOD: ANTI, COST: 0.01 )
-
-SCAN ( TABLE: GOODS G, FULL SCAN, ACCESS: 38, COST: 0.02 )
-
-SCAN ( TABLE: DEPARTMENTS D, INDEX: DEP_IDX2, RANGE SCAN, ACCESS: 38, COST: 0.00
-)
-
-\-----------------------------------------------------------
-
-iSQL\> DROP INDEX dep_idx2;
-
+ CONCATENATION
+  LEFT-OUTER-JOIN ( METHOD: INDEX_NL, COST: 0.01 )
+   SCAN ( TABLE: DEPARTMENTS D, FULL SCAN, ACCESS: 38, COST: 0.00 )
+   SCAN ( TABLE: GOODS G, INDEX: GDS_IDX1, RANGE SCAN, ACCESS: 38, COST: 0.02 )
+  ANTI-OUTER-JOIN( METHOD: ANTI, COST: 0.01 )
+   SCAN ( TABLE: GOODS G, FULL SCAN, ACCESS: 38, COST: 0.02 )
+   SCAN ( TABLE: DEPARTMENTS D, INDEX: DEP_IDX2, RANGE SCAN, ACCESS: 38, COST: 0.00 )
+-----------------------------------------------------------
+iSQL> DROP INDEX dep_idx2;
 Drop success.
-
-iSQL\> DROP INDEX gds_idx1;
-
+iSQL> DROP INDEX gds_idx1;
 Drop success.
+```
+
+
 
 #### BAG-UNION
 
 ##### 출력 형식
 
+```
 BAG-UNION
+```
+
+
 
 ##### 설명
 
@@ -4068,6 +4024,8 @@ BAG-UNION 노드는 관계형 모델에서 UNION ALL 연산을 수행하는 노�
 
 이 노드가 수행되는 예를 보면 다음과 같다.
 
+![bag_union](D:\emmachoigit\manuals\media\TuningGuide\bag_union.gif)
+
 위의 예를 보면 BAG-UNION 노드는 두 질의의 결과를 단순히 조합하여 UNION ALL을
 처리한다.
 
@@ -4076,59 +4034,44 @@ BAG-UNION 노드는 관계형 모델에서 UNION ALL 연산을 수행하는 노�
 직업이 판매원인 사원과 급여가 2000000 보다 큰 모든 사원의 이름과 급여를
 출력하라.
 
-iSQL\> SELECT e_firstname, e_lastname, emp_job, salary
-
-FROM employees
-
-WHERE emp_job = 'SALES REP'
-
-UNION ALL
-
-SELECT e_firstname, e_lastname, emp_job, salary
-
-FROM employees
-
-WHERE salary \> 2000;
-
-E_FIRSTNAME E_LASTNAME EMP_JOB SALARY
-
-\------------------------------------------------------------------------------
-
-Farhad Ghorbani PL 2500
-
-Elizabeth Bae programmer 4000
-
-Zhen Liu webmaster 2750
-
-Yuu Miura PM 2003
-
-Wei-Wei Chen manager 2300
-
+```
+iSQL> SELECT e_firstname, e_lastname, emp_job, salary 
+ FROM employees 
+ WHERE emp_job = 'SALES REP' 
+ UNION ALL 
+ SELECT e_firstname, e_lastname, emp_job, salary 
+ FROM employees 
+ WHERE salary > 2000;
+E_FIRSTNAME           E_LASTNAME            EMP_JOB          SALARY
+------------------------------------------------------------------------------
+Farhad                Ghorbani              PL               2500
+Elizabeth             Bae                   programmer       4000
+Zhen                  Liu                   webmaster        2750
+Yuu                   Miura                 PM               2003
+Wei-Wei               Chen                  manager          2300
 5 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 70, COST: 0.58 )
+ VIEW ( ACCESS: 5, COST: 0.43 )
+  BAG-UNION
+   PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 70, COST: 0.18 )
+    SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.14 )
+   PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 70, COST: 0.26 )
+    SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.14 )
+------------------------------------------------------------
+```
 
-VIEW ( ACCESS: 5, COST: 0.43 )
 
-BAG-UNION
-
-PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 70, COST: 0.18 )
-
-SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.14 )
-
-PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 70, COST: 0.26 )
-
-SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.14 )
-
-\------------------------------------------------------------
 
 #### CONCATENATION
 
 ##### 출력 형식
 
+```
 CONCATENATION
+```
+
+
 
 ##### 설명
 
@@ -4139,6 +4082,8 @@ CONCATENATION 실행 노드는 관계형 모델에서 concatenation 연산을 �
 이 노드는 FULL OUTER JOIN의 처리와 DNF 처리에서 사용된다. FULL OUTER JOIN에서의
 사용은 ANTI-OUTER-JOIN 노드에서 이미 그 예를 설명하였으며, 여기서는 DNF로 처리
 시에 CONCATENATION 노드가 사용되는 예를 살펴 본다.
+
+![concatentation_1](D:\emmachoigit\manuals\media\TuningGuide\concatentation_1.gif)
 
 여기서 (i1 = 1000) 조건은 왼쪽 SCAN 실행 노드에서 처리되며, (i2 = 100) 조건은
 오른쪽 SCAN 실행 노드에서 처리된다. 이렇게 함으로서 IDX1 과 IDX2 인덱스가 모두
@@ -4153,16 +4098,22 @@ ANTI-OUTER-JOIN 노드의 예제를 참고하기 바란다.
 
 ##### 출력 형식
 
-**CONNECT BY** ( ACCESS: *acc_num*, COST: *cost* )
+```
+CONNECT BY ( ACCESS: acc_num, COST: cost )
+```
 
 | 항목   | 설명                 |
 |--------|----------------------|
 | ACCESS | 레코드에 접근한 횟수 |
 | COST   | 추산 비용            |
 
->   [표 4‑3] 인덱스가 없는 CONNECT BY 노드의 정보
+[표 4‑3] 인덱스가 없는 CONNECT BY 노드의 정보
 
-**CONNECT BY** (INDEX: *index_name,* ACCESS: *acc_num*, COST: *cost* )
+
+
+```
+CONNECT BY (INDEX: index_name, ACCESS: acc_num, COST: cost )
+```
 
 | 항목   | 설명                   |
 |--------|------------------------|
@@ -4170,7 +4121,7 @@ ANTI-OUTER-JOIN 노드의 예제를 참고하기 바란다.
 | ACCESS | 레코드에 접근한 횟수   |
 | COST   | 추산 비용              |
 
->   [표 4‑4] 인덱스를 사용하는 CONNECT BY 노드의 정보
+[표 4‑4] 인덱스를 사용하는 CONNECT BY 노드의 정보
 
 ##### 설명
 
@@ -4180,77 +4131,52 @@ CONNECT BY 노드는 관계형 모델에 없는 특수한 연산으로 계층 �
 
 계층 질의 수행시 CONNECT BY 노드가 사용된 예는 다음과 같다.
 
+![connect_by](D:\emmachoigit\manuals\media\TuningGuide\connect_by.gif)
+
 ##### 예제
 
 ID 칼럼의 값이 0인 행을 루트로 하여 계층적으로 연결된 행들을 얻기 위한 계층적
 질의문은 다음과 같다.
 
+```
 CREATE TABLE hier_order(id INTEGER, parent INTEGER);
-
 INSERT INTO hier_order VALUES(0, NULL);
-
 INSERT INTO hier_order VALUES(1, 0);
-
 INSERT INTO hier_order VALUES(2, 1);
-
 INSERT INTO hier_order VALUES(3, 1);
-
 INSERT INTO hier_order VALUES(4, 1);
-
 INSERT INTO hier_order VALUES(5, 0);
-
 INSERT INTO hier_order VALUES(6, 0);
-
 INSERT INTO hier_order VALUES(7, 6);
-
 INSERT INTO hier_order VALUES(8, 7);
-
 INSERT INTO hier_order VALUES(9, 7);
-
 INSERT INTO hier_order VALUES(10, 6);
 
-iSQL\> SELECT id, parent, level FROM hier_order START WITH id = 0 CONNECT BY
-PRIOR id = parent ORDER BY level;
-
-ID PARENT LEVEL
-
-\-------------------------------------------------
-
-0 1
-
-1 0 2
-
-5 0 2
-
-6 0 2
-
-2 1 3
-
-3 1 3
-
-4 1 3
-
-7 6 3
-
-10 6 3
-
-8 7 4
-
-9 7 4
-
+iSQL> SELECT id, parent, level FROM hier_order START WITH id = 0 CONNECT BY PRIOR id = parent ORDER BY level;
+ID          PARENT      LEVEL
+-------------------------------------------------
+0                       1
+1           0           2
+5           0           2
+6           0           2
+2           1           3
+3           1           3
+4           1           3
+7           6           3
+10          6           3
+8           7           4
+9           7           4
 11 rows selected.
+------------------------------------------------------------
+PROJECT ( COLUMN_COUNT: 3, TUPLE_SIZE: 16, COST: BLOCKED )
+SORT ( ITEM_SIZE: BLOCKED, ITEM_COUNT: 11, ACCESS: 11, COST: BLOCKED )
+CONNECT BY ( ACCESS: 23, COST: BLOCKED )
+SCAN ( TABLE: SYS.HIER_ORDER, FULL SCAN, ACCESS: 22, COST: BLOCKED )
+------------------------------------------------------------
 
->   \------------------------------------------------------------
+```
 
->   PROJECT ( COLUMN_COUNT: 3, TUPLE_SIZE: 16, COST: BLOCKED )
 
->   SORT ( ITEM_SIZE: BLOCKED, ITEM_COUNT: 11, ACCESS: 11, COST: BLOCKED )
-
->   CONNECT BY ( ACCESS: 23, COST: BLOCKED )
-
->   SCAN ( TABLE: SYS.HIER_ORDER, FULL SCAN, ACCESS: 22, COST: BLOCKED )
-
->   \------------------------------------------------------------
 
 #### COUNT
 
@@ -4258,13 +4184,15 @@ ID PARENT LEVEL
 
 1) 인덱스가 사용되는 경우:
 
-**COUNT** (TABLE: *tbl_name*, INDEX: *index_name*, ACCESS: *acc_num*,
-DISK_PAGE_COUNT: *num*, COST: *cost* )
+```
+COUNT (TABLE: tbl_name, INDEX: index_name, ACCESS: acc_num, DISK_PAGE_COUNT: num, COST: cost )
+```
 
 2) 인덱스가 사용되지 않는 경우:
 
-**COUNT** (TABLE: *tbl_name*, FULL SCAN, ACCESS: *acc_num*, DISK_PAGE_COUNT:
-*num*, COST: *cost* )
+```
+COUNT (TABLE: tbl_name, FULL SCAN, ACCESS: acc_num, DISK_PAGE_COUNT: num, COST: cost )
+```
 
 | 항목            | 설명                                                          |
 |-----------------|---------------------------------------------------------------|
@@ -4274,7 +4202,7 @@ DISK_PAGE_COUNT: *num*, COST: *cost* )
 | DISK_PAGE_COUNT | 테이블의 디스크 페이지 개수. 메모리 테이블은 해당 정보가 없음 |
 | COST            | 추산 비용                                                     |
 
->   [표 4‑4] COUNT 노드의 정보
+[표 4‑4] COUNT 노드의 정보
 
 ##### 설명
 
@@ -4284,27 +4212,25 @@ COUNT 노드는 관계형 모델에서 GROUP BY절이 존재하지 않는 COUNT(
 다음은 COUNT 노드가 사용된 예이다. 아래의 예를 살펴보면 인덱스를 사용함으로써
 실제 데이터에는 접근하지 않고 COUNT(\*) 값을 획득하고 있음을 알수 있다.
 
+![count](D:\emmachoigit\manuals\media\TuningGuide\count.gif)
+
 ##### 예제
 
 사원의 총 수를 계산하라.
 
-iSQL\> SELECT COUNT(\*) rec_count FROM employees;
-
-REC_COUNT
-
-\-----------------------
-
-20
-
+```
+iSQL> SELECT COUNT(*) rec_count FROM employees;
+REC_COUNT            
+-----------------------
+20                   
 1 row selected.
-
-\-----------------------------------------------
-
+-----------------------------------------------
 PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 8, COST: 0.02 )
+ COUNT ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 1, COST: 0.02 )
+-----------------------------------------------
+```
 
-COUNT ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 1, COST: 0.02 )
 
-\-----------------------------------------------
 
 #### DISTINCT
 
@@ -4312,13 +4238,17 @@ COUNT ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 1, COST: 0.02 )
 
 1) 중간 결과가 메모리에 저장되는 경우
 
-**DISTINCT** ( ITEM_SIZE: *item_size*, ITEM_COUNT: *item_count*, BUCKET_COUNT:
-*bucket_count*, ACCESS: *acc_num*, COST: *cost* )
+```
+DISTINCT ( ITEM_SIZE: item_size, ITEM_COUNT: item_count, BUCKET_COUNT: bucket_count, ACCESS: acc_num, COST: cost )
+```
 
 2) 중간 결과가 디스크에 저장되는 경우
 
-**DISTINCT** ( ITEM_SIZE: *item_size*, ITEM_COUNT: *item_count*,
-DISK_PAGE_COUNT: *page_count*, ACCESS: *acc_num*, COST: *cost* )
+```
+DISTINCT ( ITEM_SIZE: item_size, ITEM_COUNT: item_count, DISK_PAGE_COUNT: page_count, ACCESS: acc_num, COST: cost )
+```
+
+
 
 | 항목            | 설명                                  |
 |-----------------|---------------------------------------|
@@ -4329,7 +4259,7 @@ DISK_PAGE_COUNT: *page_count*, ACCESS: *acc_num*, COST: *cost* )
 | ACCESS          | 저장된 레코드에 대한 접근 횟수        |
 | COST            | 추산 비용                             |
 
->   [표 4‑5] DISTINCT 노드의 정보
+[표 4‑5] DISTINCT 노드의 정보
 
 ##### 설명
 
@@ -4346,12 +4276,16 @@ DISTINCT 노드는 DISTINCT를 처리하기 위하여 사용될 수 있다.
 
 아래의 예는 DISTINCT를 처리하기 위하여 DISTINCT 노드가 사용된 것을 보여준다.
 
+![distinct_node](D:\emmachoigit\manuals\media\TuningGuide\distinct_node.gif)
+
 ###### **UNION 에서의 사용**
 
 DISTINCT 노드는 UNION을 처리하기 위하여 사용될 수 있다.
 
 아래의 예제에서는 UNION을 처리하기 위하여 DISTINCT 노드가 중복 제거를 위해
 사용되었다.
+
+![distinct_node_2](D:\emmachoigit\manuals\media\TuningGuide\distinct_node_2.gif)
 
 ###### **Subquery key range를 위한 사용**
 
@@ -4362,60 +4296,47 @@ DISTINCT 노드는 subquery key range를 처리하기 위하여 사용될 수 �
 제거를 위해 사용된 예이다. DISTINCT 실행 노드는 T2.i4 값의 중복 제거를 위해서
 사용되었다.
 
+![distinct_node_3](D:\emmachoigit\manuals\media\TuningGuide\distinct_node_3.gif)
+
 ##### 예제
 
 상품 C111100001을 주문한 고객의 이름을 출력하라.
 
-iSQL\> SELECT DISTINCT customers.c_firstname\|\|customers.c_lastname cname
-
-FROM customers
-
-WHERE customers.cno IN
-
-(SELECT orders.cno
-
-FROM orders
-
-WHERE orders.gno = 'C111100001 ');
-
+```
+iSQL> SELECT DISTINCT customers.c_firstname||customers.c_lastname  cname
+  FROM customers
+  WHERE customers.cno IN
+    (SELECT orders.cno
+     FROM orders
+     WHERE orders.gno = 'C111100001 ');
 CNAME
-
-\--------------------------------------------
-
-Estevan Sanchez
-
-Pierre Martin
-
-Phil Dureault
-
-Fyodor Fedorov
-
+--------------------------------------------
+Estevan             Sanchez
+Pierre              Martin
+Phil                Dureault
+Fyodor              Fedorov
 4 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 42, COST: 0.10 )
+ DISTINCT ( ITEM_SIZE: 64, ITEM_COUNT: 4, BUCKET_COUNT: 1024, ACCESS: 4, COST: 0.07 )
+  SEMI-MERGE-JOIN ( METHOD: MERGE, COST: 0.03 )
+   SCAN ( TABLE: CUSTOMERS, INDEX: __SYS_IDX_ID_153, RANGE SCAN, ACCESS: 17, COST: 0.01 )
+   SORT ( ITEM_SIZE: 16, ITEM_COUNT: 4, ACCESS: 4, COST: 0.03 )
+    SCAN ( TABLE: ORDERS $$1_$VIEW1_$ORDERS, INDEX: ODR_IDX3, RANGE SCAN, ACCESS: 4, COST: 0.00 )
+------------------------------------------------------------
+```
 
-DISTINCT ( ITEM_SIZE: 64, ITEM_COUNT: 4, BUCKET_COUNT: 1024, ACCESS: 4, COST:
-0.07 )
 
-SEMI-MERGE-JOIN ( METHOD: MERGE, COST: 0.03 )
-
-SCAN ( TABLE: CUSTOMERS, INDEX: \__SYS_IDX_ID_153, RANGE SCAN, ACCESS: 17, COST:
-0.01 )
-
-SORT ( ITEM_SIZE: 16, ITEM_COUNT: 4, ACCESS: 4, COST: 0.03 )
-
-SCAN ( TABLE: ORDERS \$\$1_\$VIEW1_\$ORDERS, INDEX: ODR_IDX3, RANGE SCAN,
-ACCESS: 4, COST: 0.00 )
-
-\------------------------------------------------------------
 
 #### FILTER
 
 ##### 출력 형식
 
+```
 FILTER
+```
+
+
 
 ##### 설명
 
@@ -4428,66 +4349,58 @@ FILTER 노드는 노드 이름 외에 별도의 정보를 포함하지 않는다
 
 ###### **FILTER 노드 정보의 출력**
 
-다음 예를 보면 FILTER 노드는 이름만을 출력할 뿐 별도의 다른 정보를 출력하지
-않는다. 이 예에서 FILTER 노드는 (having i2 \< 2) 조건을 처리하기 위하여
-사용되었다.
+다음 예를 보면 FILTER 노드는 이름만을 출력할 뿐 별도의 다른 정보를 출력하지 않는다. 이 예에서 FILTER 노드는 (having i2 \< 2) 조건을 처리하기 위하여 사용되었다.
+
+![filter](D:\emmachoigit\manuals\media\TuningGuide\filter.gif)
 
 이러한 정보를 확인하려면 TRCLOG_DETAIL_PREDICATE 프로퍼티를 1로 설정함으로써
-가능하다. 아래와 같이 FILTER 노드가 (i2 \< 2) 조건을 처리하기 위하여
-사용되었음을 확인할 수 있다.
+가능하다. 아래와 같이 FILTER 노드가 (i2 \< 2) 조건을 처리하기 위하여 사용되었음을 확인할 수 있다.
+
+![filter_node_2](D:\emmachoigit\manuals\media\TuningGuide\filter_node_2.gif)
 
 ##### 예제
 
 2개 이상 주문된 상품의 상품번호와 주문양을 출력하라.
 
-iSQL\> SELECT gno, COUNT(\*)
-
-FROM orders
-
-GROUP BY gno
-
-HAVING COUNT(\*) \> 2;
-
-GNO COUNT
-
-\------------------------------------
-
-A111100002 3
-
-C111100001 4
-
-D111100008 3
-
-E111100012 3
-
+```
+iSQL> SELECT gno, COUNT(*)
+  FROM orders
+  GROUP BY gno
+  HAVING COUNT(*) > 2;
+GNO         COUNT                
+------------------------------------
+A111100002  3                    
+C111100001  4                    
+D111100008  3                    
+E111100012  3                    
 4 rows selected.
-
-\-----------------------------------------------
-
+-----------------------------------------------
 PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 24, COST: 0.08 )
+ FILTER
+  AGGREGATION ( ITEM_SIZE: 16, GROUP_COUNT: 16, COST: 0.02 )
+   GROUPING
+    SCAN ( TABLE: ORDERS, INDEX: ODR_IDX3, FULL SCAN, ACCESS: 30, COST: 0.02 )
+-----------------------------------------------
+```
 
-FILTER
 
-AGGREGATION ( ITEM_SIZE: 16, GROUP_COUNT: 16, COST: 0.02 )
-
-GROUPING
-
-SCAN ( TABLE: ORDERS, INDEX: ODR_IDX3, FULL SCAN, ACCESS: 30, COST: 0.02 )
-
-\-----------------------------------------------
 
 #### FULL-OUTER-JOIN
 
 ##### 형식
 
-FULL-OUTER-JOIN ( METHOD: *method*, COST: *cost* )
+```
+FULL-OUTER-JOIN ( METHOD: method, COST: cost )
+```
+
+
 
 | 항목   | 설명      |
 |--------|-----------|
 | METHOD | 조인 방법 |
 | COST   | 추산 비용 |
 
->   [표 4‑6] FULL-OUTER-JOIN 노드의 정보
+[표 4‑6] FULL-OUTER-JOIN 노드의 정보
 
 ##### 설명
 
@@ -4499,6 +4412,8 @@ FULL-OUTER-JOIN 실행 노드는 일반 조인과 마찬가지로 대부분의 �
 사용되며, 이는 JOIN 노드의 예를 참조한다. 여기서는 FULL-OUTER-JOIN 실행 노드가
 사용되는 간단한 실행 계획 트리만을 살펴본다.
 
+![full_outer_join](D:\emmachoigit\manuals\media\TuningGuide\full_outer_join.gif)
+
 FULL OUTER JOIN의 특성 상 우측에 저장을 위한 노드가 생성되며, 위의 예에서 ON
 조건은 SORT 노드에서 처리된다.
 
@@ -4507,112 +4422,63 @@ FULL OUTER JOIN의 특성 상 우측에 저장을 위한 노드가 생성되며,
 부서의 위치와 상품을 모아 놓은 장소가 같은 곳의 부서 번호, 부서 이름, 상품
 번호를 출력하라.
 
-iSQL\> INSERT INTO departments VALUES(6002, 'headquarters', 'CE0002', 100);
-
+```
+iSQL> INSERT INTO departments VALUES(6002, 'headquarters', 'CE0002', 100);
 1 row inserted.
-
-iSQL\> SELECT d.dno, d.dname, g.gno
-
+iSQL> SELECT d.dno, d.dname, g.gno
 FROM departments d FULL OUTER JOIN goods g
-
-ON d.dep_location = g.goods_LOCATION;
-
-DNO DNAME GNO
-
-\------------------------------------------------------------
-
-A111100001
-
-A111100002
-
-B111100001
-
-C111100001
-
-C111100002
-
-D111100001
-
-D111100002
-
-D111100003
-
-D111100004
-
-D111100005
-
-D111100006
-
-D111100007
-
-D111100008
-
-D111100009
-
-D111100010
-
-D111100011
-
-E111100001
-
-E111100002
-
-E111100003
-
-E111100004
-
-6002 headquarters E111100005
-
-E111100006
-
-E111100007
-
-E111100008
-
-E111100009
-
-E111100010
-
-E111100011
-
-E111100012
-
-E111100013
-
-F111100001
-
-1001 RESEARCH DEVELOPMENT DEPT 1
-
-1002 RESEARCH DEVELOPMENT DEPT 2
-
-1003 SOLUTION DEVELOPMENT DEPT
-
-2001 QUALITY ASSURANCE DEPT
-
-3001 CUSTOMERS SUPPORT DEPT
-
-3002 PRESALES DEPT
-
-4001 MARKETING DEPT
-
-4002 BUSINESS DEPT
-
+ ON d.dep_location = g.goods_LOCATION;
+DNO         DNAME                           GNO
+------------------------------------------------------------
+                                            A111100001
+                                            A111100002
+                                            B111100001
+                                            C111100001
+                                            C111100002
+                                            D111100001
+                                            D111100002
+                                            D111100003
+                                            D111100004
+                                            D111100005
+                                            D111100006
+                                            D111100007
+                                            D111100008
+                                            D111100009
+                                            D111100010
+                                            D111100011
+                                            E111100001
+                                            E111100002
+                                            E111100003
+                                            E111100004
+6002        headquarters                    E111100005
+                                            E111100006
+                                            E111100007
+                                            E111100008
+                                            E111100009
+                                            E111100010
+                                            E111100011
+                                            E111100012
+                                            E111100013
+                                            F111100001
+1001        RESEARCH DEVELOPMENT DEPT 1
+1002        RESEARCH DEVELOPMENT DEPT 2
+1003        SOLUTION DEVELOPMENT DEPT
+2001        QUALITY ASSURANCE DEPT
+3001        CUSTOMERS SUPPORT DEPT
+3002        PRESALES DEPT
+4001        MARKETING DEPT
+4002        BUSINESS DEPT
 38 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 3, TUPLE_SIZE: 46, COST: 0.60 )
+ FULL-OUTER-JOIN ( METHOD: HASH, COST: 0.29 )
+  SCAN ( TABLE: GOODS G, FULL SCAN, ACCESS: 38, COST: 0.02 )
+  HASH ( ITEM_SIZE: 24, ITEM_COUNT: 9, BUCKET_COUNT: 1024, ACCESS: 38, COST: 0.29 )
+   SCAN ( TABLE: DEPARTMENTS D, FULL SCAN, ACCESS: 38, COST: 0.01 )
+------------------------------------------------------------
+```
 
-FULL-OUTER-JOIN ( METHOD: HASH, COST: 0.29 )
 
-SCAN ( TABLE: GOODS G, FULL SCAN, ACCESS: 38, COST: 0.02 )
-
-HASH ( ITEM_SIZE: 24, ITEM_COUNT: 9, BUCKET_COUNT: 1024, ACCESS: 38, COST: 0.29
-)
-
-SCAN ( TABLE: DEPARTMENTS D, FULL SCAN, ACCESS: 38, COST: 0.01 )
-
-\------------------------------------------------------------
 
 #### GROUP-AGGREGATION
 
@@ -4620,13 +4486,17 @@ SCAN ( TABLE: DEPARTMENTS D, FULL SCAN, ACCESS: 38, COST: 0.01 )
 
 1) 중간 결과가 메모리에 저장되는 경우
 
-**GROUP-AGGREGATION** ( ITEM_SIZE: *item_size*, GROUP_COUNT: *group_count,*
-BUCKET_COUNT: *bucket_count*, ACCESS: *acc_num*, COST: *cost* )
+```
+GROUP-AGGREGATION ( ITEM_SIZE: item_size, GROUP_COUNT: group_count, BUCKET_COUNT: bucket_count, ACCESS: acc_num, COST: cost )
+```
 
 2) 중간 결과가 디스크에 저장되는 경우
 
-**GROUP-AGGREGATION** ( ITEM_SIZE: *item_size*, GROUP_COUNT: *group_count,*
-DISK_PAGE_COUNT: *page_count*, ACCESS: *acc_num*, COST: *cost* )
+```
+GROUP-AGGREGATION ( ITEM_SIZE: item_size, GROUP_COUNT: group_count, DISK_PAGE_COUNT: page_count, ACCESS: acc_num, COST: cost )
+```
+
+
 
 | 항목            | 설명                                           |
 |-----------------|------------------------------------------------|
@@ -4637,7 +4507,7 @@ DISK_PAGE_COUNT: *page_count*, ACCESS: *acc_num*, COST: *cost* )
 | ACCESS          | 저장된 레코드에 대한 접근 횟수                 |
 | COST            | 추산 비용                                      |
 
->   [표 4‑7] GRAG 노드의 정보
+[표 4‑7] GRAG 노드의 정보
 
 ##### 설명
 
@@ -4649,42 +4519,37 @@ GROUP-AGGREGATION 노드는 관계형 모델에서 해싱 방식의 그룹 및 a
 GROUP-AGGREGATION 노드가 사용된 경우이다. GROUP-AGGREGATION 노드는 GROUP BY i4와
 AVG(i1), SUM(i2)를 처리하기 위하여 사용되었다.
 
+![group_aggregation_node_1](D:\emmachoigit\manuals\media\TuningGuide\group_aggregation_node_1.gif)
+
 ##### 예제
 
 각 부서내의 각 직위에 대해 지급되는 급여 총액을 출력하라. (여러 열에 GROUP BY
 절을 사용)
 
-iSQL\> SELECT dno, emp_job, COUNT(emp_job) num_emp, SUM(salary) sum_sal FROM
-employees GROUP BY dno, emp_job;
-
-DNO EMP_JOB NUM_EMP SUM_SAL
-
-\-----------------------------------------------
-
+```
+iSQL> SELECT dno, emp_job, COUNT(emp_job) num_emp, SUM(salary) sum_sal FROM employees GROUP BY dno, emp_job;
+DNO  EMP_JOB    NUM_EMP SUM_SAL 
+-----------------------------------------------
 .
-
 .
-
 .
-
 16 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 55, COST: 0.80 )
+ GROUP-AGGREGATION ( ITEM_SIZE: 56, GROUP_COUNT: 16, BUCKET_COUNT: 1024, ACCESS: 16, COST: 0.13 )
+  SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.01 )
+------------------------------------------------------------
+```
 
-GROUP-AGGREGATION ( ITEM_SIZE: 56, GROUP_COUNT: 16, BUCKET_COUNT: 1024, ACCESS:
-16, COST: 0.13 )
 
-SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.01 )
-
-\------------------------------------------------------------
 
 #### GROUPING
 
 ##### 출력 형식
 
+```
 GROUPING
+```
 
 ##### 설명
 
@@ -4708,6 +4573,8 @@ GROUPING 노드가 정렬 순서를 이용한 동일한 그룹 여부를 판단�
 별도의 저장 공간을 사용하지 않고 처리되었음을 알 수 있다. 이는 앞서 최적화
 과정의 정렬 순서를 이용한 GROUP BY의 처리를 통해 설명하였다.
 
+![grouping](D:\emmachoigit\manuals\media\TuningGuide\grouping.gif)
+
 ###### **정렬 순서를 이용한 중복 제거**
 
 GROUPING 노드가 정렬 순서를 이용한 중복 제거를 위해서 사용되는 경우 다음과 같은
@@ -4715,6 +4582,8 @@ GROUPING 노드가 정렬 순서를 이용한 중복 제거를 위해서 사용�
 절을 처리하기 위해 사용되었으며, DISTINCT를 위해 별도의 저장 공간을 사용하지
 않았음을 알 수 있다. 이는 앞서 최적화 과정에서 정렬 순서를 이용한 DISTINCT
 최적화에서 설명하였다.
+
+![distinct_node_4](D:\emmachoigit\manuals\media\TuningGuide\distinct_node_4.gif)
 
 ###### **정렬 순서를 이용한 DISTINCT aggregation 처리**
 
@@ -4724,35 +4593,29 @@ GROUPING 노드가 정렬 순서를 이용한 DISTINCT aggregation을 처리하�
 GROUPING 노드가 사용되었다. 이는 앞서 최적화 과정에서 정렬 순서를 이용한
 DISTINCT aggregation 최적화에서 설명하였다.
 
+![distinct_node_5](D:\emmachoigit\manuals\media\TuningGuide\distinct_node_5.gif)
+
 ##### 예제
 
 각 사원이 담당하는 고객들의 수와 각 고객에게 판매한 상품의 총 수를 출력하라.
 
-iSQL\> SELECT eno, COUNT(DISTINCT cno), SUM(qty) FROM orders GROUP BY eno;
-
-ENO COUNT(DISTINCT CNO) SUM(QTY)
-
-\----------------------------------------------------------
-
-12 8 17870
-
-19 6 25350
-
-20 8 13210
-
+```
+iSQL> SELECT eno, COUNT(DISTINCT cno), SUM(qty) FROM orders GROUP BY eno;
+ENO         COUNT(DISTINCT CNO)  SUM(QTY)
+----------------------------------------------------------
+12          8                    17870
+19          6                    25350
+20          8                    13210
 3 rows selected.
-
-\-----------------------------------------------
-
+-----------------------------------------------
 PROJECT ( COLUMN_COUNT: 3, TUPLE_SIZE: 24, COST: 0.77 )
+ AGGREGATION ( ITEM_SIZE: 32, GROUP_COUNT: 3, COST: 0.02 )
+  GROUPING
+   SCAN ( TABLE: ORDERS, INDEX: ODR_IDX1, FULL SCAN, ACCESS: 30, COST: 0.02 )
+-----------------------------------------------
+```
 
-AGGREGATION ( ITEM_SIZE: 32, GROUP_COUNT: 3, COST: 0.02 )
 
-GROUPING
-
-SCAN ( TABLE: ORDERS, INDEX: ODR_IDX1, FULL SCAN, ACCESS: 30, COST: 0.02 )
-
-\-----------------------------------------------
 
 #### HASH
 
@@ -4760,13 +4623,17 @@ SCAN ( TABLE: ORDERS, INDEX: ODR_IDX1, FULL SCAN, ACCESS: 30, COST: 0.02 )
 
 1) 중간 결과가 메모리에 저장될 경우
 
-**HASH** ( ITEM_SIZE: *item_size*, ITEM_COUNT: *item_count*, BUCKET_COUNT:
-*bucket_count,* ACCESS: *acc_num*, COST: *cost* )
+```
+HASH ( ITEM_SIZE: item_size, ITEM_COUNT: item_count, BUCKET_COUNT: bucket_count, ACCESS: acc_num, COST: cost )
+```
 
 2) 중간 결과가 디스크에 저장될 경우
 
-**HASH** ( ITEM_SIZE: *item_size*, ITEM_COUNT: *item_count*, DISK_PAGE_COUNT:
-*page_count*, ACCESS: *acc_num*, COST: *cost* )
+```
+HASH ( ITEM_SIZE: item_size, ITEM_COUNT: item_count, DISK_PAGE_COUNT: page_count, ACCESS: acc_num, COST: cost ) 
+```
+
+
 
 | 출력 항목       | 설명                                           |
 |-----------------|------------------------------------------------|
@@ -4777,7 +4644,7 @@ SCAN ( TABLE: ORDERS, INDEX: ODR_IDX1, FULL SCAN, ACCESS: 30, COST: 0.02 )
 | ACCESS          | 저장된 레코드에 대한 접근 횟수                 |
 | COST            | 추산 비용                                      |
 
->   [표 4‑8] HASH 노드의 정보
+[표 4‑8] HASH 노드의 정보
 
 ##### 설명
 
@@ -4795,6 +4662,8 @@ HASH 노드는 조인을 수행하기 위하여 사용될 수 있다.
 조인 조건을 검사하기 위하여 hash-based 조인이 수행되는데, 이를 위해 HASH 노드가
 생성되었다.
 
+![hash_1](D:\emmachoigit\manuals\media\TuningGuide\hash_1.gif)
+
 ###### **Subquery 검색에서의 사용**
 
 HASH 노드는 subquery와의 비교 연산을 수행하기 위하여 사용될 수 있다.
@@ -4803,102 +4672,70 @@ HASH 노드는 subquery와의 비교 연산을 수행하기 위하여 사용될 
 사용된 경우이다. HASH 노드는 t2.i4 값을 해싱하여 저장하고 각 t1.i4 에 부합하는
 값이 HASH에 존재하는 지를 검사한다.
 
+![hash_2](D:\emmachoigit\manuals\media\TuningGuide\hash_2.gif)
+
 ##### 예제
 
 모든 부서 관리자의 이름과 부서 이름을 출력하라.
 
-iSQL\> ALTER SESSION SET EXPLAIN PLAN = OFF;
-
+```
+iSQL> ALTER SESSION SET EXPLAIN PLAN = OFF;
 Alter success.
-
-iSQL\> CREATE TABLE dept2 TABLESPACE sys_tbs_disk_data
-
-AS SELECT \* FROM department;
-
+iSQL> CREATE TABLE dept2 TABLESPACE sys_tbs_disk_data 
+AS SELECT * FROM department;
 Create success.
-
-iSQL\> CREATE TABLE manager(
-
-eno INTEGER PRIMARY KEY,
-
-mgr_no INTEGER,
-
-mname VARCHAR(20),
-
-address VARCHAR(60))
-
-TABLESPACE sys_tbs_disk_data;
-
+iSQL> CREATE TABLE manager(
+ eno INTEGER PRIMARY KEY,
+ mgr_no INTEGER,
+ mname VARCHAR(20),
+ address VARCHAR(60))
+ TABLESPACE sys_tbs_disk_data;
 Create success.
-
-iSQL\> INSERT INTO manager VALUES(2, 1, 'HJNO', '11 Inyoung Bldg. Nonhyun-dong
-Kangnam-guSeoul, Korea');
-
+iSQL> INSERT INTO manager VALUES(2, 1, 'HJNO', '11 Inyoung Bldg. Nonhyun-dong Kangnam-guSeoul, Korea');
 1 row inserted.
-
-iSQL\> INSERT INTO manager VALUES(7, 2, 'HJMIN', '44-25 Youido-dong
-Youngdungpo-gu Seoul, Korea');
-
+iSQL> INSERT INTO manager VALUES(7, 2, 'HJMIN', '44-25 Youido-dong Youngdungpo-gu Seoul, Korea');
 1 row inserted.
-
-iSQL\> INSERT INTO manager VALUES(8, 7, 'JDLEE', '3101 N. Wabash Ave. Brooklyn,
-NY');
-
+iSQL> INSERT INTO manager VALUES(8, 7, 'JDLEE', '3101 N. Wabash Ave. Brooklyn, NY');
 1 row inserted.
-
-iSQL\> INSERT INTO manager VALUES(12, 7, 'MYLEE', '130 Gongpyeongno Jung-gu
-Daegu, Korea');
-
+iSQL> INSERT INTO manager VALUES(12, 7, 'MYLEE', '130 Gongpyeongno Jung-gu Daegu, Korea');
 1 row inserted.
-
-iSQL\> ALTER SESSION SET EXPLAIN PLAN = ON;
-
+iSQL> ALTER SESSION SET EXPLAIN PLAN = ON;
 Alter success.
-
-iSQL\> SELECT m.mname, d.dname
-
-FROM dept2 d, manager m
-
-WHERE d.mgr_no = m.mgr_no;
-
-MNAME DNAME
-
-\---------------------------------------------------------
-
-JDLEE BUSINESS DEPT
-
-MYLEE BUSINESS DEPT
-
+iSQL> SELECT m.mname, d.dname
+ FROM dept2 d, manager m
+ WHERE d.mgr_no = m.mgr_no;
+MNAME                 DNAME
+---------------------------------------------------------
+JDLEE                 BUSINESS DEPT
+MYLEE                 BUSINESS DEPT
 2 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 54, COST: 28.11 )
+ JOIN ( METHOD: HASH, COST: 28.09 )
+  SCAN ( TABLE: DEPT2 D, FULL SCAN, ACCESS: 9, DISK_PAGE_COUNT: 64, COST: 14.01 )
+  HASH ( ITEM_SIZE: 32, ITEM_COUNT: 4, DISK_PAGE_COUNT: 64, ACCESS: 2, COST: 28.09 )
+   SCAN ( TABLE: MANAGER M, FULL SCAN, ACCESS: 4, DISK_PAGE_COUNT: 64, COST: 14.00 )
+------------------------------------------------------------
+```
 
-JOIN ( METHOD: HASH, COST: 28.09 )
 
-SCAN ( TABLE: DEPT2 D, FULL SCAN, ACCESS: 9, DISK_PAGE_COUNT: 64, COST: 14.01 )
-
-HASH ( ITEM_SIZE: 32, ITEM_COUNT: 4, DISK_PAGE_COUNT: 64, ACCESS: 2, COST: 28.09
-)
-
-SCAN ( TABLE: MANAGER M, FULL SCAN, ACCESS: 4, DISK_PAGE_COUNT: 64, COST: 14.00
-)
-
-\------------------------------------------------------------
 
 #### JOIN
 
 ##### 출력 형식
 
-**JOIN** ( METHOD: *method*, COST: *cost* )
+```
+JOIN ( METHOD: method, COST: cost )
+```
+
+
 
 | 항목   | 설명      |
 |--------|-----------|
 | METHOD | 조인 방법 |
 | COST   | 추산 비용 |
 
->   [표 4‑9] JOIN 노드의 정보
+[표 4‑9] JOIN 노드의 정보
 
 ##### 설명
 
@@ -4938,10 +4775,14 @@ JOIN 노드는 거의 모든 일반 조인 수행을 위하여 사용된다.
 
 ###### **Full nested loop join의 실행 계획 트리**
 
+![full_nested_loop_join](D:\emmachoigit\manuals\media\TuningGuide\full_nested_loop_join.gif)
+
 위의 실행 계획에서 조인 조건은 우측 SCAN 노드에서 처리된다. T2 테이블에 대한
 반복적인 전체 검색을 통해 처리된다.
 
 ###### **Full store nested loop join의 실행 계획 트리**
+
+![full_store_nested_loop_join](D:\emmachoigit\manuals\media\TuningGuide\full_store_nested_loop_join.gif)
 
 위의 실행 계획에서 조인 조건은 JOIN 상위의 FILTER 노드에서 처리된다. T2 테이블에
 대한 검색은 한 번만 이루어지며 그 결과를 저장한 후 반복적으로 전체 검색을 통해
@@ -4949,95 +4790,96 @@ JOIN 노드는 거의 모든 일반 조인 수행을 위하여 사용된다.
 
 ###### **Index nested loop join의 실행 계획 트리**
 
+![index_nested_loop_join](D:\emmachoigit\manuals\media\TuningGuide\index_nested_loop_join.gif)
+
 위의 실행 계획에서 조인 조건은 우측 SCAN 노드에서 인덱스를 이용하여 처리된다.
 
 ###### **Inverse index nested loop join의 실행 계획 트리**
 
+![inverse_index_nested_loop_join](D:\emmachoigit\manuals\media\TuningGuide\inverse_index_nested_loop_join.gif)
+
 ###### **One-pass sort join의 실행 계획 트리**
+
+![one_pass_sort_join](D:\emmachoigit\manuals\media\TuningGuide\one_pass_sort_join.gif)
 
 위의 실행 계획에서 조인 조건은 우측 SORT 노드에서 정렬된 데이터를 이용하여
 처리된다.
 
 ###### **Two-pass sort join의 실행 계획 트리**
 
+![two_pass_sort_join](D:\emmachoigit\manuals\media\TuningGuide\two_pass_sort_join.gif)
+
 위의 실행 계획에서 조인 조건은 우측 SORT 노드에서 정렬된 데이터를 이용하여
 처리되지만, 좌측에도 SORT 노드가 생성된다.
 
 ###### **Inverse sort join의 실행 계획 트리**
 
+![inverse_sort_join](D:\emmachoigit\manuals\media\TuningGuide\inverse_sort_join.gif)
+
 ###### **One-pass hash join의 실행 계획 트리**
+
+![one_pass_hash_join](D:\emmachoigit\manuals\media\TuningGuide\one_pass_hash_join.gif)
 
 위의 실행 계획에서 조인 조건은 우측 HASH 노드에서 해싱된 데이터를 이용하여
 처리된다.
 
 ###### **Two-pass hash join의 실행 계획 트리**
 
+![two_pass_hash_join](D:\emmachoigit\manuals\media\TuningGuide\two_pass_hash_join.gif)
+
 위의 실행 계획에서 조인 조건은 우측 HASH 노드에서 정렬된 데이터를 이용하여
 처리되지만, 좌측에도 HASH 노드가 생성된다.
 
 ###### **Inverse hash join의 실행 계획 트리**
+
+![inverse_hash_join](D:\emmachoigit\manuals\media\TuningGuide\inverse_hash_join.gif)
 
 ##### 예제
 
 성(last name)이 ‘Marquez’인 직원의 직원 번호, 주문 번호, 상품 번호, 주문양을
 출력하라.
 
-iSQL\> SELECT e.eno, ono, cno, gno, qty
-
-FROM employees e, orders o
-
-WHERE e.eno = o.eno
-
-AND e.e_lastname = 'Marquez';
-
-ENO ONO CNO GNO QTY
-
-\---------------------------------------------------------------------------
-
-19 11290100 11 E11110000 1500
-
-19 12100277 5 D111100008 2500
-
-19 12300001 1 D111100004 1000
-
-19 12300005 4 D111100008 4000
-
-19 12300010 16 D111100010 2000
-
-19 12310004 5 E111100010 5000
-
-19 12310008 1 D111100003 100
-
-19 12310011 15 E111100012 10000
-
-19 12310012 1 C111100001 250
-
+```
+iSQL> SELECT e.eno, ono, cno, gno, qty 
+ FROM employees e, orders o 
+ WHERE e.eno = o.eno 
+ AND e.e_lastname = 'Marquez';
+ENO         ONO                  CNO                  GNO         QTY
+---------------------------------------------------------------------------
+19          11290100             11                   E11110000   1500
+19          12100277             5                    D111100008  2500
+19          12300001             1                    D111100004  1000
+19          12300005             4                    D111100008  4000
+19          12300010             16                   D111100010  2000
+19          12310004             5                    E111100010  5000
+19          12310008             1                    D111100003  100
+19          12310011             15                   E111100012  10000
+19          12310012             1                    C111100001  250
 9 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 5, TUPLE_SIZE: 40, COST: 0.30 )
+ JOIN ( METHOD: INDEX_NL, COST: 0.15 )
+  SCAN ( TABLE: EMPLOYEES E, FULL SCAN, ACCESS: 20, COST: 0.14 )
+  SCAN ( TABLE: ORDERS O, INDEX: ODR_IDX1, RANGE SCAN, ACCESS: 9, COST: 0.02 )
+------------------------------------------------------------
+```
 
-JOIN ( METHOD: INDEX_NL, COST: 0.15 )
 
-SCAN ( TABLE: EMPLOYEES E, FULL SCAN, ACCESS: 20, COST: 0.14 )
-
-SCAN ( TABLE: ORDERS O, INDEX: ODR_IDX1, RANGE SCAN, ACCESS: 9, COST: 0.02 )
-
-\------------------------------------------------------------
 
 #### LEFT-OUTER-JOIN
 
 ##### 출력 형식
 
-**LEFT-OUTER-JOIN** ( METHOD: *method*, COST: *cost* )
+```
+LEFT-OUTER-JOIN ( METHOD: method, COST: cost )
+```
 
 | 항목   | 설명      |
 |--------|-----------|
 | METHOD | 조인 방법 |
 | COST   | 추산 비용 |
 
->   [표 4‑10] LEFT-OUTER-JOIN 노드의 정보
+[표 4‑10] LEFT-OUTER-JOIN 노드의 정보
 
 ##### 설명
 
@@ -5049,83 +4891,57 @@ LEFT-OUTER-JOIN 노드는 일반 조인과 마찬가지로 대부분의 조인 �
 이는 JOIN 노드의 예를 참조한다. 여기서는 LEFT-OUTER-JOIN 실행 노드가 사용되는
 간단한 실행 계획 트리만을 살펴본다.
 
+![left_outer_join](D:\emmachoigit\manuals\media\TuningGuide\left_outer_join.gif)
+
 ##### 예제
 
 모든 부서에 대한 부서 번호와 모든 사원 이름을 출력하라. (사원이 전혀 없는 부서
 번호 5001도 출력된다.)
 
-iSQL\> INSERT INTO departments VALUES(5001, 'Quality Assurance', 'Mokpo', 22);
-
+```
+iSQL> INSERT INTO departments VALUES(5001, 'Quality Assurance', 'Mokpo', 22);
 1 row inserted.
-
-iSQL\> SELECT d.dno, e.e_firstname, e.e_lastname FROM departments d LEFT OUTER
-JOIN employees e ON d.dno = e.dno ORDER BY d.dno;
-
-DNO E_FIRSTNAME E_LASTNAME
-
-\------------------------------------------------------------
-
-1001 Ken Kobain
-
-1001 Wei-Wei Chen
-
-1002 Ryu Momoi
-
-1002 Mitch Jones
-
-1003 Elizabeth Bae
-
-1003 Zhen Liu
-
-1003 Yuu Miura
-
-1003 Jason Davenport
-
-2001 Takahiro Fubuki
-
-3001 Aaron Foster
-
-3002 Chan-seung Moon
-
-3002 Farhad Ghorbani
-
-4001 Xiong Wang
-
-4001 Curtis Diaz
-
-4001 John Huxley
-
-4002 Gottlieb Fleischer
-
-4002 Sandra Hammond
-
-4002 Alvar Marquez
-
-4002 William Blake
-
+iSQL> SELECT d.dno, e.e_firstname, e.e_lastname FROM departments d LEFT OUTER JOIN employees e ON d.dno = e.dno ORDER BY d.dno;
+DNO         E_FIRSTNAME           E_LASTNAME
+------------------------------------------------------------
+1001        Ken                   Kobain
+1001        Wei-Wei               Chen
+1002        Ryu                   Momoi
+1002        Mitch                 Jones
+1003        Elizabeth             Bae
+1003        Zhen                  Liu
+1003        Yuu                   Miura
+1003        Jason                 Davenport
+2001        Takahiro              Fubuki
+3001        Aaron                 Foster
+3002        Chan-seung            Moon
+3002        Farhad                Ghorbani
+4001        Xiong                 Wang
+4001        Curtis                Diaz
+4001        John                  Huxley
+4002        Gottlieb              Fleischer
+4002        Sandra                Hammond
+4002        Alvar                 Marquez
+4002        William               Blake
 5001
-
 20 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 3, TUPLE_SIZE: 46, COST: 0.20 )
+ LEFT-OUTER-JOIN ( METHOD: INDEX_NL, COST: 0.01 )
+  SCAN ( TABLE: DEPARTMENTS D, INDEX: __SYS_IDX_ID_170, FULL SCAN, ACCESS: 9, COST: 0.01 )
+  SCAN ( TABLE: EMPLOYEES E, INDEX: EMP_IDX1, RANGE SCAN, ACCESS: 20, COST: 0.01 )
+------------------------------------------------------------
+```
 
-LEFT-OUTER-JOIN ( METHOD: INDEX_NL, COST: 0.01 )
 
-SCAN ( TABLE: DEPARTMENTS D, INDEX: \__SYS_IDX_ID_170, FULL SCAN, ACCESS: 9,
-COST: 0.01 )
-
-SCAN ( TABLE: EMPLOYEES E, INDEX: EMP_IDX1, RANGE SCAN, ACCESS: 20, COST: 0.01 )
-
-\------------------------------------------------------------
 
 #### LIMIT-SORT
 
 ##### 출력 형식
 
-**LIMIT-SORT** ( ITEM_SIZE: *item_size*, ITEM_COUNT: *item_count*, STORE_COUNT:
-*store_count*, ACCESS: *acc_num*, COST: *cost* )
+```
+LIMIT-SORT ( ITEM_SIZE: item_size, ITEM_COUNT: item_count, STORE_COUNT: store_count, ACCESS: acc_num, COST: cost )
+```
 
 | 항목        | 설명                           |
 |-------------|--------------------------------|
@@ -5135,7 +4951,7 @@ SCAN ( TABLE: EMPLOYEES E, INDEX: EMP_IDX1, RANGE SCAN, ACCESS: 20, COST: 0.01 )
 | ACCESS      | 저장된 레코드에 대한 접근 횟수 |
 | COST        | 추산 비용                      |
 
->   [표 4‑11] LIMIT-SORT 노드의 정보
+[표 4‑11] LIMIT-SORT 노드의 정보
 
 ##### 설명
 
@@ -5153,6 +4969,8 @@ LIMIT-SORT 노드는 LIMIT을 포함한 ORDER BY에 사용될 수 있다.
 정보를 살펴 보면, 3개의 저장 공간만 사용하여 16384건의 레코드에 대한 정렬을
 수행함을 알 수 있다.
 
+![limit_sort_order_by](D:\emmachoigit\manuals\media\TuningGuide\limit_sort_order_by.gif)
+
 ###### **Subquery 검색에서의 사용**
 
 LIMIT-SORT 노드는 subquery 검색을 위하여 사용될 수 있다.
@@ -5161,69 +4979,55 @@ LIMIT-SORT 노드는 subquery 검색을 위하여 사용될 수 있다.
 수행하고 있음을 보이고 있다. 여기서 LIMIT-SORT 노드는 질의 처리에 필요한 t2.i4
 값 중 일부만을 저장하여 이에 대한 비교 연산의 비용을 줄이고 있다.
 
+![limit_sort_subquery](D:\emmachoigit\manuals\media\TuningGuide\limit_sort_subquery.gif)
+
 ##### 예제
 
 모든 사원의 이름, 부서 번호 및 급여를 표시하고 부서 번호와 급여를 기준(부서
 번호는 올림차순, 그리고 급여는 내림차순으로)으로 정렬해서 상위 10개만 출력하라.
 (ORDER BY 절의 목록의 순서가 정렬 순서이다.)
 
-iSQL\> SELECT e_firstname, e_lastname, dno, salary
-
-FROM employees
-
-ORDER BY dno, salary DESC
-
-LIMIT 10;
-
-E_FIRSTNAME E_LASTNAME DNO SALARY
-
-\-------------------------------------------------------------------------
-
-Wei-Wei Chen 1001 2300
-
-Ken Kobain 1001 2000
-
-Ryu Momoi 1002 1700
-
-Mitch Jones 1002 980
-
-Elizabeth Bae 1003 4000
-
-Zhen Liu 1003 2750
-
-Yuu Miura 1003 2003
-
-Jason Davenport 1003 1000
-
-Takahiro Fubuki 2001 1400
-
-Aaron Foster 3001 1800
-
+```
+iSQL> SELECT e_firstname, e_lastname, dno, salary 
+ FROM employees 
+ ORDER BY dno, salary DESC 
+ LIMIT 10;
+E_FIRSTNAME           E_LASTNAME            DNO         SALARY
+-------------------------------------------------------------------------
+Wei-Wei               Chen                  1001        2300
+Ken                   Kobain                1001        2000
+Ryu                   Momoi                 1002        1700
+Mitch                 Jones                 1002        980
+Elizabeth             Bae                   1003        4000
+Zhen                  Liu                   1003        2750
+Yuu                   Miura                 1003        2003
+Jason                 Davenport             1003        1000
+Takahiro              Fubuki                2001        1400
+Aaron                 Foster                3001        1800
 10 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 55, COST: 0.31 )
+ LIMIT-SORT ( ITEM_SIZE: 16, ITEM_COUNT: 20, STORE_COUNT: 10, ACCESS: 10, COST: 0.14 )
+  SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.01 )
+------------------------------------------------------------
+```
 
-LIMIT-SORT ( ITEM_SIZE: 16, ITEM_COUNT: 20, STORE_COUNT: 10, ACCESS: 10, COST:
-0.14 )
 
-SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.01 )
-
-\------------------------------------------------------------
 
 #### MATERIALIZATION
 
 ##### 출력 형식
 
-**MATERIALIZATION** ( ACCESS: *acc_num*, COST: *cost* )
+```
+MATERIALIZATION ( ACCESS: acc_num, COST: cost )
+```
 
 | 항목   | 설명                           |
 |--------|--------------------------------|
 | ACCESS | 저장된 레코드에 대한 접근 횟수 |
 | COST   | 추산 비용                      |
 
->   [표 4‑12] MATERIALIZATION 노드의 정보
+[표 4‑12] MATERIALIZATION 노드의 정보
 
 ##### 설명
 
@@ -5235,95 +5039,64 @@ MATERIALIZATION 노드는 뷰에 대한 임시 저장 테이블을 생성하는 
 자신이 속한 부서의 평균 급여보다는 많은 급여를 받고, 가장 높은 평균 급여를 갖는
 부서의 평균 급여보다는 적게 받는 사원의 이름, 부서 번호, 급여를 출력하라.
 
-iSQL\> CREATE VIEW v1 AS
-
-(SELECT dno, AVG(salary) avg_sal
-
-FROM employees GROUP BY dno);
-
+```
+iSQL> CREATE VIEW v1 AS 
+ (SELECT dno, AVG(salary) avg_sal 
+ FROM employees GROUP BY dno);
 Create success.
 
-iSQL\> SELECT e_firstname, e_lastname, e.dno, e.salary
-
-FROM employees e, v1
-
-WHERE e.dno = v1.dno
-
-AND e.salary \> v1.avg_sal
-
-AND e.salary \< (SELECT MAX(avg_sal)
-
-FROM v1);
-
-E_FIRSTNAME E_LASTNAME DNO SALARY
-
-\-------------------------------------------------------------------------
-
-Wei-Wei Chen 1001 2300
-
-Ryu Momoi 1002 1700
-
-John Huxley 4001 1900
-
-Sandra Hammond 4002 1890
-
-Alvar Marquez 4002 1800
-
+iSQL> SELECT e_firstname, e_lastname, e.dno, e.salary 
+ FROM employees e, v1 
+ WHERE e.dno = v1.dno 
+  AND e.salary > v1.avg_sal 
+  AND e.salary < (SELECT MAX(avg_sal) 
+  FROM v1);
+E_FIRSTNAME           E_LASTNAME            DNO         SALARY
+-------------------------------------------------------------------------
+Wei-Wei               Chen                  1001        2300
+Ryu                   Momoi                 1002        1700
+John                  Huxley                4001        1900
+Sandra                Hammond               4002        1890
+Alvar                 Marquez               4002        1800
 5 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 55, COST: 0.32 )
+ JOIN ( METHOD: INDEX_NL, COST: 0.28 )
+  VIEW-SCAN ( VIEW: V1, ACCESS: 9, COST: 0.01 )
+   MATERIALIZATION ( ITEM_SIZE: 40, ITEM_COUNT: 9, COST: 0.00 )
+    VIEW ( ACCESS: 9, COST: 0.00 )
+     PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 25, COST: 0.21 )
+      AGGREGATION ( ITEM_SIZE: 72, GROUP_COUNT: 9, COST: 0.01 )
+       GROUPING
+        SCAN ( TABLE: EMPLOYEES, INDEX: EMP_IDX1, FULL SCAN, ACCESS: 20, COST: 0.01 )
+  SCAN ( TABLE: EMPLOYEES E, INDEX: EMP_IDX1, RANGE SCAN, ACCESS: 19, COST: 0.27 )
+   ::SUB-QUERY BEGIN
+   PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 23, COST: 0.03 )
+    STORE ( ITEM_SIZE: 32, ITEM_COUNT: 1, ACCESS: 7, COST: 0.03 )
+     VIEW ( ACCESS: 1, COST: 0.00 )
+      PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 23, COST: 0.03 )
+       GROUP-AGGREGATION ( ITEM_SIZE: 40, GROUP_COUNT: 1, BUCKET_COUNT: 1, ACCESS: 1, COST: 0.02 )
+        VIEW-SCAN ( VIEW: V1, ACCESS: 9, COST: 0.01 )
+   ::SUB-QUERY END
+------------------------------------------------------------
+```
 
-JOIN ( METHOD: INDEX_NL, COST: 0.28 )
 
-VIEW-SCAN ( VIEW: V1, ACCESS: 9, COST: 0.01 )
-
-MATERIALIZATION ( ITEM_SIZE: 40, ITEM_COUNT: 9, COST: 0.00 )
-
-VIEW ( ACCESS: 9, COST: 0.00 )
-
-PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 25, COST: 0.21 )
-
-AGGREGATION ( ITEM_SIZE: 72, GROUP_COUNT: 9, COST: 0.01 )
-
-GROUPING
-
-SCAN ( TABLE: EMPLOYEES, INDEX: EMP_IDX1, FULL SCAN, ACCESS: 20, COST: 0.01 )
-
-SCAN ( TABLE: EMPLOYEES E, INDEX: EMP_IDX1, RANGE SCAN, ACCESS: 19, COST: 0.27 )
-
-::SUB-QUERY BEGIN
-
-PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 23, COST: 0.03 )
-
-STORE ( ITEM_SIZE: 32, ITEM_COUNT: 1, ACCESS: 7, COST: 0.03 )
-
-VIEW ( ACCESS: 1, COST: 0.00 )
-
-PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 23, COST: 0.03 )
-
-GROUP-AGGREGATION ( ITEM_SIZE: 40, GROUP_COUNT: 1, BUCKET_COUNT: 1, ACCESS: 1,
-COST: 0.02 )
-
-VIEW-SCAN ( VIEW: V1, ACCESS: 9, COST: 0.01 )
-
-::SUB-QUERY END
-
-\------------------------------------------------------------
 
 #### MERGE-JOIN
 
 ##### 출력 형식
 
-**MERGE-JOIN** ( METHOD: *method*, COST: *cost* )
+```
+MERGE-JOIN ( METHOD: method, COST: cost )
+```
 
 | 항목   | 설명      |
 |--------|-----------|
 | METHOD | 조인 방법 |
 | COST   | 추산 비용 |
 
->   [표 4‑13] MERGE-JOIN 노드의 정보
+[표 4‑13] MERGE-JOIN 노드의 정보
 
 ##### 설명
 
@@ -5340,10 +5113,14 @@ MERGE-JOIN 노드는 일반 조인 수행을 위하여 사용되며, 좌우 자�
 
 ###### **인덱스를 이용한 머지 조인**
 
+![merge_join_using_index](D:\emmachoigit\manuals\media\TuningGuide\merge_join_using_index.gif)
+
 위의 실행 계획에서 조인 조건은 MERGE-JOIN 노드에서 처리되며 기본 테이블과 반복
 테이블의 개념 없이 조인 조건에 포함된 칼럼의 인덱스가 모두 사용된다.
 
 ###### **정렬을 이용한 머지 조인**
+
+![merge_join_sort](D:\emmachoigit\manuals\media\TuningGuide\merge_join_sort.gif)
 
 위의 실행 계획에서 조인 조건은 MERGE-JOIN 노드에서 처리되며 조인 조건에 포함된
 칼럼을 기준으로 정렬한 후 이를 이용한다.
@@ -5357,57 +5134,45 @@ dno 값으로 정렬되어 레코드가 반환된다. 따라서, 두 값의 대�
 이후의 레코드는 검색하지 않고 다시 같은 값을 가지는 레코들를 만날 때까지 두
 테이블의 커서를 이동하여 검색한다.)
 
-iSQL\> SELECT /\*+ use_merge(employees,departments) \*/e.eno, e_lastname, d.dno,
-dname
-
-FROM employees e, departments d
-
-WHERE e.dno = d.dno
-
-AND TO_CHAR(join_date, 'YYYY-MM-DD HH:MI:SS') \< '2010-01-01 00:00:00';
-
-ENO E_LASTNAME DNO DNAME
-
-\---------------------------------------------------------------------------
-
-5 Ghorbani 3002 PRESALES DEPT
-
-8 Wang 4001 MARKETING DEPT
-
-18 Huxley 4001 MARKETING DEPT
-
-7 Fleischer 4002 BUSINESS DEPT
-
-12 Hammond 4002 BUSINESS DEPT
-
-20 Blake 4002 BUSINESS DEPT
-
+```
+iSQL> SELECT /*+ use_merge(employees,departments) */e.eno, e_lastname, d.dno, dname 
+ FROM employees e, departments d 
+ WHERE e.dno = d.dno 
+  AND TO_CHAR(join_date, 'YYYY-MM-DD HH:MI:SS') < '2010-01-01 00:00:00';
+ENO         E_LASTNAME            DNO         DNAME
+---------------------------------------------------------------------------
+5           Ghorbani              3002        PRESALES DEPT
+8           Wang                  4001        MARKETING DEPT
+18          Huxley                4001        MARKETING DEPT
+7           Fleischer             4002        BUSINESS DEPT
+12          Hammond               4002        BUSINESS DEPT
+20          Blake                 4002        BUSINESS DEPT
 6 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 60, COST: 0.34 )
+ MERGE-JOIN ( METHOD: MERGE, COST: 0.24 )
+  SCAN ( TABLE: EMPLOYEES E, INDEX: EMP_IDX1, RANGE SCAN, ACCESS: 19, COST: 0.21 )
+  SCAN ( TABLE: DEPARTMENTS D, INDEX: __SYS_IDX_ID_153, RANGE SCAN, ACCESS: 15, COST: 0.01 )
+------------------------------------------------------------
+```
 
-MERGE-JOIN ( METHOD: MERGE, COST: 0.24 )
 
-SCAN ( TABLE: EMPLOYEES E, INDEX: EMP_IDX1, RANGE SCAN, ACCESS: 19, COST: 0.21 )
-
-SCAN ( TABLE: DEPARTMENTS D, INDEX: \__SYS_IDX_ID_153, RANGE SCAN, ACCESS: 15,
-COST: 0.01 )
-
-\------------------------------------------------------------
 
 #### PARALLEL-QUEUE
 
 ##### 출력 형식
 
-**PARALLEL-QUEUE** ( TID: *tid* )
+```
+PARALLEL-QUEUE ( TID: tid )
+```
+
+
 
 | 항목 | 설명                                 |
 |------|--------------------------------------|
 | TID  | 노드에서 실행되는 쓰레드의 식별 번호 |
 
->   [표 4‑14] PARALLEL-QUEUE 노드의 정보
+[표 4‑14] PARALLEL-QUEUE 노드의 정보
 
 ##### 설명
 
@@ -5420,132 +5185,87 @@ PARALLEL-QUEUE 노드에 할당된 식별번호(TID)로 첫 번째 PARALLEL-QUEU
 파티션 P1, P3, P4 를 두 번째 PARALLEL-QUEUE 노드가 파티션 P2를 스캔한 것을
 확인할 수 있다.
 
+![PCRD_2](D:\emmachoigit\manuals\media\TuningGuide\PCRD_2.gif)
+
 ##### 예제1
 
-iSQL\> SELECT /\*+ PARALLEL(t1 2) \*/ COUNT(i1) FROM t1;
-
-COUNT(I1)
-
-\-----------------------
-
-500
-
+```
+iSQL> SELECT /*+ PARALLEL(t1 2) */ COUNT(i1) FROM t1;
+COUNT(I1)            
+-----------------------
+500                 
 1 row selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 8, COST: 0.56 )
+ GROUP-AGGREGATION ( ITEM_SIZE: 24, GROUP_COUNT: 1, BUCKET_COUNT: 1, ACCESS: 1, COST: 0.56 )
+  PARTITION-COORDINATOR ( TABLE: T1, PARALLEL, PARTITION: 4/4, ACCESS: 500, COST: 0.28 )
+   PARALLEL-QUEUE ( TID: 1 )
+   PARALLEL-QUEUE ( TID: 2 )
+   SCAN ( PARTITION: P4, FULL SCAN, ACCESS: 201, TID: 1, COST: 0.11 )
+   SCAN ( PARTITION: P3, FULL SCAN, ACCESS: 100, TID: 1, COST: 0.06 )
+   SCAN ( PARTITION: P2, FULL SCAN, ACCESS: 100, TID: 2, COST: 0.06 )
+   SCAN ( PARTITION: P1, FULL SCAN, ACCESS: 99, TID: 1, COST: 0.06 )
+------------------------------------------------------------
+```
 
-GROUP-AGGREGATION ( ITEM_SIZE: 24, GROUP_COUNT: 1, BUCKET_COUNT: 1, ACCESS: 1,
-COST: 0.56 )
 
-PARTITION-COORDINATOR ( TABLE: T1, PARALLEL, PARTITION: 4/4, ACCESS: 500, COST:
-0.28 )
-
-PARALLEL-QUEUE ( TID: 1 )
-
-PARALLEL-QUEUE ( TID: 2 )
-
-SCAN ( PARTITION: P4, FULL SCAN, ACCESS: 201, TID: 1, COST: 0.11 )
-
-SCAN ( PARTITION: P3, FULL SCAN, ACCESS: 100, TID: 1, COST: 0.06 )
-
-SCAN ( PARTITION: P2, FULL SCAN, ACCESS: 100, TID: 2, COST: 0.06 )
-
-SCAN ( PARTITION: P1, FULL SCAN, ACCESS: 99, TID: 1, COST: 0.06 )
-
-\------------------------------------------------------------
 
 ##### 예제2
 
-iSQL\> SELECT
-
-L_RETURNFLAG,
-
-L_LINESTATUS,
-
-SUM(L_QUANTITY) AS SUM_QTY,
-
-SUM(L_EXTENDEDPRICE) AS SUM_BASE_PRICE,
-
-SUM(L_EXTENDEDPRICE \* (1 - L_DISCOUNT)) AS SUM_DISC_PRICE,
-
-SUM(L_EXTENDEDPRICE \* (1 - L_DISCOUNT) \* (1 + L_TAX)) AS SUM_CHARGE,
-
-AVG(L_QUANTITY) AS AVG_QTY,
-
-AVG(L_EXTENDEDPRICE) AS AVG_PRICE,
-
-AVG(L_DISCOUNT) AS AVG_DISC,
-
-COUNT(\*) AS COUNT_ORDER
-
-FROM
-
-LINEITEM
-
-WHERE
-
-L_SHIPDATE \<= DATE'01-DEC-1998' - INTERVAL'90'
-
-GROUP BY
-
-L_RETURNFLAG,
-
-L_LINESTATUS
-
-ORDER BY
-
-L_RETURNFLAG,
-
-L_LINESTATUS;
-
-L_RETURNFLAG L_LINESTATUS SUM_QTY SUM_BASE_PRICE SUM_DISC_PRICE SUM_CHARGE
-AVG_QTY AVG_PRICE AVG_DISC COUNT_ORDER
-
-\-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-A F 37474 56250004.9 53399385.5912999 55528109.501472 25.3545331529093
-38058.1900405954 0.050866035 1478
-
-N F 1041 1614635.42 1549641.9636 1608284.73514 27.3947368421053 42490.4057894737
-0.042894737 38
-
-N O 75067 112774708 107204872.3929 111467221.663635 25.5590738849166
-38397.9257643854 0.049673136 2937
-
-R F 36470 54082045.8 51384368.3297 53497960.192278 25.0480769230769
-37144.2622115385 0.050006868 1456
-
+```
+iSQL> SELECT
+         L_RETURNFLAG,
+         L_LINESTATUS,
+         SUM(L_QUANTITY) AS SUM_QTY,
+         SUM(L_EXTENDEDPRICE) AS SUM_BASE_PRICE,
+         SUM(L_EXTENDEDPRICE * (1 - L_DISCOUNT)) AS SUM_DISC_PRICE,
+         SUM(L_EXTENDEDPRICE * (1 - L_DISCOUNT) * (1 + L_TAX)) AS SUM_CHARGE,
+         AVG(L_QUANTITY) AS AVG_QTY,
+         AVG(L_EXTENDEDPRICE) AS AVG_PRICE,
+         AVG(L_DISCOUNT) AS AVG_DISC,
+         COUNT(*) AS COUNT_ORDER
+ FROM
+         LINEITEM
+ WHERE
+         L_SHIPDATE <= DATE'01-DEC-1998' - INTERVAL'90'
+ GROUP BY
+         L_RETURNFLAG,
+         L_LINESTATUS
+ ORDER BY
+         L_RETURNFLAG,
+         L_LINESTATUS;
+L_RETURNFLAG  L_LINESTATUS  SUM_QTY     SUM_BASE_PRICE SUM_DISC_PRICE         SUM_CHARGE             AVG_QTY                AVG_PRICE              AVG_DISC    COUNT_ORDER          
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+A  F  37474       56250004.9  53399385.5912999       55528109.501472        25.3545331529093       38058.1900405954       0.050866035 1478                
+N  F  1041        1614635.42  1549641.9636           1608284.73514          27.3947368421053       42490.4057894737       0.042894737 38                  
+N  O  75067       112774708   107204872.3929         111467221.663635       25.5590738849166       38397.9257643854       0.049673136 2937                
+R  F  36470       54082045.8  51384368.3297          53497960.192278        25.0480769230769       37144.2622115385       0.050006868 1456                
 4 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 10, TUPLE_SIZE: 120, COST: 97.21 )
+ SORT ( ITEM_SIZE: 24, ITEM_COUNT: 4, ACCESS: 4, COST: 95.85 )
+  GROUP-AGGREGATION ( ITEM_SIZE: 192, GROUP_COUNT: 4, BUCKET_COUNT: 1024, ACCESS: 4, COST: 95.83 )
+   PARALLEL-QUEUE ( TID: 1 )
+    SCAN ( TABLE: LINEITEM, FULL SCAN, ACCESS: 6000, TID: 1, COST: 60.33 )
+------------------------------------------------------------
+```
 
-SORT ( ITEM_SIZE: 24, ITEM_COUNT: 4, ACCESS: 4, COST: 95.85 )
 
-GROUP-AGGREGATION ( ITEM_SIZE: 192, GROUP_COUNT: 4, BUCKET_COUNT: 1024, ACCESS:
-4, COST: 95.83 )
-
-PARALLEL-QUEUE ( TID: 1 )
-
-SCAN ( TABLE: LINEITEM, FULL SCAN, ACCESS: 6000, TID: 1, COST: 60.33 )
-
-\------------------------------------------------------------
 
 #### PARALLEL-SCAN-COORDINATOR
 
 ##### 출력 형식
 
-**PARALLE-SCAN-COORDINATOR**( TABLE: *table_name*, ACCESS: *acc_num* )
+```
+PARALLE-SCAN-COORDINATOR( TABLE: table_name, ACCESS: acc_num )
+```
 
 | 항목   | 설명                   |
 |--------|------------------------|
 | TABLE  | 접근하는 테이블의 이름 |
 | ACCESS | 레코드에 접근한 횟수   |
 
->   [표 4‑15] PARALLEL-SCAN-COORDINATIOR 노드의 정보
+[표 4‑15] PARALLEL-SCAN-COORDINATIOR 노드의 정보
 
 ##### 설명
 
@@ -5555,85 +5275,57 @@ PARALLEL-SCAN-COORDINATOR 노드는 병렬 질의 수행을 위해 사용되며,
 다음은 PARALLEL-SCAN-COORDINATOR 노드가 사용된 예이다. 자식 노드를 병렬로
 수행하고 그 결과를 수집하여 상위 노드로 전달한다.
 
+![PSCRD](D:\emmachoigit\manuals\media\TuningGuide\PSCRD.gif)
+
 ##### 예제
 
-SELECT /\*+ PARALLEL(LINEITEM, 4) \*/
-
-L_RETURNFLAG,
-
-L_LINESTATUS,
-
-SUM(L_QUANTITY) AS SUM_QTY
-
+```
+SELECT /*+ PARALLEL(LINEITEM, 4) */
+        L_RETURNFLAG,
+        L_LINESTATUS,
+        SUM(L_QUANTITY) AS SUM_QTY
 FROM
-
-LINEITEM
-
+        LINEITEM
 WHERE
-
-L_SHIPDATE \<= DATE'01-DEC-1998' - INTERVAL'90'
-
+        L_SHIPDATE <= DATE'01-DEC-1998' - INTERVAL'90'
 GROUP BY
-
-L_RETURNFLAG,
-
-L_LINESTATUS
-
+        L_RETURNFLAG,
+        L_LINESTATUS
 ORDER BY
-
-L_RETURNFLAG,
-
-L_LINESTATUS;
-
-L_RETURNFLAG L_LINESTATUS SUM_QTY
-
-\--------------------------------------------
-
-A F 37474
-
-N F 1041
-
-N O 75067
-
-R F 36470
-
+        L_RETURNFLAG,
+        L_LINESTATUS;
+L_RETURNFLAG  L_LINESTATUS  SUM_QTY     
+--------------------------------------------
+A  F  37474      
+N  F  1041       
+N  O  75067      
+R  F  36470      
 4 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 3, TUPLE_SIZE: 30, COST: 96.02 )
+ SORT ( ITEM_SIZE: 24, ITEM_COUNT: 4, ACCESS: 4, COST: 95.90 )
+  GROUP-AGGREGATION ( ITEM_SIZE: 48, GROUP_COUNT: 4, BUCKET_COUNT: 1024, ACCESS: 4, COST: 95.83 )
+   PARALLEL-SCAN-COORDINATOR ( TABLE: SYS.LINEITEM, ACCESS: 5909 )
+    PARALLEL-QUEUE ( TID: 1 )
+     SCAN ( TABLE: SYS.LINEITEM, FULL SCAN, ACCESS: 1569, TID: 1, COST: 60.33 )
+    PARALLEL-QUEUE ( TID: 2 )
+     SCAN ( TABLE: SYS.LINEITEM, FULL SCAN, ACCESS: 1413, TID: 2, COST: 60.33 )
+    PARALLEL-QUEUE ( TID: 3 )
+     SCAN ( TABLE: SYS.LINEITEM, FULL SCAN, ACCESS: 1570, TID: 3, COST: 60.33 )
+    PARALLEL-QUEUE ( TID: 4 )
+     SCAN ( TABLE: SYS.LINEITEM, FULL SCAN, ACCESS: 1448, TID: 4, COST: 60.33 )
+------------------------------------------------------------
+```
 
-SORT ( ITEM_SIZE: 24, ITEM_COUNT: 4, ACCESS: 4, COST: 95.90 )
 
-GROUP-AGGREGATION ( ITEM_SIZE: 48, GROUP_COUNT: 4, BUCKET_COUNT: 1024, ACCESS:
-4, COST: 95.83 )
-
-PARALLEL-SCAN-COORDINATOR ( TABLE: SYS.LINEITEM, ACCESS: 5909 )
-
-PARALLEL-QUEUE ( TID: 1 )
-
-SCAN ( TABLE: SYS.LINEITEM, FULL SCAN, ACCESS: 1569, TID: 1, COST: 60.33 )
-
-PARALLEL-QUEUE ( TID: 2 )
-
-SCAN ( TABLE: SYS.LINEITEM, FULL SCAN, ACCESS: 1413, TID: 2, COST: 60.33 )
-
-PARALLEL-QUEUE ( TID: 3 )
-
-SCAN ( TABLE: SYS.LINEITEM, FULL SCAN, ACCESS: 1570, TID: 3, COST: 60.33 )
-
-PARALLEL-QUEUE ( TID: 4 )
-
-SCAN ( TABLE: SYS.LINEITEM, FULL SCAN, ACCESS: 1448, TID: 4, COST: 60.33 )
-
-\------------------------------------------------------------
 
 #### PARTITION-COORDINATOR
 
 ##### 출력 형식
 
-**PARTITION-COORDINATOR**( TABLE: *table_name*, PARALLEL, PARTITION:
-*partition_acc_cnt*, ACCESS: *acc_num*, COST: *cost* )
+```
+PARTITION-COORDINATOR( TABLE: table_name, PARALLEL, PARTITION: partition_acc_cnt, ACCESS: acc_num, COST: cost )
+```
 
 | 항목      | 설명                                                           |
 |-----------|----------------------------------------------------------------|
@@ -5643,7 +5335,7 @@ SCAN ( TABLE: SYS.LINEITEM, FULL SCAN, ACCESS: 1448, TID: 4, COST: 60.33 )
 | ACCESS    | 레코드에 접근한 횟수                                           |
 | COST      | 추산 비용                                                      |
 
->   [표 4‑16] PARTITION-COORDINATIOR 노드의 정보
+[표 4‑16] PARTITION-COORDINATIOR 노드의 정보
 
 ##### 설명
 
@@ -5653,112 +5345,81 @@ PARTITION-COORDINATIOR 노드는 파티션드 테이블의 각각의 파티션�
 기본적인 PARTITION-COORDINATIOR 노드가 수행되는 예는 다음과 같다. 자식 노드인
 파티션에 대한 스캔 결과를 상위 노드로 전달한다.
 
+![PCRD](D:\emmachoigit\manuals\media\TuningGuide\PCRD.gif)
+
 병렬 질의를 통해 PARTITION-COORDINATIOR 노드가 수행되는 예는 다음과 같다.
 PARTITION-COORDINATIOR 노드에 PARALLEL 항목이 있는 것을 볼 수 있다.
 PARTITION-COORDINATIOR 노드가 파티션을 스캔하는 자식 노드의 실행 결과를 상위
 노드에 전달한다.
 
+![PCRD_2](D:\emmachoigit\manuals\media\TuningGuide\PCRD_2.gif)
+
 ##### 예제 1
 
-iSQL\> CREATE TABLE t1 ( i1 INTEGER )
-
+```
+iSQL> CREATE TABLE t1 ( i1 INTEGER )
 PARTITION BY RANGE ( i1 )
-
 (
-
-PARTITION p1 VALUES LESS THAN ( 100 ),
-
-PARTITION p2 VALUES LESS THAN ( 200 ),
-
-PARTITION p3 VALUES DEFAULT
-
+    PARTITION p1 VALUES LESS THAN ( 100 ),
+    PARTITION p2 VALUES LESS THAN ( 200 ),
+    PARTITION p3 VALUES DEFAULT
 ) TABLESPACE SYS_TBS_DISK_DATA;
-
 Create success.
 
-iSQL\> INSERT INTO t1 VALUES ( 50 );
-
+iSQL> INSERT INTO t1 VALUES ( 50 );
 1 row inserted.
-
-iSQL\> INSERT INTO t1 VALUES ( 60 );
-
+iSQL> INSERT INTO t1 VALUES ( 60 );
 1 row inserted.
-
-iSQL\> INSERT INTO t1 VALUES ( 150 );
-
+iSQL> INSERT INTO t1 VALUES ( 150 );
 1 row inserted.
-
-iSQL\> INSERT INTO t1 VALUES ( 160 );
-
+iSQL> INSERT INTO t1 VALUES ( 160 );
 1 row inserted.
-
-iSQL\> alter session set explain plan = on;
-
+iSQL> alter session set explain plan = on;
 Alter success.
 
-iSQL\> SELECT COUNT(\*) FROM t1 WHERE i1 \< 100;
-
+iSQL> SELECT COUNT(*) FROM t1 WHERE i1 < 100;
 COUNT
-
-\-----------------------
-
+-----------------------
 2
-
 1 row selected.
-
-\--------------------------------------------------------
-
+--------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 8, COST: 14.02 )
+ GROUP-AGGREGATION ( ITEM_SIZE: 24, GROUP_COUNT: 1, BUCKET_COUNT: 1, ACCESS: 1, COST: 14.02 )
+  PARTITION-COORDINATOR ( TABLE: T1, PARTITION: 1/3, ACCESS: 2, COST: 14.01 )
+   SCAN ( PARTITION: P1, FULL SCAN, ACCESS: 2, DISK_PAGE_COUNT: 64, COST: 14.01 )
+--------------------------------------------------------
+```
 
-GROUP-AGGREGATION ( ITEM_SIZE: 24, GROUP_COUNT: 1, BUCKET_COUNT: 1, ACCESS: 1,
-COST: 14.02 )
 
-PARTITION-COORDINATOR ( TABLE: T1, PARTITION: 1/3, ACCESS: 2, COST: 14.01 )
-
-SCAN ( PARTITION: P1, FULL SCAN, ACCESS: 2, DISK_PAGE_COUNT: 64, COST: 14.01 )
-
-\--------------------------------------------------------
 
 ##### 예제 2
 
-iSQL\> SELECT /\*+ PARALLEL(t1 3) \*/ COUNT(\*) FROM t1 WHERE i1 \< 160;
-
+```
+iSQL> SELECT /*+ PARALLEL(t1 3) */ COUNT(*) FROM t1 WHERE i1 < 160; 
 COUNT
-
-\-----------------------
-
+-----------------------
 3
-
-1 row selected.
-
-\--------------------------------------------------------
-
+1 row selected. 
+-------------------------------------------------------- 
 PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 8, COST: 14.02 )
+ GROUP-AGGREGATION ( ITEM_SIZE: 24, GROUP_COUNT: 1, BUCKET_COUNT: 1, ACCESS: 1, COST: 14.02 )
+  PARTITION-COORDINATOR ( TABLE: T1, PARALLEL, PARTITION: 2/3, ACCESS: 2, COST: 14.01 )
+   PARALLEL-QUEUE ( TID: 1 )
+   PARALLEL-QUEUE ( TID: 2 )
+   SCAN ( PARTITION: P1, FULL SCAN, ACCESS: 2, TID: 1, DISK_PAGE_COUNT: 64, COST: 14.01 )
+   SCAN ( PARTITION: P2, FULL SCAN, ACCESS: 2, TID: 2, DISK_PAGE_COUNT: 64, COST: 14.01 )
+-------------------------------------------------------- 
+```
 
-GROUP-AGGREGATION ( ITEM_SIZE: 24, GROUP_COUNT: 1, BUCKET_COUNT: 1, ACCESS: 1,
-COST: 14.02 )
 
-PARTITION-COORDINATOR ( TABLE: T1, PARALLEL, PARTITION: 2/3, ACCESS: 2, COST:
-14.01 )
-
-PARALLEL-QUEUE ( TID: 1 )
-
-PARALLEL-QUEUE ( TID: 2 )
-
-SCAN ( PARTITION: P1, FULL SCAN, ACCESS: 2, TID: 1, DISK_PAGE_COUNT: 64, COST:
-14.01 )
-
-SCAN ( PARTITION: P2, FULL SCAN, ACCESS: 2, TID: 2, DISK_PAGE_COUNT: 64, COST:
-14.01 )
-
-\--------------------------------------------------------
 
 #### PROJECT
 
 ##### 출력 형식
 
-**PROJECT** ( COLUMN_COUNT: *col_count,* TUPLE_SIZE: *tuple_size,* COST: *cost*
-)
+```
+PROJECT ( COLUMN_COUNT: col_count, TUPLE_SIZE: tuple_size, COST: cost )
+```
 
 | 항목         | 설명                                |
 |--------------|-------------------------------------|
@@ -5766,7 +5427,7 @@ SCAN ( PARTITION: P2, FULL SCAN, ACCESS: 2, TID: 2, DISK_PAGE_COUNT: 64, COST:
 | TUPLE_SIZE   | 프로젝션으로 추출하는 레코드의 크기 |
 | COST         | 추산 비용                           |
 
->   [표 4‑17] PROJECT 노드의 정보
+[표 4‑17] PROJECT 노드의 정보
 
 ##### 설명
 
@@ -5780,31 +5441,27 @@ PROJECT 노드는 질의의 최종 결과를 구성하는 노드이다. PROJECT 
 같이 실행 계획 내에서 볼 수 있다. 질의 결과가 두 개의 칼럼으로 구성되며, 결과
 레코드의 크기가 8 byte임을 알 수 있다.
 
+![project](D:\emmachoigit\manuals\media\TuningGuide\project.gif)
+
 ##### 예제
 
 전 사원의 급여를 10% 인상 시 전 사원의 이름과 급여를 출력하라.
 
-iSQL\> SELECT e_firstname, e_lastname, salary \* 1.1 FROM employees;
-
-E_FIRSTNAME E_LASTNAME SALARY \* 1.1
-
-\-------------------------------------------------------------
-
+```
+iSQL> SELECT e_firstname, e_lastname, salary * 1.1 FROM employees;
+E_FIRSTNAME           E_LASTNAME            SALARY * 1.1
+-------------------------------------------------------------
 .
-
 .
-
 .
-
 20 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 3, TUPLE_SIZE: 67, COST: 0.41 )
+ SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.01 )
+------------------------------------------------------------
+```
 
-SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.01 )
 
-\------------------------------------------------------------
 
 #### SCAN
 
@@ -5812,19 +5469,21 @@ SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.01 )
 
 1) 중간 결과가 메모리에 저장될 경우
 
-**SCAN (** TABLE: *table_name*, FULL SCAN, ACCESS: *acc_num*, TID: *tid*, COST:
-*cost* **)**
+```
+SCAN ( TABLE: table_name, FULL SCAN, ACCESS: acc_num, TID: tid, COST: cost )
 
-**SCAN (** TABLE: *table_name*, INDEX: *index_name*, ACCESS: *acc_num*, TID:
-tid, COST: *cost* **)**
+SCAN ( TABLE: table_name, INDEX: index_name, ACCESS: acc_num, TID: tid, COST: cost )
+```
 
 2) 중간 결과가 디스크에 저장될 경우
 
-**SCAN** ( TABLE: *table_name*, FULL SCAN, ACCESS: *acc_nu*m, DISK_PAGE_COUNT:
-*page_count*, TID: *tid*, COST: *cost* )
+```
+SCAN ( TABLE: table_name, FULL SCAN, ACCESS: acc_num, DISK_PAGE_COUNT: page_count, TID: tid, COST: cost )
 
-**SCAN** ( TABLE: *table_name*, INDEX: *index_name*, ACCESS: *acc_num*,
-DISK_PAGE_COUNT: *page_count*, TID: *tid*, COST: *cost* )
+SCAN ( TABLE: table_name, INDEX: index_name, ACCESS: acc_num, DISK_PAGE_COUNT: page_count, TID: tid, COST: cost )
+```
+
+
 
 | 항목            | 설명                                                  |
 |-----------------|-------------------------------------------------------|
@@ -5836,7 +5495,7 @@ DISK_PAGE_COUNT: *page_count*, TID: *tid*, COST: *cost* )
 | TID             | 쓰레드 식별번호, 병렬 질의일 경우에만 출력된다.       |
 | COST            | 추산 비용                                             |
 
->   [표 4‑18] SCAN 노드의 정보
+[표 4‑18] SCAN 노드의 정보
 
 ##### 설명
 
@@ -5866,14 +5525,20 @@ SCAN 노드에서 검사되는 조건은 다음과 같이 5가지의 처리 방�
 다음 예는 SYS 사용자의 기본 테이블스페이스가 SYS_TBS_MEMORY로 지정되어 있는
 경우이며, 메모리 테이블의 SCAN 노드 정보를 보이고 있다.
 
+![scan_memory_table](D:\emmachoigit\manuals\media\TuningGuide\scan_memory_table.gif)
+
 다음 예는 명시적으로 SYS_TBS_DATA인 디스크 테이블스페이스에 생성된 테이블의 SCAN
 노드 정보이다. 아래와 같이 디스크 테이블의 경우 테이블이 점유하고 있는 디스크
 페이지의 개수를 보여준다.
+
+![scan_memory_table_1](D:\emmachoigit\manuals\media\TuningGuide\scan_memory_table_1.gif)
 
 ###### **테이블 이름**
 
 아래의 예에서와 같이 SCAN 노드가 접근하고 있는 테이블의 이름을 보여주며, 질의에
 alias 이름을 지정할 경우 다음과 같이 출력된다.
+
+![scan_table](D:\emmachoigit\manuals\media\TuningGuide\scan_table.gif)
 
 ###### **액세스 방법 및 레코드 액세스 횟수**
 
@@ -5884,19 +5549,29 @@ alias 이름을 지정할 경우 다음과 같이 출력된다.
 다음은 전체 스캔에 의하여 해당 질의를 처리한 경우이다. WHERE절을 비교하기 위하여
 레코드에 접근한 수를 보이고 있다.
 
+![scan_access_method](D:\emmachoigit\manuals\media\TuningGuide\scan_access_method.gif)
+
 동일한 테이블에 대하여 다음과 같이 인덱스를 사용한 경우의 실행 계획 정보의 예는
 다음과 같다. IDX1 인덱스를 사용하여 조건 비교를 위하여 한 건만 접근하고 있음을
 알 수 있다.
 
+![scan_access_method_2](D:\emmachoigit\manuals\media\TuningGuide\scan_access_method_2.gif)
+
 동일한 조건에서 다른 칼럼에 대한 조건을 추가할 경우도 동일한 실행 계획이
 생성됨을 알 수 있다.
+
+![scan_access_method_3](D:\emmachoigit\manuals\media\TuningGuide\scan_access_method_3.gif)
 
 이 때, T1.i2 칼럼에 인덱스를 추가하고 해당 인덱스를 사용하도록 질의를 수행하면
 다음과 같은 실행 계획을 볼 수 있다. 동일한 질의임에도 불구하고 다른 인덱스를
 사용하면 접근 효율이 떨어짐을 볼 수 있다.
 
+![scan_access_method_4](D:\emmachoigit\manuals\media\TuningGuide\scan_access_method_4.gif)
+
 아래와 같이 별도의 힌트를 주지 않을 경우, 옵티마이저는 비용 비교를 통해 보다
 우수한 인덱스를 선택하게 된다.
+
+![scan_access_method_5](D:\emmachoigit\manuals\media\TuningGuide\scan_access_method_5.gif)
 
 위와 같이 SCAN 노드의 정보를 통해 올바른 액세스 방법이 선택되고 있는지를
 확인하고, 인덱스가 없는 경우 질의에 따라 적절한 인덱스를 생성해 주는 것이
@@ -5912,9 +5587,13 @@ TRCLOG_DETAIL_PREDICATE 프로퍼티를 1로 지정하면 SCAN노드에서 조�
 즉, 아래의 예에서는 (i1 = 1000) 조건은 인덱스를 사용한 fixed key range로
 처리되고, (i2 = 0) 조건은 filter로 처리됨을 알 수 있다.
 
+![trclog_detail_predicate](D:\emmachoigit\manuals\media\TuningGuide\trclog_detail_predicate.gif)
+
 다음은 동일한 질의를 처리하는데 다른 인덱스가 사용된 예제이다. IDX2 인덱스를
 사용 시 인덱스를 사용하는 조건과 인덱스를 사용하지 않는 조건이 바뀌었음을 알 수
 있다.
+
+![trclog_detail_predicate_1](D:\emmachoigit\manuals\media\TuningGuide\trclog_detail_predicate_1.gif)
 
 위와 같이 WHERE 절에 기술된 어떠한 조건이 인덱스를 사용하고 그렇지 않은 지를
 판단하는 것 또한 질의 튜닝에 많은 도움을 준다. 단, 옵티마이저의 최적화 과정에서
@@ -5925,82 +5604,60 @@ TRCLOG_DETAIL_PREDICATE 프로퍼티를 1로 지정하면 SCAN노드에서 조�
 예제1) 1980년 1월 1일 이전에 태어난 모든 사원들의 이름, 부서 번호, 생일을
 출력하라.
 
-iSQL\> SELECT e_firstname, e_lastname, dno, birth
-
-FROM employees
-
-WHERE birth \> '800101';
-
-E_FIRSTNAME E_LASTNAME DNO BIRTH
-
-\---------------------------------------------------------------------
-
-Aaron Foster 3001 820730
-
-Gottlieb Fleischer 4002 840417
-
-Xiong Wang 4001 810726
-
-Sandra Hammond 4002 810211
-
-Mitch Jones 1002 801102
-
-Jason Davenport 1003 901212
-
+```
+iSQL> SELECT e_firstname, e_lastname, dno, birth 
+ FROM employees 
+ WHERE birth > '800101';
+E_FIRSTNAME           E_LASTNAME            DNO         BIRTH
+---------------------------------------------------------------------
+Aaron                 Foster                3001        820730
+Gottlieb              Fleischer             4002        840417
+Xiong                 Wang                  4001        810726
+Sandra                Hammond               4002        810211
+Mitch                 Jones                 1002        801102
+Jason                 Davenport             1003        901212
 6 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 54, COST: 0.26 )
-
-SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.14 )
-
-\------------------------------------------------------------
+ SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.14 )
+------------------------------------------------------------
+```
 
 예제2) 1980년 1월 1일 이전에 태어난 모든 사원들의 이름, 부서 번호, 생일을
 출력하라. (인덱스를 이용하라.)
 
-iSQL\> CREATE INDEX emp_idx2 ON employees(birth);
-
+```
+iSQL> CREATE INDEX emp_idx2 ON employees(birth);
 Create success.
-
-iSQL\> SELECT e_firstname, e_lastname, dno, birth
-
-FROM employees
-
-WHERE birth \> '800101';
-
-E_FIRSTNAME E_LASTNAME DNO BIRTH
-
-\---------------------------------------------------------------------
-
-Mitch Jones 1002 801102
-
-Sandra Hammond 4002 810211
-
-Xiong Wang 4001 810726
-
-Aaron Foster 3001 820730
-
-Gottlieb Fleischer 4002 840417
-
-Jason Davenport 1003 901212
-
+iSQL> SELECT e_firstname, e_lastname, dno, birth 
+ FROM employees 
+ WHERE birth > '800101';
+E_FIRSTNAME           E_LASTNAME            DNO         BIRTH
+---------------------------------------------------------------------
+Mitch                 Jones                 1002        801102
+Sandra                Hammond               4002        810211
+Xiong                 Wang                  4001        810726
+Aaron                 Foster                3001        820730
+Gottlieb              Fleischer             4002        840417
+Jason                 Davenport             1003        901212
 6 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 54, COST: 0.11 )
+ SCAN ( TABLE: EMPLOYEES, INDEX: EMP_IDX2, RANGE SCAN, ACCESS: 6, COST: 0.00 )
+------------------------------------------------------------
+```
 
-SCAN ( TABLE: EMPLOYEES, INDEX: EMP_IDX2, RANGE SCAN, ACCESS: 6, COST: 0.00 )
 
-\------------------------------------------------------------
 
 #### VIEW
 
 ##### 출력 형식
 
-**VIEW** ( *view_name*, ACCESS: *acc_num*, COST: *cost* )
+```
+VIEW ( view_name, ACCESS: acc_num, COST: cost )
+```
+
+
 
 | 항목    | 설명                                  |
 |---------|---------------------------------------|
@@ -6008,7 +5665,7 @@ SCAN ( TABLE: EMPLOYEES, INDEX: EMP_IDX2, RANGE SCAN, ACCESS: 6, COST: 0.00 )
 | ACCESS  | 뷰 레코드의 접근 회수                 |
 | COST    | 추산 비용                             |
 
->   [표 4‑19] VIEW 노드의 정보
+[표 4‑19] VIEW 노드의 정보
 
 ##### 설명
 
@@ -6020,74 +5677,60 @@ VIEW 노드는 관계형 모델에서 가상 테이블을 표현하기 위해 �
 아래와 같다. VIEW 노드의 하위 노드들은 사용자가 정의한 뷰의 SELECT문에 대한 실행
 계획을 의미한다.
 
+![view_1](D:\emmachoigit\manuals\media\TuningGuide\view_1.gif)
+
 집합 연산이 사용된 질의에서도 VIEW 노드를 사용하게 되는 데, 그 예는 다음과 같다.
 VIEW 노드는 INTERSECT의 결과를 하나의 테이블의 개념으로 관리하기 위해
 생성되었다. 이 경우 별도의 이름을 갖지 않는다.
+
+![view_2](D:\emmachoigit\manuals\media\TuningGuide\view_2.gif)
 
 ##### 예제
 
 자신이 속한 부서의 평균 급여보다 급여를 많이 받는 모든 사원의 이름, 급여, 부서
 번호 및 그 부서의 평균 급여를 출력하라.
 
-iSQL\> SELECT e.e_firstname, e.e_lastname, e.salary, e.dno, v1.salavg
-
-FROM employees e,
-
-(SELECT dno, AVG(salary) salavg
-
-FROM employees
-
-GROUP BY dno) v1
-
-WHERE e.dno = v1.dno
-
-AND e.salary \> v1.salavg;
-
-E_FIRSTNAME E_LASTNAME SALARY DNO SALAVG
-
-\---------------------------------------------------------------------------
-
-Wei-Wei Chen 2300 1001 2150
-
-Ryu Momoi 1700 1002 1340
-
-Elizabeth Bae 4000 1003 2438.25
-
-Zhen Liu 2750 1003 2438.25
-
-John Huxley 1900 4001 1550
-
-Sandra Hammond 1890 4002 1396.66667
-
-Alvar Marquez 1800 4002 1396.66667
-
+```
+iSQL> SELECT e.e_firstname, e.e_lastname, e.salary, e.dno, v1.salavg 
+ FROM employees e, 
+ (SELECT dno, AVG(salary) salavg 
+  FROM employees 
+  GROUP BY dno) v1 
+ WHERE e.dno = v1.dno 
+ AND e.salary > v1.salavg;
+E_FIRSTNAME           E_LASTNAME            SALARY      DNO     SALAVG
+---------------------------------------------------------------------------
+Wei-Wei               Chen                  2300        1001    2150
+Ryu                   Momoi                 1700        1002    1340
+Elizabeth             Bae                   4000        1003    2438.25
+Zhen                  Liu                   2750        1003    2438.25
+John                  Huxley                1900        4001    1550
+Sandra                Hammond               1890        4002    1396.66667
+Alvar                 Marquez               1800        4002    1396.66667
 7 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 5, TUPLE_SIZE: 79, COST: 0.40 )
+ JOIN ( METHOD: INDEX_NL, COST: 0.23 )
+  VIEW ( ACCESS: 9, COST: 0.22 )
+   PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 25, COST: 0.21 )
+    AGGREGATION ( ITEM_SIZE: 72, GROUP_COUNT: 9, COST: 0.01 )
+     GROUPING
+      SCAN ( TABLE: EMPLOYEES, INDEX: EMP_IDX1, FULL SCAN, ACCESS: 20, COST: 0.01 )
+  SCAN ( TABLE: EMPLOYEES E, INDEX: EMP_IDX1, RANGE SCAN, ACCESS: 19, COST: 0.01 )
+------------------------------------------------------------
+```
 
-JOIN ( METHOD: INDEX_NL, COST: 0.23 )
 
-VIEW ( ACCESS: 9, COST: 0.22 )
-
-PROJECT ( COLUMN_COUNT: 2, TUPLE_SIZE: 25, COST: 0.21 )
-
-AGGREGATION ( ITEM_SIZE: 72, GROUP_COUNT: 9, COST: 0.01 )
-
-GROUPING
-
-SCAN ( TABLE: EMPLOYEES, INDEX: EMP_IDX1, FULL SCAN, ACCESS: 20, COST: 0.01 )
-
-SCAN ( TABLE: EMPLOYEES E, INDEX: EMP_IDX1, RANGE SCAN, ACCESS: 19, COST: 0.01 )
-
-\------------------------------------------------------------
 
 #### VIEW-SCAN
 
 ##### 출력 형식
 
-**VIEW-SCAN** ( VIEW: *view_name*, ACCESS: *acc_num*, COST: *cost* )
+```
+VIEW-SCAN ( VIEW: view_name, ACCESS: acc_num, COST: cost )
+```
+
+
 
 | 항목   | 설명                  |
 |--------|-----------------------|
@@ -6095,7 +5738,7 @@ SCAN ( TABLE: EMPLOYEES E, INDEX: EMP_IDX1, RANGE SCAN, ACCESS: 19, COST: 0.01 )
 | ACCESS | 뷰 레코드의 접근 회수 |
 | COST   | 추산 비용             |
 
->   [표 4‑20] VIEW-SCAN 노드의 정보
+[표 4‑20] VIEW-SCAN 노드의 정보
 
 ##### 설명
 
@@ -6111,6 +5754,8 @@ VIEW-SCAN 노드가 사용되는 예는 아래와 같다. 아래 질의에는 �
 MATERIALIZATION 노드를 이용하여 저장한다. 아래는 저장된 뷰의 내용을 VIEW-SCAN
 노드로 접근하고 있는 실행 계획을 나타낸다.
 
+![view_scan](D:\emmachoigit\manuals\media\TuningGuide\view_scan.gif)
+
 위의 실행 계획에서 (V1 X) 뷰에 대한 VIEW-SCAN 노드는 자식 노드를 갖지 않는
 것으로 보인다. 그러나, 해당 VIEW-SCAN 노드는 MATERIALIZATION 노드를 자식 노드로
 갖는다. 위 실행 계획의 일부를 도식화하면 아래 그림과 같다. (VSCN: VIEW-SCAN
@@ -6118,6 +5763,8 @@ MATERIALIZATION 노드를 이용하여 저장한다. 아래는 저장된 뷰의 
 
 위의 그림에서와 같이 VSCN(V1 X)와 VSCN(V1 Y) 실행 노드는 동일한 자식 노드를 갖고
 있다.
+
+![view_scan_node](D:\emmachoigit\manuals\media\TuningGuide\view_scan_node.gif)
 
 ##### 예제
 
@@ -6129,13 +5776,17 @@ MATERIALIZATION 노드의 예제를 참고하기 바란다.
 
 1) 중간 결과가 메모리에 저장될 경우
 
-**SET-DIFFERENCE** ( ITEM_SIZE: *item_size*, ITEM_COUNT: *item_count*,
-BUCKET_COUNT: *bucket_count*, ACCESS: *acc_num*, COST: *cost* )
+```
+SET-DIFFERENCE ( ITEM_SIZE: item_size, ITEM_COUNT: item_count, BUCKET_COUNT: bucket_count, ACCESS: acc_num, COST: cost )
+```
 
 2) 중간 결과가 디스크에 저장될 경우
 
-**SET-DIFFERENCE** ( ITEM_SIZE: *item_size*, ITEM_COUNT: *item_count*,
-DISK_PAGE_COUNT: *page_count*, ACCESS: *acc_num*, COST: *cost* )
+```
+SET-DIFFERENCE ( ITEM_SIZE: item_size, ITEM_COUNT: item_count, DISK_PAGE_COUNT: page_count, ACCESS: acc_num, COST: cost )
+```
+
+
 
 | 항목            | 설명                                  |
 |-----------------|---------------------------------------|
@@ -6146,7 +5797,7 @@ DISK_PAGE_COUNT: *page_count*, ACCESS: *acc_num*, COST: *cost* )
 | ACCESS          | 저장된 레코드에 대한 접근 횟수        |
 | COST            | 추산 비용                             |
 
->   [표 4‑21] SET-DIFFERENCE 노드의 정보
+[표 4‑21] SET-DIFFERENCE 노드의 정보
 
 ##### 설명
 
@@ -6157,68 +5808,45 @@ SET-DIFFERENCE 노드가 MINUS를 위해 수행되는 예는 다음과 같다. �
 중복 제거하여 저장하고, 우측 질의의 결과를 이용하여 교집합을 구한 후 교집합에
 포함되지 않은 결과만을 검색한다.
 
+![set_difference](D:\emmachoigit\manuals\media\TuningGuide\set_difference.gif)
+
 ##### 예제
 
 주문되지 않은 상품들의 상품번호를 출력하라.
 
-iSQL\> SELECT gno FROM goods
-
+```
+iSQL> SELECT gno FROM goods
 MINUS
-
 SELECT gno FROM orders;
-
 GNO
-
-\--------------
-
+--------------
 A111100001
-
 B111100001
-
 C111100002
-
 E111100011
-
 D111100001
-
 D111100005
-
 D111100006
-
 D111100007
-
 D111100009
-
 E111100003
-
 E111100004
-
 E111100005
-
 E111100006
-
 E111100008
-
 14 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 12, COST: 0.16 )
+ VIEW ( ACCESS: 14, COST: 0.13 )
+  SET-DIFFERENCE ( ITEM_SIZE: 32, ITEM_COUNT: 30, BUCKET_COUNT: 1024, ACCESS: 14, COST: 0.13 )
+   PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 12, COST: 0.07 )
+    SCAN ( TABLE: GOODS, FULL SCAN, ACCESS: 30, COST: 0.02 )
+   PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 12, COST: 0.07 )
+    SCAN ( TABLE: ORDERS, FULL SCAN, ACCESS: 30, COST: 0.02 )
+------------------------------------------------------------
+```
 
-VIEW ( ACCESS: 14, COST: 0.13 )
 
-SET-DIFFERENCE ( ITEM_SIZE: 32, ITEM_COUNT: 30, BUCKET_COUNT: 1024, ACCESS: 14,
-COST: 0.13 )
-
-PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 12, COST: 0.07 )
-
-SCAN ( TABLE: GOODS, FULL SCAN, ACCESS: 30, COST: 0.02 )
-
-PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 12, COST: 0.07 )
-
-SCAN ( TABLE: ORDERS, FULL SCAN, ACCESS: 30, COST: 0.02 )
-
-\------------------------------------------------------------
 
 #### SET-INTERSECT
 
@@ -6226,13 +5854,17 @@ SCAN ( TABLE: ORDERS, FULL SCAN, ACCESS: 30, COST: 0.02 )
 
 1) 중간 결과가 메모리에 저장될 경우
 
-**SET-INTERSECT** ( ITEM_SIZE: *item_size*, ITEM_COUNT: *item_count*,
-BUCKET_COUNT: *bucket_count*, ACCESS: *acc_num*, COST: *cost* )
+```
+SET-INTERSECT ( ITEM_SIZE: item_size, ITEM_COUNT: item_count, BUCKET_COUNT: bucket_count, ACCESS: acc_num, COST: cost )
+```
 
 2) 중간 결과가 디스크에 저장될 경우
 
-**SET-INTERSECT** ( ITEM_SIZE: *item_size*, ITEM_COUNT: *item_count*,
-DISK_PAGE_COUNT: *page_count*, ACCESS: *acc_num*, COST: *cost* )
+```
+SET-INTERSECT ( ITEM_SIZE: item_size, ITEM_COUNT: item_count, DISK_PAGE_COUNT: page_count, ACCESS: acc_num, COST: cost )
+```
+
+
 
 | 항목            | 설명                                  |
 |-----------------|---------------------------------------|
@@ -6243,7 +5875,7 @@ DISK_PAGE_COUNT: *page_count*, ACCESS: *acc_num*, COST: *cost* )
 | ACCESS          | 저장된 레코드에 대한 접근 횟수        |
 | COST            | 추산 비용                             |
 
->   [표 4‑22] SET-INTERSECT 노드의 정보
+[표 4‑22] SET-INTERSECT 노드의 정보
 
 ##### 설명
 
@@ -6254,68 +5886,45 @@ SET-INTERSECT 노드가 INTERSECT를 위해 수행되는 예는 다음과 같다
 결과 데이터를 중복 제거하여 저장하고, 우측 질의의 결과 데이터를 이용하여
 교집합에 해당하는 결과를 검색하게 된다.
 
+![set_intersect](D:\emmachoigit\manuals\media\TuningGuide\set_intersect.gif)
+
 ##### 예제
 
 goods 테이블에서 한 번이라도 주문된 아이템의 목록을 출력하라.
 
-iSQL\> SELECT gno FROM goods INTERSECT SELECT gno FROM orders;
-
+```
+iSQL> SELECT gno FROM goods INTERSECT SELECT gno FROM orders;
 GNO
-
-\--------------
-
+--------------
 A111100002
-
 E111100001
-
 D111100008
-
 D111100004
-
 C111100001
-
 E111100002
-
 D111100002
-
 D111100011
-
 D111100003
-
 D111100010
-
 E111100012
-
 F111100001
-
 E111100009
-
 E111100010
-
 E111100007
-
 E111100013
-
 16 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 12, COST: 0.16 )
+ VIEW ( ACCESS: 16, COST: 0.13 )
+  SET-INTERSECT ( ITEM_SIZE: 32, ITEM_COUNT: 30, BUCKET_COUNT: 1024, ACCESS: 16, COST: 0.13 )
+   PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 12, COST: 0.07 )
+    SCAN ( TABLE: GOODS, FULL SCAN, ACCESS: 30, COST: 0.02 )
+   PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 12, COST: 0.07 )
+    SCAN ( TABLE: ORDERS, FULL SCAN, ACCESS: 30, COST: 0.02 )
+------------------------------------------------------------
+```
 
-VIEW ( ACCESS: 16, COST: 0.13 )
 
-SET-INTERSECT ( ITEM_SIZE: 32, ITEM_COUNT: 30, BUCKET_COUNT: 1024, ACCESS: 16,
-COST: 0.13 )
-
-PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 12, COST: 0.07 )
-
-SCAN ( TABLE: GOODS, FULL SCAN, ACCESS: 30, COST: 0.02 )
-
-PROJECT ( COLUMN_COUNT: 1, TUPLE_SIZE: 12, COST: 0.07 )
-
-SCAN ( TABLE: ORDERS, FULL SCAN, ACCESS: 30, COST: 0.02 )
-
-\------------------------------------------------------------
 
 #### SORT
 
@@ -6323,13 +5932,17 @@ SCAN ( TABLE: ORDERS, FULL SCAN, ACCESS: 30, COST: 0.02 )
 
 1) 중간 결과가 메모리에 저장될 경우
 
-**SORT** ( ITEM_SIZE: *item_size*, ITEM_COUNT: *item_count*, ACCESS: *acc_num*,
-COST: *cost* )
+```
+SORT ( ITEM_SIZE: item_size, ITEM_COUNT: item_count, ACCESS: acc_num, COST: cost )
+```
 
 2) 중간 결과가 디스크에 저장될 경우
 
-**SORT** ( ITEM_SIZE: *item_size*, ITEM_COUNT: *item_count*, DISK_PAGE_COUNT:
-*page_count*, ACCESS: *acc_num*, COST: *cost* )
+```
+SORT ( ITEM_SIZE: item_size, ITEM_COUNT: item_count, DISK_PAGE_COUNT: page_count, ACCESS: acc_num, COST: cost )
+```
+
+
 
 | 항목            | 설명                                  |
 |-----------------|---------------------------------------|
@@ -6339,7 +5952,7 @@ COST: *cost* )
 | ACCESS          | 저장된 레코드에 대한 접근 횟수        |
 | COST            | 추산 비용                             |
 
->   [표 4‑23] SORT 노드의 정보
+[표 4‑23] SORT 노드의 정보
 
 ##### 설명
 
@@ -6354,16 +5967,22 @@ SORT 노드는 매우 다양한 용도로 사용된다. 아래에서 각 용도�
 ORDER BY 절이 존재하고 별도의 정렬이 필요한 경우 SORT 노드가 사용된다. 아래의
 예에서 SORT 노드는 ORDER BY절을 처리하기 위하여 사용되었다.
 
+![sort_order_by](D:\emmachoigit\manuals\media\TuningGuide\sort_order_by.gif)
+
 ###### **GROUP BY에서의 사용**
 
 SORT 노드는 GROUP BY 절의 동일한 그룹을 분류하기 위한 정렬을 수행하기 위해
 생성될 수 있다. 아래의 예는 GROUP BY i4 를 처리하기 위하여 SORT 노드가 생성된
 경우이다.
 
+![sort_group_by](D:\emmachoigit\manuals\media\TuningGuide\sort_group_by.gif)
+
 ###### **DISTINCT절에서의 사용**
 
 SORT 노드는 DISTINCT 처리시 정렬 방식으로 중복 제거를 하기 위하여 사용될 수
 있다. 아래의 예는 DISTINCT i4 를 처리하기 위하여 SORT 노드가 생성된 경우이다.
+
+![sort_distinct](D:\emmachoigit\manuals\media\TuningGuide\sort_distinct.gif)
 
 ###### **조인에서의 사용**
 
@@ -6373,51 +5992,45 @@ SORT 노드는 조인을 수행하기 위하여 사용될 수 있다.
 조인 조건을 검사하기 위한 sort-based 조인을 수행하기 위해 SORT 노드가
 생성되었다.
 
+![sort_join](D:\emmachoigit\manuals\media\TuningGuide\sort_join.gif)
+
 ##### 예제
 
 월 급여가 \$1500 USD 이하인 직원의 이름, 업무, 입사일, 급여를 급여 순서로
 정렬하라.
 
-iSQL\> SELECT e_firstname, e_lastname, emp_job, salary
-
-FROM employees
-
-WHERE salary \< 1500
-
-ORDER BY 4 DESC;
-
-E_FIRSTNAME E_LASTNAME EMP_JOB SALARY
-
-\----------------------------------------------------------------------------
-
-Takahiro Fubuki PM 1400
-
-Curtis Diaz planner 1200
-
-Jason Davenport webmaster 1000
-
-Mitch Jones PM 980
-
-Gottlieb Fleischer manager 500
-
+```
+iSQL> SELECT e_firstname, e_lastname, emp_job, salary 
+ FROM employees 
+ WHERE salary < 1500 
+ ORDER BY 4 DESC;
+E_FIRSTNAME           E_LASTNAME            EMP_JOB          SALARY
+----------------------------------------------------------------------------
+Takahiro              Fubuki                PM               1400
+Curtis                Diaz                  planner          1200
+Jason                 Davenport             webmaster        1000
+Mitch                 Jones                 PM               980
+Gottlieb              Fleischer             manager          500
 5 rows selected.
-
-\------------------------------------------------------------
-
+------------------------------------------------------------
 PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 70, COST: 0.33 )
+ SORT ( ITEM_SIZE: 16, ITEM_COUNT: 5, ACCESS: 5, COST: 0.22 )
+  SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.14 )
+------------------------------------------------------------
 
-SORT ( ITEM_SIZE: 16, ITEM_COUNT: 5, ACCESS: 5, COST: 0.22 )
+```
 
-SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.14 )
 
-\------------------------------------------------------------
 
 #### STORE
 
 ##### 출력 형식
 
-**STORE** ( ITEM_SIZE: *item_size*, ITEM_COUNT: *item_count*, DISK_PAGE_COUNT:
-*page_count*, ACCESS: *acc_num*, COST: *cost* )
+```
+STORE ( ITEM_SIZE: item_size, ITEM_COUNT: item_count, DISK_PAGE_COUNT: page_count, ACCESS: acc_num, COST: cost )
+```
+
+
 
 | 항목            | 설명                                                                    |
 |-----------------|-------------------------------------------------------------------------|
@@ -6427,7 +6040,7 @@ SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, COST: 0.14 )
 | ACCESS          | 저장된 레코드에 대한 접근 횟수                                          |
 | COST            | 추산 비용                                                               |
 
->   [표 4‑24] STORE 노드의 정보
+[표 4‑24] STORE 노드의 정보
 
 ##### 설명
 
@@ -6448,7 +6061,9 @@ STORE 노드는 조인에 사용될 수 있다.
 대한 검색이 완료된 결과를 저장함으로서 반복적인 인덱스 사용을 방지하는 효과를
 얻을 수 있다.
 
-옵티마이저와 통계정보
+![store](D:\emmachoigit\manuals\media\TuningGuide\store.gif)
+
+5.옵티마이저와 통계정보
 ---------------------
 
 이 장은 쿼리를 최적화하는데 있어 통계정보가 왜 중요한지를 알아보고, 사용자가
@@ -6551,7 +6166,7 @@ SCAN을 반복적으로 수행)를 가한 상태에서 1회만 수집할 것을 
 주기적으로 통계정보를 갱신할 필요가 있다. 테이블 통계는 월단위로 수집하거나
 데이터 변경이 많이 발생한 경우에 수집할 것을 권장한다.
 
-SQL 힌트
+6.SQL 힌트
 --------
 
 이 장은 사용자가 직접 SQL문의 실행 계획을 변경할 수 있는 SQL 힌트에 대해
@@ -6697,28 +6312,35 @@ SELECT, UPDATE, DELETE, INSERT 키워드 다음에 아래와 같이 힌트를 �
 
 조인 방법에 대한 힌트는 조인 방법을 결정하기 위해 다음과 같이 처리된다.
 
--   옵티마이저는 내부 테이블이 나열된 순서로 조인 가능성 여부를 검사한다.  
-    예를 들어, USE_NL(T1, T2) 힌트인 경우 T1 =\> T2 로의 조인 가능 여부를
-    검사한다.
+- 옵티마이저는 내부 테이블이 나열된 순서로 조인 가능성 여부를 검사한다.  
+  예를 들어, USE_NL(T1, T2) 힌트인 경우 T1 =\> T2 로의 조인 가능 여부를
+  검사한다.
 
--   옵티마이저는 내부 테이블이 나열된 역순으로 조인 가능성 여부를 검사한다.  
-    위의 검사에서 해당 순서로 조인을 적용할 수 없는 경우 그 역순인 T2 =\> T1 의
-    순서로 조인 가능 여부를 검사한다.
+- 옵티마이저는 내부 테이블이 나열된 역순으로 조인 가능성 여부를 검사한다.  
+  위의 검사에서 해당 순서로 조인을 적용할 수 없는 경우 그 역순인 T2 =\> T1 의
+  순서로 조인 가능 여부를 검사한다.
 
--   위의 두 경우에 모두 해당하지 않으면, 비용 비교를 통하여 새로운 조인 방법을
-    선택한다.
+- 위의 두 경우에 모두 해당하지 않으면, 비용 비교를 통하여 새로운 조인 방법을
+  선택한다.
 
--   ORDERED 힌트와 상충되는 경우  
-    예를 들어, 다음과 같은 질의가 있다고 가정하자.  
-    SELECT /\*+ ORDERED USE_NL(T2, T1) \*/  
-    FROM T1, T2 WHERE T1.i1 = T2.i1;  
-    ORDERED 힌트와 USE_NL 힌트의 테이블 순서는 서로 상충되며 우선 순위에 의하여
-    ORDERED 힌트를 따르게 된다.
+- ORDERED 힌트와 상충되는 경우  
+  예를 들어, 다음과 같은 질의가 있다고 가정하자.  
 
--   동일 테이블에 대하여 여러 가지 조인 방법 힌트가 지정될 경우 나열된 방법 중
-    비용 평가를 통해 가장 효율적인 힌트가 선택된다.
+  ```
+  SELECT /*+ ORDERED USE_NL(T2, T1) */
+    FROM T1, T2 WHERE T1.i1 = T2.i1;
+  ```
 
-USE_NL(T1, T2) USE_HASH(T2, T1)
+  ORDERED 힌트와 USE_NL 힌트의 테이블 순서는 서로 상충되며 우선 순위에 의하여
+  ORDERED 힌트를 따르게 된다.
+
+- 동일 테이블에 대하여 여러 가지 조인 방법 힌트가 지정될 경우 나열된 방법 중
+  비용 평가를 통해 가장 효율적인 힌트가 선택된다.
+
+  ```
+  USE_NL(T1, T2) USE_HASH(T2, T1)
+  ```
+
 
 -   NO_USE로 시작하는 힌트일 경우  
     사용하지 않은 힌트를 제외한 힌트들의 조인 방법 중에 선택된다.
@@ -6815,21 +6437,16 @@ DISTINCT의 처리 방법을 지정하기 위하여 사용하는 힌트이다.
 정책에 의하여 처리된다.
 
 -   나열된 힌트가 상충하는 경우, 나열된 순서대로 힌트가 적용되고 뒤의 힌트는
-    무시된다.
-
-예제: INDEX(T1, IDX1) NO INDEX(T1, IDX1)
+    무시된다. 
+    예제: INDEX(T1, IDX1) NO INDEX(T1, IDX1)
 
 -   나열된 힌트가 상충되지 않을 경우 힌트에 나열된 액세스 방법 중 비용 계산에
     기반하여 보다 효율적인 액세스 방법이 선택된다.
-
-예제: FULL SCAN(T1), INDEX(T1, IDX1)
-
-액세스 방법 힌트가 조인 방법 힌트와 함께 사용될 경우 액세스 방법 힌트와 조인
-방법 힌트는 별개의 것으로 처리된다.
-
-예제: USE_HASH(T1, T2), INDEX(T2, IDX2)
-
-인덱스를 사용하여 접근되며 Hash-based 조인 방법으로 처리된다.
+    예제: FULL SCAN(T1), INDEX(T1, IDX1)
+-   액세스 방법 힌트가 조인 방법 힌트와 함께 사용될 경우 액세스 방법 힌트와 조인
+    방법 힌트는 별개의 것으로 처리된다.
+    예제: USE_HASH(T1, T2), INDEX(T2, IDX2)
+-   인덱스를 사용하여 접근되며 Hash-based 조인 방법으로 처리된다.
 
 #### 쿼리 변환
 
@@ -6884,24 +6501,27 @@ WHERE절에 포함된 부질의를 중첩된 부질의(Nested Subquery)이라고
 
 올바른 사용예:
 
-SELECT \* FROM T1 WHERE EXISTS ( SELECT /\*+NO_UNNEST\*/ \* FROM T2 WHERE T2.a1
-= T1.i1 );
-
-SELECT \* FROM T1 WHERE EXISTS ( SELECT /\*+HASH_SJ\*/ \* FROM T2 WHERE T2.a1 =
-T1.i1 );
+```
+SELECT * FROM T1 WHERE EXISTS ( SELECT /*+NO_UNNEST*/ * FROM T2  WHERE T2.a1 = T1.i1 );
+SELECT * FROM T1 WHERE EXISTS ( SELECT /*+HASH_SJ*/ * FROM T2  WHERE T2.a1 = T1.i1 );
+```
 
 잘못된 사용예:
 
--   subquery가 아닌 main query에 힌트를 사용함
+- subquery가 아닌 main query에 힌트를 사용함
 
-SELECT /\*+NO_UNNEST\*/ \* FROM T1 WHERE EXISTS ( SELECT \* FROM T2 WHERE T2.a1
-= T1.i1 );
+  ```
+  SELECT /*+NO_UNNEST*/ * FROM T1 WHERE EXISTS ( SELECT * FROM T2  WHERE T2.a1 = T1.i1 );
+  ```
 
--   EXISTS는 inner/semi join으로 unnesting 되어야 하는데, anti join용 힌트를
-    사용함
 
-SELECT \* FROM T1 WHERE EXISTS ( SELECT /\*+HASH_AJ\*/ \* FROM T2 WHERE T2.a1 =
-T1.i1 );
+- EXISTS는 inner/semi join으로 unnesting 되어야 하는데, anti join용 힌트를
+  사용함
+
+  ```
+  SELECT * FROM T1 WHERE EXISTS ( SELECT /*+HASH_AJ*/ * FROM T2  WHERE T2.a1 = T1.i1 );
+  ```
+
 
 #### 플랜 캐시 관련 힌트
 
@@ -6967,7 +6587,7 @@ windowing, grouping, set, distinction의 실행(execute)이 패치(fetch)에서
 
 -   DELAY: 실행 계획의 실행(execute)을 지연하는 기능을 활성화
 
-SQL Plan Cache
+7.SQL Plan Cache
 --------------
 
 이 장은 Altibase의 SQL Plan Cache와 Result Cache 기능에 대한 개념 및 특징에 대해
@@ -6982,7 +6602,9 @@ Plan)을 세션 간에 공유한다. 공유된 실행 계획(SQL Plan)이 실행
 
 #### Altibase SQL Plan Cache 구조
 
->   [그림 7‑1] Altibase 공유 캐쉬 구성도
+![sql_plan_cache](D:\emmachoigit\manuals\media\TuningGuide\sql_plan_cache.gif)
+
+[그림 7‑1] Altibase 공유 캐쉬 구성도
 
 Altibase는 모든 세션이 공유하는 캐쉬(cache) 영역을 가지고 있다. 캐쉬 영역은 SQL
 Plan Cache, Stored Procedure Cache, Meta Cache로 구성된다. 각각의 캐쉬에
@@ -7124,28 +6746,35 @@ SQL Plan Cache에 등록된 실행 계획이 재사용되려면 SQL 문장의 �
 
 예를 들어 다음 두 문장은 SQL Plan Cache에서는 다른 것으로 간주된다.
 
->   INSERT INTO T1 VALUES(1,2);
+```
+INSERT INTO T1 VALUES(1,2);
+INSERT INTO T1 VALUES(2,3);
+```
 
->   INSERT INTO T1 VALUES(2,3);
+
+
+
 
 따라서 아래와 같이 질의를 작성하여야 Plan Cache에 등록된 실행 계획이 사용되어
 성능을 향상시킬수 있다.
 
->   INSERT INTO T1 VALUES(? , ?)
+```
+INSERT INTO T1 VALUES(? , ?)
+```
+
+
 
 #### 예제
 
 \<질의 1\> SQL Plan Cache의 실행계획이 얼마나 재사용되는지 조회하라.
 
->   iSQL\> SELECT max_cache_size, cache_hit_count, cache_miss_count
-
->   FROM V\$SQL_PLAN_CACHE;
-
+```
+iSQL> SELECT max_cache_size, cache_hit_count, cache_miss_count 
+        FROM V$SQL_PLAN_CACHE;
 MAX_CACHE_SIZE CACHE_HIT_COUNT CACHE_MISS_COUNT
-
-\-------------------------------------------------------------
-
-67108864 67288 769437
+-------------------------------------------------------------
+67108864          67288             769437
+```
 
 CACHE_HIT_COUNT 비율보다 CACHE_MISS_COUNT 비율이 높다면, SQL_PLAN_CACHE_SIZE를
 증가시키거나, PREPARE-EXECUTE 하는 구조로 변경하는 것을 권장한다.
@@ -7153,19 +6782,15 @@ CACHE_HIT_COUNT 비율보다 CACHE_MISS_COUNT 비율이 높다면, SQL_PLAN_CACH
 \<질의 2\> SQL Plan Cache의 실행 계획이 재사용되지 않고 새로 실행계획이
 생성되었는지 이유를 확인하라.
 
->   iSQL\> SELECT create_reason, count(\*) FROM v\$sql_plan_cache_pco
-
->   GROUP BY create_reason;
-
-CREATE_REASON COUNT
-
-\------------------------------------------------------
-
-CREATED_BY_CACHE_MISS 1241
-
-CREATED_BY_PLAN_TOO_OLD 32
-
-CREATED_BY_PLAN_INVALIDATION 16
+```
+iSQL> SELECT create_reason, count(*) FROM v$sql_plan_cache_pco
+        GROUP BY create_reason;
+CREATE_REASON                 COUNT
+------------------------------------------------------
+CREATED_BY_CACHE_MISS         1241
+CREATED_BY_PLAN_TOO_OLD       32
+CREATED_BY_PLAN_INVALIDATION  16
+```
 
 CREATE_BY_CACHE_MISS의 값이 크다면 SQL Plan Cache의 크기가 작거나, literal SQL이
 많이 사용되었을 가능성이 있다.
@@ -7175,19 +6800,15 @@ CREATE_BY_PLAN_INVALIDATION의 값이 크다면 객체(테이블, 인덱스) 정
 
 \<질의 3\> SQL Plan Cache의 실행계획이 얼마나 활용되는지 조회하라.
 
-iSQL\> SELECT sql_text, child_pco_count, hit_count, rebuild_count
-
-FROM v\$sql_plan_cache_sqltext a , v\$sql_plan_cache_pco b
-
-WHERE a.sql_text_id = b.sql_text_id
-
-ORDER BY 2 DESC;
-
-SQL_TEXT CHILD_PCO_COUNT HIT_COUNT REBUILD_COUNT
-
-\--------------------------------------------------------------------
-
-select \* from t1 8 0 7
+```
+iSQL> SELECT sql_text, child_pco_count, hit_count, rebuild_count
+        FROM v$sql_plan_cache_sqltext a , v$sql_plan_cache_pco b 
+        WHERE a.sql_text_id = b.sql_text_id 
+        ORDER BY 2 DESC;
+ SQL_TEXT            CHILD_PCO_COUNT     HIT_COUNT     REBUILD_COUNT 
+-------------------------------------------------------------------- 
+select * from t1   8                        0               7  
+```
 
 만약 CHILD_PCO_COUNT 값이 크다면, SQL이 동일하지만 객체 소유자가 다른지, 아니면
 참조하는 객체가 자주 변경되는지를 확인한다.
@@ -7207,7 +6828,7 @@ Altibase는 중간 결과를 재 사용할 수 있는 Result Cache와 최종 결
 테이블의 변경이 없어야 한다. 관련 테이블이 변경되면, 서버에 저장된 값을 버리고
 쿼리를 재실행한다.
 
-![](media/dec471996d8b05882e9527beab632fd9.png)
+![](media/TuningGuide/dec471996d8b05882e9527beab632fd9.png)
 
 ###### **Result Cache 사용이 가능한 실행계획**
 
@@ -7232,26 +6853,79 @@ Altibase는 중간 결과를 재 사용할 수 있는 Result Cache와 최종 결
 사용하려면 저장된 실행 계획과 연관된 테이블의 변경이 없어야 한다. 관련 테이블이
 변경되면, 서버에 저장된 값을 버리고 쿼리를 재실행한다.
 
-![](media/ab6d4d0c4a3a90d52dcd549a06793949.png)
+![](media/TuningGuide/ab6d4d0c4a3a90d52dcd549a06793949.png)
 
 #### Result Cache 와 Top Result Cache 비교
 
-|                         | Result Cache                                             | Top Result Cache                                                                                                                   |
-|-------------------------|----------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
-| 실행 계획               | 실행 계획이 변경되지 않는다.                             | 실행 계획이 변경된다.                                                                                                              |
-| 수행 속도               | 처음 수행속도는 캐시를 사용하기 전과 같다.               | 처음 수행속도는 최종결과를 추가된 실행계획에 저장하기 때문에 느려질 수 있다. 그러나 두 번째부터는 result cache보다 빨라질 수 있다. |
-| 캐시 범위               | 쿼리의 일부분만 캐시를 수행할 수 있다.                   | 최종 결과에 대해서만 캐시를 수행할 수 있다.                                                                                        |
-| 테이블 변경에 대한 영향 | 쿼리에 사용된 테이블이 변경되면, 캐시 기능은 불필요하다. |                                                                                                                                    |
+<table style="width: 718px;">
+<tbody>
+<tr>
+<td style="width: 167px;">
+<p> </p>
+</td>
+<th> Result Cache </th>
+<th>Top Result Cache</th>
+</tr>
+<tr>
+<th style="width: 167px;">
+<p>실행 계획</p>
+</th>
+<td style="width: 248px;">
+<p>실행 계획이 변경되지 않는다.</p>
+</td>
+<td style="width: 293px;">
+<p>실행 계획이 변경된다.</p>
+</td>
+</tr>
+<tr>
+<td style="width: 167px;">
+<p>수행 속도</p>
+</td>
+<td style="width: 248px;">
+<p>처음 수행속도는 캐시를 사용하기 전과 같다.</p>
+</td>
+<td style="width: 293px;">
+<p>처음 수행속도는 최종결과를 추가된 실행계획에 저장하기 때문에 느려질 수 있다. 그러나 두 번째부터는 result cache보다 빨라질 수 있다.</p>
+</td>
+</tr>
+<tr>
+<td style="width: 167px;">
+<p>캐시 범위</p>
+</td>
+<td style="width: 248px;">
+<p>쿼리의 일부분만 캐시를 수행할 수 있다.</p>
+</td>
+<td style="width: 293px;">
+<p>최종 결과에 대해서만 캐시를 수행할 수 있다.</p>
+</td>
+</tr>
+<tr>
+<td style="width: 167px;">
+<p>테이블 변경에 대한 영향</p>
+</td>
+<td style="width: 541px;" colspan="2">
+<p>쿼리에 사용된 테이블이 변경되면, 캐시 기능은 불필요하다.</p>
+</td>
+</tr>
+</tbody>
+</table>
 
 #### Result Cache 관련 힌트
 
--   RESULT_CACHE  
-    \<질의\> T1 테이블을 i1로 정렬하여 중간 결과를 캐시한다.  
-    SELECT /\*+ RESULT_CACHE \*/ \* FROM T1 ORDER BY i1;
+- RESULT_CACHE  
+  \<질의\> T1 테이블을 i1로 정렬하여 중간 결과를 캐시한다.  
 
--   TOP_RESULT_CACHE  
-    \<질의\> T1 테이블을 i1로 정렬하여 최종 결과를 캐시한다.  
-    SELECT /\*+ TOP_RESULT_CACHE \*/ \* FROM T1 ORDER BY i1;
+  ```
+  SELECT /*+ RESULT_CACHE */ * FROM T1 ORDER BY i1;
+  ```
+
+- TOP_RESULT_CACHE  
+  \<질의\> T1 테이블을 i1로 정렬하여 최종 결과를 캐시한다.  
+
+  ```
+  SELECT /*+ TOP_RESULT_CACHE */ * FROM T1 ORDER BY i1;
+  ```
+
 
 #### Result Cache 관련 프로퍼티
 
@@ -7296,12 +6970,10 @@ Result cache는 아래의 경우 사용할 수 없다.
 
 Commit 모드에 따라 Result Cache를 사용할 수 있는 범위가 달라진다.
 
-| 두 번째 세션 첫 번째 세션 | AUTO COMMIT ON                   | AUTO COMMIT OFF                  |
-|---------------------------|----------------------------------|----------------------------------|
-| AUTO COMMIT ON            | 사용 가능                        | 사용 불가                        |
-|                           |                                  | 캐시를 해제한 후 재수행          |
-| AUTO COMMIT OFF           | 사용 불가                        | 동일한 트랜잭션에서만 사용 가능  |
-|                           | 캐시를 해제한 후 재수행          |                                  |
+| 두 번째 세션 <br />\\ <br />첫 번째 세션 | AUTO COMMIT ON                         | AUTO COMMIT OFF                        |
+| ---------------------------------------- | -------------------------------------- | -------------------------------------- |
+| AUTO COMMIT ON                           | 사용 가능                              | 사용 불가<br />캐시를 해제한 후 재수행 |
+| AUTO COMMIT OFF                          | 사용 불가<br />캐시를 해제한 후 재수행 | 동일한 트랜잭션에서만 사용 가능        |
 
 #### 예제
 
