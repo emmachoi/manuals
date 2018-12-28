@@ -4,7 +4,7 @@ Altibase® Application Development
 
 # SQL Reference
 
-![](D:/emmachoigit/manuals/media/SQL/e5cfb3761673686d093a3b00c062fe7a.png)
+![](media/SQL/e5cfb3761673686d093a3b00c062fe7a.png)
 
 
 
@@ -103,17 +103,17 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 이 매뉴얼에서는 다음 구성 요소로 구축된 다이어그램을 사용하여, 명령문의 구문을
 설명한다.
 
-| 구성 요소                                              | 의미                                                         |
-| ------------------------------------------------------ | ------------------------------------------------------------ |
-| ![image1](media/SQL/image1.gif)                        | 명령문이 시작한다. 완전한 명령문이 아닌 구문 요소는 화살표로 시작한다. |
-| ![image2](media/SQL/image2.gif)                        | 명령문이 다음 라인에 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 종료한다. |
-| ![image3](D:\emmachoigit\manuals\media\SQL\image3.gif) | 명령문이 이전 라인으로부터 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 시작한다. |
-| ![image4](D:\emmachoigit\manuals\media\SQL\image4.gif) | 명령문이 종료한다.                                           |
-| ![image5](D:\emmachoigit\manuals\media\SQL\image5.gif) | 필수 항목                                                    |
-| ![image6](D:\emmachoigit\manuals\media\SQL\image6.gif) | 선택적 항목                                                  |
-| ![image7](D:\emmachoigit\manuals\media\SQL\image7.gif) | 선택사항이 있는 필수 항목. 한 항목만 제공해야 한다.          |
-| ![image8](D:\emmachoigit\manuals\media\SQL\image8.gif) | 선택사항이 있는 선택적 항목.                                 |
-| ![image9](D:\emmachoigit\manuals\media\SQL\image9.gif) | 선택적 항목. 여러 항목이 허용된다. 각 반복 앞부분에 콤마가 와야 한다. |
+| 구성 요소                       | 의미                                                         |
+| ------------------------------- | ------------------------------------------------------------ |
+| ![image1](media/SQL/image1.gif) | 명령문이 시작한다. 완전한 명령문이 아닌 구문 요소는 화살표로 시작한다. |
+| ![image2](media/SQL/image2.gif) | 명령문이 다음 라인에 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 종료한다. |
+| ![image3](media/SQL/image3.gif) | 명령문이 이전 라인으로부터 계속된다. 완전한 명령문이 아닌 구문 요소는 이 기호로 시작한다. |
+| ![image4](media/SQL/image4.gif) | 명령문이 종료한다.                                           |
+| ![image5](media/SQL/image5.gif) | 필수 항목                                                    |
+| ![image6](media/SQL/image6.gif) | 선택적 항목                                                  |
+| ![image7](media/SQL/image7.gif) | 선택사항이 있는 필수 항목. 한 항목만 제공해야 한다.          |
+| ![image8](media/SQL/image8.gif) | 선택사항이 있는 선택적 항목.                                 |
+| ![image9](media/SQL/image9.gif) | 선택적 항목. 여러 항목이 허용된다. 각 반복 앞부분에 콤마가 와야 한다. |
 
 ##### 샘플 코드 규칙
 
@@ -1347,7 +1347,7 @@ Altibase는 기본적으로 사용자 암호를 대소문자 구분 없이 대�
 
 hints ::=
 
-![hint](D:\emmachoigit\manuals\media\SQL\hint.gif)
+![hint](media/SQL/hint.gif)
 
 #### 전제 조건
 
@@ -1670,20 +1670,20 @@ Direct-Path INSERT가 수행되도록 지시하는 힌트이다. 이 힌트는 I
 INSERT와 관련된 통계 정보는 V\$DIRECT_PATH_INSERT 성능 뷰를 조회해서 확인할 수
 있다.
 
-![append](D:\emmachoigit\manuals\media\SQL\append.gif)
+![append](media/SQL/append.gif)
 
 #### CNF
 
 WHERE절의 조건문들을 Conjunctive Normal Form으로 정규화할 것을 지시하는
 힌트이다.
 
-![cnf](D:\emmachoigit\manuals\media\SQL\cnf.gif)
+![cnf](media/SQL/cnf.gif)
 
 #### COST
 
 비용 기반으로 최적화된 실행 계획을 생성하도록 지시하는 힌트이다.
 
-![cost](D:\emmachoigit\manuals\media\SQL\cost.gif)
+![cost](media/SQL/cost.gif)
 
 #### DELAY 
 
@@ -1691,26 +1691,26 @@ WHERE절의 조건문들을 Conjunctive Normal Form으로 정규화할 것을 �
 windowing, grouping, set, distinction의 실행(execute)이 패치(fetch)에서
 수행되도록 하는 지연 기능을 활성화한다.
 
-![](D:/emmachoigit/manuals/media/SQL/8aeb39dd922ed0ce238bc037fcc1b2f2.png)
+![](media/SQL/8aeb39dd922ed0ce238bc037fcc1b2f2.png)
 
 #### DISTINCT_HASH
 
 해싱 방식으로 DISTINCT를 처리할 것을 지시하는 힌트이다.
 
-![distinct_hash](D:\emmachoigit\manuals\media\SQL\distinct_hash.gif)
+![distinct_hash](media/SQL/distinct_hash.gif)
 
 #### DISTINCT_SORT
 
 정렬 방식으로 DISTINCT를 처리할 것을 지시하는 힌트이다.
 
-![distinct_sort](D:\emmachoigit\manuals\media\SQL\distinct_sort.gif)
+![distinct_sort](media/SQL/distinct_sort.gif)
 
 #### DNF
 
 WHERE절의 조건문들을 Disjunctive Normal Form으로 정규화할 것을 지시하는
 힌트이다.
 
-![dnf](D:\emmachoigit\manuals\media\SQL\dnf.gif)
+![dnf](media/SQL/dnf.gif)
 
 #### EXEC_FAST 
 
@@ -1718,38 +1718,38 @@ EXECUTOR_FAST_SIMPLE_QUERY 프로퍼티가 비활성화된 상태에서 힌트�
 단순한 SELECT, INSERT, UPDATE, DELETE 구문은 SIMPLE QUERY로 동작한다. SIMPLE
 QUERY가 적용된 경우 실행 계획에 출력된다.
 
-![](D:/emmachoigit/manuals/media/SQL/b4dbcc345d928a319bb06d8f68f29338.png)
+![](media/SQL/b4dbcc345d928a319bb06d8f68f29338.png)
 
 #### FIRST_ROWS
 
 처음 *n*개의 행을 가장 효율적으로 반환할 수 있는 실행 계획을 생성하도록 지시하는
 힌트이다.
 
-![first_rows](D:\emmachoigit\manuals\media\SQL\first_rows.gif)
+![first_rows](media/SQL/first_rows.gif)
 
 #### FULL SCAN
 
 명시한 테이블에 대해 테이블 전체 스캔을 수행할 것을 지시하는 힌트이다.
 
-![full scan](D:\emmachoigit\manuals\media\SQL\full scan.gif)
+![full scan](media/SQL/full scan.gif)
 
 #### GROUP BUCKET COUNT
 
 GROUP-AGGREGATION과 AGGREGATION 실행 노드의 해시 버킷 수를 지정하는 힌트이다.
 
-![group bucket count](D:\emmachoigit\manuals\media\SQL\group bucket count.gif)
+![group bucket count](media/SQL/group bucket count.gif)
 
 #### GROUP_HASH
 
 해싱 방식으로 GROUP BY절을 처리할 것을 지시하는 힌트이다.
 
-![group_hash](D:\emmachoigit\manuals\media\SQL\group_hash.gif)
+![group_hash](media/SQL/group_hash.gif)
 
 #### GROUP_SORT
 
 정렬 방식으로 GROUP BY절을 처리할 것을 지시하는 힌트이다.
 
-![group_sort](D:\emmachoigit\manuals\media\SQL\group_sort.gif)
+![group_sort](media/SQL/group_sort.gif)
 
 #### HASH_AJ
 
@@ -1757,13 +1757,13 @@ GROUP-AGGREGATION과 AGGREGATION 실행 노드의 해시 버킷 수를 지정하
 힌트는 부질의 내부에 정의해야 효과가 있으며, 만약 부질의가 Semi Join으로
 풀리거나, 풀 수 없는 경우에는 효과가 없다.
 
-![hash_aj](D:\emmachoigit\manuals\media\SQL\hash_aj.gif)
+![hash_aj](media/SQL/hash_aj.gif)
 
 #### HASH BUCKET COUNT
 
 HASH와 DISTINCT 실행 노드의 해시 버킷 수를 지정하는 힌트이다.
 
-![hash bucket count](D:\emmachoigit\manuals\media\SQL\hash bucket count.gif)
+![hash bucket count](media/SQL/hash bucket count.gif)
 
 #### HASH_SJ
 
@@ -1771,7 +1771,7 @@ HASH와 DISTINCT 실행 노드의 해시 버킷 수를 지정하는 힌트이다
 힌트는 부질의 내부에 정의해야 효과가 있다. 만약 부질의가 Anti Join으로 풀리거나
 풀리지 않는 경우에는 효과가 없다.
 
-![hash_sj](D:\emmachoigit\manuals\media\SQL\hash_sj.gif)
+![hash_sj](media/SQL/hash_sj.gif)
 
 #### HIGH_PRECISION
 
@@ -1781,40 +1781,40 @@ HASH와 DISTINCT 실행 노드의 해시 버킷 수를 지정하는 힌트이다
 타입으로 연산할 경우 real이나 double 데이터 타입보다 연산 성능이 떨어질 수
 있지만, 38자리까지의 사칙 연산 및 mod 연산의 정밀도를 보장한다.
 
-![](D:/emmachoigit/manuals/media/SQL/8b81157ae9e013610fec42063de0648f.png)
+![](media/SQL/8b81157ae9e013610fec42063de0648f.png)
 
 #### INDEX
 
 명시된 인덱스를 사용하여 해당 테이블에 대해서 인덱스 스캔을 수행하도록 지시하는
 힌트이다.
 
-![index](D:\emmachoigit\manuals\media\SQL\index.gif)
+![index](media/SQL/index.gif)
 
 #### INDEX ASC
 
 명시된 인덱스를 사용하여 해당 테이블에 대해서 인덱스 스캔을 수행하되, 오름
 차순으로 탐색한다.
 
-![index_asc](D:\emmachoigit\manuals\media\SQL\index_asc.gif)
+![index_asc](media/SQL/index_asc.gif)
 
 #### INDEX_ASC
 
 INDEX ASC힌트와 같은 동작을 한다.
 
-![](D:/emmachoigit/manuals/media/SQL/5a6888421179f4bed0963085e3a3f32a.png)
+![](media/SQL/5a6888421179f4bed0963085e3a3f32a.png)
 
 #### INDEX DESC
 
 명시된 인덱스를 사용하여 해당 테이블에 대해서 인덱스 스캔을 수행하되, 내림
 차순으로 탐색한다.
 
-![index desc](D:\emmachoigit\manuals\media\SQL\index desc.gif)
+![index desc](media/SQL/index desc.gif)
 
 #### INDEX_DESC
 
 INDEX DESC와 같은 동작을 한다
 
-![](D:/emmachoigit/manuals/media/SQL/00429e82e80ed494c3a9750b7cf71ed6.png)
+![](media/SQL/00429e82e80ed494c3a9750b7cf71ed6.png)
 
 #### INVERSE_JOIN
 
@@ -1827,7 +1827,7 @@ INDEX DESC와 같은 동작을 한다
 있다. 예를 들어 HASH_SJ와 함께 사용하는 경우, Hash Join이면서 Inverse Join인
 Inverse Hash 조인을 사용하도록 지시한다.
 
-![inverse_join](D:\emmachoigit\manuals\media\SQL\inverse_join.gif)
+![inverse_join](media/SQL/inverse_join.gif)
 
 #### KEEP_PLAN
 
@@ -1836,13 +1836,13 @@ KEEP_PLAN는 한 번 생성된 플랜이 참조하는 테이블의 통계 정보
 힌트는 쿼리의 direct/execute 수행뿐 아니라 prepare/execute 수행시에도 사용
 가능하다.
 
-![keep_plan](D:\emmachoigit\manuals\media\SQL\keep_plan.gif)
+![keep_plan](media/SQL/keep_plan.gif)
 
 #### LEADING
 
 힌트에 사용된 테이블들을 먼저 조인되도록 한다.
 
-![](D:/emmachoigit/manuals/media/SQL/d7925f2e0025071a87646b15d2fee986.png)
+![](media/SQL/d7925f2e0025071a87646b15d2fee986.png)
 
 #### MERGE_AJ
 
@@ -1850,7 +1850,7 @@ KEEP_PLAN는 한 번 생성된 플랜이 참조하는 테이블의 통계 정보
 힌트는 부질의 내부에 정의해야 효과가 있으며, 만약 부질의가 Semi Join으로
 풀리거나, 풀 수 없는 경우에는 효과가 없다.
 
-![merge_aj](D:\emmachoigit\manuals\media\SQL\merge_aj.gif)
+![merge_aj](media/SQL/merge_aj.gif)
 
 #### MERGE_SJ
 
@@ -1858,7 +1858,7 @@ KEEP_PLAN는 한 번 생성된 플랜이 참조하는 테이블의 통계 정보
 힌트는 부질의 내부에 정의해야 효과가 있으며, 만약 부질의가 Anti Join으로
 풀리거나, 풀 수 없는 경우에는 효과가 없다.
 
-![merge_sj](D:\emmachoigit\manuals\media\SQL\merge_sj.gif)
+![merge_sj](media/SQL/merge_sj.gif)
 
 #### NL_AJ
 
@@ -1866,7 +1866,7 @@ KEEP_PLAN는 한 번 생성된 플랜이 참조하는 테이블의 통계 정보
 해당 힌트는 부질의 내부에 정의해야 효과가 있으며, 만약 부질의가 Semi Join으로
 풀리거나, 풀 수 없는 경우에는 효과가 없다.
 
-![nl_aj](D:\emmachoigit\manuals\media\SQL\nl_aj.gif)
+![nl_aj](media/SQL/nl_aj.gif)
 
 #### NL_SJ
 
@@ -1874,7 +1874,7 @@ KEEP_PLAN는 한 번 생성된 플랜이 참조하는 테이블의 통계 정보
 해당 힌트는 부질의 내부에 정의해야 효과가 있다. 만약 부질의가 Anti Join으로
 풀리거나 풀리지 않는 경우에는 효과가 없다.
 
-![nl_sj](D:\emmachoigit\manuals\media\SQL\nl_sj.gif)
+![nl_sj](media/SQL/nl_sj.gif)
 
 #### NO DELAY 
 
@@ -1882,33 +1882,33 @@ KEEP_PLAN는 한 번 생성된 플랜이 참조하는 테이블의 통계 정보
 windowing, grouping, set, distinction의 실행(execute)이 패치(fetch)에서
 수행되도록 하는 지연 기능을 비활성화한다.
 
-![](D:/emmachoigit/manuals/media/SQL/32142706d7230ccce49718f7ff7c6ea7.png)
+![](media/SQL/32142706d7230ccce49718f7ff7c6ea7.png)
 
 #### NO_EXEC_FAST 
 
 EXECUTOR_FAST_SIMPLE_QUERY 프로퍼티가 활성화된 상태에서 힌트가 명시되면, 단순한
 SELECT, INSERT, UPDATE, DELETE 구문이더라도 SIMPLE QUERY로 동작되지 않는다.
 
-![](D:/emmachoigit/manuals/media/SQL/c4e80442b87071d82f3fd86145afc3f5.png)
+![](media/SQL/c4e80442b87071d82f3fd86145afc3f5.png)
 
 #### NO_EXPAND
 
 CNF힌트와 같은 동작을 한다.
 
-![](D:/emmachoigit/manuals/media/SQL/aeeecf55495aecd36a8e7a2cf387657d.png)
+![](media/SQL/aeeecf55495aecd36a8e7a2cf387657d.png)
 
 #### NO INDEX
 
 명시된 인덱스를 사용해서 해당 테이블에 대한 인덱스 스캔을 수행하지 않도록
 지시하는 힌트이다.
 
-![no index](D:\emmachoigit\manuals\media\SQL\no index.gif)
+![no index](media/SQL/no index.gif)
 
 #### NO_INDEX
 
 NO INDEX힌트와 같은 동작을 한다.
 
-![](D:/emmachoigit/manuals/media/SQL/2ea4fa9a326a1b1a705f9cf1e5f0b0db.png)
+![](media/SQL/2ea4fa9a326a1b1a705f9cf1e5f0b0db.png)
 
 #### NO_INVERSE_JOIN
 
@@ -1920,68 +1920,68 @@ Hash Join이나 Two-pass Hash join을 선택하여 사용하도록 지시하는 
 있다. 예를 들어 HASH_SJ와 함께 사용하는 경우, Hash Join이면서 One-Pass Hash
 Join과 Two-Pass Hash Join 중 하나를 사용하도록 지시한다.
 
-![no_inverse_join](D:\emmachoigit\manuals\media\SQL\no_inverse_join.gif)
+![no_inverse_join](media/SQL/no_inverse_join.gif)
 
 #### NO_MERGE
 
 메인 쿼리와 인라인 뷰 쿼리를 하나의 쿼리로 병합하지 않도록 지시하는 힌트이다.
 
-![no_merge](D:\emmachoigit\manuals\media\SQL\no_merge.gif)
+![no_merge](media/SQL/no_merge.gif)
 
 #### NO_PARALLEL
 
 NOPARALLEL 힌트와 같은 동작을 한다.
 
-![](D:/emmachoigit/manuals/media/SQL/37ef48e6ff8bf73f864afdbb842349b3.png)
+![](media/SQL/37ef48e6ff8bf73f864afdbb842349b3.png)
 
 #### NO_PLAN_CACHE
 
 NO_PLAN_CACHE는 생성된 플랜을 플랜 캐시에 저장하지 않도록 지시하는 힌트이다.
 
-![no_plan_cache](D:\emmachoigit\manuals\media\SQL\no_plan_cache.gif)
+![no_plan_cache](media/SQL/no_plan_cache.gif)
 
 #### NO_PUSH_SELECT_VIEW
 
 뷰 외부의 WHERE절의 조건을 뷰 내부로 이동하여 처리하지 않도록 지시하는 힌트이다.
 
-![no_push_select_view](D:\emmachoigit\manuals\media\SQL\no_push_select_view.gif)
+![no_push_select_view](media/SQL/no_push_select_view.gif)
 
 #### NO_TRANSITIVE_PRED
 
 조건절 이행을 배제하는 힌트이다. 조건절 이행에 대해서는 "Performance Tuning
 Guide \> 3장 쿼리 옵티마이저 \> 쿼리 변환 > 조건절 이행"을 참고한다.
 
-![no_transitive_pred](D:\emmachoigit\manuals\media\SQL\no_transitive_pred.gif)
+![no_transitive_pred](media/SQL/no_transitive_pred.gif)
 
 #### NO_UNNEST
 
 Subquery Unnesting을 하지 말 것을 지시하는 힌트이다.
 
-![no_unnest](D:\emmachoigit\manuals\media\SQL\no_unnest.gif)
+![no_unnest](media/SQL/no_unnest.gif)
 
 #### NO_USE_HASH
 
 HASH를 제외한 힌트 중에 조인방법이 선택된다.
 
-![](D:/emmachoigit/manuals/media/SQL/9ce19c26f7f3c89791bdb69f36fdf23a.png)
+![](media/SQL/9ce19c26f7f3c89791bdb69f36fdf23a.png)
 
 #### NO_USE_MERGE
 
 MERGE를 제외한 힌트 중에 조인방법이 선택된다.
 
-![](D:/emmachoigit/manuals/media/SQL/d1a88ccc169fe979d8d0e64d2bda84ef.png)
+![](media/SQL/d1a88ccc169fe979d8d0e64d2bda84ef.png)
 
 #### NO_USE_NL
 
 NL를 제외한 힌트 중에 조인방법이 선택된다.
 
-![](D:/emmachoigit/manuals/media/SQL/126b72674766403367127957a95a5465.png)
+![](media/SQL/126b72674766403367127957a95a5465.png)
 
 #### NO_USE_SORT
 
 SORT를 제외한 힌트 중에 조인방법이 선택된다
 
-![](D:/emmachoigit/manuals/media/SQL/9e4e1b3bcd93ee858fbb63d4fbe29678.png)
+![](media/SQL/9e4e1b3bcd93ee858fbb63d4fbe29678.png)
 
 #### PARALLEL
 
@@ -1990,44 +1990,44 @@ SORT를 제외한 힌트 중에 조인방법이 선택된다
 - NOPARALLEL: 병렬로 처리하지 않는다.
 - PARALLEL integer: integer에 명시된 개수만큼의 쓰레드가 병렬로 처리한다.
 
-![parallel](D:\emmachoigit\manuals\media\SQL\parallel.gif)
+![parallel](media/SQL/parallel.gif)
 
 #### ORDERED
 
 FROM절에 나열된 순서대로 조인하도록 지시하는 힌트이다.
 
-![order](D:\emmachoigit\manuals\media\SQL\order.gif)
+![order](media/SQL/order.gif)
 
 #### PUSH_PRED
 
 메인 쿼리의 WHERE 절에서 뷰와 관련된 조인 조건절을 뷰 안으로 밀어넣도록 지시하는
 힌트이다.
 
-![push_pred](D:\emmachoigit\manuals\media\SQL\push_pred.gif)
+![push_pred](media/SQL/push_pred.gif)
 
 #### PUSH_SELECT_VIEW
 
 뷰 외부의 WHERE절의 조건을 뷰 내부로 이동하여 처리하도록 지시하는 힌트이다.
 
-![push_select_view](D:\emmachoigit\manuals\media\SQL\push_select_view.gif)
+![push_select_view](media/SQL/push_select_view.gif)
 
 #### RESULT_CACHE
 
 중간 결과를 캐시하는 ResultCache를 사용하는 힌트이다.
 
-![](D:/emmachoigit/manuals/media/SQL/dd5dfb24046bac05689b3631995d6048.png)
+![](media/SQL/dd5dfb24046bac05689b3631995d6048.png)
 
 #### RULE
 
 비용을 배제하고 규칙 기반으로 최적화된 실행 계획을 생성하도록 지시하는 힌트이다.
 
-![rule](D:\emmachoigit\manuals\media\SQL\rule.gif)
+![rule](media/SQL/rule.gif)
 
 #### SET BUCKET COUNT
 
 SET-INTERECT와 SET-DIFFERENCE 실행 노드의 해시 버킷 수를 지정하는 힌트이다.
 
-![set_bucket_count](D:\emmachoigit\manuals\media\SQL\set_bucket_count.gif)
+![set_bucket_count](media/SQL/set_bucket_count.gif)
 
 #### SORT_AJ
 
@@ -2035,7 +2035,7 @@ SET-INTERECT와 SET-DIFFERENCE 실행 노드의 해시 버킷 수를 지정하�
 힌트는 부질의 내부에 정의해야 효과가 있으며, 만약 부질의가 Semi Join으로
 풀리거나, 풀 수 없는 경우에는 효과가 없다.
 
-![sort_aj](D:\emmachoigit\manuals\media\SQL\sort_aj.gif)
+![sort_aj](media/SQL/sort_aj.gif)
 
 #### SORT_SJ
 
@@ -2043,33 +2043,33 @@ SET-INTERECT와 SET-DIFFERENCE 실행 노드의 해시 버킷 수를 지정하�
 힌트는 부질의 내부에 정의해야 효과가 있다. 만약 부질의가 Anti Join으로 풀리거나
 풀리지 않는 경우에는 효과가 없다.
 
-![sort_sj](D:\emmachoigit\manuals\media\SQL\sort_sj.gif)
+![sort_sj](media/SQL/sort_sj.gif)
 
 #### TEMP_TBS_DISK
 
 질의 처리 중에 생성되는 모든 중간 결과를 디스크 임시 공간에 저장하도록 지시하는
 힌트이다.
 
-![temp_tbs_disk](D:\emmachoigit\manuals\media\SQL\temp_tbs_disk.gif)
+![temp_tbs_disk](media/SQL/temp_tbs_disk.gif)
 
 #### TEMP_TBS_MEMORY
 
 질의 처리 중에 생성되는 모든 중간 결과를 메모리 임시 공간에 저장하도록 지시하는
 힌트이다.
 
-![temp_tbs_memory](D:\emmachoigit\manuals\media\SQL\temp_tbs_memory.gif)
+![temp_tbs_memory](media/SQL/temp_tbs_memory.gif)
 
 #### TOP_RESULT_CACHE
 
 최종 결과를 캐시하는 Top Result Cache를 사용하는 힌트이다.
 
-![](D:/emmachoigit/manuals/media/SQL/cc3e6ebd802d5456078639575728ec31.png)
+![](media/SQL/cc3e6ebd802d5456078639575728ec31.png)
 
 #### UNNEST
 
 Subquery Unnesting을 하도록 지시하는 힌트이다.
 
-![unnest](D:\emmachoigit\manuals\media\SQL\unnest.gif)
+![unnest](media/SQL/unnest.gif)
 
 #### USE_ANTI
 
@@ -2078,89 +2078,89 @@ join을 수행하고 그 결과를 concatenation하도록 지시하는 힌트이
 양쪽 칼럼에 인덱스가 모두 존재하는 경우에만 해당 힌트가 적용된다.
 ANTI-OUTER-JOIN 노드를 참고한다.
 
-![use_anti](D:\emmachoigit\manuals\media\SQL\use_anti.gif)
+![use_anti](media/SQL/use_anti.gif)
 
 #### USE_CONCAT
 
 DNF 힌트와 같은 동작을 한다.
 
-![](D:/emmachoigit/manuals/media/SQL/458f3642b3e45785696cf101d1d40c46.png)
+![](media/SQL/458f3642b3e45785696cf101d1d40c46.png)
 
 #### USE_FULL_NL
 
 Full nested loop 조인을 사용해서 명시된 테이블을 조인하도록 지시하는 힌트이다.
 
-![use_full_nl](D:\emmachoigit\manuals\media\SQL\use_full_nl.gif)
+![use_full_nl](media/SQL/use_full_nl.gif)
 
 #### USE_FULL_STORE_NL
 
 Full store nested loop 조인을 사용해서 명시된 테이블을 조인하도록 지시하는
 힌트이다.
 
-![use_full_store_nl](D:\emmachoigit\manuals\media\SQL\use_full_store_nl.gif)
+![use_full_store_nl](media/SQL/use_full_store_nl.gif)
 
 #### USE_HASH
 
 Hash 조인을 사용해서 명시된 테이블을 조인하도록 지시하는 힌트이다. 단 hasing
 술어가 하나도 없을 경우 Nested loop 조인이 사용된다.
 
-![use_hash](D:\emmachoigit\manuals\media\SQL\use_hash.gif)
+![use_hash](media/SQL/use_hash.gif)
 
 #### USE_INDEX_NL
 
 Index nested loop 조인을 사용해서 명시된 테이블을 조인하도록 지시하는 힌트이다.
 
-![use_index_nl](D:\emmachoigit\manuals\media\SQL\use_index_nl.gif)
+![use_index_nl](media/SQL/use_index_nl.gif)
 
 #### USE_INVERSE_HASH
 
 inverse hash 조인을 사용해서 명시된 테이블을 조인하도록 지시하는 힌트이다.
 
-![use_inverse_hash](D:\emmachoigit\manuals\media\SQL\use_inverse_hash.gif)
+![use_inverse_hash](media/SQL/use_inverse_hash.gif)
 
 #### USE_MERGE
 
 Sort Merge 조인을 사용해서 명시된 테이블을 조인하도록 지시하는 힌트이다. 단
 sorting 술어가 하나도 없을 경우 Nested loop 조인이 사용된다.
 
-![use_merge](D:\emmachoigit\manuals\media\SQL\use_merge.gif)
+![use_merge](media/SQL/use_merge.gif)
 
 #### USE_NL
 
 Nested loop 조인을 사용해서 명시된 테이블을 조인하도록 지시하는 힌트이다.
 
-![use_nl](D:\emmachoigit\manuals\media\SQL\use_nl.gif)
+![use_nl](media/SQL/use_nl.gif)
 
 #### USE_ONE_PASS_HASH
 
 One-pass hash 조인을 사용해서 명시된 테이블을 조인하도록 지시하는 힌트이다.
 
-![use_one_pass_hash](D:\emmachoigit\manuals\media\SQL\use_one_pass_hash.gif)
+![use_one_pass_hash](media/SQL/use_one_pass_hash.gif)
 
 #### USE_ONE_PASS_SORT
 
 One-pass sort 조인을 사용해서 명시된 테이블을 조인하도록 지시하는 힌트이다.
 
-![use_two_pass_sort](D:\emmachoigit\manuals\media\SQL\use_two_pass_sort.gif)
+![use_two_pass_sort](media/SQL/use_two_pass_sort.gif)
 
 #### USE_SORT
 
 Sort 조인을 사용해서 명시된 테이블을 조인하도록 지시하는 힌트이다. 단 sorting
 술어가 하나도 없을 경우 Nested loop 조인이 사용된다.
 
-![use_sort](D:\emmachoigit\manuals\media\SQL\use_sort.gif)
+![use_sort](media/SQL/use_sort.gif)
 
 #### USE_TWO_PASS_HASH
 
 Two-pass hash 조인을 사용해서 명시된 테이블을 조인하도록 지시하는 힌트이다.
 
-![use_two_pass_hash](D:\emmachoigit\manuals\media\SQL\use_two_pass_hash.gif)
+![use_two_pass_hash](media/SQL/use_two_pass_hash.gif)
 
 #### USE_TWO_PASS_SORT
 
 Two-pass sort 조인을 사용해서 명시된 테이블을 조인하도록 지시하는 힌트이다. 
 
-![use_two_pass_sort](D:\emmachoigit\manuals\media\SQL\use_two_pass_sort.gif)
+![use_two_pass_sort](media/SQL/use_two_pass_sort.gif)
 
 ## 3.데이터 정의어
 
@@ -2173,95 +2173,9 @@ Two-pass sort 조인을 사용해서 명시된 테이블을 조인하도록 지�
 
 **alter_database :: =**
 
-![](D:/emmachoigit/manuals/media/SQL/97f0082b35f7c7b2023c79e718472981.png)
+![](media/SQL/97f0082b35f7c7b2023c79e718472981.png)
 
-[startup_clause](#startup_clause) ::=, rename_datafile_clause
-::=#rename_datafile_clause, create_datafile_clause
-::=#create_datafile_clause, create_checkpoint_image_clause
-::=#create_checkpoint_image_clause, session_clause ::=#session_clause,
-archivelog_option ::=#archivelog_option, backup_clause
-::=#backup_clause, incremental_backup_clause
-::=#incremental_backup_clause, recover_clause ::=#recover_clause,
-restore_clause ::=#restore_clause, change_backup_directory_clause
-::=#change_backup_directory_clause, move_backup_clause
-::=#move_backup_clause, delete_backup_clause ::=#delete_backup_clause,
-change_tracking_clause ::=#change_tracking_clause, snapshot_clause ::=
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+[startup_clause ::=](#startup_clause), [rename_datafile_clause ::=](#rename_datafile_clause), [create_datafile_clause ::=](#create_datafile_clause), [create_checkpoint_image_clause ::=](#create_checkpoint_image_clause), [session_clause ::=](#session_clause), [archivelog_option ::=](#archivelog_option), [backup_clause ::=](#backup_clause), [incremental_backup_clause ::=](#incremental_backup_clause), [recover_clause ::=](#recover_clause), [restore_clause ::=](#restore_clause), [change_backup_directory_clause ::=](#change_backup_directory_clause), [move_backup_clause ::=](#move_backup_clause), [delete_backup_clause ::=](#delete_backup_clause), [change_tracking_clause ::=](#change_tracking_clause), [snapshot_clause](#snapshot_clause) ::=
 
 
 
@@ -2275,7 +2189,7 @@ create_checkpoint_image_clause ::=
 
 session_clause ::=
 
-![](D:/emmachoigit/manuals/media/SQL/738af5c6c05936008a47fc1d093fa05c.png)
+![](media/SQL/738af5c6c05936008a47fc1d093fa05c.png)
 
 archivelog_option ::=
 
@@ -2309,7 +2223,7 @@ change_tracking_clause ::=
 
 snapshot_clause ::=
 
-![](D:/emmachoigit/manuals/media/SQL/8df50a0b0a940bcf36d59c734118d74c.png)
+![](media/SQL/8df50a0b0a940bcf36d59c734118d74c.png)
 
 #### 전제 조건
 
@@ -2574,7 +2488,7 @@ iSQL\> ALTER DATABASE RECOVER DATABASE UNTIL CANCEL;
 
 alter_index ::=
 
-![](D:/emmachoigit/manuals/media/SQL/01f546cab50943e8bcf3f443282d41fa.png)
+![](media/SQL/01f546cab50943e8bcf3f443282d41fa.png)
 
 [directkey_mode_clause::=](#DirectkeyModClause)*,* [rebuild_clause
 ::=](#rebuild_clause), [alter_index_properties ::=](#alter_index_properties)
@@ -2726,7 +2640,7 @@ iSQL\> ALTER INDEX idx1 REORGANIZATION;
 
 alter_job ::=
 
-![](D:/emmachoigit/manuals/media/SQL/324c973656a57966cf2121f7e86e46f5.png)
+![](media/SQL/324c973656a57966cf2121f7e86e46f5.png)
 
 execute_procedure_statement ::=
 
@@ -2828,7 +2742,7 @@ Alter success.
 
 alter_queue ::=
 
-![](D:/emmachoigit/manuals/media/SQL/eca0685373cfb5b742ff68bd70cbe8f3.png)
+![](media/SQL/eca0685373cfb5b742ff68bd70cbe8f3.png)
 
 #### 설명
 
@@ -3030,11 +2944,11 @@ Alter success.
 
 alter_sequence ::=
 
-![](D:/emmachoigit/manuals/media/SQL/47068a33f6105def77759ac8433a2974.png)
+![](media/SQL/47068a33f6105def77759ac8433a2974.png)
 
 sequence_options ::=
 
-![](D:/emmachoigit/manuals/media/SQL/f2a803f06b6aa2c6b5ffb8b2412cb04c.png)
+![](media/SQL/f2a803f06b6aa2c6b5ffb8b2412cb04c.png)
 
 sync_table_clause ::=
 
@@ -3147,7 +3061,7 @@ ALTER SEQUENCE seq1 ENABLE SYNC TABLE;
 
 alter_table::=
 
-![](D:/emmachoigit/manuals/media/SQL/17ce67a416098226c32df31b2e42cbe3.png)
+![](media/SQL/17ce67a416098226c32df31b2e42cbe3.png)
 
 [log_compression_clause ::=](#alter_table_log_compression_clause),
 [alter_table_properties ::=](#alter_table_properties),
@@ -5408,7 +5322,7 @@ Comment created.
 
 conjoin_table ::=
 
-![](D:/emmachoigit/manuals/media/SQL/9fb57281787aa263aa7d56eb48f4b3da.png)
+![](media/SQL/9fb57281787aa263aa7d56eb48f4b3da.png)
 
 [conjoin_range_clause ::=](#conjoin_range_clause), [conjoin_list_clause
 ::=](#conjoin_list_clause), [row_movement_clause ::=](#row_movement_clause),
@@ -5418,23 +5332,23 @@ conjoin_table ::=
 
 conjoin_range_clause ::=
 
-![](D:/emmachoigit/manuals/media/SQL/40634d2070f1d40b16a33aac52ab102c.png)
+![](media/SQL/40634d2070f1d40b16a33aac52ab102c.png)
 
 [range_table_to_partition_clause ::=](#range_table_to_partition)
 
 range_table_to_partition_clause ::=
 
-![](D:/emmachoigit/manuals/media/SQL/0b00718934d68775a5494aa3352eec73.png)
+![](media/SQL/0b00718934d68775a5494aa3352eec73.png)
 
 conjoin_list_clause ::=
 
-![](D:/emmachoigit/manuals/media/SQL/6a1a5051d6c3a88b14ff462d68b00706.png)
+![](media/SQL/6a1a5051d6c3a88b14ff462d68b00706.png)
 
 [list_table_to_partition_clause ::=](#list_table_to_partition_clause)
 
 list_table_to_partition_clause ::=
 
-![](D:/emmachoigit/manuals/media/SQL/5296c172826c160f152057b8171285d5.png)
+![](media/SQL/5296c172826c160f152057b8171285d5.png)
 
 #### 전제 조건
 
@@ -6181,7 +6095,7 @@ Create success.
 
 create_job ::=
 
-![](D:/emmachoigit/manuals/media/SQL/4962e4da941760b43081cc8c9c55fa28.png)
+![](media/SQL/4962e4da941760b43081cc8c9c55fa28.png)
 
 execute_procedure_statement ::=
 
@@ -6273,7 +6187,7 @@ Create success.
 
 create_queue ::=
 
-![](D:/emmachoigit/manuals/media/SQL/912745f42d1d8037e4462882f59e66ec.png)
+![](media/SQL/912745f42d1d8037e4462882f59e66ec.png)
 
 [column_definition ::=](#column_definition)
 
@@ -6366,7 +6280,7 @@ create_replication ::=
 
 option_clause ::=
 
-![](D:/emmachoigit/manuals/media/SQL/27820f15feeda94f02d08fdd79b41b36.png)
+![](media/SQL/27820f15feeda94f02d08fdd79b41b36.png)
 
 replication_item ::=
 
@@ -9068,7 +8982,7 @@ Create success.
 
 create_trigger ::=
 
-![](D:/emmachoigit/manuals/media/SQL/e52f0369710a1fb044d43082fb24c858.png)
+![](media/SQL/e52f0369710a1fb044d43082fb24c858.png)
 
 simple_dml_trigger ::=
 
@@ -9078,15 +8992,15 @@ referencing_clause ::=
 
 trigger_action::=
 
-![](D:/emmachoigit/manuals/media/SQL/9c08ef3d3a9a235c54020897664f1e76.png)
+![](media/SQL/9c08ef3d3a9a235c54020897664f1e76.png)
 
 psm_body::=
 
-![](D:/emmachoigit/manuals/media/SQL/9bdcf9256b030ef2f125cae49db1e626.jpg)
+![](media/SQL/9bdcf9256b030ef2f125cae49db1e626.jpg)
 
 instead_of_dml_trigger::=
 
-![](D:/emmachoigit/manuals/media/SQL/15bb3089ca8a5848774adf787ad4e5ed.png)
+![](media/SQL/15bb3089ca8a5848774adf787ad4e5ed.png)
 
 #### 전제 조건
 
