@@ -2191,39 +2191,71 @@ Two-pass sort 조인을 사용해서 명시된 테이블을 조인하도록 지�
 
 **create_checkpoint_image_clause ::=**
 
+![create_checkpoint_image](D:\emmachoigit\manuals\media\SQL\create_checkpoint_image.gif)
+
 **session_clause ::=**
 
 ![](media/SQL/738af5c6c05936008a47fc1d093fa05c.png)
 
 **archivelog_option ::=**
 
+![archivelog_option_image35](D:\emmachoigit\manuals\media\SQL\archivelog_option_image35.gif)
+
 **backup_clause ::=**
+
+![backup_clause_image36](D:\emmachoigit\manuals\media\SQL\backup_clause_image36.gif)
 
 **incremental_backup_clause ::=**
 
+![incremental_backup](D:\emmachoigit\manuals\media\SQL\incremental_backup.gif)
+
 **incremental_level_clause ::=**
+
+![incremental_level](D:\emmachoigit\manuals\media\SQL\incremental_level.gif)
 
 **with_tag_clause ::=**
 
+![with_tag](D:\emmachoigit\manuals\media\SQL\with_tag.gif)
+
 **recover_clause ::=**
+
+![recover_clause_image37](D:\emmachoigit\manuals\media\SQL\recover_clause_image37.gif)
 
 **from_tag_clause ::=**
 
+![from_tag](D:\emmachoigit\manuals\media\SQL\from_tag.gif)
+
 **until_option ::=**
+
+![until_option_image38](D:\emmachoigit\manuals\media\SQL\until_option_image38.gif)
 
 **restore_clause ::=**
 
+![restore_clause](D:\emmachoigit\manuals\media\SQL\restore_clause.gif)
+
 **restore_database_clause ::=**
+
+![restore_database](D:\emmachoigit\manuals\media\SQL\restore_database.gif)
 
 **restore_tablespace_clause ::=**
 
+![restore_tablespace](D:\emmachoigit\manuals\media\SQL\restore_tablespace.gif)
+
 **change_backup_directory_clause ::=**
+
+![change_backup_directory](D:\emmachoigit\manuals\media\SQL\change_backup_directory.gif)
 
 **move_backup_clause ::=**
 
+![move_backup](D:\emmachoigit\manuals\media\SQL\move_backup.gif)
+
 **delete_backup_clause ::=**
 
+![delete_backup](D:\emmachoigit\manuals\media\SQL\delete_backup.gif)
+
 **change_tracking_clause ::=**
+
+![change_tracking](D:\emmachoigit\manuals\media\SQL\change_tracking.gif)
 
 **snapshot_clause ::=**
 
@@ -2231,23 +2263,21 @@ Two-pass sort 조인을 사용해서 명시된 테이블을 조인하도록 지�
 
 #### 전제 조건
 
-ALTER DATABASE구문은 Altibase 다단계 구동에서 서비스 전 단계에서 SYS 사용자가
-–sysdba 관리자 모드로 접속한 후 수행할 수 있다. 단 SESSION CLOSE 의 경우에는
-–sysdba 모드로 접속하지 않아도 사용할 수 있다.
+ALTER DATABASE구문은 Altibase 다단계 구동에서 서비스 전 단계에서 SYS 사용자가 –sysdba 관리자 모드로 접속한 후 수행할 수 있다. 단 SESSION CLOSE 의 경우에는 –sysdba 모드로 접속하지 않아도 사용할 수 있다.
 
 #### 설명
 
 기존 데이터베이스의 정의를 변경하는 구문이다.
 
-database_name
+*database_name*
 
 변경될 데이터베이스 이름을 명시한다.
 
-startup_clauses
+*startup_clauses*
 
 이 절은 Altibase 구동 단계를 명시하는데 사용된다.
 
-CONTROL
+*CONTROL*
 
 데이터베이스 구동 단계를 CONTROL 단계로 변경한다. 이 단계에서 데이터베이스
 미디어 복구가 가능하다. 또한, 테이블스페이스를 Discard할 수 있는 단계이다.
