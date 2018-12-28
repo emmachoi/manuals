@@ -2269,32 +2269,31 @@ ALTER DATABASE구문은 Altibase 다단계 구동에서 서비스 전 단계에�
 
 기존 데이터베이스의 정의를 변경하는 구문이다.
 
-***database_name***
-
+*database_name*
 변경될 데이터베이스 이름을 명시한다.
 
 *startup_clauses*
-
 이 절은 Altibase 구동 단계를 명시하는데 사용된다.
 
-*CONTROL*
-
+**CONTROL**
 데이터베이스 구동 단계를 CONTROL 단계로 변경한다. 이 단계에서 데이터베이스
 미디어 복구가 가능하다. 또한, 테이블스페이스를 Discard할 수 있는 단계이다.
 데이터베이스 다단계 구동 단계에 대한 자세한 설명은 *Administrator’s Manual*을
 참조한다.
-
 CONTROL 다음 단계인 META단계로 가기 위해서는 다음 구문을 수행해야 한다:
 
-ALTER DATABASE *dababase_name* META;
+```
+ALTER DATABASE dababase_name META;
+```
 
-META
-
+**META**
 데이터베이스 구동 단계를 META 단계로 변경한다. 전 단계인 CONTROL단계에서 이
 단계로 오는 중에 데이터베이스 메타 데이터가 로딩된다. 다음 단계로 가기 위해서는
 다음 구문을 수행해야 한다:
 
-ALTER DATABASE *dababase_name* SERVICE;
+```
+ALTER DATABASE dababase_name SERVICE;
+```
 
 SERVICE
 
