@@ -2175,19 +2175,21 @@ Two-pass sort 조인을 사용해서 명시된 테이블을 조인하도록 지�
 
 ![](media/SQL/97f0082b35f7c7b2023c79e718472981.png)
 
-[startup_clause ::=](#startup_clause), [rename_datafile_clause ::=](#rename_datafile_clause), [create_datafile_clause ::=](#create_datafile_clause), [create_checkpoint_image_clause ::=](#create_checkpoint_image_clause), [session_clause ::=](#session_clause), [archivelog_option ::=](#archivelog_option), [backup_clause ::=](#backup_clause), [incremental_backup_clause ::=](#incremental_backup_clause), [recover_clause ::=](#recover_clause), [restore_clause ::=](#restore_clause), [change_backup_directory_clause ::=](#change_backup_directory_clause), [move_backup_clause ::=](#move_backup_clause), [delete_backup_clause ::=](#delete_backup_clause), [change_tracking_clause ::=](#change_tracking_clause), [snapshot_clause](#snapshot_clause) ::=
+[startup_clause](#startup_clause), [rename_datafile_clause ::=](#rename_datafile_clause), [create_datafile_clause ::=](#create_datafile_clause), [create_checkpoint_image_clause ::=](#create_checkpoint_image_clause), [session_clause ::=](#session_clause), [archivelog_option ::=](#archivelog_option), [backup_clause ::=](#backup_clause), [incremental_backup_clause ::=](#incremental_backup_clause), [recover_clause ::=](#recover_clause), [restore_clause ::=](#restore_clause), [change_backup_directory_clause ::=](#change_backup_directory_clause), [move_backup_clause ::=](#move_backup_clause), [delete_backup_clause ::=](#delete_backup_clause), [change_tracking_clause ::=](#change_tracking_clause), [snapshot_clause](#snapshot_clause) ::=
 
 
 
-startup_clause ::=
+**startup_clause ::=**
 
-rename_datafile_clause ::=
 
-create_datafile_clause ::=
 
-create_checkpoint_image_clause ::=
+**rename_datafile_clause ::=**
 
-session_clause ::=
+**create_datafile_clause ::=**
+
+**create_checkpoint_image_clause ::=**
+
+**session_clause ::=**
 
 ![](media/SQL/738af5c6c05936008a47fc1d093fa05c.png)
 
