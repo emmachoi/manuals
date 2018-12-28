@@ -2269,7 +2269,7 @@ ALTER DATABASE구문은 Altibase 다단계 구동에서 서비스 전 단계에�
 
 기존 데이터베이스의 정의를 변경하는 구문이다.
 
-*database_name*
+***database_name***
 
 변경될 데이터베이스 이름을 명시한다.
 
