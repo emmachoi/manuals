@@ -1,9 +1,37 @@
+- [New Features Guide](#new-features-guide)
+  - [1.Altibase Ver 7.1.0.1.2의 새로운 기능 및 특징](#1altibase-ver-71012%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
+    - [기타](#%EA%B8%B0%ED%83%80)
+  - [2.Altibase Ver 7.1.0.1.1의 새로운 기능 및 특징](#2altibase-ver-71011%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
+    - [기능 개선](#%EA%B8%B0%EB%8A%A5-%EA%B0%9C%EC%84%A0)
+    - [기타](#%EA%B8%B0%ED%83%80-1)
+  - [3.Altibase Ver 7.1.0.1.0의 새로운 기능 및 특징](#3altibase-ver-71010%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
+    - [기타](#%EA%B8%B0%ED%83%80-2)
+  - [4.Altibase Ver 7.1.0.0.9의 새로운 기능 및 특징](#4altibase-ver-71009%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
+    - [기능 개선](#%EA%B8%B0%EB%8A%A5-%EA%B0%9C%EC%84%A0-1)
+    - [기타](#%EA%B8%B0%ED%83%80-3)
+  - [5.Altibase Ver 7.1.0.0.7의 새로운 기능 및 특징](#5altibase-ver-71007%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
+    - [기능 개선](#%EA%B8%B0%EB%8A%A5-%EA%B0%9C%EC%84%A0-2)
+    - [기타](#%EA%B8%B0%ED%83%80-4)
+  - [6.Altibase Ver 7.1.0.0.6의 새로운 기능 및 특징](#6altibase-ver-71006%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
+    - [기능 개선](#%EA%B8%B0%EB%8A%A5-%EA%B0%9C%EC%84%A0-3)
+  - [7.Altibase Ver 7.1.0.0.5의 새로운 기능 및 특징](#7altibase-ver-71005%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
+    - [기타](#%EA%B8%B0%ED%83%80-5)
+  - [8.Altibase Ver 7.1.0.0.4의 새로운 기능 및 특징](#8altibase-ver-71004%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
+    - [기타](#%EA%B8%B0%ED%83%80-6)
+  - [9.Altibase Ver 7.1.0.0.0의 새로운 기능 및 특징](#9altibase-ver-71000%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
+    - [기능 개선](#%EA%B8%B0%EB%8A%A5-%EA%B0%9C%EC%84%A0-4)
+    - [효율성](#%ED%9A%A8%EC%9C%A8%EC%84%B1)
+    - [고가용성](#%EA%B3%A0%EA%B0%80%EC%9A%A9%EC%84%B1)
+    - [기타](#%EA%B8%B0%ED%83%80-7)
+
+
+
 
 
 Altibase®
 
 New Features Guide
-------------------
+==================
 
 ![](media/NewFeatures/e5cfb3761673686d093a3b00c062fe7a.png)
 
@@ -30,53 +58,7 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 
 
-목 차
------
 
-- [1.Altibase Ver 7.1.0.1.2의 새로운 기능 및 특징](#1altibase-ver-71012%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
-
-  - [기타](#%EA%B8%B0%ED%83%80)
-
-- [2.Altibase Ver 7.1.0.1.1의 새로운 기능 및 특징](#2altibase-ver-71011%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
-
-  - [기능 개선](#%EA%B8%B0%EB%8A%A5-%EA%B0%9C%EC%84%A0)
-  - [기타](#%EA%B8%B0%ED%83%80-1)
-
-- [3.Altibase Ver 7.1.0.1.0의 새로운 기능 및 특징](#3altibase-ver-71010%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
-
-  - [기타](#%EA%B8%B0%ED%83%80-2)
-
-- [4.Altibase Ver 7.1.0.0.9의 새로운 기능 및 특징](#4altibase-ver-71009%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
-
-  - [기능 개선](#%EA%B8%B0%EB%8A%A5-%EA%B0%9C%EC%84%A0-1)
-  - [기타](#%EA%B8%B0%ED%83%80-3)
-
-- [5.Altibase Ver 7.1.0.0.7의 새로운 기능 및 특징](#5altibase-ver-71007%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
-
-  - [기능 개선](#%EA%B8%B0%EB%8A%A5-%EA%B0%9C%EC%84%A0-2)
-  - [기타](#%EA%B8%B0%ED%83%80-4)
-
-- [6.Altibase Ver 7.1.0.0.6의 새로운 기능 및 특징](#6altibase-ver-71006%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
-
-  - [기능 개선](#%EA%B8%B0%EB%8A%A5-%EA%B0%9C%EC%84%A0-3)
-
-- [7.Altibase Ver 7.1.0.0.5의 새로운 기능 및 특징](#7altibase-ver-71005%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
-
-  - [기타](#%EA%B8%B0%ED%83%80-5)
-
-- [8.Altibase Ver 7.1.0.0.4의 새로운 기능 및 특징](#8altibase-ver-71004%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
-
-  - [기타](#%EA%B8%B0%ED%83%80-6)
-
-- [9.Altibase Ver 7.1.0.0.0의 새로운 기능 및 특징](#9altibase-ver-71000%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%EA%B8%B0%EB%8A%A5-%EB%B0%8F-%ED%8A%B9%EC%A7%95)
-
-  - [기능 개선](#%EA%B8%B0%EB%8A%A5-%EA%B0%9C%EC%84%A0-4)
-
-  - [효율성](#%ED%9A%A8%EC%9C%A8%EC%84%B1)
-
-  - [고가용성](#%EA%B3%A0%EA%B0%80%EC%9A%A9%EC%84%B1)
-
-  - [기타](#%EA%B8%B0%ED%83%80-7)
 
 
 1.Altibase Ver 7.1.0.1.2의 새로운 기능 및 특징
@@ -1591,4 +1573,4 @@ Failover 관련 아래의 연결 속성을 제거하였다.
 
 -   V\$TRANSACTION : 트랜잭션의 고립화 수준을 나타내는 ISOLATION_LEVEL 추가
 
-###### 
+
