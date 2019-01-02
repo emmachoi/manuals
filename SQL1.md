@@ -2563,31 +2563,31 @@ iSQL> ALTER DATABASE RECOVER DATABASE UNTIL CANCEL;
 
 **directkey_mod_clause ::=**
 
-![directkey_mod_clause](D:\emmachoigit\manuals\media\SQL\directkey_mod_clause.gif)
+![directkey_mod_clause](media/SQL/directkey_mod_clause.gif)
 
 **rebuild_clause ::=**
 
-![rebuid_caluseimage42](D:\emmachoigit\manuals\media\SQL\rebuid_caluseimage42.gif)
+![rebuid_caluseimage42](media/SQL/rebuid_caluseimage42.gif)
 
 **index_attribute ::=**
 
-![image43_index_attribute](D:\emmachoigit\manuals\media\SQL\image43_index_attribute.gif)
+![image43_index_attribute](media/SQL/image43_index_attribute.gif)
 
 **alter_index_properties::=**
 
-![image44_alter_index](D:\emmachoigit\manuals\media\SQL\image44_alter_index.gif)
+![image44_alter_index](media/SQL/image44_alter_index.gif)
 
 **alter_index_segment_attribute_clause::=**
 
-![image45_alter_index_segment](D:\emmachoigit\manuals\media\SQL\image45_alter_index_segment.gif)
+![image45_alter_index_segment](media/SQL/image45_alter_index_segment.gif)
 
 **storage_clause::=**
 
-![storage_clause](D:\emmachoigit\manuals\media\SQL\storage_clause.gif)
+![storage_clause](media/SQL/storage_clause.gif)
 
 **allocate_extent_clause::=**
 
-![image47_allocate_extent_clause](D:\emmachoigit\manuals\media\SQL\image47_allocate_extent_clause.gif)
+![image47_allocate_extent_clause](media/SQL/image47_allocate_extent_clause.gif)
 
 #### 전제 조건
 
@@ -2745,7 +2745,7 @@ iSQL> ALTER INDEX idx1 REORGANIZATION;
 
 **execute_procedure_statement ::=**
 
-![execute_procedure_statement](D:\emmachoigit\manuals\media\SQL\execute_procedure_statement.gif)
+![execute_procedure_statement](media/SQL/execute_procedure_statement.gif)
 
 #### 전제 조건
 
