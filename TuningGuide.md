@@ -1,3 +1,46 @@
+
+
+- [Performance Tuning Guide](#performance-tuning-guide)
+  - [서문](#%EC%84%9C%EB%AC%B8)
+    - [이 매뉴얼에 대하여](#%EC%9D%B4-%EB%A7%A4%EB%89%B4%EC%96%BC%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC)
+  - [1.성능 튜닝 소개](#1%EC%84%B1%EB%8A%A5-%ED%8A%9C%EB%8B%9D-%EC%86%8C%EA%B0%9C)
+    - [성능 튜닝 개요](#%EC%84%B1%EB%8A%A5-%ED%8A%9C%EB%8B%9D-%EA%B0%9C%EC%9A%94)
+    - [데이터베이스 서버 튜닝](#%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%84%9C%EB%B2%84-%ED%8A%9C%EB%8B%9D)
+    - [SQL 튜닝](#sql-%ED%8A%9C%EB%8B%9D)
+  - [2.Altibase 서버 튜닝](#2altibase-%EC%84%9C%EB%B2%84-%ED%8A%9C%EB%8B%9D)
+    - [로그파일](#%EB%A1%9C%EA%B7%B8%ED%8C%8C%EC%9D%BC)
+    - [체크포인트](#%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8)
+    - [버퍼](#%EB%B2%84%ED%8D%BC)
+    - [서비스 쓰레드](#%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%93%B0%EB%A0%88%EB%93%9C)
+    - [가비지 콜렉터](#%EA%B0%80%EB%B9%84%EC%A7%80-%EC%BD%9C%EB%A0%89%ED%84%B0)
+    - [SQL Plan Cache](#sql-plan-cache)
+    - [CPU 사용률](#cpu-%EC%82%AC%EC%9A%A9%EB%A5%A0)
+  - [3.쿼리 옵티마이저](#3%EC%BF%BC%EB%A6%AC-%EC%98%B5%ED%8B%B0%EB%A7%88%EC%9D%B4%EC%A0%80)
+    - [쿼리 옵티마이저 개요](#%EC%BF%BC%EB%A6%AC-%EC%98%B5%ED%8B%B0%EB%A7%88%EC%9D%B4%EC%A0%80-%EA%B0%9C%EC%9A%94)
+    - [쿼리 변환](#%EC%BF%BC%EB%A6%AC-%EB%B3%80%ED%99%98)
+    - [논리적 실행 계획 생성](#%EB%85%BC%EB%A6%AC%EC%A0%81-%EC%8B%A4%ED%96%89-%EA%B3%84%ED%9A%8D-%EC%83%9D%EC%84%B1)
+    - [물리적 실행 계획 생성](#%EB%AC%BC%EB%A6%AC%EC%A0%81-%EC%8B%A4%ED%96%89-%EA%B3%84%ED%9A%8D-%EC%83%9D%EC%84%B1)
+    - [옵티마이저 관련 프로퍼티](#%EC%98%B5%ED%8B%B0%EB%A7%88%EC%9D%B4%EC%A0%80-%EA%B4%80%EB%A0%A8-%ED%94%84%EB%A1%9C%ED%8D%BC%ED%8B%B0)
+  - [4.EXPLAIN PLAN 사용하기](#4explain-plan-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)
+    - [EXPLAIN PLAN의 개요](#explain-plan%EC%9D%98-%EA%B0%9C%EC%9A%94)
+    - [Plan Tree 출력](#plan-tree-%EC%B6%9C%EB%A0%A5)
+    - [Plan Tree 읽기](#plan-tree-%EC%9D%BD%EA%B8%B0)
+    - [Plan Tree 활용](#plan-tree-%ED%99%9C%EC%9A%A9)
+    - [실행 노드](#%EC%8B%A4%ED%96%89-%EB%85%B8%EB%93%9C)
+  - [5.옵티마이저와 통계정보](#5%EC%98%B5%ED%8B%B0%EB%A7%88%EC%9D%B4%EC%A0%80%EC%99%80-%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4)
+    - [통계정보의 개요](#%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4%EC%9D%98-%EA%B0%9C%EC%9A%94)
+    - [통계정보 관리](#%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4-%EA%B4%80%EB%A6%AC)
+    - [자동 통계정보 수집(Auto Stats)](#%EC%9E%90%EB%8F%99-%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4-%EC%88%98%EC%A7%91auto-stats)
+  - [6.SQL 힌트](#6sql-%ED%9E%8C%ED%8A%B8)
+    - [힌트의 개요](#%ED%9E%8C%ED%8A%B8%EC%9D%98-%EA%B0%9C%EC%9A%94)
+    - [힌트의 종류](#%ED%9E%8C%ED%8A%B8%EC%9D%98-%EC%A2%85%EB%A5%98)
+  - [7.SQL Plan Cache](#7sql-plan-cache)
+    - [SQL Plan Cache의 개요](#sql-plan-cache%EC%9D%98-%EA%B0%9C%EC%9A%94)
+    - [SQL Plan Cache 관리](#sql-plan-cache-%EA%B4%80%EB%A6%AC)
+    - [Result Cache의 개요](#result-cache%EC%9D%98-%EA%B0%9C%EC%9A%94)
+
+
+
 Altibase® Administration
 
 Performance Tuning Guide
@@ -27,47 +70,6 @@ Copyright ⓒ 2001\~2019 Altibase Corp. All Rights Reserved.
 homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 
-
-목 차
------
-
-- [서문](#%EC%84%9C%EB%AC%B8)
-  - [이 매뉴얼에 대하여](#%EC%9D%B4-%EB%A7%A4%EB%89%B4%EC%96%BC%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC)
-- [1.성능 튜닝 소개](#1%EC%84%B1%EB%8A%A5-%ED%8A%9C%EB%8B%9D-%EC%86%8C%EA%B0%9C)
-  - [성능 튜닝 개요](#%EC%84%B1%EB%8A%A5-%ED%8A%9C%EB%8B%9D-%EA%B0%9C%EC%9A%94)
-  - [데이터베이스 서버 튜닝](#%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%84%9C%EB%B2%84-%ED%8A%9C%EB%8B%9D)
-  - [SQL 튜닝](#sql-%ED%8A%9C%EB%8B%9D)
-- [2.Altibase 서버 튜닝](#2altibase-%EC%84%9C%EB%B2%84-%ED%8A%9C%EB%8B%9D)
-  - [로그파일](#%EB%A1%9C%EA%B7%B8%ED%8C%8C%EC%9D%BC)
-  - [체크포인트](#%EC%B2%B4%ED%81%AC%ED%8F%AC%EC%9D%B8%ED%8A%B8)
-  - [버퍼](#%EB%B2%84%ED%8D%BC)
-  - [서비스 쓰레드](#%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%93%B0%EB%A0%88%EB%93%9C)
-  - [가비지 콜렉터](#%EA%B0%80%EB%B9%84%EC%A7%80-%EC%BD%9C%EB%A0%89%ED%84%B0)
-  - [SQL Plan Cache](#sql-plan-cache)
-  - [CPU 사용률](#cpu-%EC%82%AC%EC%9A%A9%EB%A5%A0)
-- [3.쿼리 옵티마이저](#3%EC%BF%BC%EB%A6%AC-%EC%98%B5%ED%8B%B0%EB%A7%88%EC%9D%B4%EC%A0%80)
-  - [쿼리 옵티마이저 개요](#%EC%BF%BC%EB%A6%AC-%EC%98%B5%ED%8B%B0%EB%A7%88%EC%9D%B4%EC%A0%80-%EA%B0%9C%EC%9A%94)
-  - [쿼리 변환](#%EC%BF%BC%EB%A6%AC-%EB%B3%80%ED%99%98)
-  - [논리적 실행 계획 생성](#%EB%85%BC%EB%A6%AC%EC%A0%81-%EC%8B%A4%ED%96%89-%EA%B3%84%ED%9A%8D-%EC%83%9D%EC%84%B1)
-  - [물리적 실행 계획 생성](#%EB%AC%BC%EB%A6%AC%EC%A0%81-%EC%8B%A4%ED%96%89-%EA%B3%84%ED%9A%8D-%EC%83%9D%EC%84%B1)
-  - [옵티마이저 관련 프로퍼티](#%EC%98%B5%ED%8B%B0%EB%A7%88%EC%9D%B4%EC%A0%80-%EA%B4%80%EB%A0%A8-%ED%94%84%EB%A1%9C%ED%8D%BC%ED%8B%B0)
-- [4.EXPLAIN PLAN 사용하기](#4explain-plan-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)
-  - [EXPLAIN PLAN의 개요](#explain-plan%EC%9D%98-%EA%B0%9C%EC%9A%94)
-  - [Plan Tree 출력](#plan-tree-%EC%B6%9C%EB%A0%A5)
-  - [Plan Tree 읽기](#plan-tree-%EC%9D%BD%EA%B8%B0)
-  - [Plan Tree 활용](#plan-tree-%ED%99%9C%EC%9A%A9)
-  - [실행 노드](#%EC%8B%A4%ED%96%89-%EB%85%B8%EB%93%9C)
-- [5.옵티마이저와 통계정보](#5%EC%98%B5%ED%8B%B0%EB%A7%88%EC%9D%B4%EC%A0%80%EC%99%80-%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4)
-  - [통계정보의 개요](#%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4%EC%9D%98-%EA%B0%9C%EC%9A%94)
-  - [통계정보 관리](#%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4-%EA%B4%80%EB%A6%AC)
-  - [자동 통계정보 수집(Auto Stats)](#%EC%9E%90%EB%8F%99-%ED%86%B5%EA%B3%84%EC%A0%95%EB%B3%B4-%EC%88%98%EC%A7%91auto-stats)
-- [6.SQL 힌트](#6sql-%ED%9E%8C%ED%8A%B8)
-  - [힌트의 개요](#%ED%9E%8C%ED%8A%B8%EC%9D%98-%EA%B0%9C%EC%9A%94)
-  - [힌트의 종류](#%ED%9E%8C%ED%8A%B8%EC%9D%98-%EC%A2%85%EB%A5%98)
-- [7.SQL Plan Cache](#7sql-plan-cache)
-  - [SQL Plan Cache의 개요](#sql-plan-cache%EC%9D%98-%EA%B0%9C%EC%9A%94)
-  - [SQL Plan Cache 관리](#sql-plan-cache-%EA%B4%80%EB%A6%AC)
-  - [Result Cache의 개요](#result-cache%EC%9D%98-%EA%B0%9C%EC%9A%94)
 
 
 
