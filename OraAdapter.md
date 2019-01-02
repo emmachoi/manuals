@@ -1243,18 +1243,10 @@ oraAdapter를 사용할 때 이중화를 수행중인 DDL은 아래의 순서대
 <table>
 <thead>
 <tr>
-<td>
-<p>No</p>
-</td>
-<td>
-<p>Active Server</p>
-</td>
-<td>
-<p>jdbcAdapter</p>
-</td>
-<td>
-<p>Standby Server</p>
-</td>
+<th>No</th>
+<th>Active Server</th>
+<th>jdbcAdapter</th>
+<th>Standby Server</th>
 </tr>
 </thead>
 <tbody>
