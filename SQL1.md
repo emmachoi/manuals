@@ -2288,7 +2288,7 @@ ALTER DATABASE구문은 Altibase 다단계 구동에서 서비스 전 단계에�
 
 이 절은 Altibase 구동 단계를 명시하는데 사용된다.
 
-**CONTROL**
+*CONTROL*
 
 데이터베이스 구동 단계를 CONTROL 단계로 변경한다. 이 단계에서 데이터베이스
 미디어 복구가 가능하다. 또한, 테이블스페이스를 Discard할 수 있는 단계이다.
@@ -2300,7 +2300,7 @@ CONTROL 다음 단계인 META단계로 가기 위해서는 다음 구문을 수�
 ALTER DATABASE dababase_name META;
 ```
 
-**META**
+*META*
 
 데이터베이스 구동 단계를 META 단계로 변경한다. 전 단계인 CONTROL단계에서 이
 단계로 오는 중에 데이터베이스 메타 데이터가 로딩된다. 다음 단계로 가기 위해서는
@@ -2310,21 +2310,23 @@ ALTER DATABASE dababase_name META;
 ALTER DATABASE dababase_name SERVICE;
 ```
 
-SERVICE
+*SERVICE*
 
 데이터베이스 구동 단계를 SERVICE 단계로 변경한다. 이 단계로 오면서 메모리 DB와
 디스크 DB가 로딩된다. 이 단계에서 이중화 또는 SNMP 등의 확장 서비스가 모두
 구동될 수 있다. 데이터베이스가 이 단계로 성공적으로 구동되었다면, 필요한 복구가
 완료되어 시스템이 정상적으로 서비스를 제공하는 상태임을 의미한다.
 
-UPGRADE
+*UPGRADE*
 
 이 옵션은 데이터베이스 구동 단계를 META UPGRADE 단계로 변경한다. 데이터베이스가
 이 단계로 구동될 때, 모든 복구 작업이 완료된다.
 
 다음 단계로 가기 위해서는 다음 구문을 수행해야 한다:
 
-ALTER DATABASE *dababase_name* SERVICE;
+```
+ALTER DATABASE dababase_name SERVICE;
+```
 
 RESETLOGS
 
@@ -2334,56 +2336,56 @@ CONTROL 단계에서 불완전 복구를 수행한 후, 서버를 정상 구동�
 
 다음 단계로 가기 위해서는 다음 구문을 수행해야 한다:
 
-ALTER DATABASE *dababase_name* SERVICE;
+```
+ALTER DATABASE dababase_name SERVICE;
+```
 
-META RESETUNDO
+*META RESETUNDO*
 
 이 옵션을 사용하면, SYS_TBS_DISK_UNDO 테이블스페이스가 초기화된다. 그러나
 테이블스페이스 파일의 크기는 변경되지 않는다. 이 구문 실행 전에, 데이터베이스의
 무결성을 검사하고 디스크 가비지 콜레션이 수행된 것을 확인하고, 서버를 정상
 종료해야 한다.
 
-SHUTDOWN NORMAL
+*SHUTDOWN NORMAL*
 
 서버에 접속한 모든 클라이언트의 연결이 정상적으로 해제될 때까지 대기한 후 서버를
 정상 종료한다.
 
-SHUTDOWN IMMEDIATE
+*SHUTDOWN IMMEDIATE*
 
 서버에 접속된 모든 클라이언트의 연결을 강제로 해제한 후, 서버를 정상 종료한다.
 
-SHUTDOWN EXIT
+*SHUTDOWN EXIT*
 
 이 옵션은 Altibase 서버를 강제로 종료하는데 사용된다. 이 방법으로 Altibase가
 종료되면, 데이터베이스의 내용이 올바르지 않게 되어 다음 서버 구동시에 복구
 작업이 수행될 것이다.
 
-RENAME DATAFILE
+*RENAME DATAFILE*
 
 이 구문은 디스크 데이터파일 위치를 이동시켜야 할 때 사용하는 기능으로,
 데이터베이스에 속한 데이터 파일을 새로운 이름으로 변경하거나 다른 디렉터리에
 둔다. TO ‘*datafile_path*’에 명시된 데이터 파일은 존재해야 한다. 이 절은 CONTROL
-단계에서만 실행 가능하다.
-
-*datafile_path*는 절대 경로여야 한다.
+단계에서만 실행 가능하다. *datafile_path*는 절대 경로여야 한다.
 
 참고로, 메모리 테이블스페이스의 체크포인트 이미지파일을 이동하기 위해서는 ALTER
 TABLESPACE 구문이 사용된다.
 
-CREATE DATAFILE
+*CREATE DATAFILE*
 
 이 구문은 디스크 데이터 파일이 유실되었을 때, 로그 앵커의 정보를 참고하여 데이터
 파일을 생성하기 위해 사용된다. 이 구문을 실행한 후에는 매체 완전 복구를 수행하여
 데이터 파일을 복구하도록 한다.
 
-이 구문은 CONTROL 단계에서만 실행 가능하다.
+이 구문은 CONTROL 단계에서만 실행 가능하다. 
 
 데이터 파일이 생성될 *datafile_path*는 절대 경로이어야 한다.
 
 참고로 메모리 테이블스페이스의 체크포인트 이미지파일을 생성하려면 ALTER
 TABLESPACE 구문을 사용한다.
 
-CREATE CHECKPOINT IMAGE
+*CREATE CHECKPOINT IMAGE*
 
 이 구문은 메모리 체크포인트 이미지파일이 유실되었을 때, 로그 앵커의 정보를
 참고하여 체크포인트 이미지 파일을 생성하기 위해 사용된다. 이 구문을 실행한
@@ -2397,9 +2399,11 @@ CREATE CHECKPOINT IMAGE
 
 \<질의\> ‘MEM-TBS-1’ 이름의 체크포인트 이미지파일을 다시 생성한다.
 
+```
 iSQL\> ALTER DATABASE CREATE CHECKPOINT IMAGE 'MEM-TBS-1';
+```
 
-SESSION CLOSE
+*SESSION CLOSE*
 
 이 구문은 세션을 강제로 종료시킨다. 세션ID(number) 및 사용자 이름을 지정하여
 해당 세션을 종료할 수 있으며, ALL구문으로 모든 세션을 한 번에 종료할 수도 있다.
@@ -2407,68 +2411,69 @@ SESSION CLOSE
 현재 접속한 사용자의 세션은 종료되지 않는다. 이 구문이 실행되면 해당 세션의
 트랜잭션은 롤백된다.
 
-Note: 세션이 락을 잡기 위해 대기중이라면 즉시 종료되지 않는다.
+> Note: 세션이 락을 잡기 위해 대기중이라면 즉시 종료되지 않는다.
+>
 
-archivelog_option
+*archivelog_option*
 
 CONTROL 단계에서 아카이브로그 모드와 노아카이브로그 모드를 전환하는데 사용된다.
 
-BACKUP LOGANCHOR
+*BACKUP LOGANCHOR*
 
 데이터베이스가 아카이브로그 모드로 운영중일때, 이 구문은 서비스를 중지하지 않은
 상태에서 로그 앵커를 온라인 백업하는데 사용된다.
 
-BACKUP TABLESPACE
+*BACKUP TABLESPACE*
 
 데이터베이스가 아카이브로그 모드로 운영중일때, 이 구문은 서비스를 중지하지 않은
 상태에서 지정된 테이블스페이스를 백업 디렉토리에 백업하는데 사용된다.
 
-BACKUP DATABASE
+*BACKUP DATABASE*
 
 데이터베이스가 아카이브로그 모드로 운영중일때, 이 구문은 서비스를 중지하지 않은
 상태에서 모든 메모리 테이블스페이스, 디스크 테이블스페이스, 및 로그앵커를
 백업하는데 사용된다.
 
-incremental_backup_clause
+*incremental_backup_clause*
 
 데이터베이스 전체 또는 특정 테이블스페이스들을 증분 백업한다.
 
-incremental_level_clause
+*incremental_level_clause*
 
 증분 백업 레벨을 지정한다.
 
-WITH TAG *tag_name*
+*WITH TAG tag_name*
 
 백업에 태그 이름을 지정한다.
 
-RECOVER DATABASE
+*RECOVER DATABASE*
 
 이 구문은 매체 완전복구를 수행한다. 아카이브 로그 디렉토리의 로그 파일을
 판독하여 매체 오류가 발생한 데이터 파일들을 현재 시점으로 복구한다.
 
-FROM TAG *tag_name*
+*FROM TAG tag_name*
 
 태그 이름이 *tag_name*인 백업으로부터 데이터베이스를 복원 또는 복구할 것을
 지정한다.
 
-RECOVER DATABASE UNTIL TIME
+*RECOVER DATABASE UNTIL TIME*
 
 이 구문은 특정 시점으로 매체 불완전 복구를 수행하는데 사용된다. 아카이브 로그
 디렉토리의 로그 파일을 판독하여 매체 오류가 발생한 데이터 파일들을 특정 시점으로
 복구한다.
 
-RECOVER DATABASE UNTIL CANCEL
+*RECOVER DATABASE UNTIL CANCEL*
 
 이 구문은 아카이브 로그 파일들 중 유효한 가장 최근 시점으로 매체 불완전 복구를
 수행하는데 사용된다. 아카이브 로그 디렉토리의 로그 파일을 판독하여 매체 오류가
 발생한 데이터 파일들을 유효한 시점까지 복구한다.
 
-restore_database_clause
+*restore_database_clause*
 
 데이터베이스에 대한 매체 완전복원을 수행하거나 또는 특정 태그 이름이나 특정
 시점으로 불완전 복원을 수행한다.
 
-restore_tablespace_clause
+*restore_tablespace_clause*
 
 테이블스페이스를 완전 복원한다.
 
