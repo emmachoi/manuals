@@ -2809,43 +2809,46 @@ Alter success.
 
 \<질의\> job1이 실행되는 시작 시간을 ‘2013년 1월 1일’로 변경하라.
 
-iSQL\> ALTER JOB job1 SET START to_date('20130101','YYYYMMDD');
-
+```
+iSQL> ALTER JOB job1 SET START to_date('20130101','YYYYMMDD');
 Alter success.
+```
 
 \<질의\> job2에서 실행할 프로시저를 usr1의 proc1 프로시저로 변경하라.
 
-iSQL\> alter job job2 set exec usr1.proc1;
-
+```
+iSQL> alter job job2 set exec usr1.proc1;
 Alter success.
+```
 
 \<질의\> job2의 시작 시간을 '2013/06/03 10:00:00'으로 변경하라.
 
-iSQL\> alter job job2 set start to_date('2013/06/03 10:00:00',
-
-'YYYY/MM/DD HH24:MI:SS');
-
+```
+iSQL> alter job job2 set start to_date('2013/06/03 10:00:00','YYYY/MM/DD HH24:MI:SS');
 Alter success.
+```
 
 \<질의\> job2의 끝나는 시간을 ‘2013/06/07 10:00:00’으로 변경하라.
 
-iSQL\> alter job job2 set end to_date('2013/06/07 10:00:00', 'YYYY/
-
-MM/DD HH24:MI:SS');
-
+```
+iSQL> alter job job2 set end to_date('2013/06/07 10:00:00', 'YYYY/MM/DD HH24:MI:SS');
 Alter success.
+```
 
 \<질의\> job2의 실행 주기를 10분 간격으로 변경하라.
 
-iSQL\> alter job job2 set interval 10 minute;
-
+```
+iSQL> alter job job2 set interval 10 minute;
 Alter success.
+```
+
+
 
 ### ALTER QUEUE 
 
 #### 구문
 
-alter_queue ::=
+**alter_queue ::=**
 
 ![](media/SQL/eca0685373cfb5b742ff68bd70cbe8f3.png)
 
@@ -2853,7 +2856,7 @@ alter_queue ::=
 
 큐의 정의를 변경한다.
 
-COMPACT
+*COMPACT*
 
 큐가 위치하는 테이블스페이스에 데이터가 없는 빈 페이지들을 반환한다. 이 때,
 데이터가 실제로 옮겨지지는 않는다.
@@ -2862,15 +2865,15 @@ COMPACT
 
 #### 구문
 
-alter_replication ::=
+**alter_replication ::=**
 
-[alter_replication_dcl ::=](#alter_replication_dcl)
+**[alter_replication_dcl ::=](#alter_replication_dcl)**
 
-replication_item ::=
+**replication_item ::=**
 
-alter_replication_set_clause ::=
+**alter_replication_set_clause ::=**
 
-offline_clause ::=
+**offline_clause ::=**
 
 #### 전제 조건
 
