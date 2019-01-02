@@ -1,3 +1,44 @@
+- [Getting Started Guide](#getting-started-guide)
+  - [서문](#%EC%84%9C%EB%AC%B8)
+    - [이 매뉴얼에 대하여](#%EC%9D%B4-%EB%A7%A4%EB%89%B4%EC%96%BC%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC)
+  - [1.Altibase 설치](#1altibase-%EC%84%A4%EC%B9%98)
+    - [설치 과정](#%EC%84%A4%EC%B9%98-%EA%B3%BC%EC%A0%95)
+    - [고려 사항](#%EA%B3%A0%EB%A0%A4-%EC%82%AC%ED%95%AD)
+  - [2.Altibase 실행과 종료](#2altibase-%EC%8B%A4%ED%96%89%EA%B3%BC-%EC%A2%85%EB%A3%8C)
+    - [Altibase의 실행](#altibase%EC%9D%98-%EC%8B%A4%ED%96%89)
+    - [Altibase의 종료](#altibase%EC%9D%98-%EC%A2%85%EB%A3%8C)
+  - [3.Altibase로 작업하기](#3altibase%EB%A1%9C-%EC%9E%91%EC%97%85%ED%95%98%EA%B8%B0)
+    - [지원되는 SQL문](#%EC%A7%80%EC%9B%90%EB%90%98%EB%8A%94-sql%EB%AC%B8)
+    - [SQL문 실행 방법](#sql%EB%AC%B8-%EC%8B%A4%ED%96%89-%EB%B0%A9%EB%B2%95)
+    - [샘플 스키마](#%EC%83%98%ED%94%8C-%EC%8A%A4%ED%82%A4%EB%A7%88)
+  - [4.데이터베이스 객체 및 권한 관리](#4%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EA%B0%9D%EC%B2%B4-%EB%B0%8F-%EA%B6%8C%ED%95%9C-%EA%B4%80%EB%A6%AC)
+    - [데이터베이스 객체 개요](#%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EA%B0%9D%EC%B2%B4-%EA%B0%9C%EC%9A%94)
+    - [권한 관리 개요](#%EA%B6%8C%ED%95%9C-%EA%B4%80%EB%A6%AC-%EA%B0%9C%EC%9A%94)
+  - [5.다국어 지원](#5%EB%8B%A4%EA%B5%AD%EC%96%B4-%EC%A7%80%EC%9B%90)
+    - [다국어 지원 개요](#%EB%8B%A4%EA%B5%AD%EC%96%B4-%EC%A7%80%EC%9B%90-%EA%B0%9C%EC%9A%94)
+    - [다국어 지원을 위한 캐릭터셋 분류](#%EB%8B%A4%EA%B5%AD%EC%96%B4-%EC%A7%80%EC%9B%90%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%BA%90%EB%A6%AD%ED%84%B0%EC%85%8B-%EB%B6%84%EB%A5%98)
+    - [유니코드를 이용한 다국어 지원](#%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EB%8B%A4%EA%B5%AD%EC%96%B4-%EC%A7%80%EC%9B%90)
+    - [다국어 데이터베이스를 위한 환경 설정](#%EB%8B%A4%EA%B5%AD%EC%96%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4%EB%A5%BC-%EC%9C%84%ED%95%9C-%ED%99%98%EA%B2%BD-%EC%84%A4%EC%A0%95)
+    - [데이터베이스 캐릭터셋 선택시 고려사항](#%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%BA%90%EB%A6%AD%ED%84%B0%EC%85%8B-%EC%84%A0%ED%83%9D%EC%8B%9C-%EA%B3%A0%EB%A0%A4%EC%82%AC%ED%95%AD)
+  - [6.데이터베이스 이중화](#6%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%9D%B4%EC%A4%91%ED%99%94)
+    - [이중화 정의](#%EC%9D%B4%EC%A4%91%ED%99%94-%EC%A0%95%EC%9D%98)
+    - [이중화 방법](#%EC%9D%B4%EC%A4%91%ED%99%94-%EB%B0%A9%EB%B2%95)
+    - [이중화 기능의 사용 방법](#%EC%9D%B4%EC%A4%91%ED%99%94-%EA%B8%B0%EB%8A%A5%EC%9D%98-%EC%82%AC%EC%9A%A9-%EB%B0%A9%EB%B2%95)
+    - [DDL 수행 시 주의사항](#ddl-%EC%88%98%ED%96%89-%EC%8B%9C-%EC%A3%BC%EC%9D%98%EC%82%AC%ED%95%AD)
+  - [7.Fail-Over](#7fail-over)
+    - [Fail-Over의 개요](#fail-over%EC%9D%98-%EA%B0%9C%EC%9A%94)
+    - [Fail Over 사용 방법](#fail-over-%EC%82%AC%EC%9A%A9-%EB%B0%A9%EB%B2%95)
+  - [8.백업 및 복구](#8%EB%B0%B1%EC%97%85-%EB%B0%8F-%EB%B3%B5%EA%B5%AC)
+    - [백업 정책](#%EB%B0%B1%EC%97%85-%EC%A0%95%EC%B1%85)
+    - [복구 정책](#%EB%B3%B5%EA%B5%AC-%EC%A0%95%EC%B1%85)
+  - [9.응용프로그램 작성](#9%EC%9D%91%EC%9A%A9%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8-%EC%9E%91%EC%84%B1)
+    - [응용 프로그램 작성 방법](#%EC%9D%91%EC%9A%A9-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8-%EC%9E%91%EC%84%B1-%EB%B0%A9%EB%B2%95)
+    - [Altibase CLI를 활용한 프로그램](#altibase-cli%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8)
+    - [JDBC를 활용한 프로그램](#jdbc%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8)
+    - [C/C++ Precompiler를 활용한 프로그램](#cc-precompiler%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8)
+
+
+
 Altibase® Administration
 
 Getting Started Guide
@@ -2136,7 +2177,7 @@ jdbc:Altibase://hostname:portnum/databasename
      ```
 
 
- 
+
 
 #### CLASSPATH
 
