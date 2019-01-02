@@ -2477,16 +2477,16 @@ CONTROL 단계에서 아카이브로그 모드와 노아카이브로그 모드�
 
 테이블스페이스를 완전 복원한다.
 
-change_backup_directory_clause
+*change_backup_directory_clause*
 
 증분 백업 수행으로 생성되는 백업 파일들의 위치를 지정한다.
 
-move_backup_clause [WITH CONTENTS]
+*move_backup_clause [WITH CONTENTS]*
 
 증분 백업 디렉토리를 변경한다. WITH CONTENTS 옵션을 지정하면 기존 백업 파일이
 새로운 디렉토리로 이동한다.
 
-delete_backup_clause
+*delete_backup_clause*
 
 유효 기간이 지난 증분 백업 파일을 삭제한다.
 
@@ -2494,7 +2494,7 @@ change_tracking_clause
 
 증분 백업을 위한 페이지 변경 추적 기능의 활성화 또는 비활성화를 지정한다.
 
-snapshot_clauses
+*snapshot_clauses*
 
 BEGIN SNAPSHOT을 할 때의 시점을 기준 SNAPSHOT SCN으로 설정하고, 설정된 SCN을
 기준으로 iLoader를 사용하여 데이터를 EXPORT한다.
@@ -2503,33 +2503,49 @@ BEGIN SNAPSHOT을 할 때의 시점을 기준 SNAPSHOT SCN으로 설정하고, �
 
 \<질의\> 데이터베이스 mydb를 구동하여 정상 서비스를 제공하도록 한다.
 
-iSQL\> ALTER DATABASE mydb SERVICE;
+```
+iSQL> ALTER DATABASE mydb SERVICE;
+```
 
 \<질의\> 아카이브로그 모드로 데이터베이스를 전환한다.
 
-iSQL\> ALTER DATABASE ARCHIVELOG;
+```
+iSQL> ALTER DATABASE ARCHIVELOG;
+```
 
 \<질의\> 불완전 복구 수행 후 데이터베이스를 정상 구동한다.
 
-iSQL\> ALTER DATABASE mydb META RESETLOGS;
+```
+iSQL> ALTER DATABASE mydb META RESETLOGS;
+```
 
 \<질의\> SYS_TBS_DISK_UNDO 테이블스페이스를 초기화한다.
 
-iSQL\> ALTER DATABASE mydb META RESETUNDO;
+```
+iSQL> ALTER DATABASE mydb META RESETUNDO;
+```
 
 \<질의\> SYS_TBS_DISK_DATA 테이블스페이스를 /altibase_backup디렉터리에 백업한다.
 
-iSQL\> ALTER DATABASE TABLESPACE SYS_TBS_DISK_DATA TO ‘/altibase_backup/’;
+```
+iSQL> ALTER DATABASE TABLESPACE SYS_TBS_DISK_DATA TO ‘/altibase_backup/’;
+```
 
 \<질의\> 이전 백업으로부터 2008년 2월 16일 오후 12시 시점으로 데이터베이스를
 복원한다.
 
-iSQL\> ALTER DATABASE RECOVER DATABASE UNTIL TIME ‘2008-02-16:12:00:00’;
+```
+iSQL> ALTER DATABASE RECOVER DATABASE UNTIL TIME ‘2008-02-16:12:00:00’;
+```
 
 \<질의\> 이전 백업으로부터 유실된 로그파일 20001번 이전인 로그파일 20000번까지의
 변경이 반영되도록 데이터베이스를 복원한다.
 
-iSQL\> ALTER DATABASE RECOVER DATABASE UNTIL CANCEL;
+```
+iSQL> ALTER DATABASE RECOVER DATABASE UNTIL CANCEL;
+```
+
+
 
 ### ALTER DATABASE LINKER 
 
@@ -2539,30 +2555,39 @@ iSQL\> ALTER DATABASE RECOVER DATABASE UNTIL CANCEL;
 
 #### 구문
 
-alter_index ::=
+**alter_index ::=**
 
 ![](media/SQL/01f546cab50943e8bcf3f443282d41fa.png)
 
-[directkey_mode_clause::=](#DirectkeyModClause)*,* [rebuild_clause
-::=](#rebuild_clause), [alter_index_properties ::=](#alter_index_properties)
 
-directkey_mod_clause ::=
 
-rebuild_clause ::=
+**directkey_mod_clause ::=**
 
-index_attribute ::=
+![directkey_mod_clause](D:\emmachoigit\manuals\media\SQL\directkey_mod_clause.gif)
 
-alter_index_properties::=
+**rebuild_clause ::=**
 
-[alter_index_segment_attribute_clause
-::=](#alter_index_segment_attribute_clause), [allocate_extent_clause
-::=](#allocate_extent_clause)
+![rebuid_caluseimage42](D:\emmachoigit\manuals\media\SQL\rebuid_caluseimage42.gif)
 
-alter_index_segment_attribute_clause::=
+**index_attribute ::=**
 
-storage_clause::=
+![image43_index_attribute](D:\emmachoigit\manuals\media\SQL\image43_index_attribute.gif)
 
-allocate_extent_clause::=
+**alter_index_properties::=**
+
+![image44_alter_index](D:\emmachoigit\manuals\media\SQL\image44_alter_index.gif)
+
+**alter_index_segment_attribute_clause::=**
+
+![image45_alter_index_segment](D:\emmachoigit\manuals\media\SQL\image45_alter_index_segment.gif)
+
+**storage_clause::=**
+
+![storage_clause](D:\emmachoigit\manuals\media\SQL\storage_clause.gif)
+
+**allocate_extent_clause::=**
+
+![image47_allocate_extent_clause](D:\emmachoigit\manuals\media\SQL\image47_allocate_extent_clause.gif)
 
 #### 전제 조건
 
@@ -2573,45 +2598,44 @@ SYS 사용자, 인덱스가 속한 스키마의 소유자 또는 ALTER ANY INDEX
 
 기존 인덱스 정의를 변경하거나 재구축한다.
 
-user_name
+*user_name*
 
 변경될 인덱스의 소유자 이름을 명시한다.
 
 생략하면 Altibase는 현재 세션에 연결된 사용자의 스키마에 속한 것으로 간주한다.
 
-index_name
+*index_name*
 
 변경될 인덱스의 이름을 명시한다.
 
 directkey_mod_clause
 
 이 절은 인덱스가 Direct Key인덱스를 사용할 것인지 여부를 명시할 때 사용된다.
-Direct Key 인덱스에 대한 자세한 내용은 [CREATE INDEX](#create-index) 구문을
-참고한다
+Direct Key 인덱스에 대한 자세한 내용은 [CREATE INDEX](#create-index) 구문을 참고한다
 
 - MAXSIZE integer  
   Direct Key 인덱스의 최대 크기를 설정할 수 있다.
 - OFF  
   Direct Key 인덱스를 일반 인덱스로 변경한다.
 
-rebuild_clause
+*rebuild_clause*
 
 존재하는 인덱스 또는 인덱스의 한 파티션을 재구축한다.
 
-index_attribute
+*index_attribute*
 
 재구축된 인덱스 파티션이 저장될 테이블스페이스를 명시한다.
 
-RENAME
+*RENAME*
 
 변경될 인덱스의 이름을 명시한다.
 
-AGING
+*AGING*
 
 이는 인덱스 페이지에 트랜잭션 커밋 SCN을 기록하고, 구 버전(old version)의
 노드들을 삭제하는데 사용된다. 이 구문은 디스크 기반 인덱스에만 사용 가능하다.
 
-REORGANIZATION
+*REORGANIZATION*
 
 메모리 B-tree 인덱스의 리프 노드를 이웃 노드와 통합하여 인덱스 공간을
 재구성한다.
@@ -2619,14 +2643,14 @@ REORGANIZATION
 데이터에 비해 인덱스 범위가 크거나 특정 인덱스에 단편화 현상이 있을 경우에
 사용하면 공간 효율성이 향상된다. 메모리 기반 B트리 인덱스만 사용 가능하다.
 
-alter_index_segment_attribute_clause
+*alter_index_segment_attribute_clause*
 
 - INITRANS 절  
   초기 TTS(Touched Transaction Slot)의 개수를 변경한다.
 - MAXTRANS 절  
   최대 TTS(Touched Transaction Slot)의 개수를 변경한다.
 
-storage_clause
+*storage_clause*
 
 사용자가 세그먼트내의 익스텐트 관리 파라미터를 지정할 수 있는 구문이다.
 
@@ -2639,7 +2663,7 @@ storage_clause
 - MAXEXTENTS 절  
   한 세그먼트의 최대 익스텐트 개수를 지정한다.
 
-allocate_extent_clause
+*allocate_extent_clause*
 
 이는 인덱스 세그먼트에 명시적으로 익스텐트를 할당하는데 사용된다. 인덱스
 세그먼트에 추가될 익스텐트의 총 크기를 지정해야 한다. 디스크 테이블스페이스가
@@ -2652,50 +2676,76 @@ allocate_extent_clause
 
 \<질의\> 인덱스 idx1을 Direct Key 인덱스로 변경하라.
 
-iSQL\> ALTER INDEX idx1 DIRECTKEY;
+```
+iSQL> ALTER INDEX idx1 DIRECTKEY;
+```
 
 \<질의\> Direct Key 인덱스 idx1을 일반 인덱스로 변경하라.
 
-iSQL\> ALTER INDEX idx1 DIRECTKEY OFF;
+```
+iSQL> ALTER INDEX idx1 DIRECTKEY OFF;
+```
 
 \<질의\> 인덱스 idx3을 Direct Key 인덱스로 변경할 때 MAXSIZE를 10으로 설정한다.
 
-iSQL\> ALTER INDEX idx3 DIRECTKEY MAXSIZE 10;
+```
+iSQL> ALTER INDEX idx3 DIRECTKEY MAXSIZE 10;
+```
+
+
 
 ##### 인덱스 파티션 재구축
 
 \<질의\> 인덱스 파티션 idx_p5를 테이블스페이스 tbs1에 구축하라.
 
-iSQL\> ALTER INDEX IDX1 REBUILD PARTITION idx_p5 TABLESPACE tbs1;
+```
+iSQL> ALTER INDEX IDX1 REBUILD PARTITION idx_p5 TABLESPACE tbs1;
+```
+
+
 
 ##### 인덱스 이름 변경
 
 \<질의\> 인덱스 emp_idx1의 이름을 emp_idx2로 변경하라.
 
-iSQL\> ALTER INDEX emp_idx1 RENAME TO emp_idx2;
+```
+iSQL> ALTER INDEX emp_idx1 RENAME TO emp_idx2;
+```
+
+
 
 ##### 인덱스에 익스텐트 할당
 
 \<질의\> 디스크 테이블스페이스에 위치하는 인덱스 local_idx 에 10M만큼의
 익스텐트를 할당한다.
 
-iSQL\> ALTER INDEX felt_idx ALLOCATE EXTENT ( SIZE 10M );
+```
+iSQL> ALTER INDEX felt_idx ALLOCATE EXTENT ( SIZE 10M );
+```
+
+
 
 ##### 인덱스 Reorganization 수행
 
 \<질의\> 인덱스 idx1의 reorganization을 수행하라
 
-iSQL\> ALTER INDEX idx1 REORGANIZATION;
+```
+iSQL> ALTER INDEX idx1 REORGANIZATION;
+```
+
+
 
 ### ALTER JOB 
 
 #### 구문
 
-alter_job ::=
+**alter_job ::=**
 
 ![](media/SQL/324c973656a57966cf2121f7e86e46f5.png)
 
-execute_procedure_statement ::=
+**execute_procedure_statement ::=**
+
+![execute_procedure_statement](D:\emmachoigit\manuals\media\SQL\execute_procedure_statement.gif)
 
 #### 전제 조건
 
@@ -2708,36 +2758,36 @@ CREATE JOB 구문으로 생성한 JOB의 정의를 변경할 수 있다. 이 구
 프로시저의 실행 구문, JOB의 시작 시간과 끝나는 시간, JOB의 실행 주기 등을 변경할
 수 있다.
 
-job_name
+*job_name*
 
 변경할 JOB의 이름을 명시한다.
 
-START
+*START*
 
 JOB이 처음 시작할 시간을 명시한다.
 
-END
+*END*
 
 JOB이 끝날 시간을 명시한다.
 
-expr1
+*expr1*
 
 DATE 타입의 값 또는 수식만 올 수 있다.
 
-INTERVAL number
+*INTERVAL number*
 
 JOB이 처음 실행된 이후에 다음에 실행하는 주기를 명시한다. 시간 단위는 number
 다음에 명시되는 YEAR, MONTH, DAY, HOUR, MINUTE에 따라 결정된다.
 
-expr2
+*expr2*
 
 명시한 프로시저를 실행하기 위한 입력 인자 값을 상수 또는 수식으로 지정한다.
 
-ENABLE/DISABLE
+*ENABLE/DISABLE*
 
 각각의 JOB을 작업 스케줄러에서 실행하거나 하지 않도록 변경할 수 있다.
 
-COMMENT
+*COMMENT*
 
 사용자가 JOB에 대한 설명을 변경할 수 있다.
 
@@ -2745,15 +2795,17 @@ COMMENT
 
 \<질의\> job2를 활성화 상태로 변경하라.
 
-iSQL\> ALTER JOB job2 SET ENABLE;
-
+```
+iSQL> ALTER JOB job2 SET ENABLE;
 Alter success.
+```
 
 \<질의\> job2를 비활성화 상태로 변경하라.
 
-iSQL\> ALTER JOB job2 SET DISABLE;
-
+```
+iSQL> ALTER JOB job2 SET DISABLE;
 Alter success.
+```
 
 \<질의\> job1이 실행되는 시작 시간을 ‘2013년 1월 1일’로 변경하라.
 
