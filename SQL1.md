@@ -2867,13 +2867,21 @@ Alter success.
 
 **alter_replication ::=**
 
-**[alter_replication_dcl ::=](#alter_replication_dcl)**
+![image49_alter_replication](media/SQL/image49_alter_replication.gif)
+
+
 
 **replication_item ::=**
 
+![replication_item](media/SQL/replication_item.gif)
+
 **alter_replication_set_clause ::=**
 
+![alter_replication_set_clause](media/SQL/alter_replication_set_clause.gif)
+
 **offline_clause ::=**
+
+![offline_clause](media/SQL/offline_clause.gif)
 
 #### 전제 조건
 
@@ -2882,32 +2890,31 @@ SYS 사용자만이 이중화 동작을 변경할 수 있다.
 #### 설명
 
 CREATE REPLICATION 구문으로 이중화 생성 후 이중화의 동작을 정의하는 구문이다.
-이중화 종료 등의 제어문에 대한 설명은 [alter_replication_dcl
-::=](#alter_replication_dcl) 구문을 참조한다.
+이중화 종료 등의 제어문에 대한 설명은 '데이터 제어어> alter_replication_dcl' 문을 참조한다.
 
 이중화에 관한 자세한 내용은 *Replication Manual* 을 참고한다.
 
-replication_name
+*replication_name*
 
 이중화 객체의 이름을 명시한다.
 
-SYNC
+*SYNC*
 
 지역 서버에 있는 이중화 대상 테이블들의 모든 데이터를 원격 서버의 해당 테이블로
 전송한 후 이중화가 시작된다.
 
-SYNC ONLY
+*SYNC ONLY*
 
 지역 서버에 있는 이중화 대상 테이블들의 모든 데이터를 원격 서버의 해당 테이블로
 전송한다. 이중화 송신 쓰레드는 생성되지 않는다.
 
-PARALLEL parallel_factor
+*PARALLEL parallel_factor*
 
 *Parallel_factor* 값은 생략 가능하다. 생략할 경우 1로 인식된다.  
 *Parallel_factor*의 최대값은 CPU 개수 \* 2이다. 최대값을 초과하여 지정해도 최대
 값 이상으로 설정되지 않는다. 0 또는 음수 값을 지정하면 오류 메시지가 반환된다.
 
-TABLE replication_item
+*TABLE replication_item*
 
 지역서버의 이중화 대상 테이블 중에서 SYNC로 동기화할 테이블 또는 파티션을
 지정한다. 이 절이 명시되면 지정된 테이블 또는 파티션이 동기화된 후 이전에
@@ -2915,15 +2922,15 @@ TABLE replication_item
 않았을 때에는 모든 이중화 대상 테이블과 파티션이 동기화된 후 현재 로그의
 위치부터 이중화가 시작된다.
 
-START
+*START*
 
 가장 최근에 마지막으로 이중화했던 시점부터 이중화를 시작한다.
 
-QUICKSTART
+*QUICKSTART*
 
 현재 시점부터 이중화를 시작한다.
 
-START/ QUICKSTART RETRY
+*START/ QUICKSTART RETRY*
 
 RETRY 옵션을 사용하여 이중화를 START하거나 QUICKSTART하면, 핸드쉐이크가
 실패하더라도 송신 쓰레드가 지역서버에 생성된다. 지역서버와 원격서버간의
@@ -2936,22 +2943,22 @@ RETRY 옵션을 사용하여 이중화를 START하거나 QUICKSTART하면, 핸�
 RETRY 옵션 없이 이중화 시작시 첫 핸드쉐이크 시도가 실패하면 ,에러가 발생하고
 이중화 시작은 중지된다. 단, RETRY 옵션은 EAGER 모드에서는 지원되지 않는다.
 
-STOP
+*STOP*
 
 데이터 제어어의 ALTER REPLICATION 절을 참조한다.
 
-RESET
+*RESET*
 
 이 명령은 이중화 정보(재시작 SN 같은)를 초기화시킨다. 이는 이중화가 중지 중일
 때만 실행될 수 있다. 이는 DROP REPLICATION 구문과 CREATE REPLICATION 구문을
 연달아 실행한 것과 같은 효과를 낸다.
 
-ADD TABLE
+*ADD TABLE*
 
 이중화 객체에 테이블을 추가한다. 이중화가 중지되어 있는 상태에서만 테이블을
 이중화 객체에 추가할 수 있다.
 
-TABLE FROM replication_item TO replication_item
+*TABLE FROM replication_item TO replication_item*
 
 이중화 대상 테이블 또는 파티션 이름을 테이블 소유자 이름과 함께 명시한다
 
@@ -2960,11 +2967,11 @@ DROP TABLE
 이중화 테이블을 이중화 객체로부터 삭제한다. 이중화가 중지되어 있는 상태에서만
 이중화 테이블을 삭제할 수 있다.
 
-FLUSH
+*FLUSH*
 
 데이터 제어어의 ALTER REPLICATION 절을 참조한다.
 
-SET HOST
+*SET HOST*
 
 특정 호스트를 현재 호스트로 지정한다. 이중화를 중지한 상태에서 변경 가능하다.
 
@@ -2980,7 +2987,7 @@ SET HOST
 - PARALLEL : 병렬 적용자 옵션을 사용하거나 사용하지 않게 변경 할 수 있다.
   그리고 적용자의 개수를 변경할 수 있다.
 
-offline_cluase
+*offline_cluase*
 
 오프라인 옵션을 변경하거나 설정된 오프라인 경로를 이용하여 이중화를 수행할 수
 있다.
@@ -2997,68 +3004,77 @@ offline_cluase
 
 \<질의\> 지역서버의 데이터를 원격서버로 전송한 후 이중화를 시작하라.
 
-iSQL\> ALTER REPLICATION rep1 SYNC;
-
+```
+iSQL> ALTER REPLICATION rep1 SYNC;
 Alter success.
+```
 
 \<질의\> 이중화 rep1이 가장 최근에 마지막으로 수행한 이중화 시점부터 rep1
 이중화를 시작하라.
 
-iSQL\> ALTER REPLICATION rep1 START;
-
+```
+iSQL> ALTER REPLICATION rep1 START;
 Alter success.
+```
 
 \<질의\> 현재 시점부터 이중화를 시작하라.
 
-iSQL\> ALTER REPLICATION rep1 QUICKSTART;
-
+```
+iSQL> ALTER REPLICATION rep1 QUICKSTART;
 Alter success.
+```
+
+
 
 ##### 이름이 rep1인 이중화 객체에서 이중화 대상 테이블 employees을 삭제하라.
 
-iSQL\> ALTER REPLICATION rep1 STOP;
-
+```
+iSQL> ALTER REPLICATION rep1 STOP;
 Alter success.
-
-iSQL\> ALTER REPLICATION rep1 DROP TABLE FROM sys.employees TO sys.employees;
-
+iSQL> ALTER REPLICATION rep1 DROP TABLE FROM sys.employees TO sys.employees;
 Alter success.
+```
+
+
 
 ##### 이름이 rep1인 이중화 객체에 파티션드 테이블 tbl_sales의 파티션 p2를 추가하라.
 
-iSQL\> ALTER REPLICATION rep1 STOP;
-
+```
+iSQL> ALTER REPLICATION rep1 STOP;
 Alter success.
-
-iSQL\> ALTER REPLICATION rep1 ADD TABLE
-
-FROM sys.tbl_sales PARTITION p2 TO sys.tbl_sales PARTITION p2;
-
+iSQL> ALTER REPLICATION rep1 ADD TABLE
+ FROM sys.tbl_sales PARTITION p2 TO sys.tbl_sales PARTITION p2;
 Alter success.
+```
+
+
 
 ##### 이름이 rep1인 이중화 객체에 테이블 employees을 추가하라.
 
-iSQL\> ALTER REPLICATION rep1 STOP;
-
+```
+iSQL> ALTER REPLICATION rep1 STOP;
 Alter success.
-
-iSQL\> ALTER REPLICATION rep1 ADD TABLE FROM sys.employees TO sys.employees;
-
+iSQL> ALTER REPLICATION rep1 ADD TABLE FROM sys.employees TO sys.employees;
 Alter success.
+```
+
+
 
 ### ALTER SEQUENCE 
 
 #### 구문
 
-alter_sequence ::=
+**alter_sequence ::=**
 
 ![](media/SQL/47068a33f6105def77759ac8433a2974.png)
 
-sequence_options ::=
+**sequence_options ::=**
 
 ![](media/SQL/f2a803f06b6aa2c6b5ffb8b2412cb04c.png)
 
-sync_table_clause ::=
+**sync_table_clause ::=**
+
+![sync_table_clause](media/SQL/sync_table_clause.gif)
 
 #### 전제 조건
 
@@ -3068,37 +3084,37 @@ SYS 사용자, 시퀀스가 속한 스키마의 소유자 또는 ALTER ANY SEQUE
 #### 설명
 
 CREATE SEQUENCE 구문으로 시퀀스 생성 후 시퀀스의 정의를 변경하는 구문이다. 더
-자세한 설명은 [CREATE SEQUENCE](#CREATE_SEQUENCE) 문을 참고한다.
+자세한 설명은 CREATE SEQUENCE 문을 참고한다.
 
-user_name
+*user_name*
 
 변경될 시퀀스의 소유자 이름이다. 생략하면 Altibase는 현재 세션에 연결된 사용자의
 스키마에 속한 것으로 간주한다.
 
-seq_name
+*seq_name*
 
 변경될 시퀀스 이름이다.
 
-INCREMENT BY
+*INCREMENT BY*
 
 시퀀스 값의 증감분을 명시하는데 사용된다.
 
-MAXVALUE
+*MAXVALUE*
 
 시퀀스의 최대값을 명시하는데 사용된다.
 
-MINVALUE
+*MINVALUE*
 
 시퀀스의 최소값을 명시하는데 사용된다.
 
-CYCLE
+*CYCLE*
 
 이는 시퀀스 값이 최대 또는 최소 한계 값에 도달한 후에도 그 시퀀스의 다음 값이
 계속되는 것을 허용한다. 오름차순 시퀀스인 경우는 최대값에 도달한 후 최소값부터
 다시 시작된다. 반면 내림차순 시퀀스인 경우는 최대값에 도달한 후 최대값부터 다시
 시작된다.
 
-CACHE
+*CACHE*
 
 시퀀스 값을 더 빠르게 액세스 하기 위하여 명시된 개수 만큼의 시퀀스 값들이
 메모리에 캐시된다. 캐시는 시퀀스가 처음 참조될 때 채워지며 다음에 시퀀스 값이
@@ -3106,17 +3122,17 @@ CACHE
 다음 시퀀스 값 요청시 새로운 시퀀스 값들이 메모리 캐시된다. 이 옵션을 생략할
 경우 기본값은 20이다.
 
-FLUSH CACHE
+*FLUSH CACHE*
 
 메모리에 캐시된 시퀀스 값들을 지워버린다. 이 옵션을 사용해서 캐시를 플러시한 후
 시퀀스 값이 요청되면, 새로운 시퀀스 값들이 메모리에 캐시된다.
 
-ENABLE SYNC TABLE
+*ENABLE SYNC TABLE*
 
 시퀀스 번호를 복제하기 위한 시퀀스 이중화용 테이블을 생성한다. 시퀀스 이중화
 전용 테이블의 이름은 [sequence 이름]\$seq으로 자동 부여된다.
 
-DISABLE SYNC TABLE
+*DISABLE SYNC TABLE*
 
 시퀀스를 이중화하기 위해 사용하던 시퀀스 이중화용 테이블을 삭제한다.
 
@@ -3133,207 +3149,239 @@ DISABLE SYNC TABLE
 
 \<질의\> 시퀀스 seq1을 최소값이 0, 최대값이 100이고 1씩 증가하도록 변경하라.
 
-iSQL\> ALTER SEQUENCE seq1
-
-INCREMENT BY 1
-
-MINVALUE 0
-
-MAXVALUE 100;
-
-Alter success.
+```
+iSQL> ALTER SEQUENCE seq1
+    INCREMENT BY 1
+    MINVALUE 0
+    MAXVALUE 100;
+Alter success.             
+```
 
 \<질의\> 시퀀스 seq2의 최소값, 최대값을 무한대로 변경하라.
 
-iSQL\> ALTER SEQUENCE seq2
-
-NOMAXVALUE
-
-NOMINVALUE;
-
+```
+iSQL> ALTER SEQUENCE seq2
+    NOMAXVALUE 
+    NOMINVALUE;
 Alter success.
+```
 
 \<질의\> 시퀀스 seq1의 캐시된 시퀀스 값을 메모리에서 지운다.
 
-iSQL\> ALTER SEQUENCE seq1 FLUSH CACHE;
-
+```
+iSQL> ALTER SEQUENCE seq1 FLUSH CACHE;
 Alter success.
+```
 
 \<질의\> 시퀀스 seq1의 이중화를 위한 시퀀스 이중화용 테이블을 생성하라.
 
-ALTER SEQUENCE seq1 ENABLE SYNC TABLE;
+```
+iSQL> ALTER SEQUENCE seq1 ENABLE SYNC TABLE;
+```
+
+
 
 ### ALTER TABLE 
 
 #### 구문
 
-alter_table::=
+**alter_table::=**
 
 ![](media/SQL/17ce67a416098226c32df31b2e42cbe3.png)
 
-[log_compression_clause ::=](#alter_table_log_compression_clause),
-[alter_table_properties ::=](#alter_table_properties),
-[alter_table_segment_properties ::=](#alter_table_segment_properties),
-[alter_table_partitioning ::=](#alter_table_partitioning),
-[alter_table_tablespace ::=](#alter_table_tablespace), [column_clauses
-::=](#alter_table_column_clauses), [constraints_clauses
-::=](#alter_table_constraints_clauses),
-[aging_clause::=](#aging_clause)*,*[compact_clause::=](#compact_clause)*,*
-[allocate_extent_clause ::=](#alter_table_allocate_extent_clause),
-[access_mode_clause ::=](#access_mode_clause)
 
-log_compression_clause ::=
 
-alter_table_properties::=
+**log_compression_clause ::=**
 
-alter_table_tablespace::=
+![log_compression_clause](media/SQL/log_compression_clause.gif)
 
-*table_move_index_clause ::=*, *table_lob_column_clause ::=*
+**alter_table_properties::=**
 
-table_move_index_clause::=
+![image52_alter_table_properties](media/SQL/image52_alter_table_properties.gif)
 
-**오류! 편집 중 필드 코드에서는 개체를 만들 수 없습니다.**
+**alter_table_tablespace::=**
 
-table_lob_column_clause::=
+![alter_table_tablespace](media/SQL/alter_table_tablespace.gif)
 
-**오류! 편집 중 필드 코드에서는 개체를 만들 수 없습니다.**
+**table_move_index_clause::=**
 
-logging_clause::=
+![table_move_index_clause](media/SQL/table_move_index_clause.gif)
 
-parallel_clause::=
+**table_lob_column_clause::=**
 
-row_movement_clause::=
+![table_lob_column_clause](media/SQL/table_lob_column_clause.gif)
 
-alter_table_segment_properties::=
+**logging_clause::=**
 
-alter_table_segment_attribute_clause::=
+![logging_clause](media/SQL/logging_clause.gif)
 
-storage_clause::=
+**parallel_clause::=**
 
-alter_table_partitioning::=
+![PARALLEL_CLAUSE](media/SQL/PARALLEL_CLAUSE.gif)
 
-**오류! 편집 중 필드 코드에서는 개체를 만들 수 없습니다.**
+**row_movement_clause::=**
 
-add_table_partition ::=
+![row_movement_clause](media/SQL/row_movement_clause.gif)
 
-[partition_spec ::=](#alter_table_partition_spec)
+**alter_table_segment_properties::=**
 
-alter_partition ::=
+![image53_alter_table_segment_properties](media/SQL/image53_alter_table_segment_properties.gif)
 
-**오류! 편집 중 필드 코드에서는 개체를 만들 수 없습니다.**
+**alter_table_segment_attribute_clause::=**
 
-partition_index_clause ::=
+![image54_alter_table_segment_attribute_clause](media/SQL/image54_alter_table_segment_attribute_clause.gif)
 
-**오류! 편집 중 필드 코드에서는 개체를 만들 수 없습니다.**
+**storage_clause::=**
 
-partition_lob_column_clause ::=
+![storage_clause](media/SQL/storage_clause.gif)
 
-**오류! 편집 중 필드 코드에서는 개체를 만들 수 없습니다.**
+**alter_table_partitioning::=**
 
-coalesce_table_partition ::=
+![ALTER_TABLE_PARTITIONING](media/SQL/ALTER_TABLE_PARTITIONING.gif)
 
-drop_table_partition ::=
+**add_table_partition ::=**
 
-merge_table_partition ::=
+![image56_add_table_partition](media/SQL/image56_add_table_partition.gif)
 
-[partition_spec ::=](#alter_table_partition_spec)
+**alter_partition ::=**
 
-rename_table_partition ::=
+![alter_partition](media/SQL/alter_partition.gif)
 
-split_table_partition ::=
+**partition_index_clause ::=**
 
-[partition_spec ::=](#alter_table_partition_spec)
+![partition_index_clause](media/SQL/partition_index_clause.gif)
 
-truncate_table_partition ::=
+**partition_lob_column_clause ::=**
 
-partition_spec ::=
+![partition_lob_column_clause](media/SQL/partition_lob_column_clause.gif)
 
-table_partition_description ::=
+**coalesce_table_partition ::=**
 
-[lob_column_properties ::=](#lob_column_properties)
+![image60_coalesce_table_partition](media/SQL/image60_coalesce_table_partition.gif)
 
-index_partition_spec ::=
+**drop_table_partition ::=**
 
-**오류! 편집 중 필드 코드에서는 개체를 만들 수 없습니다.**
+![image61_drop_table_partition](media/SQL/image61_drop_table_partition.gif)
 
-index_partition_description ::=
+**merge_table_partition ::=**
 
-partition_access_mode ::=
+![image62_merge_table_partition](media/SQL/image62_merge_table_partition.gif)
 
-access_mode_clause ::=
+**rename_table_partition ::=**
 
-column_clauses::=
+![image63_rename_table_partition](media/SQL/image63_rename_table_partition.gif)
 
-[add_column_clauses ::=](#add_column_clauses), [alter_column_clause
-::=](#alter_column_clause), [modify_column_clause ::=](#modify_column_clause),
-[drop_column_clause ::=](#drop_column_clause), [rename_column_clause
-::=](#rename_column_clause), [reorganize_column_clause
-::=](#reorganize_column_clause)
+**split_table_partition ::=**
 
-add_column_clauses::=
+![image64_split_table_partition](media/SQL/image64_split_table_partition.gif)
 
-[column_definition ::=](#column_definition), [lob_column_properties
-::=](#lob_column_properties), [partition_lob_storage_clause
-::=](#partition_lob_storage_clause)
+**truncate_table_partition ::=**
 
-column_definition::=
+![image65_truncate_table_partition](media/SQL/image65_truncate_table_partition.gif)
 
-[encrypt_clause ::=](#encrypt_clause), [variable_clause ::=](#variable_clause),
-[in_row_clause ::=](#in_row_clause), [default_clause ::=](#default_clause),
-[column_constraint ::=](#column_constraint_diagram)
+**partition_spec ::=**
 
-partition_lob_storage_clause ::=
+![image57_partition_spec](media/SQL/image57_partition_spec.gif)
 
-[LOB_storage_clause ::=](#LOB_storage_clause)
+**table_partition_description ::=**
 
-alter_column_clause ::=
+![table_partition_description](media/SQL/table_partition_description.gif)
 
-modify_column_clause::=
+**index_partition_spec ::=**
 
-modify_column_spec::=
+![index_partition_spec](media/SQL/index_partition_spec.gif)
 
-drop_column_clause::=
+**index_partition_description ::=**
 
-rename_column_clause::=
+![index_partition_description](media/SQL/index_partition_description.gif)
 
-reorganize_column_clause::=
+**partition_access_mode ::=**
 
-constraints_clauses::=
+![PARTITION_ACCESS_MODE](media/SQL/PARTITION_ACCESS_MODE.gif)
 
-[add_table_constraint_clauses ::=](#add_table_constraint_clauses),
-[modify_constraint_clause ::=](#modify_constraint_clause),
-[rename_constraint_clauses ::=](#rename_constraint_clauses),
-[drop_constraint_clause ::=](#drop_constraint_clauses)
+**access_mode_clause ::=**
 
-add_table_constraint_clauses ::=
+![ACCESS_MODE_CLAUSE_](media/SQL/ACCESS_MODE_CLAUSE_.gif)
 
-table_constraint_for_alter::=
+**column_clauses::=**
 
-[using_index_clause ::=](#using_index_clause), [referential_constraint
-::=](#referential_constraint), [constraint_state ::=](#constraint_state),
-[check_clause ::=](#check_clause)
+![image66_column_clauses](media/SQL/image66_column_clauses.gif)
 
-constraint_state::=
+**add_column_clauses::=**
 
-modify_constraint_clause::=
+![image67_add_column_clauses](media/SQL/image67_add_column_clauses.gif)
 
-[constraint_state ::=](#constraint_state)
+**column_definition::=**
 
-rename_constraint_clauses ::=
+![column_definition](media/SQL/column_definition.gif)
 
-drop_constraint_clause::=
+**partition_lob_storage_clause ::=**
 
-*column_constraint ::=*
+![image68_partition_lob_storage_clause](media/SQL/image68_partition_lob_storage_clause.gif)
 
-aging_clause::=
+**alter_column_clause ::=**
 
-**오류! 편집 중 필드 코드에서는 개체를 만들 수 없습니다.**
+![image69_alter_column_clause](media/SQL/image69_alter_column_clause.gif)
 
-compact_clause::=
+**modify_column_clause::=**
 
-**오류! 편집 중 필드 코드에서는 개체를 만들 수 없습니다.**
+![image70_modify_column_clause](media/SQL/image70_modify_column_clause.gif)
 
-allocate_extent_clause::=
+**modify_column_spec::=**
+
+![image71_modify_column_spec](media/SQL/image71_modify_column_spec.gif)
+
+**drop_column_clause::=**
+
+![image72_drop_column_clause](media/SQL/image72_drop_column_clause.gif)
+
+**rename_column_clause::=**
+
+![rename_column_clause](media/SQL/rename_column_clause.gif)
+
+**reorganize_column_clause::=**
+
+![reorganize_column](media/SQL/reorganize_column.gif)
+
+**constraints_clauses::=**
+
+![constraints_clauses](media/SQL/constraints_clauses.gif)
+
+**add_table_constraint_clauses ::=**
+
+![add_table_constraint_clauses](media/SQL/add_table_constraint_clauses.gif)
+
+**table_constraint_for_alter::=**
+
+![table_constraint_for_alter](media/SQL/table_constraint_for_alter.gif)
+
+**constraint_state::=**
+
+![constraint_state](media/SQL/constraint_state.gif)
+
+**modify_constraint_clause::=**
+
+![modify_constraint_clause](media/SQL/modify_constraint_clause.gif)
+
+**rename_constraint_clauses ::=**
+
+![rename_constraint_clauses](media/SQL/rename_constraint_clauses.gif)
+
+**drop_constraint_clause::=**
+
+![drop_constraint_clause](media/SQL/drop_constraint_clause.gif)
+
+**aging_clause::=**
+
+![aging_clause](media/SQL/aging_clause.gif)
+
+**compact_clause::=**
+
+![compact_clause](media/SQL/compact_clause.gif)
+
+**allocate_extent_clause::=**
+
+![allocate_extent_clause](media/SQL/allocate_extent_clause.gif)
 
 #### 전제 조건
 
