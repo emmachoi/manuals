@@ -1,3 +1,27 @@
+- [Adapter for Oracle User’s Manual](#adapter-for-oracle-users-manual)
+  - [서문](#%EC%84%9C%EB%AC%B8)
+    - [이 매뉴얼에 대하여](#%EC%9D%B4-%EB%A7%A4%EB%89%B4%EC%96%BC%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC)
+  - [1.소개](#1%EC%86%8C%EA%B0%9C)
+    - [Adapter for Oracle](#adapter-for-oracle)
+  - [2.설치와 설정](#2%EC%84%A4%EC%B9%98%EC%99%80-%EC%84%A4%EC%A0%95)
+    - [설치전 작업](#%EC%84%A4%EC%B9%98%EC%A0%84-%EC%9E%91%EC%97%85)
+    - [설치](#%EC%84%A4%EC%B9%98)
+    - [설치 후 작업](#%EC%84%A4%EC%B9%98-%ED%9B%84-%EC%9E%91%EC%97%85)
+    - [설정](#%EC%84%A4%EC%A0%95)
+    - [프로퍼티](#%ED%94%84%EB%A1%9C%ED%8D%BC%ED%8B%B0)
+  - [3.사용법](#3%EC%82%AC%EC%9A%A9%EB%B2%95)
+    - [oraAdapter 제약조건](#oraadapter-%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4)
+    - [구동과 종료](#%EA%B5%AC%EB%8F%99%EA%B3%BC-%EC%A2%85%EB%A3%8C)
+    - [데이터 타입](#%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%83%80%EC%9E%85)
+    - [Adapter for Oracle 유틸리티](#adapter-for-oracle-%EC%9C%A0%ED%8B%B8%EB%A6%AC%ED%8B%B0)
+    - [커맨드 라인 옵션](#%EC%BB%A4%EB%A7%A8%EB%93%9C-%EB%9D%BC%EC%9D%B8-%EC%98%B5%EC%85%98)
+  - [A.부록: FAQ](#a%EB%B6%80%EB%A1%9D-faq)
+    - [FAQ](#faq)
+  - [B.부록: oraAdapter 사용시 DDL 순서](#b%EB%B6%80%EB%A1%9D-oraadapter-%EC%82%AC%EC%9A%A9%EC%8B%9C-ddl-%EC%88%9C%EC%84%9C)
+    - [oraAdapter 사용시 DDL 수행 순서](#oraadapter-%EC%82%AC%EC%9A%A9%EC%8B%9C-ddl-%EC%88%98%ED%96%89-%EC%88%9C%EC%84%9C)
+
+
+
 Altibase® Tool & Utilities
 
 Adapter for Oracle User’s Manual
@@ -27,34 +51,6 @@ Copyright ⓒ 2001\~2019 Altibase Corp. All Rights Reserved.
 homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 
-
-목 차
------
-
-- [서문 ](#서문)
-
-  - [이 매뉴얼에 대하여 ](#이-매뉴얼에-대하여)
-
-- [1. 소개](#소개)
-  - [Adapter for Oracle ](#adapter-for-oracle)
-
-- [2. 설치와 설정 ](#설치와-설정)
-  - [설치전 작업 ](#설치전-작업)
-  - [설치 ](#설치)
-  - [설치 후 작업](#설치-후-작업)
-  - [설정 ](#설정)
-  - [프로퍼티 ](#프로퍼티)
-
-- [3. 사용법](#사용법)
-  - [oraAdapter 제약조건 ](#oraadapter-제약조건)
-  - [구동과 종료](#구동과-종료)
-  - [데이터 타입](#데이터-타입)
-  - [Adapter for Oracle 유틸리티](#adapter-for-oracle-유틸리티)
-  - [커맨드 라인 옵션 ](#커맨드-라인-옵션)
-
-- A. 부록[FAQ ](#faq)
-
-- B. 부록[oraAdapter 사용시 DDL 수행 순서 ](#oraadapter-사용시-ddl-수행-순서)
 
 
 
@@ -299,8 +295,8 @@ oraAdapter를 설치하고 실행하기 위해서는 다음의 시스템 요구�
 #### 데이터베이스 버전
 
 -   Altibase: 버전 5.5.1 또는 그 이상
-
--   오라클 데이터베이스: 버전 10g 또는 그 이상 (10g OCI와 호환되는 OCI 라이브러리가 필요하다. 자세한 내용은 설정의 라이브러리 경로를 참조한다.)
+-   오라클 데이터베이스: 버전 10g 또는 그 이상 (10g OCI와 호환되는 OCI 라이브러리가 필요하다. 
+    자세한 내용은 설정의 라이브러리 경로를 참조한다.)
 
 #### 데이터베이스 문자집합
 
@@ -1244,19 +1240,211 @@ B.부록: oraAdapter 사용시 DDL 순서
 
 oraAdapter를 사용할 때 이중화를 수행중인 DDL은 아래의 순서대로 수행해야 한다.
 
-| No                                              | Active Server                                                | jdbcAdapter                                                  | Standby Server                                           |
-| ----------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | -------------------------------------------------------- |
-| 1.양쪽 서버에 스키마 생성                       | CREATE TABLE T1 ( C1 INTEGER PRIMARY KEY, C2 SMALLINT );     |                                                              | CREATE TABLE T1 ( C1 INTEGER PRIMARY KEY, C2 SMALLINT ); |
-| 2.ANALYSIS로 이중화 생성                        | CREATE REPLICATION ala FOR ANALYSIS WITH 'Standby IP', Standby Port
-FROM SYS.T1 TO SYS T1; |                                                              |                                                          |
-| 3.oraAdapter 시작                               |                                                              | \$ oaUtility start                                           |                                                          |
-| 4.이중화 시작                                   | ALTER REPLICATION ala START;                                 |                                                              |                                                          |
-| 5.이중화 Gap 제거를 위해 Flush 구문 수행        | ALTER REPLICATION ALA FLUSH ALL;                             |                                                              |                                                          |
-| 6.DDL 수행을 위한 이중화 관련 프로퍼티 값 설정  | ALTER SYSTEM SET REPLICATION_DDL_ENABLE = 1; ALTER SYSTEM SET REPLICATION_DDL_ENABLE_LEVEL = 1; |                                                              |                                                          |
-| 7.Active 서버에 DDL 수행                        |                                                              | Adapter 종료 (DDL 로그 처리로 인하여)                        |                                                          |
-| 8.oraAdapter trc 로그 확인                      | SELECT REP_NAME, STATUS FROM V\$REPSENDER;<br />로 조회 하여 STATUS 가 2 확인 | 'Log Record : Meta change xlog was arrived, adapter will be finished' trc 로그 메시지 확인 |                                                          |
-| 9.Standby 서버에 DDL 수행                       |                                                              |                                                              | DDL                                                      |
-| 10.oraAdapter 재실행                            |                                                              | \$ oaUtility start                                           |                                                          |
-| 11.이중화 중지 및 재시작 (생략가능)             | (optional) ALTER REPLICATION ALA STOP; ALTER REPLICATION ALA START; |                                                              |                                                          |
-| 12.데이터 복제 여부 확인                        | DML ( Service )                                              |                                                              | 데이터 복제 확인                                         |
-| 13.DDL 중지를 위한 이중화 관련 프로퍼티 값 설정 | ALTER SYSTEM SET REPLICATION_DDL_ENABLE = 0; ALTER SYSTEM SET REPLICATION_DDL_ENABLE_LEVEL = 0; |                                                              |                                                          |
+<table>
+<thead>
+<tr>
+<td>
+<p>No</p>
+</td>
+<td>
+<p>Active Server</p>
+</td>
+<td>
+<p>jdbcAdapter</p>
+</td>
+<td>
+<p>Standby Server</p>
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<p>1.양쪽 서버에 스키마 생성</p>
+</td>
+<td>
+<p>CREATE TABLE T1 ( C1 INTEGER PRIMARY KEY, C2 SMALLINT );</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+<td>
+<p>CREATE TABLE T1 ( C1 INTEGER PRIMARY KEY, C2 SMALLINT );</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>2.ANALYSIS로 이중화 생성</p>
+</td>
+<td>
+<p>CREATE REPLICATION ala FOR ANALYSIS<br /> WITH 'Standby IP', Standby Port<br /> FROM SYS.T1 TO SYS T1;</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>3.oraAdapter 시작</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+<td>
+<p>$ oaUtility start</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>4.이중화 시작</p>
+</td>
+<td>
+<p>ALTER REPLICATION ala START;</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>5.이중화 Gap 제거를 위해 Flush 구문 수행</p>
+</td>
+<td>
+<p>ALTER REPLICATION ALA FLUSH ALL;</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>6.DDL 수행을 위한 이중화 관련 프로퍼티 값 설정</p>
+</td>
+<td>
+<p>ALTER SYSTEM SET REPLICATION_DDL_ENABLE = 1;</p>
+<p>&nbsp;</p>
+<p>ALTER SYSTEM SET REPLICATION_DDL_ENABLE_LEVEL = 1;</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>7.Active 서버에 DDL 수행&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+<td>
+<p>Adapter 종료 (DDL 로그 처리로 인하여)</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>8.oraAdapter trc 로그 확인</p>
+</td>
+<td>
+<p>SELECT REP_NAME, STATUS FROM V$REPSENDER;<br /> 로 조회 하여 STATUS 가 2 확인</p>
+</td>
+<td>
+<p>'Log Record : Meta change xlog was arrived, adapter will be finished'<br /> trc 로그 메시지 확인</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>9.Standby 서버에 DDL 수행</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+<td>
+<p>DDL</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>10.oraAdapter 재실행</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+<td>
+<p>$ oaUtility start</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>11.이중화 중지 및 재시작 (생략가능)</p>
+</td>
+<td>
+<p>(optional)</p>
+<p>ALTER REPLICATION ALA STOP;</p>
+<p>ALTER REPLICATION ALA START;</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>12.데이터 복제 여부 확인</p>
+</td>
+<td>
+<p>DML ( Service )</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+<td>
+<p>데이터 복제 확인</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>13.DDL 중지를 위한 이중화 관련 프로퍼티 값 설정</p>
+</td>
+<td>
+<p>ALTER SYSTEM SET REPLICATION_DDL_ENABLE = 0;</p>
+<p>ALTER SYSTEM SET REPLICATION_DDL_ENABLE_LEVEL = 0;</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
+
