@@ -5032,9 +5032,11 @@ Alter success.
 
 #### 구문
 
-alter_user ::=
+**alter_user ::=**
 
-[password_parameters ::=](#password_parameters)
+![alter_user_image89](D:\emmachoigit\manuals\media\SQL\alter_user_image89.gif)
+
+<a name="passowrd_parameters"><a/>password_parameters ::=
 
 #### 전제 조건
 
@@ -9313,9 +9315,13 @@ iSQL\> SELECT \* FROM SCORES;
 
 #### 구문
 
-create_user ::=
+**create_user ::=**
 
-password_parameters ::=
+
+
+[**password_parameters ::=**](#passowrd_parameters)
+
+![password_parameters](D:\emmachoigit\manuals\media\SQL\password_parameters.gif)
 
 #### 전제 조건
 
