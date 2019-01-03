@@ -4793,11 +4793,11 @@ ALTER TABLESPACE 문으로 디스크, 임시, 메모리 또는 휘발성 테이�
 datafile_spec, maxsize_clause, autoextend_clause에 대한 상세한 설명은 CREATE
 TABLESPACE문을 참고한다.
 
-*ADD DATAFILE \| TEMPFILE *
+*ADD DATAFILE \| TEMPFILE* 
 
 데이터 파일이나 임시 파일들을 테이블스페이스에 추가하는 절이다.
 
-*RENAME DATAFILE \| TEMPFILE *
+*RENAME DATAFILE \| TEMPFILE* 
 
 테이블스페이스에 속한 데이터 파일이나 임시 파일들을 새로운 이름으로 변경한다.
 한번에 여러 개의 파일 이름을 변경할 수 있다. TO 뒤에 오는 새로운 이름을 가지는
@@ -5201,20 +5201,26 @@ DNO   EMP_AVG_SAL
 ALTER MATERIALIZED VIEW 구문을 사용해서 기존 materialized view의 refresh 방법과
 시기를 변경할 수 있다.
 
-각 키워드에 대한 자세한 내용은 [CREATE MATERIALIZED
-VIEW](#create-materialized-view) 구문의 설명을 참고하라.
+각 키워드에 대한 자세한 내용은 CREATE MATERIALIZED
+VIEW  구문의 설명을 참고하라.
 
 #### 예제
 
 \<질의\> materialized view의 리프레쉬 방법을 변경하라.
 
+```
 ALTER MATERIALIZED VIEW mv1 REFRESH COMPLETE ON DEMAND;
+```
+
+
 
 ### COMMENT
 
 #### 구문
 
-comment_on ::=
+**comment_on ::=**
+
+![comment_on_image91](D:\emmachoigit\manuals\media\SQL\comment_on_image91.gif)
 
 #### 전제 조건
 
@@ -5226,20 +5232,20 @@ SYS 사용자, 테이블(뷰)이 속한 스키마의 소유자, 테이블(뷰)�
 
 명시된 테이블, 뷰 또는 칼럼에 대한 주석을 작성하거나 수정하는데 사용한다.
 
-user_name
+*user_name*
 
 COMMENT 문을 실행할 객체의 소유자 이름을 명시한다. 생략하면 Altibase는 현재
 세션에 연결된 사용자의 스키마에 속한 것으로 간주한다.
 
-table_name, view_name
+*table_name, view_name*
 
 주석을 다는 테이블 혹은 뷰의 이름을 명시한다.
 
-column_name
+*column_name*
 
 주석을 다는 칼럼 이름을 명시한다.
 
-comment
+*comment*
 
 주석 내용을 명시한다. 주석은 최대 4000 바이트까지 입력할 수 있다. 주석을
 삭제하고자 할 때에는 작은 따옴표(‘) 사이에 주석 내용을 쓰지 말고 COMMENT 문을
@@ -5250,80 +5256,68 @@ comment
 \<질의\> 사용자 library1의 테이블 books와 그 테이블의 title칼럼에 주석을
 추가한다.
 
-iSQL\> COMMENT ON TABLE library1.books IS 'Table of Book Info';
-
+```
+iSQL> COMMENT ON TABLE library1.books IS 'Table of Book Info';
 Comment Created.
-
-iSQL\> COMMENT ON COLUMN library1.books.title IS 'Title of Book';
-
+iSQL> COMMENT ON COLUMN library1.books.title IS 'Title of Book';
 Comment Created.
+```
 
 \<질의\> 사용자 library1의 테이블 books 와 그 칼럼의 주석을 조회한다.
 
-iSQL\> SET VERTICAL ON;
-
-iSQL\> SELECT \* FROM system_.sys_comments\_ WHERE user_name = ‘LIBRARY1’ AND
-table_name = ‘BOOKS’;
-
-SYS_COMMENTS_.USER_NAME : LIBRARY1
-
-SYS_COMMENTS_.TABLE_NAME : BOOKS
-
+```
+iSQL> SET VERTICAL ON;
+iSQL> SELECT * FROM system_.sys_comments_ WHERE user_name = ‘LIBRARY1’ AND table_name = ‘BOOKS’;
+SYS_COMMENTS_.USER_NAME   : LIBRARY1
+SYS_COMMENTS_.TABLE_NAME  : BOOKS
 SYS_COMMENTS_.COLUMN_NAME : TITLE
+SYS_COMMENTS_.COMMENTS    : title of book
 
-SYS_COMMENTS_.COMMENTS : title of book
-
-SYS_COMMENTS_.USER_NAME : LIBRARY1
-
-SYS_COMMENTS_.TABLE_NAME : BOOKS
-
-SYS_COMMENTS_.COLUMN_NAME :
-
-SYS_COMMENTS_.COMMENTS : table of book info
+SYS_COMMENTS_.USER_NAME   : LIBRARY1
+SYS_COMMENTS_.TABLE_NAME  : BOOKS
+SYS_COMMENTS_.COLUMN_NAME : 
+SYS_COMMENTS_.COMMENTS    : table of book info
 
 2 rows selected.
+```
 
 \<질의\> 테이블 books와 그 테이블의 title칼럼의 주석을 제거한다.
 
-iSQL\> COMMENT ON TABLE library1.books IS ’’;
-
+```
+iSQL> COMMENT ON TABLE library1.books IS ’’;
 Comment created.
-
-iSQL\> COMMENT ON COLUMN library1.books.title IS ’’;
-
+iSQL> COMMENT ON COLUMN library1.books.title IS ’’;
 Comment created.
+```
+
+
 
 ### CONJOIN TABLE
 
 #### 구문
 
-conjoin_table ::=
+**conjoin_table ::=**
 
 ![](media/SQL/9fb57281787aa263aa7d56eb48f4b3da.png)
 
-[conjoin_range_clause ::=](#conjoin_range_clause), [conjoin_list_clause
-::=](#conjoin_list_clause), [row_movement_clause ::=](#row_movement_clause),
+[row_movement_clause ::=](#row_movement_clause),
 [tablespace_clause ::=](#tablespace_clause), [physical_attributes_clause
 ::=](#physical_attributes_clause), [logging_clause ::=](#logging_clause),
 [lob_column_properties ::=](#lob_column_properties)
 
-conjoin_range_clause ::=
+**conjoin_range_clause ::=**
 
 ![](media/SQL/40634d2070f1d40b16a33aac52ab102c.png)
 
-[range_table_to_partition_clause ::=](#range_table_to_partition)
-
-range_table_to_partition_clause ::=
+**range_table_to_partition_clause ::=**
 
 ![](media/SQL/0b00718934d68775a5494aa3352eec73.png)
 
-conjoin_list_clause ::=
+**conjoin_list_clause ::=**
 
 ![](media/SQL/6a1a5051d6c3a88b14ff462d68b00706.png)
 
-[list_table_to_partition_clause ::=](#list_table_to_partition_clause)
-
-list_table_to_partition_clause ::=
+**list_table_to_partition_clause ::=**
 
 ![](media/SQL/5296c172826c160f152057b8171285d5.png)
 
@@ -7283,13 +7277,17 @@ partition_list_clause ::=
 
 [table_partition_description ::=](#table_partition_description)
 
-row_movement_clause ::=
+**row_movement_clause ::=**<a name="row_movement_clause"><a/>
+
+
 
 access_mode_clause ::=
 
-tablespace_clause ::=
+**tablespace_clause ::=**<a name="tablespace_clause"><a/>
 
-physical_attributes_clause ::=
+
+
+**physical_attributes_clause ::=**<a name="physical_attributes_clause"><a/>
 
 storage_clause ::=
 
@@ -7297,13 +7295,13 @@ log_compression_clause ::=
 
 ![]()
 
-logging_clause ::=
+**logging_clause ::=**<a name="logging_clause"><a/>
 
 parallel_clause::=
 
 table_compression_clause ::=
 
-lob_column_properties ::=
+**lob_column_properties ::=**<a name="lob_column_properties"><a/>
 
 LOB_storage_clause ::=
 
