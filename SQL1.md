@@ -427,7 +427,7 @@ Altibase에서 제공하는 데이터베이스 객체(object)는 스키마가 �
   - 테이블스페이스 (tablespace)
   - 디렉토리 (directory)
 
-#### 객체 이름 규칙 
+#### <a name="object_name"><a/>객체 이름 규칙 
 
 ##### 객체 이름
 
@@ -5036,7 +5036,9 @@ Alter success.
 
 ![alter_user_image89](D:\emmachoigit\manuals\media\SQL\alter_user_image89.gif)
 
-<a name="password_parameters"><a/>password_parameters ::=
+[password_parameters ::=](#password_parameters)
+
+
 
 #### 전제 조건
 
@@ -5048,23 +5050,23 @@ SYS 사용자 또는 ALTER USER 시스템 권한을 가진 사용자만이 이 �
 
 사용자의 암호를 변경하는 구문이다.
 
-IDENTIFIED 절
+*IDENTIFIED 절*
 
 사용자의 새로운 암호를 명시한다. 새로운 암호는 BY 뒤에 지정한다.
 
 이외 다른 절의 기능들은 CREATE USER 문의 해당하는 절과 동일하므로 CREATE USER
 문을 참고한다.
 
-LIMIT 절
+*LIMIT 절*
 
 이 절을 사용해서 어떤 계정에 대한 패스워드 관리 정책을 변경한다. 이 절은 SYS
 사용자만 수행할 수 있다.
 
-ACCOUNT LOCK/UNLOCK
+*ACCOUNT LOCK/UNLOCK*
 
 이 절을 사용해서 명시적으로 어떤 계정을 잠그거나 잠금을 해제할 수 있다.
 
-ENABLE/ DISABLE
+*ENABLE/ DISABLE*
 
 사용자가 사용중인 TCP 접속을 제한할 수 있다. 이 절은 SYS 사용자만 수행할 수
 있다.
@@ -5083,43 +5085,51 @@ ENABLE/ DISABLE
 
 \<질의\> 사용자 tom의 암호를 ab1rose로 변경하라.
 
-iSQL\> ALTER USER tom
-
-IDENTIFIED BY ab1rose;
-
+```
+iSQL> ALTER USER tom
+    IDENTIFIED BY ab1rose;
 Alter success.
+```
 
 \<질의\> 사용자의 기본 테이블스페이스를 변경하라.
 
-iSQL\> ALTER USER tom
-
-DEFAULT TABLESPACE uare_data;
-
+```
+iSQL> ALTER USER tom
+  DEFAULT TABLESPACE uare_data;
 Alter success.
+```
 
 \<질의\> 사용자 rose2의 패스워드 관리 정책을 변경하는 구문이다.
 
-iSQL\> ALTER USER rose2 LIMIT (FAILED_LOGIN_ATTEMPTS 7, PASSWORD_LOCK_TIME 7);
+```
+iSQL> ALTER USER rose2 LIMIT (FAILED_LOGIN_ATTEMPTS 7, PASSWORD_LOCK_TIME 7);
+```
 
 \<질의\> 사용자 rose2의 패스워드 관리 정책을 다음과 같이 변경한다. 로그인을
 시도하는 횟수에 제한을 하지 않고, 계정의 잠금 상태가 10일동안 유지하도록 한다.
 
-iSQL\> ALTER USER rose2 LIMIT (FAILED_LOGIN_ATTEMPTS UNLIMITED,
+```
+iSQL> ALTER USER rose2 LIMIT (FAILED_LOGIN_ATTEMPTS UNLIMITED,
 PASSWORD_LOCK_TIME 10);
+```
 
 \<질의\> rose2 계정을 잠근 후, rose2 사용자로 접속이 되지 않은 것을 보여준다.
 
+```
 ALTER USER rose2 ACCOUNT LOCK;
-
-iSQL\> CONNECT rose2/rose2;
-
+iSQL> CONNECT rose2/rose2;
 [ERR-31370 : The account is locked.]
+```
+
+
 
 ### ALTER VIEW
 
 #### 구문
 
-alter_view ::=
+**alter_view ::=**
+
+![alter_view_image90](D:\emmachoigit\manuals\media\SQL\alter_view_image90.gif)
 
 #### 전제 조건
 
@@ -5132,15 +5142,15 @@ SYS 사용자, 뷰가 속한 스키마의 소유자 또는 ALTER ANY TABLE 시�
 뷰의 기반 테이블중에 하나가 ALTER TABLE 문에 의하여 정의가 변경된 경우
 명시적으로 뷰를 재 컴파일 하는데 사용할 수 있다.
 
-user_name
+*user_name*
 
 재 컴파일 될 뷰의 소유자 이름을 명시한다. 생략하면 Altibase는 현재 세션에 연결된
 사용자의 스키마에 속한 것으로 간주한다.
 
-view_name
+*view_name*
 
 재 컴파일 될 뷰의 이름을 명시한다. 뷰의 이름은 1장의 "[객체 이름
-규칙](#object_naming_rule)"을 따라야 한다.
+규칙](#object_name)"을 따라야 한다.
 
 뷰를 재 컴파일 때 Altibase는 뷰 생성문을 읽어와 다시 컴파일을 수행하므로 뷰 생성
 시 발생할 수 있는 오류들이 ALTER VIEW 문 수행 시에도 발생할 수 있다. 뷰를 생성할
@@ -5153,33 +5163,30 @@ REPLACE VIEW 문을 사용해야 한다.
 #### 예제
 
 \<질의\> 기반 테이블 employees의 정의를 변경 후, 뷰 avg_sal 을 재 컴파일하라.
-(avg_sal 뷰의 생성은 [CREATE VIEW 예제](#cre_view_query1)를 참고하라.)
+(avg_sal 뷰의 생성은 CREATE VIEW 의 예제를 참고하라.)
 
-iSQL\> ALTER TABLE employees
-
-ADD COLUMN (email VARCHAR(20));
-
+```
+iSQL> ALTER TABLE employees
+     ADD COLUMN (email VARCHAR(20));
 Alter success.
-
-iSQL\> ALTER VIEW avg_sal COMPILE;
-
+iSQL> ALTER VIEW avg_sal COMPILE;
 Alter success.
-
-iSQL\> SELECT \* FROM avg_sal;
-
-DNO EMP_AVG_SAL
-
-\---------------------
-
+iSQL> SELECT * FROM avg_sal;
+DNO   EMP_AVG_SAL 
+---------------------
 ..
-
 6 rows selected.
+```
+
+
 
 ### ALTER MATERIALIZED VIEW
 
 #### 구문
 
-alter_materialized_view ::=
+**alter_materialized_view ::=**
+
+![alter_mview](D:\emmachoigit\manuals\media\SQL\alter_mview.gif)
 
 #### 전제 조건
 
@@ -6271,7 +6278,7 @@ SYS 사용자만이 이중화 객체를 생성할 수 있다.
 replication_name
 
 이중화 이름을 명시한다. 지역 서버와 원격 서버의 이중화 객체의 이름이 동일해야
-한다. 이중화 이름은 1장의 "[객체 이름 규칙](#object_naming_rule)"을 따라야 한다.
+한다. 이중화 이름은 "[객체 이름 규칙](#object_naming_rule)"을 따라야 한다.
 
 FOR ANALYSIS \| FOR ANALYSIS PROPAGATION
 
@@ -9317,9 +9324,7 @@ iSQL\> SELECT \* FROM SCORES;
 
 **create_user ::=**
 
-
-
-[**password_parameters ::=**](#password_parameters)
+**<a name="password_parameters"><a/>password_parameters ::=**
 
 ![password_parameters](D:\emmachoigit\manuals\media\SQL\password_parameters.gif)
 
