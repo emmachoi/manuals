@@ -6392,71 +6392,69 @@ Create success.
 큐에 삽입 가능한 최대 메시지의 길이를 지정하거나 사용자가 직접 칼럼을 정의하여
 큐를 생성하는 구문이다. 큐 테이블에 저장 가능한 최대 레코드 수도 지정할 수 있다.
 
-queue_name
+*queue_name*
 
 큐의 이름을 지정한다. 최대로 가능한 큐 이름의 길이는 28 바이트이다.
 
-size
+*size*
 
 큐에 저장될 메시지의 최대 크기(단위: 바이트)를 지정한다. 지정 가능한 값의 범위는
 1에서 32000바이트이다.
 
-FIXED\|variable_clause
+*FIXED\|variable_clause*
 
 메시지의 저장 방식을 지정한다. (자세한 설명은 *General Reference*를 참고한다.)
 
-column_definition
+*column_definition*
 
 사용자 정의 칼럼을 지정한다.
 
-MAXROWS count
+*MAXROWS count*
 
 큐 테이블에 저장 가능한 최대 레코드 수를 지정한다. 지정 가능한 값의 범위는 1에서
 4294967295(232-1)이며, 생략할 경우 기본값은 최대값인 4294967295이다.
 
 #### 주의사항
 
-큐 생성시에 데이터베이스 내부적으로 “큐 이름”+ “_NEXT_MSG_ID”라는 명칭의 테이블
-객체가 생성된다. 따라서 생성 하고자 하는 큐의 이름 또는 “큐 이름”+
-“_NEXT_MSG_ID”과 동일한 이름의 테이블, 뷰, 시퀀스, 시노님, 또는 저장 프로시저가
-이미 존재하는 경우에 에러가 발생한다.
+- 큐 생성시에 데이터베이스 내부적으로 “큐 이름”+ “_NEXT_MSG_ID”라는 명칭의 테이블 객체가 생성된다. 따라서 생성 하고자 하는 큐의 이름 또는 “큐 이름”+ “_NEXT_MSG_ID”과 동일한 이름의 테이블, 뷰, 시퀀스, 시노님, 또는 저장 프로시저가 이미 존재하는 경우에 에러가 발생한다.
+
 
 #### 예제
 
 \<질의\> 메시지의 길이가 최대 40이고, 최대 레코드 개수가 1,000,000인 Q1이라는
 이름의 큐를 생성하라.
 
-iSQL\> CREATE QUEUE Q1(40) MAXROWS 1000000;
-
+```
+iSQL> CREATE QUEUE Q1(40) MAXROWS 1000000;
 Create success.
+```
 
 \<질의\> 'Q1' 이름의 큐를 생성할 때, numeric(5,2) 타입의 값을 저장할 수 있는
 2개의 칼럼을 생성하라.
 
-iSQL\> CREATE QUEUE Q1(c1 numeric(5,2), c2 numeric(5,2));
-
+```
+iSQL> CREATE QUEUE Q1(c1 numeric(5,2), c2 numeric(5,2));
 Create success.
+```
 
 \<질의\> 사용자 칼럼을 정의한 'Q2' 이름의 큐를 생성하고, 해당 칼럼에 메세지를
 입력 후, 삭제하라.
 
-iSQL\> CREATE QUEUE Q2(V1 VARCHAR(10), V2 INTEGER, V3 NUMERIC(5,3));
-
+```
+iSQL> CREATE QUEUE Q2(V1 VARCHAR(10), V2 INTEGER, V3 NUMERIC(5,3));
 Create success.
 
-iSQL\> ENQUEUE INTO Q2(V1, V2, V3) VALUES ('abc', 1, 99.999);
-
+iSQL> ENQUEUE INTO Q2(V1, V2, V3) VALUES ('abc', 1, 99.999);
 1 row inserted.
 
-iSQL\> DEQUEUE V1, V2, V3 FROM Q2;
-
-V1 V2 V3
-
-\----------------------------------------
-
-abc 1 99.999
-
+iSQL> DEQUEUE V1, V2, V3 FROM Q2;
+V1          V2          V3
+----------------------------------------
+abc         1           99.999
 1 row selected.
+```
+
+
 
 ### CREATE REPLICATION 
 
@@ -6464,13 +6462,15 @@ abc 1 99.999
 
 **create_replication ::=**
 
-
+![create_replication](media/SQL/create_replication.gif)
 
 **option_clause ::=**
 
 ![](media/SQL/27820f15feeda94f02d08fdd79b41b36.png)
 
 **replication_item ::=**
+
+![replication_item](media/SQL/replication_item.gif)
 
 #### 전제 조건
 
@@ -6486,25 +6486,25 @@ SYS 사용자만이 이중화 객체를 생성할 수 있다.
 지정하여 Master-Slave scheme을 사용할 수 있다. 이중화 충돌 해결에 대한 자세한
 내용은 *Replication Manual*을 참고한다.
 
-replication_name
+*replication_name*
 
 이중화 이름을 명시한다. 지역 서버와 원격 서버의 이중화 객체의 이름이 동일해야
-한다. 이중화 이름은 "[객체 이름 규칙](#object_namee)"을 따라야 한다.
+한다. 이중화 이름은 "[객체 이름 규칙](#object_name)"을 따라야 한다.
 
-FOR ANALYSIS \| FOR ANALYSIS PROPAGATION
+*FOR ANALYSIS \| FOR ANALYSIS PROPAGATION*
 
 XLog Sender를 생성한다. 자세한 설명은 *Log Analyzer User’s Manual*을 참고한다.
 
-FOR PROPAGABLE LOGGING
+*FOR PROPAGABLE LOGGING*
 
 이중화 수신자가 지역 서버로부터 전송 받은 로그를 다른 서버로 복제하기 위해
 로그를 기록한다. 이 기능은 recovery option과 함께 사용하지 않는다.
 
-FOR PROPAGATION
+*FOR PROPAGATION*
 
 복제된 로그를 이중화된 다른 서버로 전송한다.
 
-option_clause
+*option_clause*
 
 이중화 객체의 RECOVERY, OFFLINE, GROUPING, PARALLEL, GAPLESS 옵션을 지정하는
 절이다.
@@ -6514,30 +6514,30 @@ option_clause
 사용할 수 있다. 이중화 격차를 일정 수준 이하로 유지하기 위하여 갭 해소(GAPLESS)
 옵션도 지정할 수 있다. 자세한 설명은 *Replication Manual*을 참고한다.
 
-replication_host_ip
+*replication_host_ip*
 
 원격 서버의 IP 주소를 입력한다.
 
-replication_host_port_no
+*replication_host_port_no*
 
 원격 서버의 수신 쓰레드가 사용하는 포트번호를 입력한다. 이는 원격 서버
 altibase.properties 파일의 REPLICATION_PORT_NO프로퍼티 값과 일치해야 한다.
 
-USING conn_type [ib_latency]
+*USING conn_type [ib_latency]*
 
 원격 서버와의 통신방법(TCP 또는 InfiniBand)을 설정할 수 있다. 인피니밴드를
 사용할 경우에만 ib_latency 값을 설정할 수 있다. 인피니밴드를 사용하려면
 IB_ENABLE 프로퍼티 값이 1이어야 한다.
 
-user_name
+*user_name*
 
 이중화 대상 테이블의 소유자 이름을 명시한다.
 
-tbl_name
+*tbl_name*
 
 이중화 대상 테이블 이름을 명시한다.
 
-partition_name
+*partition_name*
 
 이중화 대상 파티션 이름을 명시한다.
 
@@ -6551,74 +6551,59 @@ partition_name
 
 지역 서버의 경우 (IP: 192.168.60)
 
-iSQL\> CREATE REPLICATION rep1
-
-WITH '192.168.1.12',35524
-
-FROM sys.employees TO sys.employees,
-
-FROM sys.departments TO sys.departments;
-
+```
+iSQL> CREATE REPLICATION rep1
+    WITH '192.168.1.12',35524
+    FROM sys.employees TO sys.employees,
+    FROM sys.departments TO sys.departments;
 Create success.
+```
 
 원격 서버의 경우 (IP: 192.168.1.12)
 
-iSQL\> CREATE REPLICATION rep1
-
-WITH '192.168.1.60',25524
-
-FROM sys.employees TO sys.employees,
-
-FROM sys.departments TO sys.departments;
-
-Create success.
+```
+iSQL> CREATE REPLICATION rep1
+    WITH '192.168.1.60',25524
+    FROM sys.employees TO sys.employees,
+    FROM sys.departments TO sys.departments;
+Create success. 
+```
 
 \<질의\> 원격 서버가 이중화 rep1의 로그를 수신 후, 다른 원격 서버로 로그를
 복제하여 전송하기 위한 이중화 rep2를 생성하여 전송한다.
 
-iSQL\> CREATE REPLICATION rep1
-
-FOR PROPAGABLE LOGGING WITH '192.168.1.12',35524
-
-FROM sys.t1 TO sys.t1;
-
-iSQL\> SELECT replication_name, role
-
-FROM system_.sys_replications_;
-
-REPLICATION_NAME ROLE
-
-\---------------------------------------------------------
-
-REP1 2
-
+```
+iSQL> CREATE REPLICATION rep1 
+    FOR PROPAGABLE LOGGING WITH '192.168.1.12',35524
+    FROM sys.t1 TO sys.t1;
+iSQL> SELECT replication_name, role 
+    FROM system_.sys_replications_;
+REPLICATION_NAME                          ROLE
+---------------------------------------------------------
+REP1                                      2
 1 row selected.
 
-iSQL\> CREATE REPLICATION rep2
-
-FOR PROPAGATION WITH '192.168.1.60',25524
-
-FROM sys.t1 TO sys.t1;
-
+iSQL> CREATE REPLICATION rep2
+    FOR PROPAGATION WITH '192.168.1.60',25524 
+    FROM sys.t1 TO sys.t1;
 Create success.
-
-iSQL\> SELECT replication_name, role
-
-FROM system_.sys_replications_;
-
-REPLICATION_NAME ROLE
-
-\---------------------------------------------------------
-
-REP2 3
-
+iSQL> SELECT replication_name, role 
+    FROM system_.sys_replications_;
+REPLICATION_NAME                          ROLE
+---------------------------------------------------------
+REP2                                      3
 1 row selected.
+```
+
+
 
 ### CREATE ROLE
 
 #### 구문
 
-create_role ::=
+**create_role ::=**
+
+![CREATE_ROLE](media/SQL/CREATE_ROLE.gif)
 
 #### 전제 조건
 
@@ -6635,13 +6620,9 @@ SYS 사용자와 CREATE ROLE 시스템 권한을 가진 사용자만이 롤(ROLE
 권한을 사용하려면 데이터베이스에 다시 접속해야 한다.
 
 롤에 부여할 수 있는 권한은 시스템 권한과 객체 권한이며, 이에 대한 사용 방법은
-GRANT 예제
+GRANT 예제와 REVOKE 예제를 참조한다.
 
-와 REVOKE 예제
-
-를 참조한다.
-
-role_name
+*role_name*
 
 생성될 롤의 이름을 명시한다. 이름은 데이터베이스 내에서 유일해야 한다.
 
@@ -6649,19 +6630,28 @@ role_name
 
 \<질의\> 이름이 alti_role인 롤을 생성한다.
 
-iSQL\> CREATE ROLE alti_role;
-
+```
+iSQL> CREATE ROLE alti_role;
 Create success.
+```
+
+
 
 ### CREATE SEQUENCE 
 
 #### 구문
 
-create_sequence ::=
+**create_sequence ::=**
 
-sequence_options ::=
+![create_sequence_image110](media/SQL/create_sequence_image110.gif)
 
-sync_table_clause ::=
+**sequence_options ::=**
+
+![sequence_options_create](media/SQL/sequence_options_create.gif)
+
+**sync_table_clause ::=**
+
+![sync_table_clause](media/SQL/sync_table_clause.gif)
 
 #### 전제 조건
 
@@ -6674,49 +6664,49 @@ ANY SEQUENCE 권한을 가져야한다.
 이 구문은 명시된 시퀀스 이름으로 새로운 시퀀스를 생성한다. 생성된 시퀀스는
 시퀀스 번호를 자동으로 생성하는데 사용된다.
 
-user_name
+*user_name*
 
 생성될 시퀀스의 소유자 이름을 명시한다. 생략하면 Altibase는 현재 세션에 연결된
 사용자의 스키마에 시퀀스를 생성한다.
 
-seq_name
+*seq_name*
 
-생성될 시퀀스 이름을 명시한다. 시퀀스 이름은 1장의 "[객체 이름
-규칙](#object_naming_rule)"을 따라야 한다.
+생성될 시퀀스 이름을 명시한다. 시퀀스 이름은 "[객체 이름
+규칙](#object_name)"을 따라야 한다.
 
-START WITH
+*START WITH*
 
 시퀀스의 시작값을 명시한다. 이는 MINVALUE와 MAXVALUE 사이의 값으로 지정
 가능하다. 이 값이 생략되고 INCREMENT BY의 값이 0보다 크면, 기본값은 시퀀스의
 최소값과 동일하다. 이 값이 생략되고 INCREMENT BY의 값이 0보다 작으면, 기본값은
 시퀀스의 최대값과 동일하다.
 
-INCREMENT BY
+*INCREMENT BY*
 
 시퀀스의 증감분을 명시한다. 기본값은 1이다. 이 값의 절대값은 MAXVALUE와
 MINVALUE의 차이보다 작아야 한다.
 
-MAXVALUE
+*MAXVALUE*
 
 시퀀스의 최대값을 명시한다. 이는 -9223372036854775807부터
 9223372036854775806까지의 범위내에서 지정 가능하다. 생략할 경우, INCREMENT BY의
 값이 0보다 크면 기본값은 9223372036854775806이다. INCREMENT BY의 값이 0보다
 작으면, 기본값은 -1이다.
 
-MINVALUE
+*MINVALUE*
 
 시퀀스의 최소값을 명시한다. 이는 -9223372036854775807부터
 9223372036854775806까지의 범위내에서 지정 가능하다. 생략할 경우, INCREMENT BY의
 값이 0보다 크면 기본값은 1이다. INCREMENT BY의 값이 0보다 작으면, 기본값은
 -9223372036854775807이다.
 
-CYCLE
+*CYCLE*
 
 이는 시퀀스가 최대값 또는 최소값 한계에 도달했을 때 다음 시퀀스 값을 계속
 생성할지 여부를 지정하는 옵션이다. 오름차순 시퀀스의 경우는 시퀀스의 다음 값은
 최소값에서 다시 순환되고, 내림차순 시퀀스의 경우는 최대값부터 다시 순환된다.
 
-CACHE
+*CACHE*
 
 시퀀스 값을 더 빠르게 액세스 하기 위하여 명시된 개수 만큼의 시퀀스 값들이
 메모리에 캐시된다. 캐시는 시퀀스가 처음 참조될 때 채워지며 다음 시퀀스 값을
@@ -6724,7 +6714,7 @@ CACHE
 이후의 다음 시퀀스 값 요청시에 시퀀스 값들이 메모리에 캐시된다. 이 값을 생략하면
 기본값은 20이다.
 
-ENABLE \| DISABLE SYNC TABLE
+*ENABLE \| DISABLE SYNC TABLE*
 
 시퀀스를 이중화하기 위한 시퀀스 이중화용 테이블을 생성할 것인지 여부를 지정한다.
 
@@ -6736,45 +6726,37 @@ ENABLE \| DISABLE SYNC TABLE
 
 #### 주의 사항
 
-새로 생성된 시퀀스에 대한 *sequence_name.*CURRVAL시도는 실패한다.
-*sequence_name.*CURRVAL로 새로 생성된 시퀀스에 접근하려면 먼저
-*sequence_name.*NEXTVAL을 사용해야만 한다.
+- 새로 생성된 시퀀스에 대한 *sequence_name.*CURRVAL시도는 실패한다.
+  *sequence_name.*CURRVAL로 새로 생성된 시퀀스에 접근하려면 먼저
+  *sequence_name.*NEXTVAL을 사용해야만 한다.
+- 시퀀스 이름의 길이가 36 바이트 이하여야 시퀀스 이중화용 테이블을 생성할 수 있다.
 
-시퀀스 이름의 길이가 36 바이트 이하여야 시퀀스 이중화용 테이블을 생성할 수 있다.
 
 #### 예제
 
 다음 SQL문들을 이용하여 새로운 시퀀스를 정의하고 시퀀스 값과 정보를 확인해본다.
 
-iSQL\> CREATE TABLE seqtbl(i1 INTEGER);
-
+```
+iSQL> CREATE TABLE seqtbl(i1 INTEGER);
 Create success.
-
-iSQL\> CREATE OR REPLACE PROCEDURE proc1
-
+iSQL> CREATE OR REPLACE PROCEDURE proc1
 AS
-
 BEGIN
-
-FOR i IN 1 .. 10 LOOP
-
-INSERT INTO seqtbl VALUES(i);
-
-END LOOP;
-
+  FOR i IN 1 .. 10 LOOP
+    INSERT INTO seqtbl VALUES(i);
+  END LOOP;
 END;
-
 /
-
 Create success.
-
-iSQL\> EXEC proc1;
-
+iSQL> EXEC proc1;
 Execute success.
+```
 
 \<질의\> 다음 SQL문을 이용하여 시퀀스 객체로부터 정보를 확인한다.
 
-iSQL\> select \* from v\$seq;
+```
+iSQL> select * from v$seq;
+```
 
 이 구문은 생성되어 있는 모든 시퀀스 객체에 대한 정보를 읽어 들인다. Select \*
 from seq와 달리 다른 사용자의 시퀀스 정보도 확인할 수 있다. V\$SEQ 성능 뷰에
@@ -6784,423 +6766,270 @@ from seq와 달리 다른 사용자의 시퀀스 정보도 확인할 수 있다.
 \<질의\> 13 부터 시작해서 3씩 증가하고 최소값이 0, 최대값이 무한대인
 seq1시퀀스를 생성하라.
 
-iSQL\> CREATE SEQUENCE seq1
-
-START WITH 13
-
-INCREMENT BY 3
-
-MINVALUE 0 NOMAXVALUE;
-
+```
+iSQL> CREATE SEQUENCE seq1
+  START WITH 13
+  INCREMENT BY 3
+  MINVALUE 0 NOMAXVALUE;
 Create success.
 
-iSQL\> INSERT INTO seqtbl VALUES(seq1.NEXTVAL);
-
+iSQL> INSERT INTO seqtbl VALUES(seq1.NEXTVAL);
 1 row inserted.
-
-iSQL\> INSERT INTO seqtbl VALUES(seq1.NEXTVAL);
-
+iSQL> INSERT INTO seqtbl VALUES(seq1.NEXTVAL);
 1 row inserted.
-
-iSQL\> SELECT \* FROM seqtbl;
-
-SEQTBL.I1
-
-\--------------
-
-1
-
-2
-
-3
-
-4
-
-5
-
-6
-
-7
-
-8
-
-9
-
-10
-
-13
-
-16
-
+iSQL> SELECT * FROM seqtbl;
+SEQTBL.I1   
+--------------
+1           
+2           
+3           
+4           
+5           
+6           
+7           
+8           
+9           
+10          
+13          
+16          
 12 rows selected.
+```
 
 \<질의\> 시퀀스 seq1을 50씩 증가 시키되 최대값 100에 도달한 경우에는 다시
 최소값부터 시작하도록 변경하라.
 
-iSQL\> ALTER SEQUENCE sys.seq1
-
-INCREMENT BY 50
-
-MAXVALUE 100
-
-CYCLE;
-
+```
+iSQL> ALTER SEQUENCE sys.seq1
+  INCREMENT BY 50
+  MAXVALUE 100
+  CYCLE;
 Alter success.
 
-iSQL\> INSERT INTO sys.seqtbl VALUES(seq1.NEXTVAL);
-
+iSQL> INSERT INTO sys.seqtbl VALUES(seq1.NEXTVAL);
 1 row inserted.
-
-iSQL\> INSERT INTO sys.seqtbl VALUES(seq1.NEXTVAL);
-
+iSQL> INSERT INTO sys.seqtbl VALUES(seq1.NEXTVAL);
 1 row inserted.
-
-iSQL\> INSERT INTO sys.seqtbl VALUES(seq1.NEXTVAL);
-
+iSQL> INSERT INTO sys.seqtbl VALUES(seq1.NEXTVAL);
 1 row inserted.
-
-iSQL\> INSERT INTO sys.seqtbl VALUES(seq1.NEXTVAL);
-
+iSQL> INSERT INTO sys.seqtbl VALUES(seq1.NEXTVAL);
 1 row inserted.
-
-iSQL\> SELECT \* FROM sys.seqtbl;
-
-SEQTBL.I1
-
-\--------------
-
-1
-
-2
-
-3
-
-4
-
-5
-
-6
-
-7
-
-8
-
-9
-
-10
-
-13
-
-16
-
-66
-
-0
-
-50
-
-100
-
+iSQL> SELECT * FROM sys.seqtbl;
+SEQTBL.I1   
+--------------
+1           
+2           
+3           
+4           
+5           
+6           
+7           
+8           
+9           
+10          
+13          
+16          
+66          
+0           
+50          
+100         
 16 rows selected.
+```
 
 \<질의\> 새 번호 생성 전에 시퀀스 seq1의 현재 값을 확인하라.
 
-iSQL\> SELECT seq1.CURRVAL FROM dual;
-
-SEQ1.CURRVAL
-
-\-----------------------
-
-100
-
+```
+iSQL> SELECT seq1.CURRVAL FROM dual;
+SEQ1.CURRVAL         
+-----------------------
+100                   
 1 row selected.
+```
 
 \<질의\> 칼럼 i1의 값을 seq1 시퀀스의 다음 값인 0으로 갱신하라.
 
-iSQL\> UPDATE SEQTBL SET i1 = seq1.NEXTVAL;
-
+```
+iSQL> UPDATE SEQTBL SET i1 = seq1.NEXTVAL;
 16 rows updated.
+```
 
 \<질의\> 시퀀스 seq1의 현재 값을 확인하라.
 
-iSQL\> SELECT seq1.CURRVAL FROM dual;
-
-SEQ1.CURRVAL
-
-\-----------------------
-
-0
-
+```
+iSQL> SELECT seq1.CURRVAL FROM dual;
+SEQ1.CURRVAL         
+-----------------------
+0                   
 1 row selected.
+```
 
 \<질의\> 빠른 액세스를 위해 명시된 값 (25개) 만큼 시퀀스 값들을 메모리에
 캐시하도록 시퀀스 seq1을 변경하라.
 
-iSQL\> ALTER SEQUENCE seq1
-
+```
+iSQL> ALTER SEQUENCE seq1
 INCREMENT BY 2
-
 MAXVALUE 200
-
 CACHE 25;
-
 Alter success.
 
-iSQL\> CREATE OR REPLACE PROCEDURE proc2
-
+iSQL> CREATE OR REPLACE PROCEDURE proc2
 AS
-
 BEGIN
-
-FOR i IN 1 .. 30 LOOP
-
-INSERT INTO sqqtbl VALUES(seq1.NEXTVAL);
-
-END LOOP;
-
+  FOR i IN 1 .. 30 LOOP
+    INSERT INTO sqqtbl VALUES(seq1.NEXTVAL);
+  END LOOP;
 END;
-
 /
-
 Create success.
-
-iSQL\> EXEC proc2;
-
+iSQL> EXEC proc2;
 Execute success.
-
-iSQL\> SELECT \* FROM seqtbl;
-
-SEQTBL.I1
-
-\--------------
-
-0
-
-50
-
-100
-
-0
-
-50
-
-100
-
-0
-
-50
-
-100
-
-0
-
-50
-
-100
-
-0
-
-50
-
-100
-
-0
-
-2
-
-4
-
-6
-
-8
-
+iSQL> SELECT * FROM seqtbl;
+SEQTBL.I1   
+--------------
+0           
+50          
+100         
+0           
+50          
+100         
+0           
+50          
+100         
+0           
+50          
+100         
+0           
+50          
+100         
+0           
+2           
+4           
+6           
+8           
 10
-
 12
-
-14
-
+14          
 .
-
 .
-
-.
-
-58
-
-60
-
+.         
+58          
+60          
 46 rows selected.
+```
 
-SYS 계정으로 데이터베이스에 접속한 경우 아래 쿼리는 모든 시퀀스들의 정보를
+<질의> SYS 계정으로 데이터베이스에 접속한 경우 아래 쿼리는 모든 시퀀스들의 정보를
 출력한다.
 
-iSQL\> SELECT \* FROM SEQ;
-
-USER_NAME
-
-\--------------------------------------------
-
-SEQUENCE_NAME CURRENT_VALUE INCREMENT_BY
-
-\------------------------------------------------
-
-MIN_VALUE MAX_VALUE CYCLE CACHE_SIZE
-
-\------------------------------------------------
-
-SYS
-
-SEQ1 60 2
-
-0 200 YES 25
-
+```
+iSQL> SELECT * FROM SEQ;
+USER_NAME 
+--------------------------------------------
+SEQUENCE_NAME      CURRENT_VALUE      INCREMENT_BY 
+------------------------------------------------
+MIN_VALUE          MAX_VALUE          CYCLE             CACHE_SIZE 
+------------------------------------------------
+SYS 
+SEQ1               60                 2 
+0                  200                YES               25 
 1 row selected.
+```
 
-다음 SQL문들을 이용하여 여러 계정에서 새로운 시퀀스를 정의하고 시퀀스 값과
+<질의> 다음 SQL문들을 이용하여 여러 계정에서 새로운 시퀀스를 정의하고 시퀀스 값과
 정보를 확인해본다.
 
-iSQL\> CONNECT sys/manager;
-
+```
+iSQL> CONNECT sys/manager;
 Connect success.
-
-iSQL\> CREATE USER user1 IDENTIFIED BY user1;
-
+iSQL> CREATE USER user1 IDENTIFIED BY user1;
 Create success.
-
-iSQL\> CREATE USER user2 IDENTIFIED BY user2;
-
+iSQL> CREATE USER user2 IDENTIFIED BY user2;
 Create success.
-
-iSQL\> CONNECT user1/user1;
-
+iSQL> CONNECT user1/user1;
 Connect success.
-
-iSQL\> CREATE SEQUENCE seq1 MAXVALUE 100 CYCLE;
-
+iSQL> CREATE SEQUENCE seq1 MAXVALUE 100 CYCLE;
 Create success.
-
-iSQL\> CREATE SEQUENCE seq2;
-
+iSQL> CREATE SEQUENCE seq2;
 Create success.
+```
 
 \<질의\> user1이 생성한 모든 시퀀스의 정보를 출력한다.
 
-iSQL\> SELECT \* FROM SEQ;
-
-SEQUENCE_NAME CURRENT_VALUE INCREMENT_BY
-
-\------------------------------------------------
-
-MIN_VALUE MAX_VALUE CYCLE CACHE_SIZE
-
-\------------------------------------------------
-
-SEQ1 1 1
-
-1 100 YES 20
-
-SEQ2 1 1
-
-1 9223372036854775806 NO 20
-
+```
+iSQL> SELECT * FROM SEQ;
+SEQUENCE_NAME                             CURRENT_VALUE   INCREMENT_BY    
+------------------------------------------------
+MIN_VALUE              MAX_VALUE              CYCLE           CACHE_SIZE      
+------------------------------------------------
+SEQ1                                      1               1               
+1                      100                    YES             20              
+SEQ2                                      1               1               
+1                      9223372036854775806    NO              20              
 2 rows selected.
-
-iSQL\> CONNECT user2/user2;
-
+iSQL> CONNECT user2/user2;
 Connect success.
-
-iSQL\> CREATE SEQUENCE seq1 INCREMENT BY -30;
-
+iSQL> CREATE SEQUENCE seq1 INCREMENT BY -30;
 Create success.
-
-iSQL\> CREATE SEQUENCE seq2 INCREMENT BY -10 MINVALUE -100;
-
+iSQL> CREATE SEQUENCE seq2 INCREMENT BY -10 MINVALUE -100;
 Create success.
-
-iSQL\> CONNECT sys/manager;
-
+iSQL> CONNECT sys/manager;
 Connect success.
-
-iSQL\> CREATE SEQUENCE seq2 START WITH 20 INCREMENT BY 30;
-
+iSQL> CREATE SEQUENCE seq2 START WITH 20 INCREMENT BY 30;
 Create success.
-
-iSQL\> CREATE SEQUENCE seq3 CACHE 40;
-
+iSQL> CREATE SEQUENCE seq3 CACHE 40;
 Create success.
+```
 
 \<질의\> SYS 계정으로 데이터베이스에 접속한 경우 아래 쿼리는 모든 시퀀스의
 정보를 출력한다.
 
-iSQL\> SELECT \* FROM SEQ;
-
-USER_NAME
-
-\--------------------------------------------
-
-SEQUENCE_NAME CURRENT_VALUE INCREMENT_BY
-
-\------------------------------------------------
-
-MIN_VALUE MAX_VALUE CYCLE CACHE_SIZE
-
-\------------------------------------------------
-
-SYS
-
-SEQ1 60 2
-
-0 200 YES 25
-
-SYS
-
-SEQ2 20 30
-
-1 9223372036854775806 NO 20
-
-SYS
-
-SEQ3 1 1
-
-1 9223372036854775806 NO 40
-
-USER1
-
-SEQ1 1 1
-
-1 100 YES 20
-
-USER1
-
-SEQ2 1 1
-
-1 9223372036854775806 NO 20
-
-USER2
-
-SEQ1 -1 -30
-
-\-9223372036854775806 -1 NO 20
-
-USER2
-
-SEQ2 -1 -10
-
-\-100 -1 NO 20
-
+```
+iSQL> SELECT * FROM SEQ;
+USER_NAME 
+--------------------------------------------
+SEQUENCE_NAME      CURRENT_VALUE         INCREMENT_BY 
+------------------------------------------------
+MIN_VALUE          MAX_VALUE             CYCLE              CACHE_SIZE 
+------------------------------------------------
+SYS 
+SEQ1               60                    2 
+0                  200                   YES                25 
+SYS 
+SEQ2               20                    30 
+1                  9223372036854775806   NO                 20 
+SYS 
+SEQ3               1                     1 
+1                  9223372036854775806   NO                 40 
+USER1 
+SEQ1               1                     1 
+1                  100                   YES                20 
+USER1 
+SEQ2               1                     1 
+1                  9223372036854775806   NO                 20 
+USER2 
+SEQ1               -1                    -30 
+-9223372036854775806 -1                  NO                 20 
+USER2 
+SEQ2               -1                    -10 
+-100               -1                    NO                 20 
 7 rows selected.
+```
 
 \<질의\> 캐시의 크기가 100이고 시퀀스 이중화용 테이블을 생성하는 시퀀스 seq1를
 생성하라.
 
+```
 CREATE SEQUENCE seq1 CACHE 100 ENABLE SYNC TABLE;
+```
+
+
 
 ### CREATE SYNONYM 
 
 #### 구문
 
-create_synonym ::=
+**create_synonym ::=**
+
+![create_synonym_image111](media/SQL/create_synonym_image111.gif)
 
 #### 전제 조건
 
@@ -7227,16 +7056,16 @@ create_synonym ::=
 
 다음 SQL문에서 시노님을 사용할 수 있다.
 
-| DML 문                                                       | DDL 문       |
-| ------------------------------------------------------------ | ------------ |
-| SELECT INSERT UPDATE DELETE MOVE LOCK TABLE MERGE ENQUEUE DEQUEUE | GRANT REVOKE |
+| DML 문                                                       | DDL 문             |
+| ------------------------------------------------------------ | ------------------ |
+| SELECT <br />INSERT <br />UPDATE <br />DELETE <br />MOVE <br />LOCK TABLE <br />MERGE <br />ENQUEUE <br />DEQUEUE | GRANT <br />REVOKE |
 
-OR REPLACE
+*OR REPLACE*
 
 이 절은 시노님이 이미 존재한다면 재생성 할 것을 지정한다. 이 절을 사용하면
 사용자가 시노님을 먼저 삭제하지 않고도 존재하는 시노님의 정의를 변경할 수 있다.
 
-PUBLIC 시노님과 PRIVATE 시노님
+*PUBLIC 시노님과 PRIVATE 시노님*
 
 PUBLIC 시노님은 모든 사용자가 사용할 수 있는 시노님이며, PRIVATE 시노님은 그
 시노님의 소유자만 사용할 수 있는 시노님이다.
@@ -7244,7 +7073,7 @@ PUBLIC 시노님은 모든 사용자가 사용할 수 있는 시노님이며, PR
 PUBLIC 시노님을 생성하려면 이 구문에 PUBLIC을 명시해야 한다. 이를 명시하지
 않으면 기본으로 PRIVATE 시노님이 생성된다.
 
-user_name
+*user_name*
 
 시노님 앞에 위치하는 사용자명은 시노님 소유자명이다.
 
@@ -7254,25 +7083,25 @@ PRIVATE 시노님을 생성하는 경우에 소유자명을 명시할 수 있다
 않을 경우 시노님은 CREATE SYNONYM문을 수행하는 세션에 연결된 사용자의 스키마에
 생성된다.
 
-synonym_name
+*synonym_name*
 
 생성할 시노님 이름과 동일한 이름의 테이블, 뷰, 시퀀스, 저장프로시저, 저장함수,
 또는 다른 시노님이 존재할 경우에는 오류가 반환된다. 시노님은 이들 객체와 동일한
 이름 영역 (namespace)에 저장되므로, 시노님의 이름은 자신이 속할 스키마 내에서
-유일해야 한다. 시노님의 이름은 1장의 "[객체 이름 규칙](#object_naming_rule)"을
+유일해야 한다. 시노님의 이름은  "[객체 이름 규칙](#object_name)"을
 따라야 한다.
 
-FOR clause
+*FOR clause*
 
 별칭을 제공할 대상 객체를 명시하는 절이다.
 
-user_name
+*user_name*
 
 별칭을 제공할 대상 객체의 소유자명을 명시한다. 지정하지 않을 경우에 Altibase는
 현재 세션에 접속되어 시노님을 생성하고 있는 사용자의 스키마에 속하는 것으로
 간주한다.
 
-object_name
+*object_name*
 
 별칭을 제공할 대상 객체명을 명시한다.
 
@@ -7332,69 +7161,48 @@ Altibase가 검사하는 순서는 다음과 같다.
 \<질의\> 사용자 altibase가 소유한 dept 테이블에 별칭으로 my_dept라는 시노님을
 현재 사용자 소유로 생성하고 이 시노님을 이용해서 DML문을 수행한다.
 
-iSQL\> CONNECT altibase/altibase;
-
+```
+iSQL> CONNECT altibase/altibase;
 Connect success.
-
-iSQL\> CREATE TABLE dept
-
-(
-
-id integer,
-
-name char(10),
-
-location varchar(40),
-
-member integer
-
-);
-
+iSQL> CREATE TABLE dept 
+     (
+     id integer,
+     name char(10), 
+     location varchar(40), 
+     member integer
+     );
 Create success.
-
-iSQL\> GRANT INSERT ON dept TO mylee;
-
+iSQL> GRANT INSERT ON dept TO mylee;
 Grant success.
-
-iSQL\> GRANT SELECT ON dept TO mylee;
-
+iSQL> GRANT SELECT ON dept TO mylee;
 Grant success.
-
-iSQL\> CONNECT mylee/mylee;
-
+iSQL> CONNECT mylee/mylee;
 Connect success.
-
-iSQL\> CREATE SYNONYM mylee.my_dept FOR altibase.dept;
-
+iSQL> CREATE SYNONYM mylee.my_dept FOR altibase.dept;
 Create success.
-
-iSQL\> INSERT INTO my_dept VALUES (1,'rndn1',NULL,4);
-
+iSQL> INSERT INTO my_dept VALUES (1,'rndn1',NULL,4);
 1 row inserted.
-
-iSQL\> SELECT \* FROM my_dept;
-
-MY_DEPT.ID MY_DEPT.NAME MY_DEPT.LOCATION
-
-\-------------------------------------------------------
-
-MY_DEPT.MEMBER
-
-\-----------------
-
-1 rndn1
-
-4
-
+iSQL> SELECT * FROM my_dept;
+MY_DEPT.ID  MY_DEPT.NAME  MY_DEPT.LOCATION 
+-------------------------------------------------------
+MY_DEPT.MEMBER 
+-----------------
+1           rndn1 
+4           
 1 row selected.
+```
+
+
 
 ### CREATE TABLE
 
 #### 구문
 
-create_table ::=
+**create_table ::=**
 
-[column_definition ::=](#create_table_column_definition), [table_constraint
+![CREATE_TABLE_2](media/SQL/CREATE_TABLE_2.gif)
+
+[table_constraint
 ::=](#table_constraint), [temporary_attributes_clause
 ::=](#temporary_attributes_clause),
 [table_partitioning_clause](#table_partitioning_clause), [access_mode_clause
@@ -7405,102 +7213,121 @@ create_table ::=
 ::=](#table_compression_clause), [lob_column_properties
 ::=](#lob_column_properties)
 
-column_definition ::=
+**column_definition ::=**
 
-[encrypt_clause ::=](#encrypt_clause), [variable_clause ::=](#variable_clause),
-[in_row_clause ::=](#in_row_clause), [default_clause ::=](#default_clause),
-[column_constraint ::=](#column_constraint_diagram)
+![column_definition_image113](media/SQL/column_definition_image113.gif)
 
-encrypt_clause::=
+**encrypt_clause::=**
 
-variable_clause::=
+**variable_clause::=**
 
-in_row_clause::=
+**in_row_clause::=**
 
-default_clause::=
+**default_clause::=**
 
-column_constraint ::=
+**column_constraint ::=**
 
-[unique_clause ::=](#unique_clause), [references_clause
-::=](#references_clause), [check_clause ::=](#check_clause)
+![column_constraint_image114](media/SQL/column_constraint_image114.gif)
 
-unique_clause ::=
+**unique_clause ::=**
 
-sort_order_clause ::=
+**sort_order_clause ::=**
 
-unique_specification ::=
+**unique_specification ::=**
 
-sort_order_clause ::=
+**sort_order_clause ::=**
 
-directkey_clause ::=
+**directkey_clause ::=**
 
-using_index_clause ::=
+**using_index_clause ::=**
 
-[index_partitioning_clause ::=](#index_partitioning_clause)
 
-index_attribute_clause ::=
+
+**index_attribute_clause ::=**
 
 [memory_index_attributes ::=](#memory_index_attributes), [disk_index_attributes
 ::=](#disk_index_attributes)
 
-references_clause::=
+**references_clause::=**
 
-check_clause ::=
+**check_clause ::=**
 
-table_constraint ::=
+<a name="table_constraint"><a/>
 
-table_unique_clause ::=
+**table_constraint ::=**
 
-[unique_specification ::=](#unique_specification), [sort_order_clause
-::=](#sort_order_clause), [directkey_clause](#directkey_clause)::=,
-[using_index_clause ::=](#create_table_using_index_clause)
+**table_unique_clause ::=**
+
+
 
 referential_constraint ::=
 
 [references_clause ::=](#references_clause)
 
-temporary_attributes_clause ::=
+<a name="temporary_attributes_clause"><a/>
 
-table_partitioning_clause ::=
+**temporary_attributes_clause ::=**
+
+
+
+
+
+<a name="table_partitioning_clause"><a/>
+
+**table_partitioning_clause ::=**
 
 [range_partitioning ::=](#range_partitioning), [hash_partitioning
 ::=](#hash_partitioning), [list_partitioning ::=](#list_partitioning),
 [row_movement_clause ::=](#row_movement_clause)
 
-range_partitioning ::=
+**range_partitioning ::=**
 
-[partition_range_clause ::=](#partition_range_clause)
 
-partition_default_clause ::=
 
-table_partition_description ::=
+**partition_default_clause ::=**
+
+**table_partition_description ::=**
 
 [lob_column_properties ::=](#lob_column_properties)*,* [access_mode_clause
 ::=](#access_mode_clause_CREATETALBE)
 
-partition_range_clause ::=
+**partition_range_clause ::=**
 
-*table_partition_description ::=*
+<a name="table_partition_description"><a/>
 
-hash_partitioning ::=
+**table_partition_description ::=**
+
+
+
+**hash_partitioning ::=**
 
 [table_partition_description ::=](#table_partition_description)
 
-list_partitioning ::=
+
+
+**list_partitioning ::=**
+
+
 
 [partition_default_clause ::=](#partition_default_clause)
 
-partition_list_clause ::=
+**partition_list_clause ::=**
 
 [table_partition_description ::=](#table_partition_description)
+
+
 
 <a name="row_movement_clause"><a/>
 
 **row_movement_clause ::=**
 
+![row_movement_clause](media/SQL/row_movement_clause.gif)
 
+<a name="access_mode_clause_CREATETALBE)"><a/>
 
-access_mode_clause ::=
+**access_mode_clause ::=**
+
+![ACCESS_MODE_CLAUSE_](media/SQL/ACCESS_MODE_CLAUSE_.gif)
 
 <a name="tablespace_clause"><a/>
 
