@@ -7219,6 +7219,8 @@ MY_DEPT.MEMBER
 
 **encrypt_clause::=**
 
+
+
 **variable_clause::=**
 
 **in_row_clause::=**
@@ -7323,6 +7325,8 @@ referential_constraint ::=
 
 ![row_movement_clause](media/SQL/row_movement_clause.gif)
 
+
+
 <a name="access_mode_clause_CREATETALBE)"><a/>
 
 **access_mode_clause ::=**
@@ -7337,6 +7341,8 @@ referential_constraint ::=
 
 <a name="physical_attributes_clause"><a/>
 
+<a name="create_table_physical_attributes_clause"><a/>
+
 **physical_attributes_clause ::=**
 
 
@@ -7344,6 +7350,8 @@ referential_constraint ::=
 **storage_clause ::=**
 
 
+
+<a name="log_compression_clause"><a/>
 
 **log_compression_clause ::=**
 
@@ -7355,9 +7363,13 @@ referential_constraint ::=
 
 
 
+<a name="parallel_clause"><a/>
+
 **parallel_clause::=**
 
 
+
+<a name="table_compression_clause"><a/>
 
 **table_compression_clause ::=**
 
