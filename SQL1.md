@@ -3311,6 +3311,8 @@ iSQL> ALTER SEQUENCE seq1 ENABLE SYNC TABLE;
 
 ![image67_add_column_clauses](media/SQL/image67_add_column_clauses.gif)
 
+<a name="column_definition"><a/>
+
 **column_definition::=**
 
 ![column_definition](media/SQL/column_definition.gif)
@@ -4982,7 +4984,7 @@ Alter success.
 
 **alter_trigger ::=**
 
-![alter_trigger](D:\emmachoigit\manuals\media\SQL\alter_trigger.gif)
+![alter_trigger](media/SQL/alter_trigger.gif)
 
 #### 전제 조건
 
@@ -5034,7 +5036,7 @@ Alter success.
 
 **alter_user ::=**
 
-![alter_user_image89](D:\emmachoigit\manuals\media\SQL\alter_user_image89.gif)
+![alter_user_image89](media/SQL/alter_user_image89.gif)
 
 [password_parameters ::=](#password_parameters)
 
@@ -5129,7 +5131,7 @@ iSQL> CONNECT rose2/rose2;
 
 **alter_view ::=**
 
-![alter_view_image90](D:\emmachoigit\manuals\media\SQL\alter_view_image90.gif)
+![alter_view_image90](media/SQL/alter_view_image90.gif)
 
 #### 전제 조건
 
@@ -5186,7 +5188,7 @@ DNO   EMP_AVG_SAL
 
 **alter_materialized_view ::=**
 
-![alter_mview](D:\emmachoigit\manuals\media\SQL\alter_mview.gif)
+![alter_mview](media/SQL/alter_mview.gif)
 
 #### 전제 조건
 
@@ -5220,7 +5222,7 @@ ALTER MATERIALIZED VIEW mv1 REFRESH COMPLETE ON DEMAND;
 
 **comment_on ::=**
 
-![comment_on_image91](D:\emmachoigit\manuals\media\SQL\comment_on_image91.gif)
+![comment_on_image91](media/SQL/comment_on_image91.gif)
 
 #### 전제 조건
 
@@ -5400,7 +5402,7 @@ Conjoin success.
 
 **create_database ::=**
 
-![create_database_image92](D:\emmachoigit\manuals\media\SQL\create_database_image92.gif)
+![create_database_image92](media/SQL/create_database_image92.gif)
 
 #### 전제 조건
 
@@ -5502,7 +5504,7 @@ Create success.
 
 #### 구문
 
-![create_directory](D:\emmachoigit\manuals\media\SQL\create_directory.gif)
+![create_directory](media/SQL/create_directory.gif)
 
 #### 전제 조건
 
@@ -5528,17 +5530,17 @@ CREATE DIRECTORY문의 실행은 SYS_DIRECTORIES\_ 메타 테이블에 디렉토
 기록할 뿐이며, 실제 운영 체제의 파일 시스템에 디렉토리를 생성하지는 않는다.
 따라서 사용자는 실제 파일 시스템에 수동으로 디렉토리를 생성해야 한다.
 
-OR REPLACE
+*OR REPLACE*
 
 이미 존재하는 디렉토리를 대체하여 같은 이름의 새로운 디렉토리를 생성하기 위한
 옵션이다. 파일 시스템상의 실제 디렉토리는 삭제되지 않는다.
 
-directory_name
+*directory_name*
 
 데이터베이스 객체로서의 디렉토리 이름을 명시한다. 디렉토리 이름은  "[객체
 이름 규칙](#object_name)"을 따라야 한다.
 
-path_name
+*path_name*
 
 운영 체제 파일 시스템 상의 디렉토리의 절대 경로를 문자열로 명시한다.
 
@@ -5547,64 +5549,83 @@ path_name
 \<질의\> /home/altibase/altibase_home/psm_msg 디렉토리를 가리키는 alti_dir1
 디렉토리 객체를 생성하라.
 
-iSQL\> create directory alti_dir1 as '/home/altibase/altibase_home/psm_msg';
-
+```
+iSQL> create directory alti_dir1 as '/home/altibase/altibase_home/psm_msg';
 Create success.
+```
 
 \<질의\> /home/altibase/altibase_home/psm_result 디렉토리를 가리키는 alti_dir1
 디렉토리 객체를 생성하라. 이미 alti_dir1 이름의 디렉토리가 데이터베이스에
 존재하는 경우 이를 대체하여 생성하라.
 
-iSQL\> create or replace directory alti_dir1 as
-'/home/altibase/altibase_home/psm_result';
-
+```
+iSQL> create or replace directory alti_dir1 as '/home/altibase/altibase_home/psm_result';
 Create success.
+```
+
+
+
+### <a name="create_index"><a/>
 
 ### CREATE INDEX 
 
 #### 구문
 
-create_index ::=
+**create_index ::=**
 
-[table_index_clause ::=](#table_index_clause), [memory_index_clause
-::=](#memory_index_clause), [disk_index_clause ::=](#disk_index_clause),
-[storage_clause ::=](#create_idx_storage_clause)
+![create_index_image98](media/SQL/create_index_image98.gif)
 
-table_index_clause ::=
+**table_index_clause ::=**
 
-memory_index_clause ::=
+![table_index_clause](media/SQL/table_index_clause.gif)
 
-[domain_index_clause ::=](#domain_index_clause),
-[directkey_clause](#directkey_clause)::=, [memory_index_attributes
-::=](#memory_index_attributes)
+**memory_index_clause ::=**
 
-disk_index_clause::=
+![memory_index_clause_image98_1](media/SQL/memory_index_clause_image98_1.gif)
 
-*index_partitioning_clause ::=*, [domain_index_clause
-::=](#domain_index_clause), [disk_index_attributes ::=](#disk_index_attributes),
-[physical_attributes_clause ::=](#physical_attributes_clause)
+**disk_index_clause::=**
 
-domain_index_clause ::=
+![disk_index_clause_image98_2](media/SQL/disk_index_clause_image98_2.gif)
 
-directkey_clause ::=
+**domain_index_clause ::=**
 
-memory_index_attributes ::=
+![domain_index_clause](media/SQL/domain_index_clause.gif)
 
-[parallel_clause ::=](#create_idx_parallel_clause)
+**directkey_clause ::=**
 
-storage_clause ::=
+![directkey_clause](media/SQL/directkey_clause.gif)
 
-index_partitioning_clause ::=
+**memory_index_attributes ::=**
 
-index_partition_definition ::=
+![memory_index_attributes_image98_3](media/SQL/memory_index_attributes_image98_3.gif)
 
-disk_index_attributes::=
+**storage_clause ::=**
 
-parallel_clause ::=
+![storage_clause](media/SQL/storage_clause.gif)
 
-logging_clause ::=
+**index_partitioning_clause ::=**
 
-physical_attributes_clause ::=
+![index_partitioning_clause](media/SQL/index_partitioning_clause.gif)
+
+**index_partition_definition ::=**
+
+![index_partition_def](media/SQL/index_partition_def.gif)
+
+**disk_index_attributes::=**
+
+![disk_index_attributes_image98_4](media/SQL/disk_index_attributes_image98_4.gif)
+
+**parallel_clause ::=**
+
+![parallel_clause_create_index](media/SQL/parallel_clause_create_index.gif)
+
+**logging_clause ::=**
+
+![logging_clause_create_index](media/SQL/logging_clause_create_index.gif)
+
+**physical_attributes_clause ::=**
+
+![physical_attributes_clause_image98_5](media/SQL/physical_attributes_clause_image98_5.gif)
 
 #### 전제 조건
 
@@ -5632,26 +5653,26 @@ DETERMINISTIC으로 생성된 것이어야 한다. 또한, 사용자는 함수 �
 함수 기반 인덱스는 수식을 기반으로 생성된 인덱스이다. 이 수식은 내장 SQL 함수
 또는 사용자 정의 함수를 포함할 수 있다.
 
-user_name
+*user_name*
 
 생성될 인덱스의 소유자 이름을 명시한다. 생략하면 Altibase는 현재 세션에 연결된
 사용자의 스키마에 인덱스를 생성한다.
 
-index_name
+*index_name*
 
 생성될 인덱스 이름을 명시한다. 인덱스 이름은 1장의 "[객체 이름
-규칙](#object_naming_rule)"을 따라야 한다.
+규칙](#object_name)"을 따라야 한다.
 
-UNIQUE
+*UNIQUE*
 
 중복 값을 허용하지 않는다.
 
-LOCALUNIQUE
+*LOCALUNIQUE*
 
 파티션드 인덱스 생성시 사용할 수 있다. 파티션드 인덱스의 각 인덱스 파티션별로
 UNIQUE제약 조건을 만족해야 함을 가리킨다.
 
-index_expr
+*index_expr*
 
 여기에는 인덱스가 기반할 칼럼 또는 수식을 명시한다.
 
@@ -5683,11 +5704,11 @@ index_expr
 - QUERY_REWRITE_ENABLE 프로퍼티가 1인 경우에만, 쿼리 최적화 과정에서 함수 기반
   인덱스가 선택될 수 있다.
 
-ASC/DESC
+*ASC/DESC*
 
 각각의 인덱스 키 칼럼이 오름차순인지 내림차순인지를 지정한다.
 
-index_partitioning_clause
+*index_partitioning_clause*
 
 생성될 인덱스가 파티션드 인덱스임을 명시하고, 인덱스 파티션들이 저장될
 테이블스페이스를 지정하는 절이다. 이 절을 생략하면, 인덱스 파티션들은 테이블의
@@ -5708,19 +5729,23 @@ SYS_IDX1, SYS_IDX2, ... 와 같은 형태로 순차적으로 붙여진다.
 파티션드 인덱스 생성시 테이블스페이스를 명시하지 않으면, 각 인덱스 파티션이
 저장될 테이블스페이스는 아래 도표의 과정을 거쳐서 결정된다.
 
-주의: 메모리 인덱스는 테이블스페이스에 저장되지 않으므로, 각 파티션이 저장될
-테이블스페이스를 지정하더라도 이는 무시된다.
+![create_index_expl](media/SQL/create_index_expl.gif)
 
-BTREE
+> 주의: 메모리 인덱스는 테이블스페이스에 저장되지 않으므로, 각 파티션이 저장될
+> 테이블스페이스를 지정하더라도 이는 무시된다.
+
+
+
+*BTREE*
 
 B+-Tree 인덱스를 생성하도록 지시한다. 이는 범위 검색 시 유용하다. INDEXTYPE IS
 절 생략 시 기본으로 B+-Tree 인덱스가 생성된다.
 
-RTREE
+*RTREE*
 
 R-Tree 인덱스를 생성하도록 지시한다. 이는 다차원 데이터 처리 시 유용하다.
 
-directkey_clause
+*directkey_clause*
 
 이 절은 Direct Key인덱스를 생성시 사용할 수 있다. Direct Key란 인덱스 노드에
 저장되는 레코드이며, Direct Key 인덱스에는 레코드 포인터와 함께 실제 레코드도
@@ -5734,51 +5759,265 @@ directkey_clause
   지원하지 않는 타입은 MAXSIZE 값보다 설정 값이 큰 경우 인덱스 생성에
   실패한다.
 
-Direct Key인덱스의 제약사항
-
-- 복합 키 인덱스(Composite Index)에 Direct Key인덱스를 생성하는 경우 첫 번째
-  칼럼만 Direct Key로 설정된다.
-- 압축 칼럼과 암호화 칼럼은 Direct Key 인덱스를 설정할 수 없다.
-- 디스크 인덱스에는 Direct Key 인덱스를 설정할 수 없다.
+- Direct Key 인덱스의 제약사항
+  - 복합 키 인덱스(Composite Index)에 Direct Key인덱스를 생성하는 경우 첫 번째
+    칼럼만 Direct Key로 설정된다.
+  - 압축 칼럼과 암호화 칼럼은 Direct Key 인덱스를 설정할 수 없다.
+  - 디스크 인덱스에는 Direct Key 인덱스를 설정할 수 없다.
 
 아래는 Direct Key인덱스를 지원하는 데이터 타입을 나타내는 표이다.
 
-| 분류              | 자료형                           | MAXSIZE (Full Key 지원)                        | Partial Key 지원 |
-| ----------------- | -------------------------------- | ---------------------------------------------- | ---------------- |
-| Native 숫자형     | BINGINT                          | 8                                              | X                |
-|                   | DOUBLE                           | 8                                              | X                |
-|                   | INTEGER                          | 4                                              | X                |
-|                   | REAL                             | 4                                              | X                |
-|                   | SMALLINT                         | 2                                              | X                |
-| Non-Native 숫자형 | FLOAT FLOAT(p)                   | 23 3 + ( ( p + 2 ) / 2 )                       | X                |
-|                   | NUMBER NUMBER(p, s) NUMBER(p)    | 23 3 + ( ( p + 2 ) / 2 ) 3 + ( ( p + 2 ) / 2 ) | X                |
-|                   | NUMERIC NUMERIC(p, s) NUMERIC(p) | 23 3 + ( ( p + 2 ) / 2 ) 3 + ( ( p + 2 ) / 2 ) | X                |
-|                   | (=DECIMAL)                       |                                                |                  |
-| 문자형            | CHAR(M)                          | M + 2                                          | O                |
-|                   | VARCHAR(M)                       | M + 2                                          | O                |
-|                   | NCHAR(M)                         | (M \* 2) + 2 \<UTF16\> (M \* 3) + 2 \<UTF8     | O                |
-|                   | NVARCHAR(M)                      | (M \* 2) + 2 \<UTF16\> (M \* 3) + 2 \<UTF8\>   | O                |
-| 날짜형            | DATE                             | 8                                              | X                |
-| 이진 데이터형     | BIT(M)                           | (M / 8) + 4                                    | X                |
-|                   | VARBIT(M)                        | (M / 8) + 4                                    |                  |
-|                   | BYTE(M)                          | M + 2                                          | X                |
-|                   | NIBBLE(M)                        | (M / 2) + 1                                    |                  |
+<table>
+<tbody>
+<tr>
+<th>
+<p>분류</p>
+</th>
+<th>
+<p>자료형</p>
+</th>
+<th>
+<p>MAXSIZE</p>
+<p>(Full Key 지원)</p>
+</th>
+<th>
+<p>Partial Key 지원</p>
+</th>
+</tr>
+<tr>
+<td rowspan="5" >
+<p>Native 숫자형</p>
+</td>
+<td>
+<p>BINGINT</p>
+</td>
+<td>
+<p>8</p>
+</td>
+<td>
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>DOUBLE</p>
+</td>
+<td>
+<p>8</p>
+</td>
+<td>
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>INTEGER</p>
+</td>
+<td>
+<p>4</p>
+</td>
+<td>
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>REAL</p>
+</td>
+<td>
+<p>4</p>
+</td>
+<td>
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>SMALLINT</p>
+</td>
+<td>
+<p>2</p>
+</td>
+<td>
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td rowspan="3">
+<p>Non-Native 숫자형</p>
+</td>
+<td >
+<p>FLOAT</p>
+<p>FLOAT(p)</p>
+</td>
+<td>
+<p>23</p>
+<p>3 + ( ( p + 2 ) / 2 )</p>
+</td>
+<td>
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td >
+<p>NUMBER</p>
+<p>NUMBER(p, s)</p>
+<p>NUMBER(p)</p>
+</td>
+<td>
+<p>23</p>
+<p>3 + ( ( p + 2 ) / 2 )</p>
+<p>3 + ( ( p + 2 ) / 2 )</p>
+</td>
+<td>
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>NUMERIC</p>
+<p>NUMERIC(p, s)</p>
+<p>NUMERIC(p)<br /> &nbsp;(=DECIMAL)</p>
+</td>
+<td >
+<p>23</p>
+<p>3 + ( ( p + 2 ) / 2 )</p>
+<p>3 + ( ( p + 2 ) / 2 )</p>
+</td>
+<td>
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td rowspan="4">
+<p>문자형</p>
+</td>
+<td>
+<p>CHAR(M)</p>
+</td>
+<td>
+<p>M + 2</p>
+</td>
+<td>
+<p>O</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>VARCHAR(M)</p>
+</td>
+<td>
+<p>M + 2</p>
+</td>
+<td>
+<p>O</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>NCHAR(M)</p>
+</td>
+<td>
+<p>(M * 2) + 2 &lt;UTF16&gt;</p>
+<p>(M * 3) + 2 &lt;UTF8</p>
+</td>
+<td>
+<p>O</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>NVARCHAR(M)</p>
+</td>
+<td>
+<p>(M * 2) + 2 &lt;UTF16&gt;</p>
+<p>(M * 3) + 2 &lt;UTF8&gt;</p>
+</td>
+<td>
+<p>O</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>날짜형</p>
+</td>
+<td>
+<p>DATE</p>
+</td>
+<td>
+<p>8</p>
+</td>
+<td>
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td rowspan="4">
+<p>이진 데이터형</p>
+</td>
+<td>
+<p>BIT(M)</p>
+</td>
+<td>
+<p>(M / 8) + 4</p>
+</td>
+<td>
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>VARBIT(M)</p>
+</td>
+<td>
+<p>(M / 8) + 4</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>BYTE(M)</p>
+</td>
+<td>
+<p>M + 2</p>
+</td>
+<td>
+<p>X</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>NIBBLE(M)</p>
+</td>
+<td>
+<p>(M / 2) + 1</p>
+</td>
+<td>
+<p>&nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
 
-physical_attributes_clause
+
+
+*physical_attributes_clause*
 
 - INITRANS 절  
   TTS(Touched Transaction Slot)의 초기 개수를 지정한다. 기본값은 8개이다.
 - MAXTRANS 절  
   TTS의 최대 개수를 지정한다. 기본값은 30개이다.
 
-TABLESPACE 절
+*TABLESPACE 절*
 
 인덱스가 저장될 테이블스페이스 이름을 명시한다. 이 절을 생략하면 Altibase는
 인덱스를 그 인덱스가 속하는 스키마 소유자의 기본 테이블스페이스에 생성한다.
 그러나 메모리 테이블에 인덱스를 생성하는 구문에는 테이블스페이스를 지정하더라도
 메모리 인덱스는 테이블스페이스에 저장되지 않으므로 이는 무시된다.
 
-parallel_clause
+*parallel_clause*
 
 이는 인덱스를 생성하는 쓰레드의 개수를 결정하는 데 사용되는 힌트(hint)로 인덱스
 생성시 성능 향상을 목적으로 사용한다. Altibase는 사용자가 힌트로 지정한
@@ -5798,7 +6037,7 @@ parallel_factor의 값을 실제 CPU 개수보다 큰 값으로 설정하는 경
 512를 초과해 설정하는 경우, CPU 개수를 힌트로 사용하여 최적화된 인덱스 생성
 쓰레드 개수가 결정된다.
 
-logging_clause
+*logging_clause*
 
 로깅(LOGGING) 또는 노로깅(NOLOGGING) 옵션을 사용하면 디스크 테이블을 위한
 인덱스를 생성할 때 발생하는 로그를 기록하거나 기록하지 않게 할 수 있다. 기본
@@ -5810,7 +6049,7 @@ logging_clause
 *logging_clause*에 대한 자세한 설명은 *Administrator’s Manual*의 “데이터베이스
 객체 및 권한” 장의 “인덱스”를 참고한다.
 
-storage_clause
+*storage_clause*
 
 사용자가 세그먼트내의 익스텐트를 관리하는 파라미터를 지정할 수 있는 구문이다.
 
@@ -5827,246 +6066,228 @@ storage_clause
 
 #### 주의 사항
 
-파티션드 테이블에 인덱스(즉, 파티션드 인덱스)를 생성하는 경우, 각 로컬 인덱스가
-저장될 테이블스페이스는 index_partitioning_clause 에 따로따로 지정할 수 있다.
-disk_index_attributes는 파티션드 인덱스 전체를 위한 테이블스페이스를 지정하는데
-사용될 수 없다. 즉, 파티션드 인덱스 전체를 위한 테이블스페이스는 지정할 수 없다.
-또한 로컬 인덱스는 B+-tree 인덱스일 수만 있다.
+- 파티션드 테이블에 인덱스(즉, 파티션드 인덱스)를 생성하는 경우, 각 로컬 인덱스가
+  저장될 테이블스페이스는 index_partitioning_clause 에 따로따로 지정할 수 있다.
+  disk_index_attributes는 파티션드 인덱스 전체를 위한 테이블스페이스를 지정하는데
+  사용될 수 없다. 즉, 파티션드 인덱스 전체를 위한 테이블스페이스는 지정할 수 없다.
+  또한 로컬 인덱스는 B+-tree 인덱스일 수만 있다.
+- 시스템이나 미디어 고장시 NOLOGGING(FORCE/NOFORCE) 옵션으로 생성된 인덱스의
+  일관성은 보장되지 않을 수 있다. 이 경우 ‘The index is inconsistent.’라는 오류
+  메시지가 발생할 것이다. 이러한 오류를 해결하려면 일관성이 깨어진 인덱스를 찾아
+  삭제한 후에 해당 인덱스를 다시 생성하도록 한다. 인덱스의 일관성은
+  V\$DISK_BTREE_HEADER 성능 뷰로 확인할 수 있다.
 
-시스템이나 미디어 고장시 NOLOGGING(FORCE/NOFORCE) 옵션으로 생성된 인덱스의
-일관성은 보장되지 않을 수 있다. 이 경우 ‘The index is inconsistent.’라는 오류
-메시지가 발생할 것이다. 이러한 오류를 해결하려면 일관성이 깨어진 인덱스를 찾아
-삭제한 후에 해당 인덱스를 다시 생성하도록 한다. 인덱스의 일관성은
-V\$DISK_BTREE_HEADER 성능 뷰로 확인할 수 있다.
+- LOB 칼럼은 인덱스 키 칼럼이 될 수 없다.
 
-LOB 칼럼은 인덱스 키 칼럼이 될 수 없다.
 
 #### 예제
 
 \<질의 1\> 사원 테이블의 eno 칼럼 (오름차순)과 dno칼럼 (내림차순)에 인덱스
 emp_idx2를 생성하라.
 
-iSQL\> CREATE INDEX emp_idx2
-
-ON employees (eno ASC, dno DESC);
-
+```
+iSQL> CREATE INDEX emp_idx2
+    ON employees (eno ASC, dno DESC);
 Create success.
+```
 
 \<질의 2\> 사원 테이블의 dno 칼럼에 내림차순의 유니크 인덱스 emp_idx2를
 생성하라. (이는 사원 테이블에 레코드가 전혀 없거나 칼럼 dno에 unique한 값들만
 존재 할 때 가능하다.)
 
-iSQL\> CREATE UNIQUE INDEX emp_idx2
-
-ON employees (dno DESC);
-
+```
+iSQL> CREATE UNIQUE INDEX emp_idx2
+    ON employees (dno DESC);
 Create success.
+```
 
 \<질의 3\>테이블 employees의 eno 칼럼에 오름차순으로 B+tree 인덱스 emp_idx3를
 생성하라. 이미 사원 테이블의 eno칼럼에 PRIMARY KEY가 존재하기 때문에 인덱스
 emp_idx3를 생성하기 전에 기본키 제약을 삭제해야 한다. 그렇지 않으면, 다음 오류가
 발생할 것이다:
 
+```
 ERR-3104C: Duplicate key columns in an index
 
-iSQL\> ALTER TABLE employees
-
-DROP PRIMARY KEY;
-
+iSQL> ALTER TABLE employees
+    DROP PRIMARY KEY;
 Alter success.
-
-iSQL\> CREATE INDEX emp_idx3
-
-ON employees (eno ASC)
-
-INDEXTYPE IS BTREE;
-
+iSQL> CREATE INDEX emp_idx3
+    ON employees (eno ASC)
+    INDEXTYPE IS BTREE;
 Create success.
+```
 
 \<질의 4\> user_data 테이블스페이스에 table_user 테이블의 i1칼럼에 인덱스 idx1을
 생성하라.
 
-iSQL\> CREATE INDEX idx1
-
-ON table_user (i1)
-
-TABLESPACE user_data;
-
+```
+iSQL> CREATE INDEX idx1
+    ON table_user (i1)
+    TABLESPACE user_data;
 Create success.
+```
 
 \<질의 5\> user_data 테이블스페이스에 table_user 테이블의 i1 칼럼에 인덱스
 idx2을 병렬 옵션으로 생성하라.
 
-iSQL\> CREATE INDEX idx1
-
-ON table_user (i1)
-
-TABLESPACE user_data PARALLEL 4;
-
-Create success.
+```
+iSQL> CREATE INDEX idx1
+    ON table_user (i1)
+    TABLESPACE user_data PARALLEL 4;
+Create success. 
+```
 
 \<질의 6\> 로컬 인덱스, 즉 product_id를 기준으로 각 테이블 파티션에 대응하는
 파티션별로 인덱스를 생성하라. 파티션의 이름은 자동으로 부여되도록 하라.
 
+```
 CREATE INDEX prod_idx ON products(product_id) LOCAL;
+```
 
 \<질의 7\> 각각의 인덱스 파티션을 지정해서 로컬 인덱스를 생성하라.
 
-CREATE INDEX prod_idx ON products(product_id)
-
+```
+CREATE INDEX prod_idx ON products(product_id) 
 LOCAL
-
-(
-
-PARTITION p_idx1 ON p1 TABLESPACE tbs_disk1,
-
-PARTITION p_idx2 ON p2 TABLESPACE tbs_disk2,
-
-PARTITION p_idx3 ON p3 TABLESPACE tbs_disk3
-
+( 
+  PARTITION p_idx1 ON p1 TABLESPACE tbs_disk1,
+  PARTITION p_idx2 ON p2 TABLESPACE tbs_disk2,
+  PARTITION p_idx3 ON p3 TABLESPACE tbs_disk3 
 );
+```
 
 \<질의 8\> 인덱스 파티션 일부만 지정해서 로컬 인덱스를 생성하라. 지정하지 않은
 파티션은 자동으로 결정된다.
 
-CREATE INDEX prod_idx ON products(product_id)
-
+```
+CREATE INDEX prod_idx ON products(product_id) 
 LOCAL
-
-(
-
-PARTITION p_idx1 ON p1 TABLESPACE tbs_disk1,
-
-PARTITION p_idx3 ON p3 TABLESPACE tbs_disk3
-
+( 
+  PARTITION p_idx1 ON p1 TABLESPACE tbs_disk1,
+  PARTITION p_idx3 ON p3 TABLESPACE tbs_disk3 
 );
+```
 
 \<질의 9\> 테이블 employees의 사원번호(eno)에 인덱스 idx1을 생성하되 시스템
 고장이나 미디어 고장이 발생하더라도 사용할 수 있게 LOGGING 옵션을 사용하라.
 Employees 테이블이 디스크 테이블스페이스에 있다고 가정한다.
 
-iSQL\> CREATE INDEX idx1
-
-ON employees (eno);
-
+```
+iSQL> CREATE INDEX idx1
+    ON employees (eno);
 Create success.
 
 또는
 
-iSQL\> CREATE INDEX idx1
-
-ON employees (eno) LOGGING ;
-
+iSQL> CREATE INDEX idx1
+    ON employees (eno) LOGGING ;
 Create success.
+```
 
 \<질의 10\> 테이블 employees의 eno 칼럼(오름차순)과 dno칼럼(오름차순)에 인덱스
 idx1을 NOLOGGING 옵션으로 생성하라. 단, 인덱스 생성 후 시스템 고장이
 발생하더라도 인덱스가 사용가능하도록 FORCE옵션을 사용하라. Employees 테이블이
 디스크 테이블스페이스에 있다고 가정한다.
 
-iSQL\> CREATE INDEX idx1
-
-ON employees (eno ASC, dno ASC)
-
-NOLOGGING;
-
+```
+iSQL> CREATE INDEX idx1
+    ON employees (eno ASC, dno ASC)
+    NOLOGGING;
 Create success.
 
 또는
-
 사원번호(eno): ASC
-
 부서번호(dno): ASC
-
-iSQL\> CREATE INDEX idx1
-
-ON employees (eno ASC, dno ASC)
-
-NOLOGGING FORCE;
-
+iSQL> CREATE INDEX idx1
+    ON employees (eno ASC, dno ASC)
+    NOLOGGING FORCE;
 Create success.
+```
 
 \<질의 11\> 테이블 employees의 eno 칼럼(오름차순)과 dno칼럼(오름차순)에 인덱스
 idx1을 NOLOGGING 옵션으로 생성하고, 디스크에 반영하지 않게 NOFORCE옵션을
 사용하라. Employees 테이블이 디스크 테이블스페이스에 있다고 가정한다.
 
-iSQL\> CREATE INDEX idx1
-
-ON employees (eno ASC, dno ASC)
-
-NOLOGGING NOFORCE;
-
+```
+iSQL> CREATE INDEX idx1
+    ON employees (eno ASC, dno ASC)
+    NOLOGGING NOFORCE;
 Create success.
+```
 
 \<질의 12\> 디스크 테이블스페이스 USERTBS의 LOCAL_TBL 테이블에 인덱스
 LOCAL_IDX를 생성하라. 단, 인덱스 생성시 익스텐트 1개가 할당되고 인덱스 세그먼트
 크기 확장시마다 2개씩 증가되며, 세그먼트의 총 익스텐트 개수는 제한하지 않는다.
 
-iSQL\> CREATE INDEX LOCAL_IDX ON LOCAL_TBL ( I1 )
-
-TABLESPACE USERTBS
-
-STORAGE ( INITEXTENTS 1 NEXTEXTENTS 2 MAXEXTENTS UNLIMITED );
-
+```
+iSQL> CREATE INDEX LOCAL_IDX ON LOCAL_TBL ( I1 ) 
+ TABLESPACE USERTBS
+ STORAGE ( INITEXTENTS 1 NEXTEXTENTS 2 MAXEXTENTS UNLIMITED );
 Create success.
+```
 
 \<질의 13\> employees 테이블의 salary 칼럼을 사용해서 연봉에 기반한 함수 기반
 인덱스를 생성하라.
 
-iSQL\> CREATE INDEX income_idx ON employees (salary\*12);
-
+```
+iSQL> CREATE INDEX income_idx ON employees (salary*12);
 Create success.
+```
 
-\<질의 14\> 사용자 정의 함수를 사용해서 \<질의 14\>와 동일한 인덱스를 생성하라.
+\<질의 14\> 사용자 정의 함수를 사용해서 \<질의 13\>과 동일한 인덱스를 생성하라.
 
+```
 CREATE OR REPLACE FUNCTION get_annual_salary
-
-(salary in integer)
-
+(salary in integer) 
 RETURN integer
-
 DETERMINISTIC
-
 AS
-
 BEGIN
-
-RETURN salary\*12;
-
+    RETURN salary*12;
 END;
-
 /
 
-iSQL\> CREATE INDEX income_idx ON employees(sys.get_annual_salary(salary));
-
+iSQL> CREATE INDEX income_idx ON employees(sys.get_annual_salary(salary));
 Create success.
+```
 
 \<질의 15\> 테이블 employees의 eno 칼럼에 Direct Key 인덱스를 생성하라.
 
-iSQL\> CREATE INDEX direct_idx ON employees ( eno ) DIRECTKEY ;
-
+```
+iSQL> CREATE INDEX direct_idx ON employees ( eno ) DIRECTKEY ;
 Create success.
+```
 
 \<질의 16\> 테이블 tab1의 name 칼럼(varchar(100))에 32바이트의 레코드를 저장할
 수 있는 Direct Key 인덱스를 생성하라.
 
-iSQL\> CREATE INDEX idx1 ON tab1 ( name ) DIRECTKEY MAXSIZE 32;
-
+```
+iSQL> CREATE INDEX idx1 ON tab1 ( name ) DIRECTKEY MAXSIZE 32;
 Create success.
+```
+
+
 
 ### CREATE JOB 
 
 #### 구문
 
-create_job ::=
+**create_job ::=**
 
 ![](media/SQL/4962e4da941760b43081cc8c9c55fa28.png)
 
-execute_procedure_statement ::=
+**execute_procedure_statement ::=**
 
-start_end_clause ::=
+![execute_procedure_statement](media/SQL/execute_procedure_statement.gif)
 
-interval_clause ::=
+**start_end_clause ::=**
+
+![start_end_clause](media/SQL/start_end_clause.gif)
+
+**interval_clause ::=**
+
+![interval_clause](media/SQL/interval_clause.gif)
 
 #### 전제 조건
 
@@ -6079,7 +6300,7 @@ CREATE JOB 구문으로 작업 스케줄러에서 관리할 JOB을 생성할 수
 각각의 JOB은 실행할 프로시저와 시작 시간, 끝나는 시간 및 실행 주기 등의 일정을
 지정할 수 있다.
 
-execute_procedure_statement
+*execute_procedure_statement*
 
 JOB에 등록할 프로시저의 실행 구문을 명시한다. JOB 한 개에 한 개의 프로시저만
 등록할 수 있다. 프로시저의 사용자 이름은 생략할 수 있으며, SYS 사용자로
@@ -6088,22 +6309,22 @@ JOB에 등록할 프로시저의 실행 구문을 명시한다. JOB 한 개에 �
 
 프로시저에 대한 자세한 설명은 *Stored Procedures Manual*을 참조한다.
 
-start_end_clause
+*start_end_clause*
 
 JOB을 실행하는 시작 시간과 끝나는 시간을 설정할 수 있다. expr1에는 DATE 타입의
 값 또는 수식만 올 수 있다.
 
-interval_clause
+*interval_clause*
 
 JOB이 처음 실행된 이후에 다음에 반복적으로 실행할 주기를 명시한다. 시간 단위는
 number 다음에 명시되는 YEAR, MONTH, DAY, HOUR, MINUTE에 따라 결정된다.
 
-ENABLE/DISABLE
+*ENABLE/DISABLE*
 
 사용자가 각각의 JOB을 ENABLE/DISABLE을 선택하여 작업 스케줄러에서 수행 여부를
 설정할 수 있다. 생략하면, 기본값은 DISABLE이다.
 
-COMMENT
+*COMMENT*
 
 JOB에 대한 설명을 기술할 수 있다.
 
@@ -6127,32 +6348,32 @@ JOB에 대한 설명을 기술할 수 있다.
 \<질의\> 현재부터 시작되어 한 달에 한 번 주기로 proc1 프로시저를 실행하는 job1을
 생성하라 (job1의 상태는 DISABLE이다).
 
-iSQL\> CREATE JOB job1 EXEC proc1 START sysdate INTERVAL 1 MONTH;
-
+```
+iSQL> CREATE JOB job1 EXEC proc1 START sysdate INTERVAL 1 MONTH;
 Create success.
+```
 
 \<질의\> 2016년 8월 1일부터 8월 31일까지 매일 00:00:00에 proc 프로시저를
 수행하는 job2을 생성하고, job2의 상태를 활성화(ENABLE)하라.
 
-iSQL\> CREATE JOB job2 EXEC proc
-
+```
+iSQL> CREATE JOB job2 EXEC proc
 START to_date('2016/08/01 00:00:00', 'YYYY-MM-DD HH:MI:SS')
-
 END to_date('2016/08/31 00:00:00', 'YYYY-MM-DD HH:MI:SS')
-
 INTERVAL 1 DAY
-
 ENABLE;
-
 Create success.
+```
+
+
 
 ### CREATE QUEUE 
 
 #### 구문
 
-create_queue ::=
+**create_queue ::=**
 
-![](media/SQL/912745f42d1d8037e4462882f59e66ec.png)
+![create_queue_image108](media/SQL/create_queue_image108.gif)
 
 [column_definition ::=](#column_definition)
 
@@ -6241,13 +6462,15 @@ abc 1 99.999
 
 #### 구문
 
-create_replication ::=
+**create_replication ::=**
 
-option_clause ::=
+
+
+**option_clause ::=**
 
 ![](media/SQL/27820f15feeda94f02d08fdd79b41b36.png)
 
-replication_item ::=
+**replication_item ::=**
 
 #### 전제 조건
 
@@ -6266,7 +6489,7 @@ SYS 사용자만이 이중화 객체를 생성할 수 있다.
 replication_name
 
 이중화 이름을 명시한다. 지역 서버와 원격 서버의 이중화 객체의 이름이 동일해야
-한다. 이중화 이름은 "[객체 이름 규칙](#object_naming_rule)"을 따라야 한다.
+한다. 이중화 이름은 "[객체 이름 규칙](#object_namee)"을 따라야 한다.
 
 FOR ANALYSIS \| FOR ANALYSIS PROPAGATION
 
@@ -7374,17 +7597,17 @@ DML 작업이 수행되는 순간에 테이블 세그먼트를 위한 공간이 
 - 임시 테이블은 휘발성 테이블스페이스만 저장할 수 있다.
 - 임시 테이블에 대해서는 분산 트랜잭션이 지원되지 않는다.
 
-user_name
+*user_name*
 
 생성될 테이블 소유자 이름을 명시한다. 생략하면 Altibase는 현재 세션에 연결된
 사용자의 스키마에 테이블을 생성한다.
 
-tbl_name
+*tbl_name*
 
-생성될 테이블 이름을 명시한다. 테이블 이름은 1장의 "[객체 이름
-규칙](#object_naming_rule)"을 따라야 한다.
+생성될 테이블 이름을 명시한다. 테이블 이름은  "[객체 이름
+규칙](#object_name)"을 따라야 한다.
 
-column_definition
+*column_definition*
 
 - DEFAULT  
   칼럼에 DEFAULT 절을 명시하지 않고 테이블을 생성한 경우, 데이터 삽입시 해당
@@ -7396,7 +7619,7 @@ column_definition
   값은 시스템에 의해 결정되기 때문에 명시적으로 DEFAULT 값을 설정할 수 없다.
   또한 TIMESTAMP 칼럼은 한 테이블에 하나만 생성할 수 있다.
 
-column_constraint
+*column_constraint*
 
 새로운 테이블을 생성할 때 칼럼에 대한 제약조건을 설정한다. 명시적으로 제약조건의
 이름을 지정할 수 있다. LOCALUNIQUE 제약조건은 파티션드 테이블에 사용될 수 있다.
@@ -7409,17 +7632,17 @@ column_constraint
 - 참조 무결성(referential integrity)
 - TIMESTAMP
 
-###### **PRIMARY KEY**
+*PRIMARY KEY*
 
 기본키의 값은 테이블 내에서 유일해야 하며 기본키에 속하는 칼럼은 널(NULL) 값을
 가질 수 없다. 한 테이블 내에 정의 가능한 기본키의 개수는 하나이며, 최대 32개
 칼럼들의 조합에 대해 기본 키를 생성할 수 있다.
 
-###### **LOCALUNIQUE**
+*LOCALUNIQUE*
 
 각 지역 인덱스별로 UNIQUE 제약조건을 만족해야 함을 명시하는 키워드이다.
 
-###### **UNIQUE**
+*UNIQUE*
 
 UNIQUE 제약조건을 정의하면 유니크 키에 해당하는 칼럼 (또는 칼럼의 조합)은 같은
 값을 2개 이상 가질 수 없다. 단, 널 값은 허용된다.
@@ -7429,15 +7652,15 @@ UNIQUE 제약조건을 정의하면 유니크 키에 해당하는 칼럼 (또는
 제약조건도 존재할 수 없다. 그러나 다른 칼럼 또는 다른 칼럼들의 조합에는 존재할
 수 있다. 최대 32개 칼럼의 조합에 대해 유니크 제약조건을 생성할 수 있다.
 
-###### **NULL**
+*NULL*
 
 해당 칼럼이 널 값을 가질 수 있다는 것을 의미한다.
 
-###### **NOT NULL**
+*NOT NULL*
 
 해당 칼럼이 널 값을 가질 수 없다는 것을 의미한다.
 
-###### **CHECK condition**
+*CHECK condition*
 
 해당 칼럼에 대한 무결성 규칙(Integrity Rule)을 지정한다. *column_constraint*
 절의 *condition* 내에서는 해당 칼럼만 참조할 수 있다.
@@ -7450,10 +7673,10 @@ CHECK 제약조건의 검사조건에는 아래와 같은 몇 가지 제한 사�
 - PRIOR 연산자를 사용할 수 없다.
 - LOB 타입의 데이터를 사용할 수 없다.
 
-directkey_clause
+*directkey_clause*
 
-이 절은 Direct Key인덱스를 생성시 사용할 수 있다. Direct Key 인덱스에 대한
-자세한 내용은 [CREATE INDEX](#create-index) 구문을 참고한다
+이 절은 Direct Key 인덱스를 생성시 사용할 수 있다. Direct Key 인덱스에 대한
+자세한 내용은 CREATE INDEX](#create-index) 구문을 참고한다
 
 check_clause
 
@@ -9344,7 +9567,7 @@ iSQL\> SELECT \* FROM SCORES;
 
 **<a name="password_parameters"><a/>password_parameters ::=**
 
-![password_parameters](D:\emmachoigit\manuals\media\SQL\password_parameters.gif)
+![password_parameters](media/SQL/password_parameters.gif)
 
 #### 전제 조건
 
