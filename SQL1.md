@@ -5036,7 +5036,7 @@ Alter success.
 
 ![alter_user_image89](D:\emmachoigit\manuals\media\SQL\alter_user_image89.gif)
 
-<a name="passowrd_parameters"><a/>password_parameters ::=
+<a name="link"><a/>password_parameters ::=
 
 #### 전제 조건
 
@@ -9319,7 +9319,7 @@ iSQL\> SELECT \* FROM SCORES;
 
 
 
-[**password_parameters ::=**](#passowrd_parameters)
+[**password_parameters ::=**](#password_parameters)
 
 ![password_parameters](D:\emmachoigit\manuals\media\SQL\password_parameters.gif)
 
