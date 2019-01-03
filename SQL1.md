@@ -5381,27 +5381,26 @@ Comment created.
 
 \<질의\> 테이블t1과 t2를 리스트 파티션드 테이블t3으로 변환한다.
 
-iSQL\> conjoin table t3
-
+```
+iSQL> conjoin table t3
 partition by list(i1)
-
 (
-
-table t1 to partition p1 values (1,2,3,4,5),
-
-table t2 to partition p2 values default
-
+  table t1 to partition p1 values (1,2,3,4,5),
+  table t2 to partition p2 values default
 )
-
 tablespace tbs3;
-
 Conjoin success.
+```
+
+
 
 ### CREATE DATABASE
 
 #### 구문
 
-create_database ::=
+**create_database ::=**
+
+![create_database_image92](D:\emmachoigit\manuals\media\SQL\create_database_image92.gif)
 
 #### 전제 조건
 
@@ -5421,13 +5420,13 @@ Tablespace)가 만들어진다. 생성되는 시스템 테이블스페이스는 
 데이터베이스 생성시 데이터베이스 캐릭터 셋과 내셔널 캐릭터 셋을 반드시 지정해야
 한다.
 
-database_name
+*database_name*
 
 생성할 데이터베이스 이름을 명시한다. 명시하는 데이터베이스 이름은 프로퍼티
 파일에 DB_NAME프로퍼티로 지정한 이름과 동일해야 한다. 다른 경우에는 오류가
 발생한다.
 
-INITSIZE 절
+*INITSIZE 절*
 
 메모리 데이터베이스의 초기 크기를 나타내며, 128M 또는 4G 등의 형식으로 사용할 수
 있다. 단위 없이 숫자만 명시할 경우, 기본으로 MB(Mega Bytes) 단위로 지정된다.
@@ -5443,7 +5442,7 @@ INITSIZE 절
 - SYS_DATA_FILE_MAX_SIZE, SYS_TEMP_FILE_MAX_SIZE, SYS_UNDO_FILE_MAX_SIZE
 - SYS_DATA_FILE_NEXT_SIZE, SYS_TEMP_FILE_NEXT_SIZE, SYS_UNDO_FILE_NEXT_SIZE
 
-ARCHIVELOG \| NOARCHIVELOG
+*ARCHIVELOG \| NOARCHIVELOG*
 
 데이터베이스를 archive log 모드 또는 noachive log 모드로 운영할지를 명시한다.
 아카이브로그 모드로 운영시 매체 복구에 대비할 수 있는 반면, 노아카이브로그
@@ -5452,7 +5451,7 @@ ARCHIVELOG \| NOARCHIVELOG
 Altibase 백업과 복구에 대한 자세한 정보는 *Administrator’s Manual*을 참고하기
 바란다.
 
-charset
+*charset*
 
 데이터베이스의 캐릭터 셋, 내셔날 캐릭터 셋을 지정한다.
 
@@ -5476,31 +5475,24 @@ charset
 \<질의\> 이름이 mydb이고, 데이터베이스 캐릭터 셋은 KSC5601, 내셔널 캐릭터 셋은
 UTF16인 10MB 크기의 데이터베이스를 생성하라.
 
-\$ isql -s localhost -u sys -p manager -sysdba
-
+```
+$ isql -s localhost -u sys -p manager -sysdba
 ..
-
-iSQL\> STARTUP PROCESS;
-
+iSQL> STARTUP PROCESS;
 Trying Connect to Altibase.. Connected with Altibase.
 
 TRANSITION TO PHASE: PROCESS
-
 Command execute success.
-
-iSQL\> CREATE DATABASE mydb INITSIZE=10M
-
-NOARCHIVELOG
-
-CHARACTER SET KSC5601
-
+iSQL> CREATE DATABASE mydb INITSIZE=10M 
+NOARCHIVELOG 
+CHARACTER SET KSC5601 
 NATIONAL CHARACTER SET UTF16;
-
 .
-
 .
-
 Create success.
+```
+
+
 
 ### CREATE DATABASE LINK
 
@@ -5509,6 +5501,8 @@ Create success.
 ### CREATE DIRECTORY
 
 #### 구문
+
+![create_directory](D:\emmachoigit\manuals\media\SQL\create_directory.gif)
 
 #### 전제 조건
 
@@ -5541,8 +5535,8 @@ OR REPLACE
 
 directory_name
 
-데이터베이스 객체로서의 디렉토리 이름을 명시한다. 디렉토리 이름은 1장의 "[객체
-이름 규칙](#object_naming_rule)"을 따라야 한다.
+데이터베이스 객체로서의 디렉토리 이름을 명시한다. 디렉토리 이름은  "[객체
+이름 규칙](#object_name)"을 따라야 한다.
 
 path_name
 
@@ -7277,35 +7271,61 @@ partition_list_clause ::=
 
 [table_partition_description ::=](#table_partition_description)
 
-**row_movement_clause ::=**<a name="row_movement_clause"><a/>
+<a name="row_movement_clause"><a/>
+
+**row_movement_clause ::=**
 
 
 
 access_mode_clause ::=
 
-**tablespace_clause ::=**<a name="tablespace_clause"><a/>
+<a name="tablespace_clause"><a/>
+
+**tablespace_clause ::=**
 
 
 
-**physical_attributes_clause ::=**<a name="physical_attributes_clause"><a/>
+<a name="physical_attributes_clause"><a/>
 
-storage_clause ::=
+**physical_attributes_clause ::=**
 
-log_compression_clause ::=
+
+
+**storage_clause ::=**
+
+
+
+**log_compression_clause ::=**
 
 ![]()
 
-**logging_clause ::=**<a name="logging_clause"><a/>
+<a name="logging_clause"><a/>
 
-parallel_clause::=
+**logging_clause ::=**
 
-table_compression_clause ::=
 
-**lob_column_properties ::=**<a name="lob_column_properties"><a/>
 
-LOB_storage_clause ::=
+**parallel_clause::=**
 
-lob_attributes ::=
+
+
+**table_compression_clause ::=**
+
+
+
+<a name="lob_column_properties"><a/>
+
+**lob_column_properties ::=**
+
+
+
+**LOB_storage_clause ::=**
+
+
+
+**lob_attributes ::=**
+
+
 
 #### 전제 조건
 
