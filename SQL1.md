@@ -5036,7 +5036,7 @@ Alter success.
 
 ![alter_user_image89](D:\emmachoigit\manuals\media\SQL\alter_user_image89.gif)
 
-<a name="link"><a/>password_parameters ::=
+<a name="password_parameters"><a/>password_parameters ::=
 
 #### 전제 조건
 
