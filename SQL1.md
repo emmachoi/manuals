@@ -3415,20 +3415,20 @@ ALTER TABLE 구문으로 파티션드 테이블(partitioned table)의 속성을 
 
 [표 3‑1] 파티셔닝 방법에 따른 지원 연산
 
-user_name
+*user_name*
 
 변경될 테이블의 소유자 이름이다. 생략하면 Altibase는 현재 세션에 연결된 사용자의
 스키마에 속한 것으로 간주한다.
 
-tbl_name
+*tbl_name*
 
 변경될 테이블 이름이다.
 
-parallel_clause
+*parallel_clause*
 
 CREATE TABLE의 parallel_clause 설명을 참고한다.
 
-alter_table_segment_attribute_clause
+*alter_table_segment_attribute_clause*
 
 - PCTFREE 절  
   이 절은 페이지에 이미 저장되어 있는 레코드를 갱신할 때 이용하기 위해 예약해
@@ -3445,7 +3445,7 @@ alter_table_segment_attribute_clause
 - MAXTRANS 절  
   이 절은 최대 TTS(Touched Transaction Slot)의 개수를 변경하기 위해 사용된다.
 
-storage_clause
+*storage_clause*
 
 이 절은 사용자가 세그먼트 내의 익스텐트를 관리하기 위한 파라미터를 지정하기 위해
 사용한다.
@@ -3459,7 +3459,7 @@ storage_clause
 - MAXEXTENTS 절  
   이 절은 세그먼트의 최대 익스텐트 개수를 지정한다.
 
-add_table_partition
+*add_table_partition*
 
 이는 파티션드 테이블에 파티션을 추가하는 절이다. 이 절은 해시 파티션드
 테이블에만 사용할 수 있다. 기존 파티션들에 로컬 인덱스가 이미 생성되어 있는
@@ -3467,14 +3467,14 @@ add_table_partition
 이름은 시스템에 의해 자동으로 결정되고, 그 인덱스는 새로 추가된 파티션과 같은
 테이블스페이스에 저장된다.
 
-partition_spec
+*partition_spec*
 
 이 절은 파티션의 이름과 파티션이 저장될 테이블스페이스를 명시하는데 사용된다.
 테이블스페이스 이름은 생략이 가능하며 이 때에는 파티션의 데이터는 해당 테이블이
 위치한 테이블스페이스에 저장된다. 또한, 해당 테이블에 인덱스가 존재한다면 인덱스
 파티션이 저장될 테이블스페이스를 지정할 수 있다.
 
-alter_partition
+*alter_partition*
 
 이 절은 파티션의 테이블스페이스를 변경하는 절이다. 변경되는 파티션의 레코드 뿐
 아니라 파티션에 생성한 로컬 인덱스와 LOB 칼럼도 이동할 수 있다.
@@ -3483,17 +3483,17 @@ alter_partition
 칼럼은 파티션이 디스크 테이블스페이스로 이동할 때에만 파티션과 다른
 테이블스페이스로 지정할 수 있다.
 
-partition_index_clause
+*partition_index_clause*
 
 파티션의 테이블 스페이스를 변경할 때, 파티션의 로컬 인덱스가 이동할
 테이블스페이스를 지정한다.
 
-partition_lob_column_clause
+*partition_lob_column_clause*
 
 파티션의 테이블 스페이스를 변경할 때, 파티션의 LOB 칼럼이 이동할
 테이블스페이스를 지정한다.
 
-table_partition_description
+*table_partition_description*
 
 이 절은 각 파티션이 저장될 테이블스페이스를 명시하고 LOB 컬럼이 있는 경우 LOB
 컬럼의 속성을 지정하는데 사용된다.
@@ -3502,28 +3502,28 @@ table_partition_description
 저장된다. 마찬가지로 LOB 컬럼을 위한 테이블스페이스 절이 생략된 경우에는 해당
 파티션의 테이블스페이스에 LOB컬럼의 데이터가 저장된다.
 
-테이블스페이스 적용 방식에 관한 더 자세한 내용은 [CREATE TABLE](#CREATE_TABLE)
-구문의 *table_partition_description*설명을 참고한다.
+테이블스페이스 적용 방식에 관한 더 자세한 내용은 CREATE TABLE
+구문의 *table_partition_description* 설명을 참고한다.
 
-index_partition_spec
+*index_partition_spec*
 
 SPLIT PARTITION, MERGE PARTITION, 또는 ADD PARTITION을 실행할 경우 새로운
 파티션이 생성된다. 이 때, 이 절은 테이블 파티션과 함께 자동으로 생성되는 인덱스
 파티션이 저장될 테이블스페이스를 지정하기 위해 사용될 수 있다.
 
-coalesce_table_partition
+*coalesce_table_partition*
 
 이 절은 해시 파티션에만 사용할 수 있다. 해시 파티션을 병합하고 데이터를
 재구성한다. 파티션을 병합하면 마지막 파티션이 선택되어 그 파티션의 데이터는
 남아있는 다른 파티션에 분배된 후 제거된다.
 
-drop_table_partition
+*drop_table_partition*
 
 이 절은 파티션을 제거하는데 사용된다. 파티션에 있는 데이터와 함께 로컬 인덱스도
 제거된다. 데이터를 삭제하지 않으려면, 파티션을 DROP을 하기 전에 다른 파티션과
 합병(MERGE)한다.
 
-merge_table_partition
+*merge_table_partition*
 
 두 개의 파티션을 한 개의 파티션으로 합병한다. INTO 절에 합병될 새로운 파티션의
 이름을 지정한다. 새로운 파티션의 이름으로 합병될 두 개의 파티션 이름 중의 하나
@@ -3547,11 +3547,11 @@ merge_table_partition
 파티션의 이름과 같고 그 파티션이 다른 테이블스페이스에 저장되어 있었다 하더라도
 새로운 파티션은 테이블의 기본 테이블스페이스에 저장된다.
 
-rename_table_partition
+*rename_table_partition*
 
 파티션의 이름을 변경한다.
 
-split_table_partition
+*split_table_partition*
 
 하나의 파티션을 두 개의 파티션으로 분리한다.
 
@@ -3572,29 +3572,29 @@ INTO 절은 분리된 2개의 파티션의 이름과 파티션이 저장될 테�
 
 테이블에 LOB 컬럼이 있는 경우 LOB 컬럼에 대한 속성을 따로 정의할 수 있다.
 
-truncate_table_partition
+*truncate_table_partition*
 
 해당 파티션 안에 있는 모든 데이터를 삭제한다.
 
-partition_access_mode
+*partition_access_mode*
 
 파티션에 대한 접근 모드를 읽기 전용 모드, 읽기/쓰기 모드 또는 읽기/추가 모드로
 변경한다.
 
-add_column_clause
+*add_column_clause*
 
 테이블에 새로운 칼럼을 추가한다.
 
-partition lob storage_clause
+*partition lob storage_clause*
 
 파티션드 테이블에 LOB 칼럼을 추가할 경우 이 절을 사용해서 LOB 칼럼 파티션을 어떤
 테이블스페이스에 저장할 것인지 지정할 수 있다.
 
-alter_column_clause
+*alter_column_clause*
 
 기존 칼럼의 기본 값을 변경한다.
 
-modify_column_clause
+*modify_column_clause*
 
 기존 칼럼의 자료형(data type)을 변경한다.
 
@@ -3604,22 +3604,21 @@ modify_column_clause
 감수하고서라도 자료형을 변경하고자 하는 경우 TOLERATE DATA LOSS 옵션을 사용하면
 된다.
 
-###### **자료형 변경시 전제 조건**
-
-- 문자형 데이터 타입 --\> 숫자형 데이터 타입  
-  문자형 데이터가 숫자와 소숫점으로만 구성되어야 한다.  
-  문자형 데이터가 숫자형 데이터 타입의 범위 내에 있어야 한다.
-- 문자형 데이터 타입 --\> 문자형 데이터 타입  
-  변경 전 데이터 타입의 길이보다 칼럼의 크기가 크거나 같아야 한다.
-- 숫자형 데이터 타입 --\> 문자형 데이터 타입  
-  변경 전 데이터 타입의 길이보다 칼럼의 크기가 크거나 같아야 한다.
-- 숫자형 데이터 타입 --\> 숫자형 데이터 타입  
-  데이터가 변경하려는 숫자형 데이터 타입의 범위 내에 있어야 한다.
-- 문자형 데이터 타입 --\> 날짜형 데이터 타입  
-  변경전의 데이터가 날짜형으로 저장되어 있어야 한다.  
-  데이터 형식이 DEFAULT_DATE_FORMAT 프로퍼티와 일치해야 한다.
-- 날짜형 데이터 타입 --\> 문자형 데이터 타입  
-  문자형으로 변환될 때 DEFAULT_DATE_FORMAT으로 변경된다.
+- ###### 자료형 변경시 전제 조건
+  - 문자형 데이터 타입 --\> 숫자형 데이터 타입  
+    문자형 데이터가 숫자와 소숫점으로만 구성되어야 한다.  
+    문자형 데이터가 숫자형 데이터 타입의 범위 내에 있어야 한다.
+  - 문자형 데이터 타입 --\> 문자형 데이터 타입  
+    변경 전 데이터 타입의 길이보다 칼럼의 크기가 크거나 같아야 한다.
+  - 숫자형 데이터 타입 --\> 문자형 데이터 타입  
+    변경 전 데이터 타입의 길이보다 칼럼의 크기가 크거나 같아야 한다.
+  - 숫자형 데이터 타입 --\> 숫자형 데이터 타입  
+    데이터가 변경하려는 숫자형 데이터 타입의 범위 내에 있어야 한다.
+  - 문자형 데이터 타입 --\> 날짜형 데이터 타입  
+    변경전의 데이터가 날짜형으로 저장되어 있어야 한다.  
+    데이터 형식이 DEFAULT_DATE_FORMAT 프로퍼티와 일치해야 한다.
+  - 날짜형 데이터 타입 --\> 문자형 데이터 타입  
+    문자형으로 변환될 때 DEFAULT_DATE_FORMAT으로 변경된다.
 
 | 변경후 변경전 | char | var char | nchar | nvarchar | clob | big int | dou ble | float | int eger | num ber | num eric | real | small int | date | blob | byte | nibble | bit  | varbit | geometry |
 | ------------- | ---- | -------- | ----- | -------- | ---- | ------- | ------- | ----- | -------- | ------- | -------- | ---- | --------- | ---- | ---- | ---- | ------ | ---- | ------ | -------- |
@@ -3649,20 +3648,20 @@ O: 데이터 타입 변경 조건을 만족하면, TOLERATE DATA LOSS 옵션을 
 △: 데이터 타입 변경 조건을 만족하고,TOLERATE DATA LOSS 옵션을 명시해야 기존
 칼럼의 자료형 변경 가능
 
-drop_column_clause
+*drop_column_clause*
 
 하나의 컬럼 혹은 여러 개의 컬럼을 삭제한다.
 
-rename_column_clause
+*rename_column_clause*
 
 칼럼 이름을 변경한다.
 
-reorganize_column_clause
+*reorganize_column_clause*
 
 칼럼의 데이터를 실제로 저장하고 있는 딕셔너리 테이블의 데이터를 재구축할 칼럼을
 명시한다.
 
-column_definition
+*column_definition*
 
 - DEFAULT  
   새로운 칼럼을 추가할 때 DEFAULT 절을 명시하지 않으면 각 행의 새로운 칼럼의
@@ -3671,7 +3670,7 @@ column_definition
 - TIMESTAMP  
   TIMESTAMP 칼럼을 추가한다.
 
-column_constraint
+*column_constraint*
 
 새로운 칼럼에 대해 제약조건을 명시한다.
 
@@ -3686,10 +3685,12 @@ column_constraint
 - USING INDEX TABLESPACE *tablespace_name*  
   제약 조건을 위해 생성되는 인덱스가 저장될 테이블스페이스를 지정한다.
 
-\* ALTER TABLE 문의 상당수의 절이 CREATE TABLE 문과 같은 기능을 가지고 있다.
-그러한 절들에 대한 자세한 정보는 [CREATE TABLE](#CREATE_TABLE)문을 참고한다.
+> ALTER TABLE 문의 상당수의 절이 CREATE TABLE 문과 같은 기능을 가지고 있다.
+> 그러한 절들에 대한 자세한 정보는 CREATE TABLE 문을 참고한다.
 
-constraints_clauses
+
+
+*constraints_clauses*
 
 테이블에 제약조건을 추가, 삭제하거나 이름을 변경하는 절이다.
 
@@ -3707,16 +3708,15 @@ constraints_clauses
   UNIQUE 제약 삭제
 - DROP LOCALUNIQUE
 
-RENAME TO
+*RENAME TO*
 
 테이블의 이름을 변경한다.
 
-MAXROWS
+*MAXROWS*
 
-테이블 생성 시 지정된 테이블의 최대 레코드 개수를 변경한다. 자세한 설명은
-[CREATE TABLE](#CREATE_TABLE) 문을 참고한다.
+테이블 생성 시 지정된 테이블의 최대 레코드 개수를 변경한다. 자세한 설명은 CREATE TABLE 문을 참고한다.
 
-ENABLE/DISABLE
+*ENABLE/DISABLE*
 
 해당 테이블(*tbl_name)*의 모든 인덱스들을 비활성화 또는 활성화 상태로 변경하는
 옵션이다. 서버 재구동 시 또는 데이터베이스 운영 중에 인덱스 빌딩 시간을
@@ -3727,29 +3727,24 @@ ENABLE/DISABLE
 대량의 레코드 삽입 후 인덱스를 다시 활성화(enable) 하면 데이터 로딩 시간이
 단축되어 성능을 향상시킬 수 있다.
 
-[^2]: 1 재구동 시의 성능을 극대화시키기 위해 인덱스 병렬 구축을 위한 구문을
+[^2]: 재구동 시의 성능을 극대화시키기 위해 인덱스 병렬 구축을 위한 구문을 제공한다.
 
-제공한다.
-
-[^3]: 2 데이타베이스에 대량의 데이타를 가진 테이블에 대해서 인덱스 생성시 인덱스
-
-생성 소요 시간은 인덱스의 개수에 비례한다. 하나의 테이블에 대해서 여러 개의
-인덱스를 동시에 구축하는 방법은 제공하지 않지만, 각 인덱스 별로 병렬 구축을
+[^3]: 데이타베이스에 대량의 데이타를 가진 테이블에 대해서 인덱스 생성시 인덱스 생성 소요 시간은 인덱스의 개수에 비례한다. 하나의 테이블에 대해서 여러 개의 인덱스를 동시에 구축하는 방법은 제공하지 않지만, 각 인덱스 별로 병렬 구축을
 수행한다면 인덱스 빌딩 시간을 최대한 단축시킬 수 있다.
 
-aging_clause
+*aging_clause*
 
 테이블 내에서 이미 논리적으로 삭제된 구 버전(old version)들을 물리적으로
 삭제한다. 파티션을 지정하여 수행할 수 있다.
 
-compact_clause
+*compact_clause*
 
 데이터가 없는 빈 페이지들을 테이블스페이스에 반환한다. MAXPAGES 구문으로 압축할
 수 있는 최대 페이지 크기를 지정할 수 있다. 압축을 수행하여도, Altibase는 실제로
 데이터를 옮기지는 않는다. 이 구문은 메모리 테이블과 휘발성 테이블에 대해서만
 지원되며, 파티션을 지정하여 수행할 수 있다.
 
-allocate_extent_clause
+*allocate_extent_clause*
 
 테이블 세그먼트에 명시적으로 익스텐트를 할당한다. SIZE에는 테이블 세그먼트에
 추가적으로 할당될 익스텐트의 총 크기를 지정한다. 여기에 명시한 값이 한 익스텐트
@@ -3762,27 +3757,27 @@ ACCESS *access_mode_clause*
 테이블에 대한 접근 모드를 읽기 전용 모드, 읽기/쓰기 모드 또는 읽기/추가 모드로
 변경한다.
 
-alter_table_tablespace
+*alter_table_tablespace*
 
 테이블의 테이블스페이스를 변경할 수 있으며, 기존 테이블에 생성한 인덱스와 LOB
 칼럼도 함께 이동할 수 있다. 이 때 파티션드 테이블 여부에 따라 레코드 이동과 컬럼
 속성의 변경이 묵시적으로 수행될 수 있다.
 
-###### **논파티션드 테이블의 경우**
+- ###### 논파티션드 테이블의 경우
+  - 테이블의 레코드를 이동한다.
+  - 디스크 테이블스페이스에서 메모리 또는 휘발성으로 테이블스페이스를 변경할
+    때는 VARIABLE이 가능한 컬럼을 VARIABLE로 변경한다
+  - 메모리 또는 휘발성 테이블스페이스에서 디스크로 테이블스페이스를 변경할 때는
+    모든 컬럼을 FIXED로 변경한다.
 
-- 테이블의 레코드를 이동한다.
-- 디스크 테이블스페이스에서 메모리 또는 휘발성으로 테이블스페이스를 변경할
-  때는 VARIABLE이 가능한 컬럼을 VARIABLE로 변경한다
-- 메모리 또는 휘발성 테이블스페이스에서 디스크로 테이블스페이스를 변경할 때는
-  모든 컬럼을 FIXED로 변경한다.
+- ###### **파티션드 테이블의 경우**
+  - 파티션드 테이블의 테이블스페이스만 변경할 수 있다. 이 때, 파티션의
+    테이블스페이스를 변경하지 않고, 파티션의 레코드도 이동하지 않는다.
+  - 파티션의 테이블스페이스를 변경하려면, alter_partition 절을 참고한다.
 
-###### **파티션드 테이블의 경우**
 
-- 파티션드 테이블의 테이블스페이스만 변경할 수 있다. 이 때, 파티션의
-  테이블스페이스를 변경하지 않고, 파티션의 레코드도 이동하지 않는다.
-- 파티션의 테이블스페이스를 변경하려면, alter_partition 절을 참고한다.
 
-table_move_index_clause
+*table_move_index_clause*
 
 테이블스페이스를 변경할 때, 해당 테이블의 인덱스를 저장할 테이블스페이스를
 지정할 수 있다.
@@ -3790,7 +3785,7 @@ table_move_index_clause
 단 테이블과 동일한 종류(메모리, 휘발성, 디스크)의 테이블스페이스로만 이동할 수
 있다.
 
-table_lob_column_clause
+*table_lob_column_clause*
 
 테이블스페이스를 변경할 때, 해당 테이블의 LOB 칼럼이 저장할 테이블스페이스를
 지정할 수 있다.
@@ -3798,59 +3793,57 @@ table_lob_column_clause
 단 파티션이 디스크 테이블스페이스로 이동하는 경우에만, LOB 칼럼을 저장할
 테이블스페이스를 다른 디스크 테이블스페이스로 지정할 수 있다.
 
-TOUCH
+*TOUCH*
 
 SCN(System Commit Number)을 증가시켜 옵티마이저가 테이블이 변경된 것으로
 인식하게 한다. 해당 테이블이 포함된 질의의 실행 계획을 재생성한다.
 
 #### 주의 사항
 
-이중화 대상 테이블의 정의는 변경할 수 없다. 칼럼의 자료형을 변경하는 것은
-테이블의 정의를 변경하는 것이므로 이중화 대상 테이블에는 허용되지 않는다.
+- 이중화 대상 테이블의 정의는 변경할 수 없다. 칼럼의 자료형을 변경하는 것은
+  테이블의 정의를 변경하는 것이므로 이중화 대상 테이블에는 허용되지 않는다.
+- 테이블에 파티션이 하나만 있으면 COALESCE/DROP TABLE PARTITION을 사용할 수 없다.
 
-테이블에 파티션이 하나만 있으면 COALESCE/DROP TABLE PARTITION을 사용할 수 없다.
+- 해시 파티션드 테이블에 DROP PARTITION과 MERGE PARTITION절을 사용할 수 없다. 대신
+  COALESCE PARTITION 절을 이용하도록 한다. 또한 해시 파티션드 테이블에는 SPLIT
+  PARTITION을 사용할 수 없다.
 
-해시 파티션드 테이블에 DROP PARTITION과 MERGE PARTITION절을 사용할 수 없다. 대신
-COALESCE PARTITION 절을 이용하도록 한다. 또한 해시 파티션드 테이블에는 SPLIT
-PARTITION을 사용할 수 없다.
+- 범위 파티션드 테이블의 경우 병합할 파티션은 서로 인접해 있어야 한다.
 
-범위 파티션드 테이블의 경우 병합할 파티션은 서로 인접해 있어야 한다.
+- 다른 테이블에 의해 참조되는 기본키(PRIMARY KEY) 또는 유니크 키가 테이블에
+  존재하면 그 테이블의 정의는 변경할 수 없다.
 
-다른 테이블에 의해 참조되는 기본키(PRIMARY KEY) 또는 유니크 키가 테이블에
-존재하면 그 테이블의 정의는 변경할 수 없다.
+- 칼럼 추가 또는 삭제로 테이블의 전체 칼럼 수가 0이 되거나 최대 칼럼 수인 1024개를
+  초과할 수 없다. 만약 테이블에 VARIABLE 속성의 칼럼이 있다면 그 테이블의 최대
+  허용 칼럼 수는 IN ROW 절에 지정한 값에 따라 1024개 이하가 될 것이다.
 
-칼럼 추가 또는 삭제로 테이블의 전체 칼럼 수가 0이 되거나 최대 칼럼 수인 1024개를
-초과할 수 없다. 만약 테이블에 VARIABLE 속성의 칼럼이 있다면 그 테이블의 최대
-허용 칼럼 수는 IN ROW 절에 지정한 값에 따라 1024개 이하가 될 것이다.
+- 기본키는 한 테이블에 한 개만 존재할 수 있다.
 
-기본키는 한 테이블에 한 개만 존재할 수 있다.
+- 참조 제약의 경우 외래키(foreign key)와 참조키(기본 키 또는 유니크 키)의 칼럼
+  개수와 각 칼럼의 자료형은 동일해야 한다.
 
-참조 제약의 경우 외래키(foreign key)와 참조키(기본 키 또는 유니크 키)의 칼럼
-개수와 각 칼럼의 자료형은 동일해야 한다.
+- 외래키와 관련있는 칼럼의 경우 칼럼의 자료형을 변경할 수 없다. 외래키가 걸려 있는
+  칼럼이거나 외래키에 의해 참조되는 키 (기본키 또는 유니크 키)가 걸려 있는 칼럼의
+  경우 데이터 타입 변경이 칼럼의 값을 변경시킬 수 있으므로, 데이터 타입 변경을
+  허용하지 않는다.
 
-외래키와 관련있는 칼럼의 경우 칼럼의 자료형을 변경할 수 없다. 외래키가 걸려 있는
-칼럼이거나 외래키에 의해 참조되는 키 (기본키 또는 유니크 키)가 걸려 있는 칼럼의
-경우 데이터 타입 변경이 칼럼의 값을 변경시킬 수 있으므로, 데이터 타입 변경을
-허용하지 않는다.
+- 한 테이블에 생성할 수 있는 인덱스의 최대 개수는 64개이다. 한 테이블의 기본키와
+  유니크 제약조건의 개수의 총합이 64개를 넘을 수 없다.
 
-한 테이블에 생성할 수 있는 인덱스의 최대 개수는 64개이다. 한 테이블의 기본키와
-유니크 제약조건의 개수의 총합이 64개를 넘을 수 없다.
+- 파티션드 테이블의 테이블스페이스를 변경할 때 각 파티션의 레코드는 이동하지
+  않는다.
 
-파티션드 테이블의 테이블스페이스를 변경할 때 각 파티션의 레코드는 이동하지
-않는다.
-
-메모리 또는 휘발성 테이블스페이스에서 디스크 테이블스페이스로 변경될 때 모든
-칼럼은 FIXED로 변경된다.
+- 메모리 또는 휘발성 테이블스페이스에서 디스크 테이블스페이스로 변경될 때 모든
+  칼럼은 FIXED로 변경된다.
 
 #### 제한 사항
 
-ADD/DROP CONSTRAINT 절을 사용해서 기존 칼럼에 TIMESTAMP 제약조건을 추가 또는
-삭제할 수 없다.
-
-TIMESTAMP 제약조건을 가진 칼럼에 INSERT 또는 UPDATE 수행 시 기본값으로 시스템
-시간 값이 입력된다. 따라서 ALTIER TABLE SET/DROP DEFAULT 문을 이용하여 DEFAULT를
-변경 또는 삭제할 수 없다. 자세한 설명은 [CREATE TABLE](#CREATE_TABLE)문을
-참고한다
+- ADD/DROP CONSTRAINT 절을 사용해서 기존 칼럼에 TIMESTAMP 제약조건을 추가 또는
+  삭제할 수 없다.
+- TIMESTAMP 제약조건을 가진 칼럼에 INSERT 또는 UPDATE 수행 시 기본값으로 시스템
+  시간 값이 입력된다. 따라서 ALTIER TABLE SET/DROP DEFAULT 문을 이용하여 DEFAULT를
+  변경 또는 삭제할 수 없다. 자세한 설명은 CREATE TABLE 문을
+  참고한다.
 
 #### 예제
 
@@ -3858,218 +3851,209 @@ TIMESTAMP 제약조건을 가진 칼럼에 INSERT 또는 UPDATE 수행 시 기�
 
 \<질의\> 테이블 books에 다음 칼럼들을 추가하라.
 
+```
 isbn: CHAR(10) PRIMARY KEY
-
 edition: INTEGER DEFAULT 1
 
-iSQL\> ALTER TABLE books
-
-ADD COLUMN (isbn CHAR(10) PRIMARY KEY,
-
-edition INTEGER DEFAULT 1);
-
+iSQL> ALTER TABLE books
+    ADD COLUMN (isbn CHAR(10) PRIMARY KEY,
+    edition INTEGER DEFAULT 1);
 Alter success.
+```
 
 또는
 
-iSQL\> ALTER TABLE books
-
-ADD COLUMN (isbn CHAR(10) CONSTRAINT const1
-
+```
+iSQL> ALTER TABLE books
+    ADD COLUMN (isbn CHAR(10) CONSTRAINT const1
 PRIMARY KEY, edition INTEGER DEFAULT 1);
-
 Alter success.
+```
 
 \<질의\> 테이블 books에서 isbn 칼럼을 삭제하라.
 
-iSQL\> ALTER TABLE books
-
-DROP COLUMN isbn;
-
+```
+iSQL> ALTER TABLE books
+    DROP COLUMN isbn;
 Alter success.
+```
 
 \<질의\> 테이블 books에 TIMESTAMP 칼럼을 추가하라.
 
-iSQL\> ALTER TABLE books
-
+```
+iSQL> ALTER TABLE books
 ADD COLUMN (due_date TIMESTAMP);
-
 Alter success.
+```
 
 \<질의\> 테이블 books에 isbn, due_date 칼럼인 due_date을 삭제하라.
 
-iSQL\> ALTER TABLE books
-
-DROP COLUMN (isbn, due_date);
-
+```
+iSQL> ALTER TABLE books
+     DROP COLUMN (isbn, due_date);
 Alter success.
+```
+
+
 
 ##### 기존 칼럼에 제약조건 추가/삭제
 
 \<질의\> 테이블 books의 기존 bno(북넘버) 칼럼에 UNIQUE 제약조건을 추가하라.
 
-iSQL\> ALTER TABLE books
-
-ADD UNIQUE(bno);
-
+```
+iSQL> ALTER TABLE books
+    ADD UNIQUE(bno);
 Alter success.
+```
 
 또는
 
-iSQL\> ALTER TABLE books
-
-ADD CONSTRAINT const1 UNIQUE(bno);
-
+```
+iSQL> ALTER TABLE books
+    ADD CONSTRAINT const1 UNIQUE(bno);
 Alter success
+```
 
 \<질의\> 테이블 boosk의 const1 제약조건의 이름을 변경하라.
 
-iSQL\> ALTER TABLE books
-
-RENAME CONSTRAINT const1 TO const_unique;
-
+```
+iSQL> ALTER TABLE books
+    RENAME CONSTRAINT const1 TO const_unique;
 Alter success
+```
 
 \<질의\> 테이블 books의 bno 칼럼의 UNIQUE 제약조건을 삭제하라.
 
-iSQL\> ALTER TABLE books
-
-DROP UNIQUE(bno);
-
+```
+iSQL> ALTER TABLE books
+    DROP UNIQUE(bno);
 Alter success.
+```
 
 또는
 
-iSQL\> ALTER TABLE books
-
-DROP CONSTRAINT const_unique;
-
+```
+iSQL> ALTER TABLE books
+    DROP CONSTRAINT const_unique;
 Alter success
+```
 
 \<질의\> 테이블 inventory에 다음 칼럼 추가 시 books 테이블의 isbn을 참조하는
 외래키 fk_isbn을 추가하라.
 
-isbn: CHAR(10)
-
-iSQL\> ALTER TABLE inventory
-
-ADD COLUMN(isbn CHAR(10) CONSTRAINT fk_isbn REFERENCES books(isbn));
-
+```
+isbn: CHAR(10) 
+iSQL> ALTER TABLE inventory
+    ADD COLUMN(isbn CHAR(10) CONSTRAINT fk_isbn REFERENCES books(isbn));
 Alter success.
+```
 
 \<질의\> 테이블 inventory의 제약조건 fk_isbn을 삭제하라.
 
-iSQL\> ALTER TABLE inventory
-
-DROP CONSTRAINT fk_isbn;
-
+```
+iSQL> ALTER TABLE inventory
+  DROP CONSTRAINT fk_isbn;
 Alter success.
+```
 
 \<질의\> 테이블 books에서 기본키 제약을 삭제하라.
 
-iSQL\> ALTER TABLE books
-
-DROP PRIMARY KEY;
-
+```
+iSQL> ALTER TABLE books
+    DROP PRIMARY KEY;
 Alter success.
+```
 
 \<질의\> 테이블 books의 칼럼 bno(북넘버)에 PRIMARY KEY 제약을 추가하고, 이때
 인덱스는 시스템 고장이나 미디어 고장이 발생하더라도 사용할 수 있게 LOGGING옵션을
 사용하라.
 
-iSQL\> ALTER TABLE books
-
-ADD PRIMARY KEY (bno) USING INDEX PARALLEL 4;
-
+```
+iSQL> ALTER TABLE books
+    ADD PRIMARY KEY (bno) USING INDEX PARALLEL 4;
 Alter success.
+```
 
 또는
 
-iSQL\> ALTER TABLE books
-
-ADD PRIMARY KEY (bno) USING INDEX LOGGING
-
-PARALLEL 4;
-
+```
+iSQL> ALTER TABLE books
+    ADD PRIMARY KEY (bno) USING INDEX LOGGING
+ PARALLEL 4;
 Alter success.
+```
 
 \<질의\> 테이블 books의 칼럼 bno(북넘버)에 PRIMARY KEY 제약을 추가하고, 이때
 인덱스는 NOLOGGING 옵션으로 생성하되 서버가 죽더라도 인덱스를 사용할 수 있게
 FORCE옵션도 사용하라.
 
-iSQL\> ALTER TABLE books
-
-ADD PRIMARY KEY (bno) USING INDEX NOLOGGING PARALLEL 4;
-
+```
+iSQL> ALTER TABLE books
+    ADD PRIMARY KEY (bno) USING INDEX NOLOGGING  PARALLEL 4;
 Alter success.
+```
 
 또는
 
-iSQL\> ALTER TABLE books
-
-ADD PRIMARY KEY (bno) USING INDEX NOLOGGING FORCE PARALLEL 4;
-
+```
+iSQL> ALTER TABLE books
+    ADD PRIMARY KEY (bno) USING INDEX NOLOGGING FORCE PARALLEL 4;
 Alter success.
+```
 
 \<질의\> 테이블 books의 칼럼 bno(북넘버)에 PRIMARY KEY 제약을 추가하고, 이때
 인덱스는 NOLOGGING 옵션으로 생성하고 디스크에 반영하지 않게 NOFORCE옵션을
 사용하라.
 
-iSQL\> ALTER TABLE books
-
-ADD PRIMARY KEY (bno) USING INDEX NOLOGGING NOFORCE PARALLEL 4;
-
+```
+iSQL> ALTER TABLE books
+    ADD PRIMARY KEY (bno) USING INDEX NOLOGGING NOFORCE PARALLEL 4;
 Alter success.
+```
 
 \<질의\> 테이블 books의 bno(북넘버) 칼럼에 값이 1에서 1000000 사이의 값이어야
 한다는 CHECK 제약조건을 추가하라.
 
-iSQL\> ALTER TABLE books ADD CHECK ( bno \>= 1 AND bno \<= 1000000 );
-
+```
+iSQL> ALTER TABLE books ADD CHECK ( bno >= 1 AND bno <= 1000000 );
 Alter success.
+```
+
+
 
 ##### 각 인덱스 파티션을 위한 테이블스페이스 지정
 
 \<질의\> 파티션드 테이블 t1에 LOCALUNIQUE 제약을 갖는 i2 컬럼을 추가하라.
 
-iSQL\> ALTER TABLE T1 ADD COLUMN
-
+```
+iSQL> ALTER TABLE T1 ADD COLUMN 
 (I2 INTEGER LOCALUNIQUE USING INDEX LOCAL
-
 (
-
-PARTITION P1_LOCALUNIQUE ON P1 TABLESPACE TBS3,
-
-PARTITION P2_LOCALUNIQUE ON P2 TABLESPACE TBS2,
-
-PARTITION P3_LOCALUNIQUE ON P3 TABLESPACE TBS1
-
+  PARTITION P1_LOCALUNIQUE ON P1 TABLESPACE TBS3,
+  PARTITION P2_LOCALUNIQUE ON P2 TABLESPACE TBS2,
+  PARTITION P3_LOCALUNIQUE ON P3 TABLESPACE TBS1
 )
-
 );
+```
 
 \<질의\> 파티션드 테이블 t3에 LOCALUNIQUE 제약을 갖는 i7 컬럼을 추가하되, 생성될
 파티션드 인덱스의 각 파티션이 저장될 테이블스페이스를 지정하라.
 
-iSQL\> ALTER TABLE t3
-
+```
+iSQL> ALTER TABLE t3
 ADD COLUMN ( i7 INTEGER LOCALUNIQUE USING INDEX LOCAL
-
 (
-
-PARTITION p1_localunique ON p1 TABLESPACE PMT_TBS,
-
-PARTITION p2_localunique ON p2 TABLESPACE PMT_TBS,
-
-PARTITION p3_localunique ON p3 TABLESPACE PMT_TBS2,
-
-PARTITION p4_localunique ON p4 TABLESPACE PMT_TBS3,
-
-PARTITION pd_localunique ON pd TABLESPACE PMT_TBS4
-
-));
-
+  PARTITION p1_localunique ON p1 TABLESPACE PMT_TBS,
+  PARTITION p2_localunique ON p2 TABLESPACE PMT_TBS,
+  PARTITION p3_localunique ON p3 TABLESPACE PMT_TBS2,
+  PARTITION p4_localunique ON p4 TABLESPACE PMT_TBS3,
+  PARTITION pd_localunique ON pd TABLESPACE PMT_TBS4
+)
+);
 Alter success.
+```
+
+
 
 ##### 칼럼 이름 변경
 
@@ -4083,261 +4067,247 @@ Alter success.
 
 \<질의\> 테이블 departments에서 칼럼 이름 dno를 dcode로 변경하라.
 
-iSQL\> ALTER TABLE departments
-
-RENAME COLUMN dno TO dcode;
-
+```
+iSQL> ALTER TABLE departments
+  RENAME COLUMN dno TO dcode;
 Alter success.
+```
+
+
 
 ##### DEFAULT 값 설정/삭제
 
 \<질의\> 테이블 employees에서 sex 칼럼의 기본값을 ‘M’으로 설정하라.
 
-iSQL\> ALTER TABLE employees
-
-ALTER (sex SET DEFAULT 'M');
-
+```
+iSQL> ALTER TABLE employees
+  ALTER (sex SET DEFAULT 'M');
 Alter success.
+```
 
 \<질의\> 테이블 employees에서 sex 칼럼의 기본값 설정을 삭제하라.
 
-iSQL\> ALTER TABLE employees
-
-ALTER (sex DROP DEFAULT);
-
+```
+iSQL> ALTER TABLE employees
+  ALTER (sex DROP DEFAULT);
 Alter success.
+```
+
+
 
 ##### 자료형 변경
 
 \<질의\> 테이블 books의 isbn 칼럼의 자료형을 CHAR(20) 형으로, edition 칼럼의
 자료형을 BIGINT 형으로 변경하라.
 
-iSQL\> ALTER TABLE books MODIFY COLUMN (isbn CHAR(20), edition BIGINT);
-
+```
+iSQL> ALTER TABLE books MODIFY COLUMN (isbn CHAR(20), edition BIGINT);
 Alter success.
+```
 
 \<질의\> books 테이블에서 isbn 칼럼의 자료형을 CHAR(20)에서 BIGINT형으로,
 edition 칼럼의 자료형을 BIGINT에서 FLOAT형으로 변경하라.
 
-iSQL\> ALTER TABLE books MODIFY COLUMN (isbn BIGINT TOLERATE DATA LOSS, edition
-FLOAT TOLERATE DATA LOSS);
-
+```
+iSQL> ALTER TABLE books MODIFY COLUMN (isbn BIGINT TOLERATE DATA LOSS, edition FLOAT TOLERATE DATA LOSS);
 Alter success.
+```
 
 \<질의\> t1 테이블에서 i1칼럼의 자료형을 CHAR(20)에서 DATE 형으로 변경하라.
 
-iSQL\> CREATE TABLE t1 (i1 CHAR(20));
-
+```
+iSQL> CREATE TABLE t1 (i1 CHAR(20));
 insert into t1 values (sysdate);
-
 Create success.
 
 ALTER TABLE t1 MODIFY COLUMN (i1 DATE TOLERATE DATA LOSS);
-
 Alter success.
+```
 
 \<질의\> 테이블 t에서 c4 칼럼의 자료형을 CHAR(14)에서 DATE 형으로 변경하라.
 
-iSQL\> ALTER TABLE t ADD COLUMN (c4 CHAR(14));
-
+```
+iSQL> ALTER TABLE t ADD COLUMN (c4 CHAR(14));
 Alter success.
 
-iSQL\> INSERT INTO t(c4) VALUES('20161123112119');
-
+iSQL> INSERT INTO t(c4) VALUES('20161123112119');
 1 row inserted.
 
-iSQL\>ALTER SESSION SET DEFAULT_DATE_FORMAT = 'YYYYMMDDHHMISS';
-
+iSQL>ALTER SESSION SET DEFAULT_DATE_FORMAT = 'YYYYMMDDHHMISS';
 Alter success.
 
-iSQL\> ALTER TABLE t MODIFY COLUMN (c4 DATE TOLERATE DATA LOSS);
-
+iSQL> ALTER TABLE t MODIFY COLUMN (c4 DATE TOLERATE DATA LOSS);
 Alter success.
+
+```
+
+
 
 ##### 테이블 이름 변경
 
 \<질의\> 테이블 books의 이름을 ebooks으로 변경하라.
 
-iSQL\> RENAME books TO ebooks;
-
+```
+iSQL> RENAME books TO ebooks;
 Rename success.
+```
 
 또는
 
-iSQL\> ALTER TABLE books
-
+```
+iSQL> ALTER TABLE books
 RENAME TO ebooks;
-
 Alter success.
+```
+
+
 
 ##### 테이블의 최대 레코드 개수 변경
 
 \<질의\> 테이블 departmenst에 최대 입력할 수 있는 레코드의 개수를 6000000개로
 설정하라.
 
-iSQL\> ALTER TABLE departments MAXROWS 6000000;
-
+```
+iSQL> ALTER TABLE departments MAXROWS 6000000;
 Alter success.
+```
+
+
 
 ##### 인덱스 활성화/비활성화
 
 \<질의\> 테이블 orders의 모든 인덱스를 비활성하라.
 
-iSQL\> ALTER TABLE orders ALL INDEX DISABLE;
-
+```
+iSQL> ALTER TABLE orders ALL INDEX DISABLE;
 Alter success.
+```
+
+
 
 ##### 파티션드 테이블 생성
 
 \<질의\> 범위, 리스트, 해시 파티션드 테이블을 생성하라.
 
-CREATE TABLE T1
-
-(
-
-I1 INTEGER,
-
-I2 INTEGER
-
-)
-
+```
+CREATE TABLE T1 
+( 
+	I1 INTEGER, 
+	I2 INTEGER 
+)    
 PARTITION BY RANGE(I1)
-
-(
-
-PARTITION P1 VALUES LESS THAN (100),
-
-PARTITION P2 VALUES LESS THAN (200),
-
-PARTITION P3 VALUES DEFAULT
-
+( 
+	PARTITION P1 VALUES LESS THAN (100),
+	PARTITION P2 VALUES LESS THAN (200),
+	PARTITION P3 VALUES DEFAULT 
 ) TABLESPACE SYS_TBS_DISK_DATA;
 
-CREATE TABLE T2
-
-(
-
-I1 INTEGER,
-
-I2 INTEGER
-
+ CREATE TABLE T2 
+( 
+	I1 INTEGER, 
+	I2 INTEGER 
 )
-
 PARTITION BY LIST (I1)
-
-(
-
-PARTITION P1 VALUES (1,2,3,4),
-
-PARTITION P2 VALUES (5,6,7,8),
-
-PARTITION P3 VALUES DEFAULT
-
+( 
+	PARTITION P1 VALUES (1,2,3,4),
+	PARTITION P2 VALUES (5,6,7,8),
+	PARTITION P3 VALUES DEFAULT 
 ) TABLESPACE SYS_TBS_DISK_DATA;
 
-CREATE TABLE T3
-
-(
-
-I1 INTEGER
-
-)
-
+ CREATE TABLE T3 
+( 
+	I1 INTEGER 
+)   
 PARTITION BY HASH (I1)
-
-(
-
-PARTITION P1,
-
-PARTITION P2
-
+( 
+	PARTITION P1, 
+	PARTITION P2 
 ) TABLESPACE SYS_TBS_DISK_DATA;
 
 CREATE TABLE T4
-
 (
-
-I1 INTEGER,
-
-I2 INTEGER
-
+	I1 INTEGER,
+	I2 INTEGER
 )
-
 PARTITION BY RANGE(I1)
-
 (
-
-PARTITION P1 VALUES LESS THAN (100),
-
-PARTITION P2 VALUES DEFAULT
-
+	PARTITION P1 VALUES LESS THAN (100),
+	PARTITION P2 VALUES DEFAULT
 );
 
 CREATE TABLE T5
-
 (
-
-I1 INTEGER,
-
-I2 INTEGER
-
+	I1 INTEGER,
+	I2 INTEGER
 )
-
 PARTITION BY LIST (I1)
-
 (
-
-PARTITION P1 VALUES DEFAULT
-
+	PARTITION P1 VALUES DEFAULT
 );
 
 CREATE TABLE T6
-
 (
-
-I1 INTEGER
-
+	I1 INTEGER
 )
-
 PARTITION BY HASH (I1)
-
 (
-
-PARTITION P1
-
+	PARTITION P1
 );
+```
+
+
 
 ##### 파티션 추가(ADD PARTITION)
 
 \<질의\> 해시 파티션드 테이블에 새로운 파티션을 추가하라..
 
+```
 ALTER TABLE T3 ADD PARTITION P3;
+```
+
+
 
 ##### 파티션 병합(COALESCE PARTITION)
 
 \<질의\> 해시 파티션드 테이블의 파티션을 병합하라.(T3에는 2개의 해시 파티션만
 남는다)
 
+```
 ALTER TABLE T3 COALESCE PARTITION;
+```
+
+
 
 ##### 파티션 삭제(DROP PARTITION)
 
 \<질의\> 테이블 T1에서 파티션 P2를 삭제한다.
 
+```
 ALTER TABLE T1 DROP PARTITION P2;
+```
+
+
 
 ##### 파티션 합병(MERGE PARTITION)
 
 \<질의\> 테이블 T1에 남아있는 파티션인 P1, P3를 P_1_3이라는 새로운 이름을 갖는
 파티션으로 합병한다.
 
+```
 ALTER TABLE T1 MERGE PARTITIONS P1, P3 INTO PARTITION P_1_3;
+```
+
+
 
 ##### 파티션 이름 변경(RENAME PARTITION)
 
 \<질의\> 파티션 P1의 이름을 P1_LIST로 변경한다.
 
+```
 ALTER TABLE T2 RENAME PARTITION P1 TO P1_LIST;
+```
+
+
 
 ##### 파티션 분리(SPLIT PARTITION)
 
@@ -4345,622 +4315,461 @@ ALTER TABLE T2 RENAME PARTITION P1 TO P1_LIST;
 이를 수행하면 200 \~ 350의 범위를 갖는 P_200_350이라는 이름의 파티션 하나가
 생성되고, 기존의 기본 파티션의 이름은 P_OVER_350으로 변경될 것이다.
 
+```
 ALTER TABLE T1 SPLIT PARTITION P3
-
 AT ( 350 ) INTO ( PARTITION P_200_350, PARTITION P_OVER_350 );
+```
 
 \<질의\> 리스트 파티션드 테이블의 경우에는 AT 대신 VALUES를 사용해서 분리한다.
 
-ALTER TABLE T2
-
-SPLIT PARTITION P1_LIST VALUES ( 2, 4 )
-
-INTO
-
-(
-
-PARTITION P_2_4 TABLESPACE TBS1,
-
-PARTITION P_1_3 TABLESPACE TBS2
-
+```
+ALTER TABLE T2 
+SPLIT PARTITION P1_LIST VALUES ( 2, 4 ) 
+INTO 
+( 
+	PARTITION P_2_4 TABLESPACE TBS1, 
+	PARTITION P_1_3 TABLESPACE TBS2 
 );
+```
+
+
 
 ##### 파티션 데이터 삭제(TRUNCATE PARTITION)
 
 \<질의\> 파티션 P5에 들어있는 모든 데이터를 삭제한다.
 
+```
 ALTER TABLE T1 TRUNCATE PARTITION P5;
+```
+
+
 
 ##### 파티션드 테이블 인덱스 생성
 
+```
 CREATE INDEX T4_IDX ON T4 ( I1 )
-
 LOCAL
-
 (
-
-PARTITION T4_P1_IDX ON P1,
-
-PARTITION T4_P2_IDX ON P2
-
+	PARTITION T4_P1_IDX ON P1,
+	PARTITION T4_P2_IDX ON P2
 );
 
 CREATE INDEX T5_IDX ON T5 ( I1 )
-
 LOCAL
-
 (
-
-PARTITION T5_P1_IDX ON P1
-
+	PARTITION T5_P1_IDX ON P1
 );
 
 CREATE INDEX T6_IDX ON T6 ( I1 )
-
 LOCAL
-
 (
-
-PARTITION T6_P1_IDX ON P1
-
+	PARTITION T6_P1_IDX ON P1
 );
+```
+
+
 
 ##### 인덱스 파티션 이름 지정
 
 \<질의\> 해시 파티션드 테이블에 새로운 파티션 추가 시, 인덱스 파티션 이름을
 지정한다.
 
+```
 ALTER TABLE T6 ADD PARTITION P2 INDEX ( T6_IDX PARTITION T6_P2_IDX );
+```
 
 \<질의\> 테이블 T4에 남아있는 파티션인 P1, P2를 P1으로 합병하고 인텍스 파티션
 이름을 지정한다.
 
+```
 ALTER TABLE T4 MERGE PARTITIONS P1, P2 INTO PARTITION P1 INDEX ( T4_IDX
 PARTITION T4_P1_IDX );
+
+
+```
 
 \<질의\> 범위 파티션드 테이블 T4에서 기본 파티션인 P1를 100을 기준으로 분리한다.
 P1은 In-place 분리이기 때문에 인덱스 파티션 이름을 지정할 수 없다.
 
+```
 ALTER TABLE T4 SPLIT PARTITION P1 AT ( 100 ) INTO
-
 (
-
-PARTITION P1,
-
-PARTITION P2 INDEX ( T4_IDX PARTITION T4_P2_IDX )
-
+  PARTITION P1,
+  PARTITION P2 INDEX ( T4_IDX PARTITION T4_P2_IDX )
 );
+```
 
 \<질의\> 리스트 파티션드 테이블의 경우에는 AT 대신 VALUES를 사용해서 분리한다.
 P1은 In-place 분리이기 때문에 인덱스 파티션 이름을 지정할 수 없다.
 
+```
 ALTER TABLE T5 SPLIT PARTITION P1 VALUES ( 2, 4 ) INTO
-
 (
-
-PARTITION P1,
-
-PARTITION P2 INDEX ( T5_IDX PARTITION T5_P2_IDX )
-
+  PARTITION P1,
+  PARTITION P2 INDEX ( T5_IDX PARTITION T5_P2_IDX )
 );
+```
+
+
 
 ##### row_movement_clause 절 이용
 
 \<질의\> 테이블 T1은 반드시 파티션드 테이블이어야 한다. 논파티션드 테이블일 경우
 에러가 발생한다.
 
+```
 ALTER TABLE T1 ENABLE ROW MOVEMENT;
+```
+
+
 
 ##### 테이블에 익스텐트 할당
 
 \<질의\> 디스크 테이블스페이스에 존재하는 LOCAL_TBL 테이블에 10M만큼의
 익스텐트를 할당한다.
 
-iSQL\> ALTER TABLE LOCAL_TBL ALLOCATE EXTENT ( SIZE 10M );
-
+```
+iSQL> ALTER TABLE LOCAL_TBL ALLOCATE EXTENT ( SIZE 10M );
 Alter success.
+```
+
+
 
 ##### 테이블의 테이블스페이스 변경
 
 \<질의\> 논파티션드 테이블을 생성하여 다른 저장 매체의 테이블스페이스로
 변경하라.
 
-iSQL\> CREATE MEMORY TABLESPACE mem_tbs_0 SIZE 32M AUTOEXTEND ON;
-
+```
+iSQL> CREATE MEMORY TABLESPACE mem_tbs_0 SIZE 32M AUTOEXTEND ON;
 Create success.
-
-iSQL\> CREATE VOLATILE TABLESPACE vol_tbs_0 SIZE 32M AUTOEXTEND ON;
-
+iSQL> CREATE VOLATILE TABLESPACE vol_tbs_0 SIZE 32M AUTOEXTEND ON;
 Create success.
-
-iSQL\> CREATE TABLE sales_table
-
-(
-
-sales_date DATE,
-
-sales_id NUMBER,
-
-sales_city VARCHAR(20)
-
-)
-
-TABLESPACE SYS_TBS_DISK_DATA UNCOMPRESSED LOGGING;
-
+iSQL> CREATE TABLE sales_table
+ (
+ sales_date DATE,
+ sales_id NUMBER,
+ sales_city VARCHAR(20)
+ )
+ TABLESPACE SYS_TBS_DISK_DATA UNCOMPRESSED LOGGING;
 Create success.
-
-iSQL\> -- Disk -\> Memory
-
-iSQL\> ALTER TABLE sales_table ALTER TABLESPACE SYS_TBS_MEM_DATA;
-
+iSQL> -- Disk -> Memory
+iSQL> ALTER TABLE sales_table ALTER TABLESPACE SYS_TBS_MEM_DATA;
 Alter success.
-
-iSQL\> -- Memory -\> Memory
-
-iSQL\> ALTER TABLE sales_table ALTER TABLESPACE mem_tbs_0;
-
+iSQL> -- Memory -> Memory
+iSQL> ALTER TABLE sales_table ALTER TABLESPACE mem_tbs_0;
 Alter success.
-
-iSQL\> -- Memory -\> Volatile
-
-iSQL\> ALTER TABLE sales_table ALTER TABLESPACE vol_tbs_0;
-
+iSQL> -- Memory -> Volatile
+iSQL> ALTER TABLE sales_table ALTER TABLESPACE vol_tbs_0;
 Alter success.
-
-iSQL\> -- Volatile -\> Disk
-
-iSQL\> ALTER TABLE sales_table ALTER TABLESPACE SYS_TBS_DISK_DATA;
-
+iSQL> -- Volatile -> Disk
+iSQL> ALTER TABLE sales_table ALTER TABLESPACE SYS_TBS_DISK_DATA;
 Alter success.
-
-iSQL\> -- Disk -\> Volatile
-
-iSQL\> ALTER TABLE sales_table ALTER TABLESPACE vol_tbs_0;
-
+iSQL> -- Disk -> Volatile
+iSQL> ALTER TABLE sales_table ALTER TABLESPACE vol_tbs_0;
 Alter success.
-
-iSQL\> -- Volatile -\> Memory
-
-iSQL\> ALTER TABLE sales_table ALTER TABLESPACE mem_tbs_0;
-
+iSQL> -- Volatile -> Memory
+iSQL> ALTER TABLE sales_table ALTER TABLESPACE mem_tbs_0;
 Alter success.
-
-iSQL\> -- Memory -\> Disk
-
-iSQL\> ALTER TABLE sales_table ALTER TABLESPACE SYS_TBS_DISK_DATA;
-
+iSQL> -- Memory -> Disk
+iSQL> ALTER TABLE sales_table ALTER TABLESPACE SYS_TBS_DISK_DATA;
 Alter success.
+```
 
 \<질의\> 파티션드 테이블을 생성하여 다른 저장 매체의 테이블스페이스로 변경하라.
 
-iSQL\> CREATE TABLE part_table
-
-(
-
-sales_date DATE,
-
-sales_id NUMBER,
-
-sales_city VARCHAR(20)
-
-)
-
-PARTITION BY LIST(sales_city)
-
-(
-
-PARTITION part_1 VALUES ( 'SEOUL' , 'INCHEON' ),
-
-PARTITION part_2 VALUES ( 'PUSAN' , 'JUNJU' ),
-
-PARTITION part_3 VALUES ( 'CHUNGJU' , 'DAEJUN' ),
-
-PARTITION part_def VALUES DEFAULT
-
-)
-
-TABLESPACE SYS_TBS_DISK_DATA UNCOMPRESSED LOGGING;
-
+```
+iSQL> CREATE TABLE part_table
+  (
+  sales_date DATE,
+  sales_id NUMBER,
+  sales_city VARCHAR(20)
+  )
+  PARTITION BY LIST(sales_city)
+  (
+  PARTITION part_1 VALUES ( 'SEOUL' , 'INCHEON' ),
+  PARTITION part_2 VALUES ( 'PUSAN' , 'JUNJU' ),
+  PARTITION part_3 VALUES ( 'CHUNGJU' , 'DAEJUN' ),
+  PARTITION part_def VALUES DEFAULT
+  )
+  TABLESPACE SYS_TBS_DISK_DATA UNCOMPRESSED LOGGING; 
 Create success.
 
-iSQL\> -- Disk -\> Memory
-
-iSQL\> ALTER TABLE part_table ALTER TABLESPACE SYS_TBS_MEM_DATA;
-
+iSQL> -- Disk -> Memory
+iSQL> ALTER TABLE part_table ALTER TABLESPACE SYS_TBS_MEM_DATA;
 Alter success.
 
-iSQL\> -- Memory -\> Memory
-
-iSQL\> ALTER TABLE part_table ALTER TABLESPACE mem_tbs_0;
-
+iSQL> -- Memory -> Memory
+iSQL> ALTER TABLE part_table ALTER TABLESPACE mem_tbs_0;
 Alter success.
 
-iSQL\> -- Memory -\> Volatile
-
-iSQL\> ALTER TABLE part_table ALTER TABLESPACE vol_tbs_0;
-
+iSQL> -- Memory -> Volatile
+iSQL> ALTER TABLE part_table ALTER TABLESPACE vol_tbs_0;
 Alter success.
 
-iSQL\> -- Volatile -\> Disk
-
-iSQL\> ALTER TABLE part_table ALTER TABLESPACE SYS_TBS_DISK_DATA;
-
+iSQL> -- Volatile -> Disk
+iSQL> ALTER TABLE part_table ALTER TABLESPACE SYS_TBS_DISK_DATA;
 Alter success.
 
-iSQL\> -- Disk -\> Volatile
-
-iSQL\> ALTER TABLE part_table ALTER TABLESPACE vol_tbs_0;
-
+iSQL> -- Disk -> Volatile
+iSQL> ALTER TABLE part_table ALTER TABLESPACE vol_tbs_0;
 Alter success.
 
-iSQL\> -- Volatile -\> Memory
-
-iSQL\> ALTER TABLE part_table ALTER TABLESPACE mem_tbs_0;
-
+iSQL> -- Volatile -> Memory
+iSQL> ALTER TABLE part_table ALTER TABLESPACE mem_tbs_0;
 Alter success.
 
-iSQL\> -- Memory -\> Disk
-
-iSQL\> ALTER TABLE part_table ALTER TABLESPACE SYS_TBS_DISK_DATA;
-
+iSQL> -- Memory -> Disk
+iSQL> ALTER TABLE part_table ALTER TABLESPACE SYS_TBS_DISK_DATA;
 Alter success.
+```
 
-> \<질의\> 파티션드 테이블을 다른 테이블스페이스로 변경하고, 파티션드 테이블의
-> 인덱스를 저장할 테이블스페이스를 변경한다.
 
-iSQL\> CREATE DISK TABLESPACE disk_tbs_0 DATAFILE '/tmp/tbs.user.0';
 
+<질의\> 파티션드 테이블을 다른 테이블스페이스로 변경하고, 파티션드 테이블의
+인덱스를 저장할 테이블스페이스를 변경한다.
+
+```
+iSQL> CREATE DISK TABLESPACE disk_tbs_0 DATAFILE '/tmp/tbs.user.0';
+Create success.
+iSQL> CREATE DISK TABLESPACE disk_tbs_1 DATAFILE '/tmp/tbs.user.1';
+Create success.
+iSQL> CREATE MEMORY TABLESPACE mem_tbs_0 SIZE 32M AUTOEXTEND ON;
+Create success.
+iSQL> CREATE MEMORY TABLESPACE mem_tbs_1 SIZE 32M AUTOEXTEND ON;
+Create success.
+iSQL> CREATE VOLATILE TABLESPACE vol_tbs_0 SIZE 32M AUTOEXTEND ON;
+Create success.
+iSQL> CREATE VOLATILE TABLESPACE vol_tbs_1 SIZE 32M AUTOEXTEND ON;
+Create success.
+iSQL> CREATE TABLE text_table
+     (
+     id NUMBER,
+     date DATE,
+     text VARCHAR(500)
+     )
+     PARTITION BY RANGE ( id )
+     (
+     PARTITION part_1 VALUES LESS THAN ( 100 ),
+     PARTITION part_2 VALUES LESS THAN ( 200 ),
+     PARTITION part_def VALUES DEFAULT
+     )
+     TABLESPACE disk_tbs_0 UNCOMPRESSED LOGGING;
 Create success.
 
-iSQL\> CREATE DISK TABLESPACE disk_tbs_1 DATAFILE '/tmp/tbs.user.1';
-
+iSQL> CREATE INDEX text_table_idx on text_table ( date ) LOCAL;
 Create success.
 
-iSQL\> CREATE MEMORY TABLESPACE mem_tbs_0 SIZE 32M AUTOEXTEND ON;
-
-Create success.
-
-iSQL\> CREATE MEMORY TABLESPACE mem_tbs_1 SIZE 32M AUTOEXTEND ON;
-
-Create success.
-
-iSQL\> CREATE VOLATILE TABLESPACE vol_tbs_0 SIZE 32M AUTOEXTEND ON;
-
-Create success.
-
-iSQL\> CREATE VOLATILE TABLESPACE vol_tbs_1 SIZE 32M AUTOEXTEND ON;
-
-Create success.
-
-iSQL\> CREATE TABLE text_table
-
-(
-
-id NUMBER,
-
-date DATE,
-
-text VARCHAR(500)
-
-)
-
-PARTITION BY RANGE ( id )
-
-(
-
-PARTITION part_1 VALUES LESS THAN ( 100 ),
-
-PARTITION part_2 VALUES LESS THAN ( 200 ),
-
-PARTITION part_def VALUES DEFAULT
-
-)
-
-TABLESPACE disk_tbs_0 UNCOMPRESSED LOGGING;
-
-Create success.
-
-iSQL\> CREATE INDEX text_table_idx on text_table ( date ) LOCAL;
-
-Create success.
-
-iSQL\> -- Disk -\> Memory
-
-iSQL\> ALTER TABLE text_table ALTER TABLESPACE mem_tbs_0 INDEX ( text_table_idx
-TABLESPACE mem_tbs_1 );
-
+iSQL> -- Disk -> Memory
+iSQL> ALTER TABLE text_table ALTER TABLESPACE mem_tbs_0 INDEX ( text_table_idx TABLESPACE mem_tbs_1 );
 Alter success.
 
-iSQL\> -- Memory -\> Volatile
-
-iSQL\> ALTER TABLE text_table ALTER TABLESPACE vol_tbs_0 INDEX ( text_table_idx
-TABLESPACE vol_tbs_1 );
-
+iSQL> -- Memory -> Volatile
+iSQL> ALTER TABLE text_table ALTER TABLESPACE vol_tbs_0 INDEX ( text_table_idx TABLESPACE vol_tbs_1 );
 Alter success.
 
-iSQL\> -- Volatile -\> Disk
-
-iSQL\> ALTER TABLE text_table ALTER TABLESPACE disk_tbs_0 INDEX ( text_table_idx
-TABLESPACE disk_tbs_1 );
-
+iSQL> -- Volatile -> Disk
+iSQL> ALTER TABLE text_table ALTER TABLESPACE disk_tbs_0 INDEX ( text_table_idx TABLESPACE disk_tbs_1 );
 Alter success.
 
-iSQL\> -- Disk -\> Volatile
-
-iSQL\> ALTER TABLE text_table ALTER TABLESPACE vol_tbs_1 INDEX ( text_table_idx
-TABLESPACE vol_tbs_0 );
-
+iSQL> -- Disk -> Volatile
+iSQL> ALTER TABLE text_table ALTER TABLESPACE vol_tbs_1 INDEX ( text_table_idx TABLESPACE vol_tbs_0 );
 Alter success.
 
-iSQL\> -- Volatile -\> Memory
-
-iSQL\> ALTER TABLE text_table ALTER TABLESPACE mem_tbs_1 INDEX ( text_table_idx
-TABLESPACE mem_tbs_0 );
-
+iSQL> -- Volatile -> Memory
+iSQL> ALTER TABLE text_table ALTER TABLESPACE mem_tbs_1 INDEX ( text_table_idx TABLESPACE mem_tbs_0 );
 Alter success.
 
-iSQL\> -- Memory -\> Disk
-
-iSQL\> ALTER TABLE text_table ALTER TABLESPACE disk_tbs_1 INDEX ( text_table_idx
-TABLESPACE disk_tbs_0 );
-
+iSQL> -- Memory -> Disk
+iSQL> ALTER TABLE text_table ALTER TABLESPACE disk_tbs_1 INDEX ( text_table_idx TABLESPACE disk_tbs_0 );
 Alter success.
+```
 
 \<질의\> 메모리 파티션드 테이블을 디스크 테이블스페이스로 변경하고, Lob 컬럼은
 디스크 테이블스페이스로 변경하라.
 
-iSQL\> CREATE TABLE clob_table
-
-(
-
-id NUMBER,
-
-date DATE,
-
-text CLOB
-
-)
-
-PARTITION BY RANGE ( id )
-
-(
-
-PARTITION part_1 VALUES LESS THAN ( 100 ),
-
-PARTITION part_2 VALUES LESS THAN ( 200 ),
-
-PARTITION part_def VALUES DEFAULT
-
-)
-
-TABLESPACE mem_tbs_0 UNCOMPRESSED LOGGING;
-
+```
+iSQL> CREATE TABLE clob_table
+     (
+     id NUMBER,
+     date DATE,
+     text CLOB
+     )
+     PARTITION BY RANGE ( id )
+     (
+     PARTITION part_1 VALUES LESS THAN ( 100 ),
+     PARTITION part_2 VALUES LESS THAN ( 200 ),
+     PARTITION part_def VALUES DEFAULT
+     )
+     TABLESPACE mem_tbs_0 UNCOMPRESSED LOGGING;
 Create success.
 
-iSQL\> -- Memory -\> Disk
-
-iSQL\> ALTER TABLE clob_table ALTER TABLESPACE disk_tbs_0 LOB ( text TABLESPACE
-disk_tbs_1 );
-
+iSQL> -- Memory -> Disk
+iSQL> ALTER TABLE clob_table ALTER TABLESPACE disk_tbs_0 LOB ( text TABLESPACE disk_tbs_1 );
 Alter success.
+```
 
 \<질의\> 파티션드 테이블을 생성하고, 파티션을 다른 저장 매체인 테이블스페이스로
 이동하라.
 
-iSQL\> CREATE TABLE data_table
-
-(
-
-id NUMBER,
-
-date DATE,
-
-data VARCHAR(500)
-
-)
-
-PARTITION BY RANGE ( id )
-
-(
-
-PARTITION part_1 VALUES LESS THAN ( 100 ),
-
-PARTITION part_2 VALUES LESS THAN ( 200 ),
-
-PARTITION part_def VALUES DEFAULT
-
-)
-
-TABLESPACE disk_tbs_0 UNCOMPRESSED LOGGING;
-
+```
+iSQL> CREATE TABLE data_table
+     (
+     id NUMBER,
+     date DATE,
+     data VARCHAR(500)
+     )
+     PARTITION BY RANGE ( id )
+     (
+     PARTITION part_1 VALUES LESS THAN ( 100 ),
+     PARTITION part_2 VALUES LESS THAN ( 200 ),
+     PARTITION part_def VALUES DEFAULT
+     )
+     TABLESPACE disk_tbs_0 UNCOMPRESSED LOGGING;
 Create success.
 
-iSQL\> -- Disk -\> Memory
-
-iSQL\> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE mem_tbs_0;
-
+iSQL> -- Disk -> Memory
+iSQL> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE mem_tbs_0;
 Alter success.
 
-iSQL\> -- Memory -\> Volatile
-
-iSQL\> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE vol_tbs_0;
-
+iSQL> -- Memory -> Volatile
+iSQL> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE vol_tbs_0;
 Alter success.
 
-iSQL\> -- Volatile -\> Disk
-
-iSQL\> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE disk_tbs_0;
-
+iSQL> -- Volatile -> Disk
+iSQL> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE disk_tbs_0;
 Alter success.
 
-iSQL\> -- Disk -\> Volatile
-
-iSQL\> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE vol_tbs_1;
-
+iSQL> -- Disk -> Volatile
+iSQL> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE vol_tbs_1;
 Alter success.
 
-iSQL\> -- Volatile -\> Memory
-
-iSQL\> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE mem_tbs_1;
-
+iSQL> -- Volatile -> Memory
+iSQL> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE mem_tbs_1;
 Alter success.
 
-iSQL\> -- Memory -\> Disk
-
-iSQL\> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE disk_tbs_1;
-
+iSQL> -- Memory -> Disk
+iSQL> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE disk_tbs_1;
 Alter success.
+```
 
 \<질의\> 파티션드 테이블을 생성하고, 파티션을 다른 저장 매체의 테이블스페이스로
 이동한다. 인덱스는 다른 테이블스페이스로 이동하라.
 
-iSQL\> CREATE TABLE data_table
-
-(
-
-id NUMBER,
-
-date DATE,
-
-data VARCHAR(500)
-
-)
-
-PARTITION BY RANGE ( id )
-
-(
-
-PARTITION part_1 VALUES LESS THAN ( 100 ),
-
-PARTITION part_2 VALUES LESS THAN ( 200 ),
-
-PARTITION part_def VALUES DEFAULT
-
-)
-
-TABLESPACE disk_tbs_0 UNCOMPRESSED LOGGING;
-
+```
+iSQL> CREATE TABLE data_table
+     (
+     id NUMBER,
+     date DATE,
+     data VARCHAR(500)
+     )
+     PARTITION BY RANGE ( id )
+     (
+     PARTITION part_1 VALUES LESS THAN ( 100 ),
+     PARTITION part_2 VALUES LESS THAN ( 200 ),
+     PARTITION part_def VALUES DEFAULT
+     )
+     TABLESPACE disk_tbs_0 UNCOMPRESSED LOGGING;
 Create success.
 
-iSQL\> CREATE INDEX data_table_idx on data_table ( date ) LOCAL;
-
+iSQL> CREATE INDEX data_table_idx on data_table ( date ) LOCAL;
 Create success.
 
-iSQL\> -- Disk -\> Memory
-
-iSQL\> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE mem_tbs_0 INDEX
-( data_table_idx TABLESPACE mem_tbs_1 );
-
+iSQL> -- Disk -> Memory
+iSQL> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE mem_tbs_0 INDEX ( data_table_idx TABLESPACE mem_tbs_1 );
 Alter success.
 
-iSQL\> -- Memory -\> Volatile
-
-iSQL\> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE vol_tbs_0 INDEX
-( data_table_idx TABLESPACE vol_tbs_1 );
-
+iSQL> -- Memory -> Volatile
+iSQL> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE vol_tbs_0 INDEX ( data_table_idx TABLESPACE vol_tbs_1 );
 Alter success.
 
-iSQL\> -- Volatile -\> Disk
-
-iSQL\> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE disk_tbs_0 INDEX
-( data_table_idx TABLESPACE disk_tbs_1 );
-
+iSQL> -- Volatile -> Disk
+iSQL> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE disk_tbs_0 INDEX ( data_table_idx TABLESPACE disk_tbs_1 );
 Alter success.
 
-iSQL\> -- Disk -\> Volatile
-
-iSQL\> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE vol_tbs_1 INDEX
-( data_table_idx TABLESPACE vol_tbs_0 );
-
+iSQL> -- Disk -> Volatile
+iSQL> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE vol_tbs_1 INDEX ( data_table_idx TABLESPACE vol_tbs_0 );
 Alter success.
 
-iSQL\> -- Volatile -\> Memory
-
-iSQL\> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE mem_tbs_1 INDEX
-( data_table_idx TABLESPACE mem_tbs_0 );
-
+iSQL> -- Volatile -> Memory
+iSQL> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE mem_tbs_1 INDEX ( data_table_idx TABLESPACE mem_tbs_0 );
 Alter success.
 
-iSQL\> -- Memory -\> Disk
-
-iSQL\> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE disk_tbs_1 INDEX
-( data_table_idx TABLESPACE disk_tbs_0 );
-
+iSQL> -- Memory -> Disk
+iSQL> ALTER TABLE data_table ALTER PARTITION part_1 TABLESPACE disk_tbs_1 INDEX ( data_table_idx TABLESPACE disk_tbs_0 );
 Alter success.
+```
 
 \<질의\> 메모리 파티션드 테이블을 생성하고, 메모리 파티션 part_1을 디스크
 테이블스페이스로 변경한다. Lob 컬럼은 다른 디스크 테이블스페이스 disk_tbs_1으로
 변경하라.
 
-iSQL\> CREATE TABLE blob_table
-
-(
-
-id NUMBER,
-
-date DATE,
-
-data blob
-
-)
-
-PARTITION BY RANGE ( id )
-
-(
-
-PARTITION part_1 VALUES LESS THAN ( 100 ),
-
-PARTITION part_2 VALUES LESS THAN ( 200 ),
-
-PARTITION part_def VALUES DEFAULT
-
-)
-
-TABLESPACE mem_tbs_0 UNCOMPRESSED LOGGING;
-
+```
+iSQL> CREATE TABLE blob_table
+     (
+     id NUMBER,
+     date DATE,
+     data blob
+     )
+     PARTITION BY RANGE ( id )
+     (
+     PARTITION part_1 VALUES LESS THAN ( 100 ),
+     PARTITION part_2 VALUES LESS THAN ( 200 ),
+     PARTITION part_def VALUES DEFAULT
+     )
+     TABLESPACE mem_tbs_0 UNCOMPRESSED LOGGING;
 Create success.
 
-iSQL\> -- Memory -\> Disk
-
-iSQL\> ALTER TABLE blob_table ALTER PARTITION part_1 TABLESPACE disk_tbs_0 LOB (
-data TABLESPACE disk_tbs_1 );
-
+iSQL> -- Memory -> Disk
+iSQL> ALTER TABLE blob_table ALTER PARTITION part_1 TABLESPACE disk_tbs_0 LOB ( data TABLESPACE disk_tbs_1 );
 Alter success.
+```
+
+
 
 ### ALTER TABLESPACE 
 
 #### 구문
 
-alter_tablespace ::=
+**alter_tablespace ::=**
 
-[datafile_tempfile_clause ::=](#datafile_tempfile_clause),
-[modify_checkpoint_path_clause ::=](#modify_checkpoint_path_clause),
-[status_clause ::=](#status_clause), [backup_clause
-::=](#alter_tbs_backup_clause)
+![alter_tablespace](media/SQL/alter_tablespace.gif)
 
-datafile_tempfile_clause ::=
+**datafile_tempfile_clause ::=**
 
-[datafile_spec ::=](#datafile_spec), [modify_datafile_clause
-::=](#modify_datafile_clause), [modify_autoextend_clause
-::=](#modify_autoextend_clause)
+![datafile_tempfile_clause](media/SQL/datafile_tempfile_clause.gif)
 
-datafile_spec ::=
+**datafile_spec ::=**
 
-autoextend_clause ::=
+![datafile_spec](media/SQL/datafile_spec.gif)
 
-maxsize_clause ::=
+**autoextend_clause ::=**
 
-modify_datafile_clause ::=
+![autoextend_clause](media/SQL/autoextend_clause.gif)
 
-[autoextend_clause ::=](#autoextend_clause)
+**maxsize_clause ::=**
 
-modify_autoextend_clause ::=
+![maxsize_clause](media/SQL/maxsize_clause.gif)
 
-modify_checkpoint_path_clause ::=
+**modify_datafile_clause ::=**
 
-status_clause ::=
+![modify_datafile_clause](media/SQL/modify_datafile_clause.gif)
 
-backup_clause ::=
+**modify_autoextend_clause ::=**
+
+![modify_autoextend_clause](media/SQL/modify_autoextend_clause.gif)
+
+**modify_checkpoint_path_clause ::=**
+
+![modify_checkpoint_path_clause](media/SQL/modify_checkpoint_path_clause.gif)
+
+**status_clause ::=**
+
+![status_clause](media/SQL/status_clause.gif)
+
+**backup_clause ::=**
+
+![backup_clause](media/SQL/backup_clause.gif)
 
 #### 전제 조건
 
@@ -4973,50 +4782,50 @@ ALTER TABLESPACE 문으로 디스크, 임시, 메모리 또는 휘발성 테이�
 변경한다. 또한 데이터 파일, 임시 파일, 체크포인트 경로, 자동 확장 관련 설정,
 테이블스페이스 상태 등에 대해서도 변경할 수 있다.
 
-tablespace_name
+*tablespace_name*
 
 변경될 테이블스페이스 이름이다.
 
-datafile_tempfile_clause
+*datafile_tempfile_clause*
 
 데이터 파일 또는 임시 파일을 추가, 삭제, 또는 변경하는 절이다.
 
 datafile_spec, maxsize_clause, autoextend_clause에 대한 상세한 설명은 CREATE
 TABLESPACE문을 참고한다.
 
-ADD DATAFILE \| TEMPFILE 절
+*ADD DATAFILE \| TEMPFILE *
 
 데이터 파일이나 임시 파일들을 테이블스페이스에 추가하는 절이다.
 
-RENAME DATAFILE \| TEMPFILE 절
+*RENAME DATAFILE \| TEMPFILE *
 
 테이블스페이스에 속한 데이터 파일이나 임시 파일들을 새로운 이름으로 변경한다.
 한번에 여러 개의 파일 이름을 변경할 수 있다. TO 뒤에 오는 새로운 이름을 가지는
 파일은 미리 생성되어 있어야 한다.
 
-modify_datafile_clause
+*modify_datafile_clause*
 
 디스크 테이블스페이스의 데이터 파일이나 임시 파일의 autoextend 속성과 파일
 크기를 변경하는 절이다.
 
-modify_autoextend_clause
+*modify_autoextend_clause*
 
 메모리 또는 휘발성 테이블스페이스의 자동 확장 관련 속성(여부, 확장단위, 최대
 크기)을 변경한다.
 
-DROP DATAFILE \| TEMPFILE 절
+*DROP DATAFILE \| TEMPFILE* 
 
 데이터 파일이나 임시 파일들을 테이블스페이스에서 제거하는 절이다. 한번에 하나
 이상의 파일을 테이블스페이스에서 제거할 수 있다. 이 절을 수행하더라도
 운영체제상의 파일이 삭제되는 것은 아니므로 이는 사용자가 수동으로 관리를 해야
 한다.
 
-modify_checkpoint_path_clause
+*modify_checkpoint_path_clause*
 
 체크포인트 이미지 경로를 추가, 변경, 또는 삭제하는 절이다. 체크포인트 이미지
 경로 관련 연산들은 CONTROL 구동 단계에서만 가능하다.
 
-ADD CHECKPOINT PATH 절
+*ADD CHECKPOINT PATH 절*
 
 메모리 테이블스페이스에 새로운 체크포인트 경로를 추가한다. DBA는 다른 체크포인트
 경로 안에 존재하는 기존의 체크포인트 이미지들을 새로운 체크포인트 경로로
@@ -5032,7 +4841,7 @@ ADD CHECKPOINT PATH 절
 그러므로, DBA는 추가될 체크포인트 경로를 파일 시스템 상에 직접 생성하고, 그
 경로에 대한 적절한 권한을 사용자 계정에 줘야 한다.
 
-RENAME CHECKPOINT PATH 절
+*RENAME CHECKPOINT PATH 절*
 
 메모리 테이블스페이스의 기존 체크포인트 경로를 TO 이하 절로 지정한 경로로
 변경한다. DBA는 파일 시스템 상에서 실제 체크포인트 경로의 이름을 변경하는 작업을
@@ -5040,7 +4849,7 @@ RENAME CHECKPOINT PATH 절
 구동한 사용자 계정이 체크포인트 경로에 대한 적절한 권한(permission)을 갖고 있지
 않으면 에러가 발생한다.
 
-DROP CHECKPOINT PATH 절
+*DROP CHECKPOINT PATH 절*
 
 메모리 테이블스페이스의 기존 체크포인트 경로를 삭제한다. DBA는 삭제된 체크포인트
 경로의 디렉토리 안에 존재하는 기존의 체크포인트 이미지들을 테이블스페이스에
@@ -5054,12 +4863,12 @@ DROP CHECKPOINT PATH 절
 만약 메모리 테이스블스페이스에 남아있는 하나뿐인 유일한 체크포인트 경로를
 제거하려고 하는 경우 에러가 발생한다.
 
-status_clause
+*status_clause*
 
 디스크 테이블스페이스와 메모리 테이블스페이스의 상태를 ONLINE, OFFLINE, 또는
 DISCARD로 전이한다.
 
-OFFLINE
+*OFFLINE*
 
 디스크 테이블스페이스의 상태가 OFFLINE인 경우 테이블스페이스의 버퍼의 모든
 데이터 페이지 내용이 데이터 파일에 기록되며, 버퍼 풀에서 무효화된다.
@@ -5071,7 +4880,7 @@ OFFLINE
 수 없다. 또한 해당 테이블스페이스에 속한 테이블은 테이블스페이스가 ONLINE상태로
 전이할 때까지 일시적으로 사용이 불가능한 상태가 된다.
 
-ONLINE
+*ONLINE*
 
 디스크 테이블스페이스가 온라인이 되면, 그 테이블스페이스의 모든 데이터 파일에
 접근 가능하며, 그 테이블스페이스 안에 속한 테이블은 다시 사용할 수 있는 상태로
@@ -5089,7 +4898,7 @@ ONLINE
 테이블스페이스와 그 테이블과 연관된 인덱스, BLOB/CLOB 칼럼, 테이블 파티션 등이
 다른 테이블스페이스에 존재할 수 있는데, 이 테이블스페이스를 일컫는다.
 
-DISCARD
+*DISCARD*
 
 CONTROL 구동 단계에서 디스크 테이블스페이스 또는 메모리 테이블스페이스의 상태를
 디스카드(DISCARD)로 전이한다.
@@ -5101,12 +4910,12 @@ CONTROL 구동 단계에서 디스크 테이블스페이스 또는 메모리 테
 테이블스페이스가 한번 DISCARD 되면 그 테이블스페이스는 DROP TABLESPACE로 삭제만
 가능하며 ONLINE으로 돌아갈 수 없다.
 
-backup clause
+*backup clause*
 
 디스크 또는 메모리 테이블스페이스의 데이터 파일을 복사하는 온라인 백업(핫
 백업)의 시작과 완료를 명시하는 구문이다.
 
-BEGIN BACKUP
+*BEGIN BACKUP*
 
 테이블스페이스를 구성하는 모든 데이터 파일들에 온라인 백업 모드를 설정하는
 절이다. 이 구문과 END BACKUP사이에 놓인 백업 중인 테이블스페이스에도 트랜잭션의
@@ -5117,63 +4926,63 @@ BEGIN BACKUP
 모드로 설정하는 것도 가능하다. 그러나 디스크 임시 테이블스페이스는 온라인 백업이
 불가능하다.
 
-END BACKUP
+*END BACKUP*
 
 디스크 또는 메모리 테이블스페이스의 온라인 백업이 완료되었음을 명시한다.
 사용자는 온라인 백업을 완료한 직후에 바로 END BACKUP 구문을 수행해야 한다.
 
 #### 주의사항
 
-ALTER TABLESPACE 구문을 사용한 데이터 파일 추가 작업과 속성 변경 작업은 온라인
-모드에서 가능하고, 데이터 파일의 이름 변경은 다단계 구동 단계 중 CONTROL
-단계에서만 가능하다.
-
-status_clause는 임시 테이블스페이스 또는 휘발성 테이블스페이스에는 사용할 수
-없다.
+- ALTER TABLESPACE 구문을 사용한 데이터 파일 추가 작업과 속성 변경 작업은 온라인
+  모드에서 가능하고, 데이터 파일의 이름 변경은 다단계 구동 단계 중 CONTROL
+  단계에서만 가능하다.
+- status_clause는 임시 테이블스페이스 또는 휘발성 테이블스페이스에는 사용할 수
+  없다.
 
 #### 예제
 
 \<질의 1\> 64 MB의 데이터 파일 tbs2.user를 user_disk_tbs 테이블스페이스에
 추가하고 더 큰 공간이 필요할 때 파일이 512kB 크기씩 자동으로 증가하게 하라.
 
-iSQL\> ALTER TABLESPACE user_disk_tbs
-
-ADD DATAFILE '/tmp/tbs2.user' SIZE 64M
-
-AUTOEXTEND ON NEXT 512K;
-
+```
+iSQL> ALTER TABLESPACE user_disk_tbs
+    ADD DATAFILE '/tmp/tbs2.user' SIZE 64M 
+    AUTOEXTEND ON NEXT 512K; 
 Alter success.
+```
 
 \<질의 2\> 체크포인트시의 디스크 입출력 분산을 위해 ‘/home/path’ 체크포인트
 경로를 user_memory_tbs 테이블스페이스에 추가하라. 또한, 확장 단위를 256M, 최대
 크기를 1G로 변경하라. (경로 추가 작업은 CONTROL 단계에서만 가능하고, 속성 변경은
 SERVICE 단계에서 할 수 있다.)
 
-iSQL(sysdba)\>\>startup control;
-
-iSQL(sysdba)\>\>ALTER TABLESPACE user_memory_tbs ADD CHECKPOINT PATH
-'/home/path';
-
+```
+iSQL(sysdba)>>startup control; 
+iSQL(sysdba)>>ALTER TABLESPACE user_memory_tbs ADD CHECKPOINT PATH '/home/path'; 
 Alter success.
 
-iSQL\> ALTER TABLESPACE user_memory_tbs ALTER AUTOEXTEND ON NEXT 256M MAXSIZE
-1G;
-
+iSQL> ALTER TABLESPACE user_memory_tbs ALTER AUTOEXTEND ON NEXT 256M  MAXSIZE 1G; 
 Alter success.
+```
 
 \<질의 3\> user_volatile_tbs 테이블스페이스의 확장 단위를 256M, 최대 크기를 1G로
 변경하라.
 
-iSQL\> ALTER TABLESPACE user_volatile_tbs ALTER AUTOEXTEND ON NEXT 256M MAXSIZE
+```
+iSQL> ALTER TABLESPACE user_volatile_tbs ALTER AUTOEXTEND ON NEXT 256M MAXSIZE
 1G;
-
 Alter success.
+```
+
+
 
 ### ALTER TRIGGER 
 
 #### 구문
 
-alter_trigger ::=
+**alter_trigger ::=**
+
+![alter_trigger](D:\emmachoigit\manuals\media\SQL\alter_trigger.gif)
 
 #### 전제 조건
 
@@ -5184,24 +4993,24 @@ SYS 사용자, 트리거가 속한 스키마의 소유자 또는 ALTER ANY TRIGG
 
 명시한 트리거의 작동을 가능, 불가능하게 하거나 컴파일 한다.
 
-user_name
+*user_name*
 
 변경될 트리거의 소유자 이름을 명시한다. 생략하면 Altibase는 현재 세션에 접속한
 사용자의 스키마에 속한 것으로 간주한다.
 
-trigger_name
+*trigger_name*
 
 변경될 트리거의 이름을 명시한다.
 
-ENABLE
+*ENABLE*
 
 명시한 트리거의 작동을 사용 가능하게 한다.
 
-DISABLE
+*DISABLE*
 
 명시한 트리거의 작동을 불가능하게 한다.
 
-COMPILE
+*COMPILE*
 
 명시한 트리거의 유효성 여부에 관계 없이 명시적으로 컴파일 한다. 명시적
 재컴파일은 수행 중에 트리거가 유효하지 않은 경우 암시적으로 컴파일 하는 부하를
@@ -5212,9 +5021,12 @@ COMPILE
 \<질의\> 다음 예는 명시한 트리거의 작동을 불가능하게 한다. 트리거 del_trigger를
 생성하는 구문은 CREATE TRIGGER 문의 예제를 참조한다.
 
-iSQL\> ALTER TRIGGER del_trigger DISABLE;
-
+```
+iSQL> ALTER TRIGGER del_trigger DISABLE;
 Alter success.
+```
+
+
 
 ### ALTER USER 
 
