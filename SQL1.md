@@ -7503,11 +7503,20 @@ DML 작업이 수행되는 순간에 테이블 세그먼트를 위한 공간이 
 이름을 지정할 수 있다. LOCALUNIQUE 제약조건은 파티션드 테이블에 사용될 수 있다.
 
 - PRIMARY KEY
-  : 기본키의 값은 테이블 내에서 유일해야 하며 기본키에 속하는 칼럼은 널(NULL) 값을
+
+  기본키의 값은 테이블 내에서 유일해야 하며 기본키에 속하는 칼럼은 널(NULL) 값을
   가질 수 없다. 한 테이블 내에 정의 가능한 기본키의 개수는 하나이며, 최대 32개
   칼럼들의 조합에 대해 기본 키를 생성할 수 있다.
 
 - UNIQUE
+
+  UNIQUE 제약조건을 정의하면 유니크 키에 해당하는 칼럼 (또는 칼럼의 조합)은 같은
+  값을 2개 이상 가질 수 없다. 단, 널 값은 허용된다.
+
+  같은 칼럼 또는 같은 칼럼의 조합에 대해 유니크 제약조건과 기본키를 동시에 정의할
+  수 없다. 또한, 같은 칼럼 또는 같은 칼럼의 조합에 대해 2개 이상의 유니크
+  제약조건도 존재할 수 없다. 그러나 다른 칼럼 또는 다른 칼럼들의 조합에는 존재할
+  수 있다. 최대 32개 칼럼의 조합에 대해 유니크 제약조건을 생성할 수 있다.
 
 - LOCALUNIQUE
 
@@ -7515,54 +7524,29 @@ DML 작업이 수행되는 순간에 테이블 세그먼트를 위한 공간이 
 
 - (NOT) NULL
 
+  해당 칼럼이 널 값을 가질 수 있다(없다)는 것을 의미한다.
+
 - CHECK
+
+  해당 칼럼에 대한 무결성 규칙(Integrity Rule)을 지정한다. *column_constraint*
+  절의 *condition* 내에서는 해당 칼럼만 참조할 수 있다. CHECK 제약조건의 검사조건에는 아래와 같은 몇 가지 제한 사항이 있다.
+
+  - 부질의(subquery), 시퀀스, LEVEL 또는 ROWNUM 등의 모든 의사칼럼(Pseudo
+    Column), 및 SYSDATE 또는 USER_ID 같은 비결정적(Non-deterministic) SQL 함수가
+    포함될 수 없다.
+  - PRIOR 연산자를 사용할 수 없다.
+  - LOB 타입의 데이터를 사용할 수 없다.
 
 - 참조 무결성(referential integrity)
 
 - TIMESTAMP
 
-- *PRIMARY KEY*
-  기본키의 값은 테이블 내에서 유일해야 하며 기본키에 속하는 칼럼은 널(NULL) 값을
-  가질 수 없다. 한 테이블 내에 정의 가능한 기본키의 개수는 하나이며, 최대 32개
-  칼럼들의 조합에 대해 기본 키를 생성할 수 있다.
 
-*LOCALUNIQUE*
-
-각 지역 인덱스별로 UNIQUE 제약조건을 만족해야 함을 명시하는 키워드이다.
-
-*UNIQUE*
-
-UNIQUE 제약조건을 정의하면 유니크 키에 해당하는 칼럼 (또는 칼럼의 조합)은 같은
-값을 2개 이상 가질 수 없다. 단, 널 값은 허용된다.
-
-같은 칼럼 또는 같은 칼럼의 조합에 대해 유니크 제약조건과 기본키를 동시에 정의할
-수 없다. 또한, 같은 칼럼 또는 같은 칼럼의 조합에 대해 2개 이상의 유니크
-제약조건도 존재할 수 없다. 그러나 다른 칼럼 또는 다른 칼럼들의 조합에는 존재할
-수 있다. 최대 32개 칼럼의 조합에 대해 유니크 제약조건을 생성할 수 있다.
-
-*NULL*
-
-해당 칼럼이 널 값을 가질 수 있다는 것을 의미한다.
-
-*NOT NULL*
-
-해당 칼럼이 널 값을 가질 수 없다는 것을 의미한다.
-
-*CHECK condition*
-
-해당 칼럼에 대한 무결성 규칙(Integrity Rule)을 지정한다. *column_constraint*
-절의 *condition* 내에서는 해당 칼럼만 참조할 수 있다. CHECK 제약조건의 검사조건에는 아래와 같은 몇 가지 제한 사항이 있다.
-
-- 부질의(subquery), 시퀀스, LEVEL 또는 ROWNUM 등의 모든 의사칼럼(Pseudo
-  Column), 및 SYSDATE 또는 USER_ID 같은 비결정적(Non-deterministic) SQL 함수가
-  포함될 수 없다.
-- PRIOR 연산자를 사용할 수 없다.
-- LOB 타입의 데이터를 사용할 수 없다.
 
 *directkey_clause*
 
 이 절은 Direct Key 인덱스를 생성시 사용할 수 있다. Direct Key 인덱스에 대한
-자세한 내용은 CREATE INDEX](#create-index) 구문을 참고한다
+자세한 내용은 CREATE INDEX 구문을 참고한다
 
 *check_clause*
 
@@ -7591,98 +7575,110 @@ PRIMARY KEY, UNIQUE 또는 LOCALUNIQUE 제약을 명시할 경우, 자동으로 
 인덱스가 저장될 테이블스페이스를 각 인덱스 파티션 별로 지정할 수 있다. 자세한
 설명은 CREATE INDEX 구문의 *index_partitioning_clause*를 참조한다.
 
-references_clause
+*references_clause*
 
 외래키를 정의하는 절이다. 외래키에 의해 참조되는 다른 테이블의 참조키(referenced
 key)는 그 테이블에서 유니크 제약조건에 해당하거나 그 테이블의 기본키이어야 한다.
 만약 이 절에 참조키의 칼럼들을 명시하지 않은 경우, 해당 테이블의 기본키가
 자동으로 참조키가 된다.
 
-###### **NO ACTION**
+- NO ACTION
 
-“부모(parent) 테이블” (참조키가 있는 테이블)에 대해 INSERT, DELETE, 또는 UPDATE
-구문을 실행하면, Altibase는 “자식(child) 테이블” (참조키를 참조하는 외래키를
-가진 테이블)에 대한 무결성 검사를 한 후에 이 구문을 수행한다. NO ACTION은 무결성
-검사 후에 자식 테이블에 대해서는 어떠한 작업도 하지 않음을 명시하는 옵션이다.
+  “부모(parent) 테이블” (참조키가 있는 테이블)에 대해 INSERT, DELETE, 또는 UPDATE
+  구문을 실행하면, Altibase는 “자식(child) 테이블” (참조키를 참조하는 외래키를
+  가진 테이블)에 대한 무결성 검사를 한 후에 이 구문을 수행한다. NO ACTION은 무결성
+  검사 후에 자식 테이블에 대해서는 어떠한 작업도 하지 않음을 명시하는 옵션이다.
 
-예를 들어 다음과 같이 employees 테이블을 생성하면, departments 테이블에서 어떤
-부서를 삭제하려 할 때, employees 테이블의 레코드가 이 부서 번호를 참조하고
-있다면, 삭제 시도는 실패하고 에러가 발생할 것이다.
+  예를 들어 다음과 같이 employees 테이블을 생성하면, departments 테이블에서 어떤
+  부서를 삭제하려 할 때, employees 테이블의 레코드가 이 부서 번호를 참조하고
+  있다면, 삭제 시도는 실패하고 에러가 발생할 것이다.
 
-CREATE TABLE employees (  
-*ENO* INTEGER PRIMARY KEY,  
-DNO INTEGER,  
-NAME CHAR(10),  
-FOREIGN KEY(*DNO*) REFERENCES  
-**departments**(*DNO*) ON DELETE NO ACTION );
+  ```
+  CREATE TABLE employees (
+  ENO INTEGER PRIMARY KEY, 
+  DNO INTEGER, 
+  NAME CHAR(10), 
+  FOREIGN KEY(DNO) REFERENCES 
+  departments(DNO) ON DELETE NO ACTION ); 
+  ```
 
-###### **ON DELETE CASCADE**
 
-이는 부모 테이블의 행이 삭제되면 외래 키 값을 가진 자식 테이블에서 이 행을
-참조하는 모든 행도 삭제될 것을 명시하는 옵션이다.
 
-예를 들어 예를 들어 다음과 같이 employees 테이블을 생성하면, departments
-테이블에서 어떤 부서를 삭제하려 할 때, employees 테이블에서 이 부서 번호를
-참조하는 모든 행도 삭제된다.
 
-CREATE TABLE employees (  
-ENO INTEGER PRIMARY KEY,  
-DNO INTEGER,  
-NAME CHAR(10),  
-FOREIGN KEY(DNO) REFERENCES  
-**departments** (DNO) ON DELETE CASCADE );
+- ON DELETE CASCADE
 
-###### **ON DELETE SET NULL**
+  이는 부모 테이블의 행이 삭제되면 외래 키 값을 가진 자식 테이블에서 이 행을
+  참조하는 모든 행도 삭제될 것을 명시하는 옵션이다.
 
-부모 테이블의 행이 삭제되면 그 행을 참조하는 자식 테이블의 외래 키 칼럼의 값이
-모두 NULL로 변경될 것을 명시하는 옵션이다. 이 옵션의 참조 무결성을 위해 해당
-칼럼은 NULL이 허용되어야 한다.
+  예를 들어 예를 들어 다음과 같이 employees 테이블을 생성하면, departments
+  테이블에서 어떤 부서를 삭제하려 할 때, employees 테이블에서 이 부서 번호를
+  참조하는 모든 행도 삭제된다.
 
-예를 들어 departments 테이블을 참조하는 employees 테이블을 생성한 후에,
-departments 테이블에서 어떤 부서를 삭제한다. 이 때, employees 테이블에서 삭제된
-부서 번호를 참조하는 모든 칼럼의 값은 NULL로 변경된다.
+  ```
+  CREATE TABLE employees (
+  ENO INTEGER PRIMARY KEY, 
+  DNO INTEGER, 
+  NAME CHAR(10), 
+  FOREIGN KEY(DNO) REFERENCES 
+  departments (DNO) ON DELETE CASCADE ); 
+  ```
 
-CREATE TABLE employees (  
-ENO INTEGER PRIMARY KEY,  
-DNO SMALLINT,  
-NAME CHAR(10),  
-CONSTRAINT dno_fk FOREIGN KEY (dno) REFERENCES
 
-departments (dno) ON DELETE SET NULL );
+- ON DELETE SET NULL
 
-MAXROWS
+  부모 테이블의 행이 삭제되면 그 행을 참조하는 자식 테이블의 외래 키 칼럼의 값이
+  모두 NULL로 변경될 것을 명시하는 옵션이다. 이 옵션의 참조 무결성을 위해 해당
+  칼럼은 NULL이 허용되어야 한다.
+
+  예를 들어 departments 테이블을 참조하는 employees 테이블을 생성한 후에,
+  departments 테이블에서 어떤 부서를 삭제한다. 이 때, employees 테이블에서 삭제된
+  부서 번호를 참조하는 모든 칼럼의 값은 NULL로 변경된다.
+
+  ```
+  CREATE TABLE employees (
+  ENO INTEGER PRIMARY KEY, 
+  DNO SMALLINT, 
+  NAME CHAR(10), 
+  CONSTRAINT dno_fk FOREIGN KEY (dno) REFERENCES 
+  departments (dno) ON DELETE SET NULL ); 
+  ```
+
+
+
+
+*MAXROWS*
 
 테이블에 입력될 수 있는 최대 레코드 개수를 지정한다. 레코드 삽입시 전체 레코드
 개수가 여기에서 지정한 수보다 많아질 경우 입력 시도는 실패하고 에러가 반환된다.
 MAXROWS 절은 table_partitioning_clause 절과 함께 명시할 수 없다.
 
-temporary_attributes_clause
+*temporary_attributes_clause*
 
 이 절은 임시 테이블의 데이터가 트랜잭션에 한정되는지 또는 세션에 한정되는지를
 지정하며, 아래 두 가지 옵션이 가능하다:
 
-ON COMMIT DELETE ROWS
+*ON COMMIT DELETE ROWS*
 
 트랜잭션에 한정되는 임시 테이블을 생성한다. 임시 테이블에 처음으로 데이터를
 삽입하는 트랜잭션이 그 임시 테이블에 바인딩 된다. 트랜잭션 레벨의 바인딩은
 COMMIT 또는 ROLLBACK 구문 수행으로 풀리게 된다. 트랜잭션이 커밋되면, Altibase는
 해당 임시 테이블을 truncate 한다.
 
-ON COMMIT PRESERVE ROWS
+*ON COMMIT PRESERVE ROWS*
 
 세션에 한정되는 임시 테이블을 생성한다. 세션에서 임시 테이블에 처음으로 데이터가
 삽입될 때 세션은 임시 테이블에 바인딩 된다. 이 바인딩은 세션이 종료 되거나 그
 세션에서 테이블에 TRUNCATE 작업이 수행 될 때 풀린다. 사용자가 세션을 종료하면,
 Altibase는 세션에 바인딩 된 임시 테이블을 truncate 한다.
 
-table_partitioning_clause
+*table_partitioning_clause*
 
 파티션드 테이블을 생성하는 절이다. 범위 파티셔닝(range partitioning), 해시
 파티셔닝(hash partitioning), 리스트 파티셔닝(list partitioning) 방법으로
 파티션드 테이블을 생성할 수 있다. 파티션드 테이블을 생성할 때
 *row_movement_clause*도 명시할 수 있다.
 
-range_partitioning
+*range_partitioning*
 
 범위 파티션드 테이블 생성시 파티션 키 값의 범위를 명시하는 절이다. 주로 DATE
 자료형에 많이 사용된다. 사용자가 지정한 값을 기준으로 테이블이 분할되기 때문에,
@@ -7693,7 +7689,7 @@ range_partitioning
 기본 파티션 절은 생략할 수 없다. 여러 칼럼들의 조합으로 파티션 키를 정의할 수
 있다.
 
-table_partition_description
+*table_partition_description*
 
 파티션별로 테이블스페이스를 지정할 수 있다. 또한 테이블에 한 개 이상의 LOB
 컬럼이 있을 경우, 각 LOB 컬럼의 속성을 따로 명시할 수 있다. 그리고 파티션의
@@ -7707,33 +7703,24 @@ table_partition_description
 
 다음의 예제에서 사용자의 기본 테이블스페이스는 tbs_05이다.
 
+```
 CREATE TABLE print_media_demo
-
-(
-
-product_id INTEGER,
-
-ad_photo BLOB,
-
-ad_print BLOB,
-
-ad_composite BLOB
-
+( 
+	product_id INTEGER,
+	ad_photo BLOB,
+	ad_print BLOB,
+	ad_composite BLOB
 )
-
 PARTITION BY RANGE (product_id)
-
 (
-
-PARTITION p1 VALUES LESS THAN (3000) TABLESPACE tbs_01
-
-LOB (ad_photo) STORE AS (TABLESPACE tbs_02 ),
-
-PARTITION p2 VALUES DEFAULT
-
-LOB (ad_composite) STORE AS (TABLESPACE tbs_03)
-
+	PARTITION p1 VALUES LESS THAN (3000) TABLESPACE tbs_01 
+	LOB (ad_photo) STORE AS (TABLESPACE tbs_02 ),
+	PARTITION p2 VALUES DEFAULT 
+	LOB (ad_composite) STORE AS (TABLESPACE tbs_03)
 ) TABLESPACE tbs_04;
+```
+
+
 
 파티션 p1의 테이블스페이스는 명시적으로 지정되었으므로 tbs_01테이블스페이스에
 저장된다. 그리고 해당 파티션의 ad_photo 컬럼은 tbs_02테이블스페이스에 저장된다.
@@ -7744,20 +7731,22 @@ LOB (ad_composite) STORE AS (TABLESPACE tbs_03)
 
 위의 설명을 그림으로 나타내면 다음과 같다.
 
-![]()
+![create_table_lob](D:\emmachoigit\manuals\media\SQL\create_table_lob.gif)
 
-partition_range_clause
+
+
+*partition_range_clause*
 
 파티션에 저장될 상한값(noninclusive)을 지정한다. 이 값은 다른 파티션의 상한값과
 겹치지 않아야 한다.
 
-hash_partitioning
+*hash_partitioning*
 
 이 절은 파티션 키 값에 대응하는 해시 값을 기준으로 테이블을 분할할 것을
 명시한다. 이는 데이터가 파티션별로 고르게 분산되기를 원하는 경우에 적합하다.
 여러 칼럼들의 조합으로 파티션 키를 정의할 수 있다.
 
-list_partitioning
+*list_partitioning*
 
 이 절은 값의 집합을 기준으로 테이블을 분할할 것을 명시한다. 명시된 다른 파티션에
 속하도록 명시되지 않은 값들은 자동으로 기본 파티션에 포함되기 때문에 기본
@@ -7768,19 +7757,19 @@ list_partitioning
 수 없기 때문이다. 리스트 파티션드 테이블을 위한 파티션 키는 단일 칼럼에만 정의될
 수 있다.
 
-partition_list_clause
+*partition_list_clause*
 
 각 리스트 파티션은 적어도 1개 이상의 값을 가져야 한다. 한 리스트의 값은 다른
 어떤 리스트에도 있을 수 없다.
 
-row_movement_clause
+*row_movement_clause*
 
 파티션드 테이블의 레코드가 갱신되어 파티션 키에 해당하는 칼럼의 값이 다른
 파티션에 속하는 값으로 변경된 경우, 이 절은 그 레코드를 자동으로 다른 파티션으로
 이동시킬지 아니면 에러를 발생시킬 것인지를 결정한다. 이 절을 생략하면 DISABLE
 ROW MOVEMENT옵션이 기본으로 설정된다.
 
-CREATE TABLE … AS SELECT
+*CREATE TABLE … AS SELECT*
 
 테이블 생성시, 다른 테이블에서 새로운 테이블로 칼럼의 속성과 데이터를 그대로
 복사하려면 이 구문을 사용한다. 새로운 테이블의 칼럼 수는 SELECT 절로 검색되는
@@ -7791,17 +7780,17 @@ CREATE TABLE … AS SELECT
 사용된다. 검색 대상이 칼럼이 아니고 표현식인 경우 alias가 반드시 존재해야 한다.
 이 alias가 새로운 테이블의 칼럼명이 될 것이다.
 
-access_mode_clause
+*access_mode_clause*
 
 데이터에 대한 접근 모드를 설정할 수 있다. 읽기 전용(Read-Only) 모드,
 읽기/쓰기(READ/WRITE) 모드 또는 읽기/추가(READ/APPEND) 모드 중에서 선택할 수
 있으며, 생략하면 기본으로 '읽기/쓰기' 모드로 설정된다.
 
-\* 주의: 테이블이나 파티션에 대한 접근 모드가 '읽기 전용' 또는 '읽기/추가'로
-설정되어 있어도 이중화에 의한 복제, TRUNCATE 구문 수행, LOB 칼럼 변경은
-허용된다.
+> 주의: 테이블이나 파티션에 대한 접근 모드가 '읽기 전용' 또는 '읽기/추가'로
+> 설정되어 있어도 이중화에 의한 복제, TRUNCATE 구문 수행, LOB 칼럼 변경은
+> 허용된다.
 
-tablespace_clause
+*tablespace_clause*
 
 테이블이 저장될 테이블스페이스를 지정하는 절이다.
 
@@ -7813,7 +7802,7 @@ tablespace_clause
 CREATE TABLE 문 내에 UNIQUE 또는 PRIMARY KEY 제약조건이 명시된 경우 이들을 위한
 인덱스는 테이블이 저장되는 테이블스페이스에 생성될 것이다.
 
-physical_attributes_clause
+*physical_attributes_clause*
 
 PCTFREE, PCTUSED, INITRANS 및 MAXTRANS를 지정하는 절이다. 이 절이 파티션드
 테이블에 명시될 경우 PCTFREE와 PCTUSED 값은 그 테이블의 모든 파티션에 적용될
@@ -7849,23 +7838,23 @@ PCTFREE, PCTUSED, INITRANS 및 MAXTRANS를 지정하는 절이다. 이 절이 �
 - MAXTRANS 절  
   TTS(Touched Transaction Slot)의 최대 개수를 지정한다. 기본값은 120이다.
 
-###### **\* 참고**
+> 참고
+>
+> 위의 PCTFREE와 PCTUSED는 페이지 사용의 최적화를 위해 다음과 같은 형태로 함께
+> 사용된다. 이 예제에서는 PCTFREE는 20, PCTUSED는 40으로 지정하였다.
+>
+> 각 페이지의 20%는 기존 레코드에 대한 변경 연산을 위한 공간으로 예약되며, 이
+> 페이지의 나머지 80%의 공간까지만 새로운 레코드들이 삽입된다.
+>
+> 이 시점이 되면 더 이상 어떠한 새로운 레코드도 이 페이지에 삽입될 수 없다. 이미
+> 저장된 레코드에 대한 갱신과 삭제 연산만이 가능하다. 갱신 연산은 예약해둔 20%의
+> 빈 공간을 사용한다. 레코드가 삭제되어 사용중인 공간이 40% 아래로 떨어지면 그
+> 페이지에 다시 새로운 레코드를 삽입할 수 있다.
+>
+> 페이지 공간의 사용은 PCTFREE와 PCTUSED의 값을 이용하여 위와 같은 방법으로 계속
+> 순환된다.
 
-위의 PCTFREE와 PCTUSED는 페이지 사용의 최적화를 위해 다음과 같은 형태로 함께
-사용된다. 이 예제에서는 PCTFREE는 20, PCTUSED는 40으로 지정하였다.
-
-각 페이지의 20%는 기존 레코드에 대한 변경 연산을 위한 공간으로 예약되며, 이
-페이지의 나머지 80%의 공간까지만 새로운 레코드들이 삽입된다.
-
-이 시점이 되면 더 이상 어떠한 새로운 레코드도 이 페이지에 삽입될 수 없다. 이미
-저장된 레코드에 대한 갱신과 삭제 연산만이 가능하다. 갱신 연산은 예약해둔 20%의
-빈 공간을 사용한다. 레코드가 삭제되어 사용중인 공간이 40% 아래로 떨어지면 그
-페이지에 다시 새로운 레코드를 삽입할 수 있다.
-
-페이지 공간의 사용은 PCTFREE와 PCTUSED의 값을 이용하여 위와 같은 방법으로 계속
-순환된다.
-
-storage_clause
+*storage_clause*
 
 사용자가 세그먼트에 대한 익스텐트 관리 파라미터를 지정할 수 있는 구문이다.
 
@@ -7881,13 +7870,13 @@ storage_clause
   세그먼트가 포함할 수 있는 최대 익스텐트 개수를 지정한다. 명시하지 않을 경우
   제한이 없는 것으로 지정된다.
 
-LOB_storage_clause
+*LOB_storage_clause*
 
 디스크 테이블의 LOB 칼럼 데이터는 LOB 칼럼이 속한 테이블과 별도의
 테이블스페이스에 저장될 수 있다. 그러나 메모리 테이블의 경우는 별도 저장이
 불가능하다. 즉, 테이블과 동일한 테이블스페이스에만 저장될 수 있다.
 
-parallel_clause
+*parallel_clause*
 
 병렬 질의를 처리하는 쓰레드의 개수를 명시한다. 이 절을 생략하면 NOPARALLEL을
 지정한 것과 동일하다.
@@ -7903,11 +7892,11 @@ parallel_clause
 - 실행 계획에 HASH, SORT, GRAG 노드가 포함되는 병렬 질의. 단, 이러한 노드의
   경우에는 각 노드당 병렬 작업 쓰레드가 한 개씩만 생성된다.
 
-table_compression_clause
+*table_compression_clause*
 
 압축할 칼럼의 이름을 쉼표로 구분하여 명시한다. MAXROWS 절에는 압축 칼럼당
 자동으로 생성되는 딕셔너리 테이블에 입력할 수 있는 행의 최대 개수를 명시한다.
-명시하지 않으면 기본값은 일반 테이블과 동일한 264-1개이다.
+명시하지 않으면 기본값은 일반 테이블과 동일한 2^64^-1개이다.
 
 CREATE TABLE 구문에 이 절과 *subquery*를 모두 명시하여 테이블 생성과 데이터
 삽입을 하나의 구문으로 수행하는 것을 지원하지 않는다.
