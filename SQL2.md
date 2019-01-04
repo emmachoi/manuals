@@ -114,9 +114,7 @@ M으로 표현됨), 또는 GB(기가바이트, G로 표현됨) 단위로 크기�
 
 *NEXT*
 
-파일 크기가 자동으로 확장 될 때 다음에 증가 크기를 명시한다.
-
-AUTOEXTEND를 ON으로 하고 이 값을 명시하지 않을 경우, 기본 NEXT 값은
+파일 크기가 자동으로 확장 될 때 다음에 증가 크기를 명시한다. AUTOEXTEND를 ON으로 하고 이 값을 명시하지 않을 경우, 기본 NEXT 값은
 USER_DATA_FILE_NEXT_SIZE 프로퍼티에 지정된 값이다.
 
 Kilobytes(K), Megabytes(M), 또는 Gigabytes(G) 로 단위를 명시할 수 있다. 단위를
