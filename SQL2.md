@@ -190,7 +190,7 @@ Create success.
 
 **initsize_clause ::=**
 
-![initsize_clause _image141](media/SQL/initsize_clause _image141.gif)
+![initsize_clause_image141](D:\emmachoigit\manuals\media\SQL\initsize_clause_image141.gif)
 
 **autoextend_clause ::=**
 
