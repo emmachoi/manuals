@@ -29,10 +29,6 @@ homepage: [http://www.altibase.com](http://www.altibase.com/)
 
 
 
-## 목차
-
-
-
 
 
 ## 서문
@@ -3607,6 +3603,7 @@ INTO 절은 분리된 2개의 파티션의 이름과 파티션이 저장될 테�
 된다.
 
 - ###### 자료형 변경시 전제 조건
+
   - 문자형 데이터 타입 --\> 숫자형 데이터 타입  
     문자형 데이터가 숫자와 소숫점으로만 구성되어야 한다.  
     문자형 데이터가 숫자형 데이터 타입의 범위 내에 있어야 한다.
@@ -3766,6 +3763,7 @@ ACCESS *access_mode_clause*
 속성의 변경이 묵시적으로 수행될 수 있다.
 
 - ###### 논파티션드 테이블의 경우
+
   - 테이블의 레코드를 이동한다.
   - 디스크 테이블스페이스에서 메모리 또는 휘발성으로 테이블스페이스를 변경할
     때는 VARIABLE이 가능한 컬럼을 VARIABLE로 변경한다
@@ -3773,6 +3771,7 @@ ACCESS *access_mode_clause*
     모든 컬럼을 FIXED로 변경한다.
 
 - ###### **파티션드 테이블의 경우**
+
   - 파티션드 테이블의 테이블스페이스만 변경할 수 있다. 이 때, 파티션의
     테이블스페이스를 변경하지 않고, 파티션의 레코드도 이동하지 않는다.
   - 파티션의 테이블스페이스를 변경하려면, alter_partition 절을 참고한다.
@@ -7731,7 +7730,7 @@ PARTITION BY RANGE (product_id)
 
 위의 설명을 그림으로 나타내면 다음과 같다.
 
-![create_table_lob](D:\emmachoigit\manuals\media\SQL\create_table_lob.gif)
+![create_table_lob](media/SQL/create_table_lob.gif)
 
 
 
@@ -7896,7 +7895,7 @@ PCTFREE, PCTUSED, INITRANS 및 MAXTRANS를 지정하는 절이다. 이 절이 �
 
 압축할 칼럼의 이름을 쉼표로 구분하여 명시한다. MAXROWS 절에는 압축 칼럼당
 자동으로 생성되는 딕셔너리 테이블에 입력할 수 있는 행의 최대 개수를 명시한다.
-명시하지 않으면 기본값은 일반 테이블과 동일한 2^64^-1개이다.
+명시하지 않으면 기본값은 일반 테이블과 동일한 2<sup>64</sup>-1개이다.
 
 CREATE TABLE 구문에 이 절과 *subquery*를 모두 명시하여 테이블 생성과 데이터
 삽입을 하나의 구문으로 수행하는 것을 지원하지 않는다.
@@ -7954,1978 +7953,446 @@ CREATE TABLE 구문에 이 절과 *subquery*를 모두 명시하여 테이블 �
   칼럼: 사원번호, 사원이름과 성, 직책, 전화번호, 부서번호, 월급, 성별, 생일,
   입사일자, 상태
 
-iSQL\> CREATE TABLE employees(
+  ```
+  iSQL> CREATE TABLE employees(
+    eno INTEGER PRIMARY KEY,
+    e_lastname CHAR(20) NOT NULL, 
+    e_firstname CHAR(20) NOT NULL,
+    emp_job VARCHAR(15),
+    emp_tel CHAR(15),
+    dno SMALLINT,
+    salary NUMBER(10,2) DEFAULT 0,
+    sex CHAR(1) CHECK(sex IN ('M', 'F')),
+    birth CHAR(6),
+    join_date DATE,
+    status CHAR(1) DEFAULT 'H');
+  Create success.
+  ```
 
-eno INTEGER PRIMARY KEY,
 
-e_lastname CHAR(20) NOT NULL,
 
-e_firstname CHAR(20) NOT NULL,
-
-emp_job VARCHAR(15),
-
-emp_tel CHAR(15),
-
-dno SMALLINT,
-
-salary NUMBER(10,2) DEFAULT 0,
-
-sex CHAR(1) CHECK(sex IN ('M', 'F')),
-
-birth CHAR(6),
-
-join_date DATE,
-
-status CHAR(1) DEFAULT 'H');
-
-Create success.
 
 - 테이블 이름: orders  
   칼럼: 주문번호, 주문일자, 판매사원, 고객번호, 상품번호, 주문수량, 도착
   예정일자, 주문상태
 
-iSQL\> CREATE TABLE orders(
+  ```
+  iSQL> CREATE TABLE orders(
+    ono BIGINT,
+    order_date DATE,
+    eno INTEGER NOT NULL,
+    cno BIGINT NOT NULL,
+    gno CHAR(10) NOT NULL,
+    qty INTEGER DEFAULT 1,
+    arrival_date DATE,
+    processing CHAR(1) DEFAULT '0', PRIMARY KEY(ono, order_date));
+  Create success.
+  ```
 
-ono BIGINT,
 
-order_date DATE,
 
-eno INTEGER NOT NULL,
-
-cno BIGINT NOT NULL,
-
-gno CHAR(10) NOT NULL,
-
-qty INTEGER DEFAULT 1,
-
-arrival_date DATE,
-
-processing CHAR(1) DEFAULT '0', PRIMARY KEY(ono, order_date));
-
-Create success.
 
 - CREATE TABLE … AS SELECT 사용  
   다음 질의는 직원 테이블에서 부서 번호가 1002인 조건을 만족하는 데이터를 가진
   테이블 dept_1002를 생성한다.
 
-iSQL\> CREATE TABLE dept_1002
+  ```
+  iSQL> CREATE TABLE dept_1002
+    AS SELECT * FROM employees
+    WHERE dno = 1002;
+  Create success.
+  ```
 
-AS SELECT \* FROM employees
 
-WHERE dno = 1002;
 
-Create success.
 
 - TIMESTAMP 타입 칼럼을 가지는 테이블을 생성한다.
 
-iSQL\> CREATE TABLE tbl_timestamp(
+  ```
+  iSQL> CREATE TABLE tbl_timestamp(
+  i1 TIMESTAMP CONSTRAINT const2 PRIMARY KEY, 
+  i2 INTEGER,
+  i3 DATE,
+  i4 Byte(8));
+  Create success.
+  ```
 
-i1 TIMESTAMP CONSTRAINT const2 PRIMARY KEY,
+   테이블 tbl_timestamp의 속성은 다음과 같다.
 
-i2 INTEGER,
+  ```
+  [ TABLESPACE : SYS_TBS_MEM_DATA ]
+  [ ATTRIBUTE ]                                                         
+  ------------------------------------------------------------------------------
+  NAME                                     TYPE                        IS NULL 
+  ------------------------------------------------------------------------------
+  I1                                       TIMESTAMP       FIXED       NOT NULL
+  I2                                       INTEGER         FIXED       
+  I3                                       DATE            FIXED       
+  I4                                       BYTE(8)         FIXED       
+  [ INDEX ]                                                       
+  ------------------------------------------------------------------------------
+  NAME                                     TYPE     IS UNIQUE     COLUMN
+  ------------------------------------------------------------------------------
+  CONST2                                   BTREE    UNIQUE        I1 ASC
+  [ PRIMARY KEY ]                                                 
+  ------------------------------------------------------------------------------
+  I1
+  ```
 
-i3 DATE,
+  명시적으로 Byte(8) 데이터 타입을 선언한 칼럼 i4와 TIMESTAMP 데이터 타입 칼럼인
+  i1을 구별하는 방법은 SYS_CONSTRAINTS_와 SYS_CONSTRAINT_COLUMNS\_ 메타 테이블을
+  조회해서 칼럼 타입이 TIMESTAMP 인지를 확인하는 것이다.
 
-i4 Byte(8));
+  > 참고: INSERT나 UPDATE 수행 시 사용자가 TIMESTAMP 칼럼 값을 DEFAULT로 명시한
+  > 경우, 당시의 시스템 시간값이 그 TIMESTAMP 칼럼에 쓰여진다.
 
-Create success.
+  ```
+  iSQL> INSERT INTO tbl_timestamp VALUES(DEFAULT, 2, '02-FEB-01', Byte'A1111002');
+  1 row inserted.
+  iSQL> UPDATE tbl_timestamp SET i1 = DEFAULT, i2 = 102, i3 = '02-FEB-02', i4 = Byte'B1111002' WHERE i2 = 2;
+  1 row updated.
+  iSQL> SELECT * FROM tbl_timestamp;
+  I1                I2          I3           I4
+  ------------------------------------------------------------------
+  4E3778C900037AE9  102         02-FEB-2002  B111100200000000
+  1 row selected.
+  ```
 
-\* 테이블 tbl_timestamp의 속성은 다음과 같다.
+  마찬가지로 INSERT나 UPDATE 수행 시 사용자가 TIMESTAMP 칼럼 값을 명시하지 않은
+  경우, 당시의 시스템 시간 값이 INSERT 또는 UPDATE 수행에 사용된다.
 
-[ TABLESPACE : SYS_TBS_MEM_DATA ]
+  ```
+  iSQL> INSERT INTO tbl_timestamp(i2, i3, i4) VALUES(4, '02-APR-01', Byte'C1111002');
+  1 row inserted.
+  iSQL> UPDATE tbl_timestamp SET i2=104, i3='02-APR-02', i4=BYTE'D1111002' WHERE i2=4;
+  1 row updated.
+  iSQL> SELECT * FROM tbl_timestamp;
+  I1                I2          I3           I4
+  ------------------------------------------------------------------
+  4E3778C900037AE9  102         02-FEB-2002  B111100200000000
+  4E37794900083702  104         02-APR-2002  D111100200000000
+  2 rows selected.
+  ```
 
-[ ATTRIBUTE ]
 
-\------------------------------------------------------------------------------
 
-NAME TYPE IS NULL
-
-\------------------------------------------------------------------------------
-
-I1 TIMESTAMP FIXED NOT NULL
-
-I2 INTEGER FIXED
-
-I3 DATE FIXED
-
-I4 BYTE(8) FIXED
-
-[ INDEX ]
-
-\------------------------------------------------------------------------------
-
-NAME TYPE IS UNIQUE COLUMN
-
-\------------------------------------------------------------------------------
-
-CONST2 BTREE UNIQUE I1 ASC
-
-[ PRIMARY KEY ]
-
-\------------------------------------------------------------------------------
-
-I1
-
-명시적으로 Byte(8) 데이터 타입을 선언한 칼럼 i4와 TIMESTAMP 데이터 타입 칼럼인
-i1을 구별하는 방법은 SYS_CONSTRAINTS_와 SYS_CONSTRAINT_COLUMNS\_ 메타 테이블을
-조회해서 칼럼 타입이 TIMESTAMP 인지를 확인하는 것이다.
-
-\* 참고: INSERT나 UPDATE 수행 시 사용자가 TIMESTAMP 칼럼 값을 DEFAULT로 명시한
-경우, 당시의 시스템 시간값이 그 TIMESTAMP 칼럼에 쓰여진다.
-
-iSQL\> INSERT INTO tbl_timestamp VALUES(DEFAULT, 2, '02-FEB-01',
-Byte'A1111002');
-
-1 row inserted.
-
-iSQL\> UPDATE tbl_timestamp SET i1 = DEFAULT, i2 = 102, i3 = '02-FEB-02', i4 =
-Byte'B1111002' WHERE i2 = 2;
-
-1 row updated.
-
-iSQL\> SELECT \* FROM tbl_timestamp;
-
-I1 I2 I3 I4
-
-\------------------------------------------------------------------
-
-4E3778C900037AE9 102 02-FEB-2002 B111100200000000
-
-1 row selected.
-
-마찬가지로 INSERT나 UPDATE 수행 시 사용자가 TIMESTAMP 칼럼 값을 명시하지 않은
-경우, 당시의 시스템 시간 값이 INSERT 또는 UPDATE 수행에 사용된다.
-
-iSQL\> INSERT INTO tbl_timestamp(i2, i3, i4) VALUES(4, '02-APR-01',
-Byte'C1111002');
-
-1 row inserted.
-
-iSQL\> UPDATE tbl_timestamp SET i2=104, i3='02-APR-02', i4=BYTE'D1111002' WHERE
-i2=4;
-
-1 row updated.
-
-iSQL\> SELECT \* FROM tbl_timestamp;
-
-I1 I2 I3 I4
-
-\------------------------------------------------------------------
-
-4E3778C900037AE9 102 02-FEB-2002 B111100200000000
-
-4E37794900083702 104 02-APR-2002 D111100200000000
-
-2 rows selected.
 
 - 임시 테이블 생성 및 사용
 
-\<질의\> 한 세션에서 임시 테이블을 생성하고 데이터를 삽입한 후, 해당 세션에서는
-데이터가 조회되고, 다른 세션에서는 조회되는 데이터가 없는 것을 보여준다.
+  \<질의\> 한 세션에서 임시 테이블을 생성하고 데이터를 삽입한 후, 해당 세션에서는
+  데이터가 조회되고, 다른 세션에서는 조회되는 데이터가 없는 것을 보여준다.
 
-iSQL\> create volatile tablespace my_vol_tbs size 12M autoextend on maxsize 1G;
+  ```
+  iSQL> create volatile tablespace my_vol_tbs size 12M autoextend on maxsize 1G; 
+  Create success. 
+  iSQL> create temporary table t1(i1 integer, i2 varchar(10)) on commit delete rows tablespace my_vol_tbs; 
+  Create success. 
+  iSQL> create temporary table t2(i1 integer, i2 varchar(10)) on commit preserve rows tablespace my_vol_tbs; 
+  Create success. 
+  iSQL> desc t2; 
+  [ TABLESPACE : MY_VOL_TBS ] 
+  [ ATTRIBUTE ]                                                         
+  ------------------------------------------------------------------------------ 
+  NAME                                     TYPE                        IS NULL 
+  ------------------------------------------------------------------------------ 
+  I1                                       INTEGER         FIXED       
+  I2                                       VARCHAR(10)     FIXED       
+  T2 has no index 
+  T2 has no primary key 
+  iSQL> alter table t2 add constraint t2_pk primary key (i1); 
+  Alter success. 
+  iSQL> insert into t2 values (1, 'abc'); 
+  1 row inserted. 
+  iSQL> insert into t2 values (2, 'def'); 
+  1 row inserted. 
+  iSQL> select * from t2; 
+  I1          I2          
+  --------------------------- 
+  1           abc         
+  2           def         
+  2 rows selected. 
+  iSQL> connect sys/manager; 
+  Connect success. 
+  iSQL> select * from t2; 
+  I1          I2          
+  --------------------------- 
+  No rows selected.
+  ```
 
-Create success.
 
-iSQL\> create temporary table t1(i1 integer, i2 varchar(10)) on commit delete
-rows tablespace my_vol_tbs;
 
-Create success.
-
-iSQL\> create temporary table t2(i1 integer, i2 varchar(10)) on commit preserve
-rows tablespace my_vol_tbs;
-
-Create success.
-
-iSQL\> desc t2;
-
-[ TABLESPACE : MY_VOL_TBS ]
-
-[ ATTRIBUTE ]
-
-\------------------------------------------------------------------------------
-
-NAME TYPE IS NULL
-
-\------------------------------------------------------------------------------
-
-I1 INTEGER FIXED
-
-I2 VARCHAR(10) FIXED
-
-T2 has no index
-
-T2 has no primary key
-
-iSQL\> alter table t2 add constraint t2_pk primary key (i1);
-
-Alter success.
-
-iSQL\> insert into t2 values (1, 'abc');
-
-1 row inserted.
-
-iSQL\> insert into t2 values (2, 'def');
-
-1 row inserted.
-
-iSQL\> select \* from t2;
-
-I1 I2
-
-\---------------------------
-
-1 abc
-
-2 def
-
-2 rows selected.
-
-iSQL\> connect sys/manager;
-
-Connect success.
-
-iSQL\> select \* from t2;
-
-I1 I2
-
-\---------------------------
-
-No rows selected.
 
 - 질의에서 지정한 테이블스페이스에 테이블을 생성하라.
 
-\<질의\> 테이블 소유자가 uare1인 테이블 tbl1을 생성하라. (사용자 생성 시 기본
-테이블스페이스가 지정되지 않았다.)
+  \<질의\> 테이블 소유자가 uare1인 테이블 tbl1을 생성하라. (사용자 생성 시 기본
+  테이블스페이스가 지정되지 않았다.)
 
-iSQL\> CONNECT uare1/rose1;
+  ```
+  iSQL> CONNECT uare1/rose1;
+  Connect success.
+  iSQL> CREATE TABLE tbl1(
+      i1 INTEGER,
+      i2 VARCHAR(3));
+  Create success.
+  ```
 
-Connect success.
+  > 참고: 사용자 생성 시 기본 테이블스페이스가 지정되지 않은 경우 시스템 메모리
+  > 기본 테이블스페이스에 테이블이 생성 된다.
 
-iSQL\> CREATE TABLE tbl1(
+  \<질의\> 사용자 생성 시 지정된 기본 테이블스페이스 user_data에 다음 조건을
+  만족하는 테이블 books과 inventory를 생성하라.
 
-i1 INTEGER,
+  books 칼럼: 책번호, 책이름, 저자, 판, 출판연도, 가격, 출판사코드 (테이블 books에
+  입력할 수 있는 최대 레코드 개수는 2개이다.)
 
-i2 VARCHAR(3));
+  inventory 칼럼: 예약구독번호, 책번호, 상점코드, 구입날짜, 구입량, 지불여부
 
-Create success.
+  ```
+  iSQL> CREATE TABLE books(
+    isbn CHAR(10) CONSTRAINT const1 PRIMARY KEY,
+    title VARCHAR(50),
+    author VARCHAR(30),
+    edition INTEGER DEFAULT 1,
+    publishingyear INTEGER,
+    price NUMBER(10,2),
+  pubcode CHAR(4)) MAXROWS 2
+  TABLESPACE user_data;
+  Create success.
+  
+  iSQL> CREATE TABLE inventory(
+    subscriptionid CHAR(10) PRIMARY KEY,
+    isbn CHAR(10) CONSTRAINT fk_isbn REFERENCES books (isbn),
+    storecode CHAR(4),
+    purchasedate DATE,
+    quantity INTEGER,
+  paid CHAR(1))
+  TABLESPACE user_data;
+  Create success.
+  ```
 
-\* 참고: 사용자 생성 시 기본 테이블스페이스가 지정되지 않은 경우 시스템 메모리
-기본 테이블스페이스에 테이블이 생성 된다.
+  또는
 
-\<질의\> 사용자 생성 시 지정된 기본 테이블스페이스 user_data에 다음 조건을
-만족하는 테이블 books과 inventory를 생성하라.
+  ```
+  iSQL> CREATE TABLE inventory(
+    subscriptionid CHAR(10),
+    isbn CHAR(10),
+    storecode CHAR(4),
+    purchasedate DATE,
+    quantity INTEGER,
+    paid CHAR(1),
+    PRIMARY KEY(subscriptionid),
+  CONSTRAINT fk_isbn FOREIGN KEY(isbn) REFERENCES books(isbn))
+  TABLESPACE user_data;
+  Create success.
+  ```
 
-books 칼럼: 책번호, 책이름, 저자, 판, 출판연도, 가격, 출판사코드 (테이블 books에
-입력할 수 있는 최대 레코드 개수는 2개이다.)
-
-inventory 칼럼: 예약구독번호, 책번호, 상점코드, 구입날짜, 구입량, 지불여부
-
-iSQL\> CREATE TABLE books(
-
-isbn CHAR(10) CONSTRAINT const1 PRIMARY KEY,
-
-title VARCHAR(50),
-
-author VARCHAR(30),
-
-edition INTEGER DEFAULT 1,
-
-publishingyear INTEGER,
-
-price NUMBER(10,2),
-
-pubcode CHAR(4)) MAXROWS 2
-
-TABLESPACE user_data;
-
-Create success.
-
-iSQL\> CREATE TABLE inventory(
-
-subscriptionid CHAR(10) PRIMARY KEY,
-
-isbn CHAR(10) CONSTRAINT fk_isbn REFERENCES books (isbn),
-
-storecode CHAR(4),
-
-purchasedate DATE,
-
-quantity INTEGER,
-
-paid CHAR(1))
-
-TABLESPACE user_data;
-
-Create success.
-
-또는
-
-iSQL\> CREATE TABLE inventory(
-
-subscriptionid CHAR(10),
-
-isbn CHAR(10),
-
-storecode CHAR(4),
-
-purchasedate DATE,
-
-quantity INTEGER,
-
-paid CHAR(1),
-
-PRIMARY KEY(subscriptionid),
-
-CONSTRAINT fk_isbn FOREIGN KEY(isbn) REFERENCES books(isbn))
-
-TABLESPACE user_data;
-
-Create success.
 
 - Direct Key 인덱스를 사용하여 테이블 생성
 
-\<질의\> 테이블 tab1을 생성할 때 id(INTEGER) 칼럼을 UNIQUE 하면서, Direct Key
-인덱스로 설정한다.
+  \<질의\> 테이블 tab1을 생성할 때 id(INTEGER) 칼럼을 UNIQUE 하면서, Direct Key
+  인덱스로 설정한다.
 
-iSQL\> CREATE TABLE tab1 (id UNIQUE DIRECTKEY );
+  ```
+  iSQL> CREATE TABLE tab1 (id UNIQUE DIRECTKEY );
+  Create success.
+  ```
 
-Create success.
+
+
 
 - 각 인덱스 파티션을 위한 테이블스페이스 지정
 
-\<질의\> I1 컬럼에 대한 UNIQUE 제약을 갖는 파티션드 테이블 T1을 생성하라.
+  \<질의\> I1 컬럼에 대한 UNIQUE 제약을 갖는 파티션드 테이블 T1을 생성하라.
 
-CREATE TABLE T1
+  ```
+  CREATE TABLE T1 
+  ( 
+    I1 INTEGER UNIQUE USING INDEX LOCAL
+    (
+      PARTITION P1_UNIQUE ON P1 TABLESPACE TBS3,
+      PARTITION P2_UNIQUE ON P2 TABLESPACE TBS2,
+      PARTITION P3_UNIQUE ON P3 TABLESPACE TBS1
+    )
+  )
+  PARTITION BY RANGE (I1)
+  ( 
+    PARTITION P1 VALUES LESS THAN (100),
+    PARTITION P2 VALUES LESS THAN (200) TABLESPACE MEM_TBS1,
+    PARTITION P3 VALUES DEFAULT TABLESPACE MEM_TBS2 
+  ) TABLESPACE SYS_TBS_DISK_DATA;
+  ```
 
-(
 
-I1 INTEGER UNIQUE USING INDEX LOCAL
 
-(
-
-PARTITION P1_UNIQUE ON P1 TABLESPACE TBS3,
-
-PARTITION P2_UNIQUE ON P2 TABLESPACE TBS2,
-
-PARTITION P3_UNIQUE ON P3 TABLESPACE TBS1
-
-)
-
-)
-
-PARTITION BY RANGE (I1)
-
-(
-
-PARTITION P1 VALUES LESS THAN (100),
-
-PARTITION P2 VALUES LESS THAN (200) TABLESPACE MEM_TBS1,
-
-PARTITION P3 VALUES DEFAULT TABLESPACE MEM_TBS2
-
-) TABLESPACE SYS_TBS_DISK_DATA;
 
 - 범위 파티셔닝(range partitioning)
 
-\<질의 1\> 아래 그림과 같이 2006년의 각 분기별로 파티셔닝하여 range_sales
-테이블을 생성한다.
+  \<질의 1\> 아래 그림과 같이 2006년의 각 분기별로 파티셔닝하여 range_sales
+  테이블을 생성한다.
 
-![]()
+  ```
+  CREATE TABLE range_sales
+  ( 
+    prod_id NUMBER(6),
+    cust_id NUMBER,
+    time_id DATE
+  ) 
+  PARTITION BY RANGE (time_id)
+  (
+    PARTITION Q1_2006 VALUES LESS THAN (TO_DATE('01-APR-2006')),
+    PARTITION Q2_2006 VALUES LESS THAN (TO_DATE('01-JUL-2006')),
+    PARTITION Q3_2006 VALUES LESS THAN (TO_DATE('01-OCT-2006')),
+    PARTITION Q4_2006 VALUES LESS THAN (TO_DATE('01-JAN-2007')),
+    PARTITION DEF VALUES DEFAULT 
+  ) TABLESPACE SYS_TBS_DISK_DATA;
+  ```
 
-CREATE TABLE range_sales
 
-(
 
-prod_id NUMBER(6),
+  \<질의 2\> 파티션의 테이블스페이스를 지정하여 파티션드 테이블 생성
 
-cust_id NUMBER,
+  ```
+  CREATE TABLE T1 
+  ( 
+    I1 INTEGER, 
+    I2 INTEGER 
+  )
+  PARTITION BY RANGE (I1)
+  ( 
+    PARTITION P1 VALUES LESS THAN (100),
+    PARTITION P2 VALUES LESS THAN (200) TABLESPACE TBS1,
+    PARTITION P3 VALUES DEFAULT TABLESPACE TBS2 
+  ) TABLESPACE SYS_TBS_DISK_DATA;
+  ```
 
-time_id DATE
 
-)
 
-PARTITION BY RANGE (time_id)
+  \<질의 3\> 다중 컬럼을 파티션 키로 갖는 파티션드 테이블 생성
 
-(
+  ```
+  CREATE TABLE T1 
+  ( 
+    I1 DATE, 
+    I2 INTEGER 
+  )
+  PARTITION BY RANGE (I1, I2)
+  ( 
+    PARTITION P1 VALUES LESS THAN (TO_DATE('01-JUL-2006'), 100),
+    PARTITION P2 VALUES LESS THAN (TO_DATE('01-JAN-2007'), 200),
+    PARTITION P3 VALUES DEFAULT 
+  ) TABLESPACE SYS_TBS_DISK_DATA;
+  ```
 
-PARTITION Q1_2006 VALUES LESS THAN (TO_DATE('01-APR-2006')),
 
-PARTITION Q2_2006 VALUES LESS THAN (TO_DATE('01-JUL-2006')),
 
-PARTITION Q3_2006 VALUES LESS THAN (TO_DATE('01-OCT-2006')),
+  \<질의 4\> 필요시 데이터가 자동으로 다른 파티션으로 옮겨지는 파티션드 테이블
+  생성
 
-PARTITION Q4_2006 VALUES LESS THAN (TO_DATE('01-JAN-2007')),
+  ```
+  CREATE TABLE T1 
+  ( 
+    I1 INTEGER, 
+    I2 INTEGER 
+  )
+  PARTITION BY LIST (I1)
+  ( 
+    PARTITION P1 VALUES (100, 200),
+    PARTITION P2 VALUES (150, 250),
+    PARTITION P3 VALUES DEFAULT 
+  ) ENABLE ROW MOVEMENT TABLESPACE SYS_TBS_DISK_DATA;
+  ```
 
-PARTITION DEF VALUES DEFAULT
 
-) TABLESPACE SYS_TBS_DISK_DATA;
 
-\<질의 2\> 파티션의 테이블스페이스를 지정하여 파티션드 테이블 생성
-
-CREATE TABLE T1
-
-(
-
-I1 INTEGER,
-
-I2 INTEGER
-
-)
-
-PARTITION BY RANGE (I1)
-
-(
-
-PARTITION P1 VALUES LESS THAN (100),
-
-PARTITION P2 VALUES LESS THAN (200) TABLESPACE TBS1,
-
-PARTITION P3 VALUES DEFAULT TABLESPACE TBS2
-
-) TABLESPACE SYS_TBS_DISK_DATA;
-
-\<질의 3\> 다중 컬럼을 파티션 키로 갖는 파티션드 테이블 생성
-
-CREATE TABLE T1
-
-(
-
-I1 DATE,
-
-I2 INTEGER
-
-)
-
-PARTITION BY RANGE (I1, I2)
-
-(
-
-PARTITION P1 VALUES LESS THAN (TO_DATE('01-JUL-2006'), 100),
-
-PARTITION P2 VALUES LESS THAN (TO_DATE('01-JAN-2007'), 200),
-
-PARTITION P3 VALUES DEFAULT
-
-) TABLESPACE SYS_TBS_DISK_DATA;
-
-\<질의 4\> 필요시 데이터가 자동으로 다른 파티션으로 옮겨지는 파티션드 테이블
-생성
-
-CREATE TABLE T1
-
-(
-
-I1 INTEGER,
-
-I2 INTEGER
-
-)
-
-PARTITION BY LIST (I1)
-
-(
-
-PARTITION P1 VALUES (100, 200),
-
-PARTITION P2 VALUES (150, 250),
-
-PARTITION P3 VALUES DEFAULT
-
-) ENABLE ROW MOVEMENT TABLESPACE SYS_TBS_DISK_DATA;
 
 - 리스트 파티셔닝(list partitioning)
 
-\<질의\> nls_territory 컬럼의 값이 ‘CHINA’ 또는 ‘THAILAND’인 asia 파티션,
-‘GERMANY’, ‘ITALY’, ‘SWITZERLAND’인 europe 파티션, ‘AMERICA’인 west 파티션,
-‘INDIA’인 east 파티션, 그 외 나머지 값은 기본 파티션으로 분할되는 list_customers
-테이블을 생성한다.
+  \<질의\> nls_territory 컬럼의 값이 ‘CHINA’ 또는 ‘THAILAND’인 asia 파티션,
+  ‘GERMANY’, ‘ITALY’, ‘SWITZERLAND’인 europe 파티션, ‘AMERICA’인 west 파티션,
+  ‘INDIA’인 east 파티션, 그 외 나머지 값은 기본 파티션으로 분할되는 list_customers
+  테이블을 생성한다.
 
-CREATE TABLE list_customers
+  ```
+  CREATE TABLE list_customers 
+  ( 
+  	customer_id	NUMBER(6), 
+  	cust_first_name	VARCHAR(20), 
+  	cust_last_name	VARCHAR(20), 
+  	nls_territory	VARCHAR(30), 
+  	cust_email	VARCHAR(30)
+  )
+  PARTITION BY LIST (nls_territory) 
+  (
+  	PARTITION asia VALUES ('CHINA', 'THAILAND'),
+  	PARTITION europe VALUES ('GERMANY', 'ITALY', 'SWITZERLAND'),
+  	PARTITION west VALUES ('AMERICA'),
+  	PARTITION east VALUES ('INDIA'),
+  	PARTITION rest VALUES DEFAULT 
+  ) TABLESPACE SYS_TBS_DISK_DATA;
+  ```
 
-(
 
-customer_id NUMBER(6),
 
-cust_first_name VARCHAR(20),
-
-cust_last_name VARCHAR(20),
-
-nls_territory VARCHAR(30),
-
-cust_email VARCHAR(30)
-
-)
-
-PARTITION BY LIST (nls_territory)
-
-(
-
-PARTITION asia VALUES ('CHINA', 'THAILAND'),
-
-PARTITION europe VALUES ('GERMANY', 'ITALY', 'SWITZERLAND'),
-
-PARTITION west VALUES ('AMERICA'),
-
-PARTITION east VALUES ('INDIA'),
-
-PARTITION rest VALUES DEFAULT
-
-) TABLESPACE SYS_TBS_DISK_DATA;
 
 - 해시 파티셔닝(hash partitioning)
 
-\<질의\> product_id에 따라서 4개의 해시 파티션으로 분할되는 테이블을 생성한다.
+  \<질의\> product_id에 따라서 4개의 해시 파티션으로 분할되는 테이블을 생성한다.
 
-CREATE TABLE hash_products
+  ```
+  CREATE TABLE hash_products 
+  ( 
+  	product_id		NUMBER(6), 
+  	product_name		VARCHAR(50), 
+  	product_description 	VARCHAR(2000) 
+  )
+  PARTITION BY HASH (product_id)
+  ( 
+  	PARTITION p1, 
+  	PARTITION p2, 
+  	PARTITION p3, 
+  	PARTITION p4 
+  ) TABLESPACE SYS_TBS_DISK_DATA;
+  ```
 
-(
+  \<질의\> LOB 데이터를 별도의 테이블스페이스에 저장하되, image1칼럼은
+  테이블스페이스 lob_data1에, image2 칼럼은 테이블스페이스 lob_data2에 저장하는
+  테이블을 생성한다.
 
-product_id NUMBER(6),
+  ```
+  CREATE TABLE lob_products 
+  (
+    product_id integer, 
+    image1 BLOB, 
+    image2 BLOB
+  ) TABLESPACE SYS_TBS_DISK_DATA
+  LOB(image1) STORE AS ( TABLESPACE lob_data1 )
+  LOB(image2) STORE AS ( TABLESPACE lob_data2 );
+  ```
 
-product_name VARCHAR(50),
-
-product_description VARCHAR(2000)
-
-)
-
-PARTITION BY HASH (product_id)
-
-(
-
-PARTITION p1,
-
-PARTITION p2,
-
-PARTITION p3,
-
-PARTITION p4
-
-) TABLESPACE SYS_TBS_DISK_DATA;
-
-\<질의\> LOB 데이터를 별도의 테이블스페이스에 저장하되, image1칼럼은
-테이블스페이스 lob_data1에, image2 칼럼은 테이블스페이스 lob_data2에 저장하는
-테이블을 생성한다.
-
-CREATE TABLE lob_products
-
-(
-
-product_id integer,
-
-image1 BLOB,
-
-image2 BLOB
-
-) TABLESPACE SYS_TBS_DISK_DATA
-
-LOB(image1) STORE AS ( TABLESPACE lob_data1 )
-
-LOB(image2) STORE AS ( TABLESPACE lob_data2 );
 
 - 세그먼트 내의 익스텐트 관리 파라미터를 지정한 테이블 생성
 
-\<질의\> 디스크 테이블스페이스인 usertbs에 local_tbl 테이블을 생성한다. 단
-테이블 생성시 익스텐트 10개를 할당하고 세그먼트 확장시마다 1개씩 확장하도록 한다
+  \<질의\> 디스크 테이블스페이스인 usertbs에 local_tbl 테이블을 생성한다. 단
+  테이블 생성시 익스텐트 10개를 할당하고 세그먼트 확장시마다 1개씩 확장하도록 한다.
 
-iSQL\> CREATE TABLE local_tbl (i1 INTEGER, i2 VARCHAR(32) )
+  ```
+  iSQL> CREATE TABLE local_tbl (i1 INTEGER, i2 VARCHAR(32) ) 
+                      TABLESPACE usertbs
+                      STORAGE ( INITEXTENTS 10 NEXTEXTENTS 1 );
+  Create success.
+  ```
 
-TABLESPACE usertbs
+  \<질의\> 디스크 테이블스페이스인 usertbs에 local_tbl 테이블을 생성한다. 단,
+  테이블 생성시 최소 익스텐트 개수는 3으로 하고 최대 익스텐트 개수는 100으로
+  제한한다.
 
-STORAGE ( INITEXTENTS 10 NEXTEXTENTS 1 );
+  ```
+  iSQL> CREATE TABLE local_tbl ( i1 INTEGER, i2 VARCHAR(32) ) 
+                      TABLESPACE usertbs
+                      STORAGE ( INITEXTENTS 3 MINEXTENTS 3 MAXEXTENTS 100 );
+  Create success.
+  ```
 
-Create success.
 
-\<질의\> 디스크 테이블스페이스인 usertbs에 local_tbl 테이블을 생성한다. 단,
-테이블 생성시 최소 익스텐트 개수는 3으로 하고 최대 익스텐트 개수는 100으로
-제한한다.
 
-iSQL\> CREATE TABLE local_tbl ( i1 INTEGER, i2 VARCHAR(32) )
 
-TABLESPACE usertbs
-
-STORAGE ( INITEXTENTS 3 MINEXTENTS 3 MAXEXTENTS 100 );
-
-Create success.
-
-### CREATE DISK TABLESPACE 
-
-#### 구문
-
-create_disk_tablespace ::=
-
-datafile_spec ::=
-
-autoextend_clause ::=
-
-maxsize_clause ::=
-
-#### 전제 조건
-
-SYS 사용자이거나 CREATE TABLESPACE 시스템 권한을 가진 사용자만이
-테이블스페이스를 생성할 수 있다.
-
-#### 설명
-
-데이터베이스 내에 영구적으로 데이터베이스 객체를 저장할 수 있는 디스크
-테이블스페이스를 생성하는 구문이다. 이 구문에 의해 생성되는 테이블스페이스에는
-테이블과 인덱스가 저장될 수 있다.
-
-DISK
-
-디스크 테이블스페이스를 생성한다. DISK 키워드 없이 CREATE TABLESPACE 구문을
-실행하여도 디스크 테이블스페이스가 생성된다.
-
-DATA
-
-사용자의 데이터가 저장될 테이블스페이스가 생성된다. DATA 키워드가 없이 CREATE
-TABLESPACE 구문을 실행하여도 데이터 테이블스페이스가 생성된다.
-
-tblspace_name
-
-생성될 테이블스페이스 이름을 명시한다. 테이블스페이스 이름은 1장의 "[객체 이름
-규칙](#object_naming_rule)"을 따라야 한다.
-
-datafile_spec
-
-디스크 테이블스페이스를 구성하는 데이터 파일을 명시한다.
-
-EXTENTSIZE 절
-
-페이지의 집합인 익스텐트(extent)의 크기를 명시하는 절이다. 생성 시 한번 결정되면
-이후 변경할 수 없다. 기본 단위는 kB(킬로바이트, K로 표현됨)이며, MB(메가바이트,
-M으로 표현됨), 또는 GB(기가바이트, G로 표현됨) 단위로 크기를 명시할 수 있다.
-
-명시하지 않을 경우 기본값은 한 페이지 크기의 64배이다. 익스텐트 크기를 명시할
-경우에는 한 페이지 크기의 배수로 설정해야 한다. 만약 페이지 크기의 배수로
-지정하지 않을 경우에는 내부적으로 페이지의 배수에 가장 가까운 값으로 수정되어
-처리된다.
-
-또한 디스크 테이블스페이스의 익스텐트 크기는 최소한 페이지 크기의 5배 이상으로
-지정해야 한다. 즉 페이지의 크기가 8kB이기 때문에 익스텐트의 크기는 최소한 40kB
-이상으로 지정해야 한다.
-
-SEGMENT MANAGEMENT 절
-
-디스크 테이블스페이스 생성시 세그먼트 관리 방법을 결정한다. 세그먼트 관리 방법은
-테이블스페이스 생성시 옵션으로 선택할 수 있다. 옵션을 명시하지 않으면 새로
-생성되는 디스크 테이블스페이스는 프로퍼티 DEFAULT_SEGMENT_MANAGEMENT_TYPE에
-설정된 방법으로 관리된다. (기본값은 AUTO이다.)
-
-- MANUAL : 프리 리스트(Freelist) 기반의 테이블스페이스 가용 공간 관리 방식으로
-  세그먼트 생성
-- AUTO : 비트맵(Bitmap) 인덱스 기반의 테이블스페이스 가용 공간 관리 방식으로
-  세그먼트 생성
-
-file_name
-
-생성될 데이터 파일 이름을 절대 경로로 명시한다.
-
-SIZE 절
-
-데이터 파일의 크기를 명시한다. 이 절을 생략하면, 기본 값은 100MB이다. 기본
-크기는 SYS_DATA_FILE_INIT_SIZE 프로퍼티로 변경 가능하다.
-
-정수 값 뒤에 Kilobytes(K), Megabytes(M), 또는 Gigabytes(G)로 단위를 명시할 수
-있다. 단위를 명시하지 않을 경우 기본 단위는 Kilobytes(K)이다.
-
-REUSE
-
-기존 데이터 파일의 재사용 여부를 지정한다. 명시한 이름을 가진 파일이 이미
-존재한다면 반드시 REUSE옵션을 명시해야 한다. 단 존재하는 파일을 재사용할 때에는
-기존 데이터가 소실되기 때문에 주의가 필요하다.  
-그러나 존재하지 않는 파일 이름에 대해 이 옵션을 사용할 경우 이 옵션은 무시되며,
-새로운 파일이 생성된다.
-
-autoextend_clause
-
-데이터 파일에 대하여 확장할 수 있는 최대 공간까지 자동으로 확장될지 여부를
-명시하는 절이다. 이 절 생략시, 기본으로 자동확장 기능은 꺼진다.
-
-ON
-
-파일에 대한 자동 확장 기능이 켜진다.
-
-OFF
-
-파일에 대한 자동 확장 기능이 꺼진다.
-
-NEXT
-
-파일 크기가 자동으로 확장 될 때 다음에 증가 크기를 명시한다.
-
-AUTOEXTEND를 ON으로 하고 이 값을 명시하지 않을 경우, 기본 NEXT 값은
-USER_DATA_FILE_NEXT_SIZE 프로퍼티에 지정된 값이다.
-
-Kilobytes(K), Megabytes(M), 또는 Gigabytes(G) 로 단위를 명시할 수 있다. 단위를
-명시하지 않을 경우 기본 단위는 Kilobytes이다.
-
-maxsize_clause
-
-데이터 파일이 자동 확장 가능한 최대 크기를 명시한다. AUTOEXTEND를 ON으로 하고 이
-값을 명시하지 않을 경우, 기본값은 USER_DATA_FILE_MAX_SIZE 프로퍼티에 지정된
-값이다.
-
-Kilobytes(K), Megabytes(M), 또는 Gigabytes(G) 로 단위를 명시할 수 있다. 단위를
-명시하지 않을 경우 기본 단위는 Kilobytes이다.
-
-UNLIMITED
-
-파일이 자동 확장되는 크기에 제한이 없음을 명시한다. 이 옵션이 사용되면, 실제
-파일의 최대 크기는 운영체제 또는 파일 시스템상의 가용 공간의 양에 의해 결정될
-것이다.
-
-#### 예제
-
-\<질의\> 다음은 3개의 데이터 파일을 가진 user_data 테이블스페이스를 생성한다.
-단, 세그먼트는 “free list” 방식으로 관리되게 한다.
-
-iSQL\> CREATE TABLESPACE user_data
-
-DATAFILE '/tmp/tbs1.user' SIZE 10M,
-
-'/tmp/tbs2.user' SIZE 10M,
-
-'/tmp/tbs3.user' SIZE 10M
-
-SEGMENT MANAGEMENT MANUAL;
-
-Create success.
-
-\<질의\> 테이블스페이스를 구성하는 데이터 파일이 tbs.user인 10MB의 user_data
-테이블스페이스를 생성한다. (user_data 테이블스페이스에 기록되는 테이블이나
-인덱스는 tbs.user 파일에 저장될 것이다.)
-
-iSQL\> CREATE TABLESPACE user_data DATAFILE '/tmp/tbs.user' SIZE 10M AUTOEXTEND
-ON;
-
-Create success.
-
-\<질의\> User_data 테이블스페이스를 생성한다. 더 큰 공간이 요구될 때 500kB 씩
-증가되고 최대 크기 100MB까지 자동 확장된다.
-
-iSQL\> CREATE TABLESPACE user_data
-
-DATAFILE '/tmp/tbs.user' SIZE 500K REUSE
-
-AUTOEXTEND ON NEXT 500K MAXSIZE 100M;
-
-Create success.
-
-\<질의\> 자동으로 확장되지 않는 데이터 파일 tbs.user로 구성된 테이블스페이스
-user_data를 생성한다.
-
-iSQL\> CREATE TABLESPACE user_data
-
-DATAFILE '/tmp/tbs.user' AUTOEXTEND OFF;
-
-Create success.
-
-### CREATE MEMORY TABLESPACE 
-
-#### 구문
-
-create_memory_tablespace ::=
-
-initsize_clause ::=
-
-autoextend_clause ::=
-
-maxsize_clause ::=
-
-checkpoint_path_clause ::=
-
-splitsize_clause ::=
-
-#### 전제 조건
-
-테이블스페이스는 SYS 사용자이거나 CREATE TABLESPACE 시스템 권한을 가진
-사용자만이 테이블스페이스를 생성할수 있다.
-
-#### 설명
-
-데이터베이스 내에 데이터베이스 객체를 저장할 수 있는 메모리 데이터
-테이블스페이스를 생성하는 구문이다. 이 구문으로 생성된 테이블스페이스에는 메모리
-테이블이 저장될 수 있다.
-
-MEMORY
-
-메모리 테이블스페이스를 생성할 것을 지정한다.
-
-DATA
-
-사용자의 데이터를 저장할 테이블스페이스를 생성할 것을 지정한다. DATA 키워드 없이
-CREATE TABLESPACE 구문을 수행하여도 기본적으로 데이터 테이블스페이스가 생성된다.
-
-tablespace_name
-
-생성될 테이블스페이스의 이름을 명시한다. 테이블스페이스 이름은 1장의 "[객체 이름
-규칙](#object_naming_rule)"을 따라야 한다.
-
-initsize_clause
-
-생성될 테이블스페이스의 초기 크기를 지정한다.
-
-SIZE
-
-테이블스페이스의 초기 크기를 명시한다.
-
-이는 메모리 테이블스페이스의 기본 확장 크기의 배수여야 한다. (즉,
-EXPAND_CHUNK_PAGE_COUNT 프로퍼티에 지정된 페이지 개수 \* 메모리 테이블스페이스의
-한 페이지 크기 (32kB))
-
-예를 들어 EXPAND_CHUNK_PAGE_COUNT프로퍼티를 128로 지정했다면, 메모리
-테이블스페이스의 기본 확장 크기는 128 \* 4MB가 될 것이다. 그러므로 초기 크기는
-4MB의 배수여야 한다.
-
-이 값은 Kilobytes(K), Megabytes(M), 또는 Gigabytes(G) 단위로 명시할 수 있다.
-단위를 명시하지 않을 경우 기본 단위는 Kilobytes이다.
-
-autoextend_clause
-
-테이블스페이스가 자동으로 확장될 지 여부를 명시한다. 이 절을 생략하면,
-AUTOEXTEND는 기본으로 꺼진다.
-
-ON
-
-AUTOEXTEND 옵션이 켜진다.
-
-OFF
-
-AUTOEXTEND 옵션이 꺼진다.
-
-NEXT
-
-테이블스페이스가 자동으로 크기가 증가될 때 증가할 양을 명시한다.
-
-단, 이 크기는 메모리 테이블스페이스의 기본 확장 크기의 배수여야 한다.
-(EXPAND_CHUNK_PAGE_COUNT 프로퍼티에 지정된 페이지 개수 \* 메모리
-테이블스페이스의 한 페이지 크기 (32kB))
-
-AUTOEXTEND를 ON으로 지정하고 이 값을 명시하지 않을 경우, 기본값은
-EXPAND_CHUNK_PAGE_COUNT프로퍼티에 지정한 값이다.
-
-AUTOEXTEND가 OFF일 때 이 값은 의미없다.
-
-이 값은 Kilobytes(K), Megabytes(M), 또는 Gigabytes(G) 단위로 명시할 수 있다.
-단위를 명시하지 않을 경우 기본 단위는 Kilobytes이다.
-
-maxsize_clause
-
-테이블스페이스 자동 확장 시 확장할 수 있는 최대 크기를 명시한다. AUTOEXTEND는 ON
-으로 지정하고 이 값을 명시하지 않을 경우 기본값은 UNLIMITED이다.
-
-AUTOEXTEND가 OFF이면 이 값은 의미없다.
-
-이 값은 Kilobytes(K), Megabytes(M), 또는 Gigabytes(G) 단위로 명시할 수 있다.
-단위를 명시하지 않을 경우 기본 단위는 Kilobytes이다.
-
-UNLIMITED
-
-테이블스페이스가 자동 확장되는 크기에 제한이 없음을 명시한다.
-
-이 옵션이 사용되면, 테이블스페이스는 그 크기가 데이터베이스내의 모든 메모리
-테이블스페이스와 모든 휘발성 테이블스페이스의 총 크기가 MEM_MAX_DB_SIZE
-프로퍼티에 지정된 크기에 도달할 때까지 자동으로 증가될 것이다.
-
-checkpoint_path_clause
-
-메모리 테이블스페이스에 저장된 데이터의 영속성을 보장하기 위해 데이터는 파일에
-저장되어야 한다. 이러한 메모리 테이블스페이스의 데이터 저장 파일을 “체크포인트
-이미지”라고 한다.
-
-checkpoint_path절은 체크포인트 이미지 파일이 저장될 체크포인트 경로(Path)들을
-지정한다.
-
-체크포인트 경로를 지정하지 않은 경우 MEM_DB_DIR 프로퍼티에 지정한 경로가 기본
-경로로 사용된다.
-
-checkpoint_path
-
-메모리 테이블스페이스의 체크포인트시 체크포인트 이미지가 저장되는 경로이다.
-체크포인트 및 테이블스페이스 로딩시 디스크 입출력 비용을 분산할 수 있도록 다수의
-경로가 지정될 수 있다.
-
-split_each_clause
-
-이 절은 체크포인트 파일을 좀 더 작은 파일로 분리시키기 위해 사용된다. 이는
-메모리 테이블스페이스의 크기가 운영체제에서 지원하는 최대 파일 크기를 초과할 때,
-또는 입출력 비용을 분산하기 위해서 유용하다. 분할된 파일의 크기는 사용자가
-지정할 수 있다. 크기를 지정하지 않을 경우 DEFAULT_MEM_DB_FILE_SIZE 프로퍼티에
-지정된 값이 기본으로 사용된다.
-
-이 값은 Kilobytes(K), Megabytes(M), 또는 Gigabytes(G) 단위로 명시할 수 있다.
-단위를 명시하지 않을 경우 기본 단위는 Kilobytes이다.
-
-#### 예제
-
-\<질의 1\> 초기 크기가 512MB이고, 자동 확장되지 않는 사용자 정의 메모리 데이터
-테이블스페이스를 생성한다. (체크포인트 이미지는 MEM_DB_DIR 프로퍼티에 지정된
-경로에 저장된다. 분할될 체크포인트 이미지 파일의 크기는 DEFAULT_MEM_DB_FILE_SIZE
-프로퍼티의 값을 따른다.)
-
-iSQL\> CREATE MEMORY DATA TABLESPACE user_data SIZE 512M;
-
-Create success.
-
-\<질의 2\> 초기 크기가 512MB이고, 128MB 단위로 자동 확장되는[^4] 사용자 정의
-메모리 데이터 테이블스페이스를 생성한다. (체크포인트 이미지는 MEM_DB_DIR
-프로퍼티에 지정된 경로에 저장된다. 분할될 체크포인트 이미지 파일의 크기는
-DEFAULT_MEM_DB_FILE_SIZE 프로퍼티의 값을 따른다.)
-
-[^4]: 테이블스페이스의 최대 크기를 MAXSIZE절을 이용하여 지정하지 않았으므로,
-
-기본적으로 UNLIMITTED를 지정한 것과 같다. 이 경우 시스템에 존재하는 모든 메모리
-테이블스페이스와 휘발성 테이블스페이스의 크기의 총합이 MEM_MAX_DB_SIZE
-프로퍼티에 지정된 값을 벗어나지 않는 한도 내에서 테이블스페이스의 확장이
-이루어진다.
-
-iSQL\> CREATE MEMORY DATA TABLESPACE user_data
-
-SIZE 512M
-
-AUTOEXTEND ON NEXT 128M;
-
-Create success.
-
-\<질의 3\> 초기 크기가 512MB 이고, 최대 1GB까지 128MB 단위로 자동 확장되는
-사용자 정의 메모리 데이터 테이블스페이스를 생성한다. (체크포인트 이미지는
-다중화를 위해 3개의 디렉토리에 나누어 저장하고, 분할될 체크포인트 이미지 파일의
-크기를 256M로 한다.)
-
-iSQL\> CREATE MEMORY DATA TABLESPACE user_data
-
-SIZE 512M AUTOEXTEND ON NEXT 128M MAXSIZE 1G
-
-CHECKPOINT PATH ‘/dbs/path1’, ‘/dbs/path2’, ‘/dbs/path3’
-
-SPLIT EACH 256M;
-
-Create success.
-
-### CREATE VOLATILE TABLESPACE 
-
-#### 구문 
-
-create_tablespace ::=
-
-initsize_clause ::=
-
-autoextend_clause ::=
-
-maxsize_clause ::=
-
-#### 전제 조건
-
-테이블스페이스는 SYS 사용자이거나 CREATE TABLESPACE 시스템 권한을 가진 사용자만
-테이블스페이스를 생성할 수 있다.
-
-#### 설명
-
-데이터베이스 내에 데이터베이스 객체를 저장할 수 있는 휘발성 테이블스페이스를
-생성하는 구문이다. 이 구문으로 생성한 테이블스페이스에는 휘발성 테이블을 생성할
-수 있다.
-
-VOLATILE
-
-휘발성 테이블스페이스를 생성할 것을 지정한다.
-
-DATA
-
-사용자의 데이터를 저장할 테이블스페이스를 생성할 것을 지정한다. DATA 키워드 없이
-CREATE TABLESPACE 구문을 수행하여도 기본으로 데이터 테이블스페이스가 생성된다.
-
-tablespace_name
-
-생성될 테이블스페이스의 이름을 명시한다. 테이블스페이스 이름은 1장의 "[객체 이름
-규칙](#object_naming_rule)"을 따라야 한다.
-
-initsize_clause
-
-생성될 테이블스페이스의 초기 크기를 지정한다.
-
-SIZE
-
-테이블스페이스의 초기 크기를 명시한다.
-
-이는 메모리 테이블스페이스의 기본 확장 크기의 배수여야 한다. (즉,
-EXPAND_CHUNK_PAGE_COUNT 프로퍼티에 지정된 페이지 개수 \* 메모리 테이블스페이스의
-한 페이지 크기 (32kB))
-
-예를 들어 EXPAND_CHUNK_PAGE_COUNT프로퍼티를 128로 지정했다면, 메모리
-테이블스페이스의 기본 확장 크기는 128 \* 4MB가 될 것이다. 그러므로 초기 크기는
-4MB의 배수여야 한다.
-
-이 값은 Kilobytes(K), Megabytes(M), 또는 Gigabytes(G) 단위로 명시할 수 있다.
-단위를 명시하지 않을 경우 기본 단위는 Kilobytes이다.
-
-autoextend_clause
-
-테이블스페이스가 자동으로 확장될 지 여부를 명시한다. 이 절을 생략하면,
-AUTOEXTEND는 기본으로 꺼진다.
-
-ON
-
-AUTOEXTEND 옵션이 켜진다.
-
-OFF
-
-AUTOEXTEND 옵션이 꺼진다.
-
-NEXT
-
-테이블스페이스가 자동으로 크기가 증가될 때 증가할 양을 명시한다.
-
-단, 이 크기는 메모리 테이블스페이스의 기본 확장 크기의 배수여야 한다.
-(EXPAND_CHUNK_PAGE_COUNT 프로퍼티에 지정된 페이지 개수 \* 메모리
-테이블스페이스의 한 페이지 크기 (32kB))
-
-AUTOEXTEND를 ON으로 지정하고 이 값을 명시하지 않을 경우, 기본값은
-EXPAND_CHUNK_PAGE_COUNT프로퍼티에 지정한 값이다.
-
-AUTOEXTEND가 OFF일 때 이 값은 의미없다.
-
-이 값은 Kilobytes(K), Megabytes(M), 또는 Gigabytes(G) 단위로 명시할 수 있다.
-단위를 명시하지 않을 경우 기본 단위는 Kilobytes이다.
-
-maxsize_clause
-
-테이블스페이스 자동 확장 시 확장할 수 있는 최대 크기를 명시한다. AUTOEXTEND는 ON
-으로 지정하고 이 값을 명시하지 않을 경우 기본값은 UNLIMITED이다.
-
-AUTOEXTEND가 OFF이면 이 값은 의미없다.
-
-이 값은 Kilobytes(K), Megabytes(M), 또는 Gigabytes(G) 단위로 명시할 수 있다.
-단위를 명시하지 않을 경우 기본 단위는 Kilobytes이다.
-
-UNLIMITED
-
-테이블스페이스가 자동 확장되는 크기에 제한이 없음을 명시한다.
-
-이 옵션이 사용되면, 테이블스페이스는 그 크기가 데이터베이스내의 모든 메모리
-테이블스페이스와 모든 휘발성 테이블스페이스의 총 크기가 MEM_MAX_DB_SIZE
-프로퍼티에 지정된 크기에 도달할 때까지 자동으로 증가될 것이다.
-
-#### 예제
-
-\<질의 1\> 초기 크기가 512MB이고, 자동 확장되지 않는 사용자 정의 휘발성 데이터
-테이블스페이스를 생성한다.
-
-iSQL\> CREATE VOLATILE DATA TABLESPACE user_data SIZE 512M;
-
-Create success.
-
-\<질의 2\> 초기 크기가 512MB이고, 128MB 단위로 자동 확장되는 사용자 정의 휘발성
-데이터 테이블스페이스를 생성한다.
-
-iSQL\> CREATE VOLATILE DATA TABLESPACE user_data SIZE 512M AUTOEXTEND ON NEXT
-128M;
-
-Create success.
-
-### CREATE TEMPORARY TABLESPACE 
-
-#### 구문
-
-create_temporary_tablespace ::=
-
-datafile_spec ::=
-
-autoexetend_clause ::=
-
-#### 전제 조건
-
-SYS 사용자이거나 CREATE TABLESPACE 시스템 권한을 가진 사용자만이 임시
-테이블스페이스를 생성할 수 있다.
-
-#### 설명
-
-어떤 세션이 지속되는 동안 사용되는 임시 결과를 저장하기 위한 임시
-테이블스페이스를 생성하는 구문이다. 임시 테이블스페이스는 디스크 공간에 생성되고
-임시 테이블스페이스의 데이터는 데이터 파일에 저장된다.
-
-데이터베이스 내에 데이터베이스 객체를 영구적으로 저장하려면 CREATE DISK
-TABLESPACE 문을 사용하도록 한다.
-
-tblspace_name
-
-생성할 임시 테이블스페이스 이름을 명시한다. 테이블스페이스 이름은 1장의 "[객체
-이름 규칙](#object_naming_rule)"을 따라야 한다.
-
-TEMPFILE datafile_space
-
-임시 테이블스페이스를 구성하는 임시 파일(들)을 명시하는 절이다.
-
-#### 예제
-
-\<질의\> 임시 테이블스페이스를 구성하는 데이터 파일이 tbs.temp인 5MB의 temp_data
-테이블스페이스를 생성한다.
-
-iSQL\> CREATE TEMPORARY TABLESPACE temp_data
-
-TEMPFILE '/tmp/tbs.temp' SIZE 5M
-
-AUTOEXTEND ON;
-
-Create success.
-
-### CREATE TRIGGER
-
-#### 구문
-
-create_trigger ::=
-
-![](media/SQL/e52f0369710a1fb044d43082fb24c858.png)
-
-simple_dml_trigger ::=
-
-trigger_event ::=
-
-referencing_clause ::=
-
-trigger_action::=
-
-![](media/SQL/9c08ef3d3a9a235c54020897664f1e76.png)
-
-psm_body::=
-
-![](media/SQL/9bdcf9256b030ef2f125cae49db1e626.jpg)
-
-instead_of_dml_trigger::=
-
-![](media/SQL/15bb3089ca8a5848774adf787ad4e5ed.png)
-
-#### 전제 조건
-
-아래의 조건 중 하나 이상을 만족해야 한다.
-
-- SYS 사용자이다.
-- 사용자 자신의 테이블에 트리거를 생성하려면, CREATE TRIGGER 또는 CREATE ANY
-  TRIGGER 시스템 권한을 가지고 있어야 한다.
-- 다른 사용자의 테이블에 트리거를 생성하려면, CREATE ANY TRIGGER 시스템 권한을
-  가지고 있어야 한다.
-
-#### 설명 
-
-명시된 이름으로 트리거를 생성한다.
-
-OR REPLACE
-
-이 절은 트리거가 이미 존재한다면 같은 이름의 트리거로 교체할 때 사용된다. 즉, 이
-절은 존재하는 트리거를 제거한 후 재생성하는 대신에 기존 트리거의 정의를
-변경한다.
-
-user_name
-
-생성될 트리거의 소유자 이름을 명시한다. 생략하면 Altibase는 현재 사용자가 소유한
-테이블에 트리거를 생성한다.
-
-trigger_name
-
-생성될 트리거의 이름을 명시한다. 트리거 이름은 1장의 "[객체 이름
-규칙](#object_naming_rule)"을 따라야 한다.
-
-AFTER
-
-트리거가 동작될 시점을 지정한다. AFTER 옵션은 *trigger_event*가 수행된 후에
-트리거가 동작될 것을 지정한다.
-
-BEFORE
-
-BEFORE 옵션은 *trigger_event*가 수행되기 전에 트리거가 동작될 것을 지정한다.
-
-INSTEAD OF
-
-INSTEAD OF 옵션은 트리거를 유발한 DML 구문은 수행되지 않고 트리거만 동작할 것을
-지정한다. INSTEAD OF 트리거는 뷰에만 생성할 수 있다. 만약 뷰에 LOB 칼럼이 있는
-경우 INSTEAD OF 옵션으로 트리거를 생성할 수는 있으나, 트리거의 동작을 유발하는
-DML문이 실행될 때 오류가 발생한다.
-
-trigger_event
-
-이는 테이블의 데이터를 변경시키는 이벤트로 트리거의 동작을 유발시킨다. 단
-데이터베이스의 무결성을 지키기 위해 이중화 수신자에 의해 적용되는 테이블
-데이터의 변경은 트리거 이벤트로 처리되지 않는다 (즉, 트리거 동작을 유발시키지
-않는다).
-
-*trigger_event*로 다음의 세 가지 유형의 DML문을 지정할 수 있다.
-
-- DELETE  
-  해당 테이블의 데이터를 삭제하는 DELETE 구문 수행 시 트리거 동작이 유발된다.
-- INSERT  
-  해당 테이블에 데이터를 삽입하는 INSERT 구문 수행 시 트리거 동작이 유발된다.
-  하지만 LOB 칼럼이 있는 테이블에는 'BEFORE INSERT ... FOR EACH ROW' 구문으로
-  트리거를 생성할 수는 있으나, 트리거의 동작을 유발하는 DML문이 실행될 때
-  오류가 발생한다.
-- UPDATE  
-  해당 테이블의 데이터를 변경하는 UPDATE 구문 수행 시 트리거 동작이 유발된다.
-  UPDATE 트리거 이벤트에 OF 절을 사용할 경우 OF 절에 명시된 컬럼이 변경될
-  경우에만 트리거를 동작시킨다.
-
-ON table_name
-
-트리거가 동작할지를 결정하기 위해 참조하는 테이블을 지정한다. 트리거는
-*table_name*에 정의된 테이블의 변경에 따라 동작이 유발될 것이다.
-
-트리거는 일반 테이블만 참조할 수 있다. 뷰, 시퀀스, 저장 프로시저와 같은 객체를
-기반으로 트리거를 생성할 수 없다.
-
-이중화에 포함되어 있는 테이블에는 트리거를 생성할 수 없다. 그러나, 트리거가 이미
-존재하는 테이블에 대한 이중화 생성은 가능하다.
-
-User_name이 생략되면, Altibase는 현재 사용자 소유의 테이블을 기반으로 트리거를
-생성할 것이다.
-
-REFERENCING 절
-
-트리거의 특성상 old row와 new row의 개념을 갖는다. 즉, 트리거가 참조하는
-테이블의 데이터 변경시, 변경된 각 row는 이전 값과 이후 값을 갖게 된다.
-REFERENCING 절을 사용해서 old row 및 new row를 참조할 수 있다.
-
-REFERENCING 절은 다음과 같은 제약을 갖는다.
-
-- REFERENCING 절은 FOR EACH ROW 옵션과 함께인 경우에만 사용할 수 있다.
-- REFERENCING 절은 *trigger_action* 절에서 참조할 수 있도록 다음과 같은 구조를
-  가져야 한다.
-- {OLD\|OLD ROW\|OLD ROW AS\|OLD AS} alias_name  
-  변경되기 이전의 로우(row)를 의미한다. 이는 WHEN 절 또는 trigger_action의
-  psm_body 내에서 참조될 수 있다. 트리거 이벤트가 INSERT문일 때는 이전의 값이
-  없기 때문에 이전 값 참조는 불가능하다.
-- {NEW\|NEW ROW\|NEW ROW AS\|NEW AS} alias_name  
-  변경된 후의 로우(row)를 의미한다. 단, BEFORE TRIGGER의 경우 트리거 바디
-  내에서 이들 데이터를 변경하는 것이 가능하다. 트리거 이벤트가 DELETE문일 경우
-  이후 값이 없기 때문에 이후 값 참조는 불가능하다.
-
-trigger_action
-
-트리거 작동 절은 다음과 같은 세 가지 부분으로 구성된다.
-
-- Action granularity: 트리거가 수행되는 단위 지정 (ROW 또는 STATEMENT)
-- Action WHEN condition: 트리거 동작 여부를 결정하는 추가 조건을 선택적으로
-  명시
-- Action body: 트리거가 실제로 무엇을 수행하는지 명시
-
-###### **FOR EACH {ROW\|STATEMENT}**
-
-트리거 수행 단위를 명시한다. 테이블의 데이터 변경시 여기에 명시된 단위에 따라서
-트리거가 발생한다. 기본값은 FOR EACH STATEMENT이다.
-
-- FOR EACH ROW: trigger_event에 의해 영향을 받고 WHEN 절의 조건을 만족하는 각
-  row에 대해서 트리거의 action body 가 수행된다.  
-  REFERENCING 절 또는 WHEN 절을 사용하기 위해서는 반드시 FOR EACH ROW 절을
-  사용하여야 한다.
-- FOR EACH STATEMENT: 트리거 동작을 유발하는 DML 구문의 수행 후 또는 전에 한
-  번만 트리거가 동작하게 된다.
-
-###### **WHEN search_condition**
-
-트리거가 동작 여부를 결정하는 조건을 명시한다. WHEN 절의 *search_conditio*n이
-TRUE 인 경우에만 트리거의 action body가 수행되며, FALSE인 경우에는 트리거의
-action body가 수행되지 않는다. WHEN 절이 명시되지 않으면, 트리거 이벤트 발생 시
-항상 트리거의 action body가 수행된다.
-
-WHEN 절에 조건을 사용하기 위해서는 다음과 같은 제약을 만족해야 한다.
-
-- WHEN 절은 반드시 FOR EACH ROW 절과 함께인 경우에만 사용할 수 있다.
-- WHEN 절에는 REFERENCING절에 정의된 alias_name만을 사용할 수 있다.
-- WHEN 절에는 부질의를 사용할 수 없다.
-- WHEN 절에는 저장 프로시저를 사용할 수 없다.
-
-###### **psm_body**
-
-트리거의 “action body”를 의미하며, 트리거가 수행할 구문이 여기에 기술된다. 저장
-프로시저의 블록 구문과 동일한 방법으로 기술할 수 있다.
-
-Psm_body는 다음과 같은 제약을 만족하여야 한다.
-
-트리거의 특성 및 개념 상 action body를 위한 SQL statement 구문은 다음과 같은
-것을 사용할 수 없다.
-
-- COMMIT 또는 ROLLBACK 등과 같은 트랜잭션 관련구문을 사용할 수 없다.
-- CONNECT 등과 같은 세션 관련구문을 사용할 수 없다.
-- CREATE TABLE 등과 같은 스키마 관련구문을 사용할 수 없다.
-- 저장 프로시저를 호출할 수 없다.
-- 회기하는 트리거, 즉 trigger_event에 명시된 연산을 수행하는 트리거는 생성할
-  수 없다.
-
-###### **ENABLE \| DISABLE**
-
-사용자가 트리거를 생성할 때 활성화(enable) 또는 비활성화(disable)를 선택할 수
-있다. 기본 값은 활성화 상태이다.
-
-- 트리거를 생성할 때 비활성화 상태로 설정하면 동작하지 않으며, ALTER TRIGGER
-  구문으로 트리거 상태를 변경할 수 있다.
-
-저장 프로시저의 블록 구문에 대한 자세한 설명은 *Stored Procedures Manual*을
-참조하기 바란다.
-
-#### 주의 사항
-
-- 트리거의 수행 순서  
-  하나의 테이블에 대하여 하나 이상의 트리거를 정의할 수 있다. 여러 개의
-  트리거가 정의되어 있을 때 트리거가 동작되는 순서는 일정하지 않다. 트리거
-  동작 순서가 중요할 경우에는 여러 개의 트리거를 하나로 통합하여 재작성 하여야
-  한다.
-- 트리거의 수행 실패  
-  트리거를 수행하던 도중 오류가 발생하면, 해당 트리거를 발생시킨 DML 구문도
-  실패하게 된다.
-- 트리거 내에서 참조되는 테이블에 발생하는 DDL  
-  테이블이 삭제되면 그 테이블에 대해 생성되어 있는 모든 트리거도 삭제된다.  
-  그러나 트리거의 action body내에서 참조하는 테이블이 변경되거나 삭제될
-  경우에는 트리거는 제거되지 않는다. 참조 테이블이 삭제되어 해당 트리거의
-  action body가 수행될 수 없는 경우, 그 트리거를 발생시킨 DML 구문은 실패할
-  것이다. 참조 테이블이 변경된 경우에는 트리거 발생시에 트리거가 내부적으로 재
-  컴파일되어 정상적으로 수행될 것이다.
-- 트리거와 이중화  
-  이중화로 인해 반영되는 테이블 데이터의 변경은 트리거 동작을 발생시키지
-  않는다.
-
-#### 예제
-
-\<질의\> 다음 예제는 행의 삭제를 추적하기 위해 트리거를 어떻게 사용하는지를
-보여준다. 이 예제에서 배달이 완료(processing=’D’)된 주문에 관련된 데이터가
-orders 테이블에서 삭제될 때, 트리거는 FOR EACH ROW 기준으로 동작되고 orders
-테이블의 ono, cno, qty 및 arrival_date 칼럼의 원래 값을 참조한다. 이 트리거는
-orders 테이블에서 삭제된 행의 값을 log_tbl에 입력한다.
-
-iSQL\> CREATE TABLE log_tbl(
-
-ono BIGINT,
-
-cno BIGINT,
-
-qty INTEGER,
-
-arrival_date DATE,
-
-sysdate DATE);
-
-Create success.
-
-iSQL\> CREATE TRIGGER del_trigger
-
-AFTER DELETE ON orders
-
-REFERENCING OLD ROW old_row
-
-FOR EACH ROW
-
-AS BEGIN
-
-INSERT INTO log_tbl VALUES(old_row.ono, old_row.cno, old_row.qty,
-old_row.arrival_date, sysdate);
-
-END;
-
-/
-
-Create success.
-
-iSQL\> DELETE FROM orders WHERE processing = 'D';
-
-2 rows deleted.
-
-iSQL\> SELECT \* FROM log_tbl;
-
-ONO CNO QTY ARRIVAL_DATE
-
-\------------------------------------------------------------------------
-
-SYSDATE
-
-\---------------
-
-11290011 17 1000 05-DEC-2011
-
-25-APR-2012
-
-11290100 11 500 07-DEC-2011
-
-25-APR-2012
-
-2 rows selected.
-
-\<질의\> 다음의 예제에서, 트리거는 scores 테이블에 레코드가 입력될 때, score
-칼럼의 값이 지정되어 있지 않으면(NULL이면) 이 값을 0으로 변경한다. 이를 위해서
-FOR EACH ROW 기준으로 발생되는 BEFORE INSERT 트리거를 생성하면 된다.
-
-iSQL\> CREATE TABLE scores( id INTEGER, score INTEGER );  
-Create success.
-
-iSQL\> CREATE TRIGGER scores_trigger  
-BEFORE INSERT ON scores  
-REFERENCING NEW ROW NEW_ROW  
-FOR EACH ROW  
-AS BEGIN  
-IF NEW_ROW.SCORE IS NULL THEN  
-NEW_ROW.SCORE := 0;  
-END IF;  
-END;  
-/  
-Create success.
-
-iSQL\> INSERT INTO scores VALUES( 1, 20 );  
-1 row inserted.
-
-iSQL\> INSERT INTO scores VALUES( 5, NULL );  
-1 row inserted.
-
-iSQL\> INSERT INTO scores VALUES( 17, 75 );  
-1 row inserted.
-
-iSQL\> SELECT \* FROM SCORES;  
-
-## ID          SCORE        
-
-1           20           
-5           0            
-17          75           
-3 rows selected.
-
-\<질의\> 트리거를 비활성화(disable) 상태로 생성하여 동작을 확인한 후에
-활성화(enable) 상태로 변경하여 동작을 확인한다.
-
-iSQL\> CREATE TABLE scores( id INTEGER, score INTEGER );
-
-Create success.
-
-iSQL\> CREATE TRIGGER scores_trigger  
-BEFORE INSERT ON scores  
-REFERENCING NEW ROW NEW_ROW  
-FOR EACH ROW  
-DISABLE  
-AS BEGIN  
-IF NEW_ROW.SCORE IS NULL THEN  
-NEW_ROW.SCORE := 0;  
-END IF;  
-END;  
-/  
-Create success.
-
-iSQL\> INSERT INTO scores VALUES( 1, 20 );  
-1 row inserted.  
-iSQL\> INSERT INTO scores VALUES( 5, NULL );  
-1 row inserted.  
-iSQL\> INSERT INTO scores VALUES( 17, 75 );  
-1 row inserted.
-
-iSQL\> SELECT \* FROM SCORES;  
-
-## ID SCORE  
-
-1 20  
-5  
-17 75  
-3 rows selected.
-
-iSQL\> ALTER TRIGGER scores_trigger ENABLE;  
-Alter success.
-
-iSQL\> INSERT INTO scores VALUES( 100, NULL );  
-1 row inserted.
-
-iSQL\> SELECT \* FROM SCORES;  
-
-## ID SCORE  
-
-1 20  
-5  
-17 75  
-100 0  
-4 rows selected.
-
-### CREATE USER 
-
-#### 구문
-
-**create_user ::=**
-
-**<a name="password_parameters"><a/>password_parameters ::=**
-
-![password_parameters](media/SQL/password_parameters.gif)
-
-#### 전제 조건
-
-SYS 사용자와 CREATE USER 시스템 권한을 가진 사용자만이 사용자를 생성할 수 있다.
-
-#### 설명
-
-명시된 사용자 이름, 암호, 테이블스페이스 접근 권한으로 데이터베이스 사용자를
-생성하는 구문이다.
-
-user_name
-
-생성될 사용자 이름을 명시한다. 사용자의 이름은 데이터베이스 내에서 유일해야
-한다. 사용자 이름은 2장의 "[객체 이름 규칙](#object_naming_rule)"을 따라야 한다.
-
-IDENTIFIED BY password
-
-Altibase는 비밀 번호를 사용해서 사용자를 인증한다. 사용자 비밀 번호의 최대
-길이는 40바이트이다. 만일 이보다 더 긴 문자열의 비밀 번호를 명시하여 사용자를
-생성하면, 오류가 반환된다. 비밀 번호는 기본적으로 대소문자 구분 없이 대문자로
-인식된다. 만약 사용자 암호의 대소문자를 구분하기 위해서는
-CASE_SENSITIVE_PASSWORD 프로퍼티를 1로 설정한 다음, CREATE USER 구문으로
-사용자를 생성할 때 암호를 큰따옴표(")로 묶는다.
-
-사용자 비밀 번호는 2장의 "[객체 이름 규칙](#비밀번호)"을 따라야 한다.
-
-TEMPORARY TABLESPACE 절
-
-이는 사용자가 테이블에 연산 수행시 중간 결과가 저장될 용도로 사용될 기본 임시
-테이블스페이스(DEFAULT TEMPORARY TABLESPACE)를 지정하는 절이다.
-
-이를 명시하지 않으면 시스템 임시 테이블스페이스[^5]가 해당 사용자의 기본 임시
-테이블스페이스로 지정된다.
-
-[^5]: SYSTEM TEMPORARY TABLESPACE는 쿼리 수행 중에 발생되는 임시 데이타들을
-
-저장하는데 사용된다. 로깅이 수행되지 않기 때문에 매체 오류시 이 테이블스페이스의
-데이터는 복구가 불가능하다.
-
-사용자가 디스크 기반 테이블에 대한 SQL문을 수행할 때 일반적으로 임시
-테이블스페이스가 사용된다.
-
-만약 SQL문내의 모든 테이블들이 메모리에 존재하는 테이블이라면, 쿼리 수행시
-Altibase가 사용하는 공간도 모두 메모리이며, 사용자가 힌트를 사용하지 않는다면
-임시 테이블스페이스를 사용하지 않는다.
-
-임시 테이블스페이스는 한 사용자에 하나만 지정할 수 있다.
-
-DEFAULT TABLESPACE 절
-
-사용자가 생성한 객체를 저장할 기본 테이블스페이스를 명시한다. 이 절을 생략하면
-시스템 메모리 기본 테이블스페이스가 사용자의 기본 테이블스페이스가 된다.
-
-기본 테이블스페이스는 한 사용자에 하나만 지정할 수 있다.
-
-ACCESS 절
-
-명시한 (*tablespace_name*) 테이블스페이스에 접근 가능 여부를 지정하는 절이다.
-ACCESS *tablespace_name* ON으로 지정한 테이블스페이스에 대해서는 사용자는 접근
-권한을 부여 받는다. OFF로 명시한 테이블스페이스에 대해서는 사용자가 접근이
-불가능하다.
-
-물론, ALTER TABLESPACE 시스템 권한이 부여된 사용자는 테이블스페이스 접근이
-가능하다.
-
-ENABLE/ DISABLE
-
-사용자의 TCP 접속을 허용하거나 제한할 수 있다. 이 절은 SYS 사용자만 수행할 수
-있다.
-
-FAILED_LOGIN_ATTEMPTS
-
-로그인을 시도할 때 이 값에 설정한 횟수만큼 실패하면 해당 계정은 잠금이 해제될
-때까지 로그인이 불가능하다.  
-PASSWORD_LOCK_TIME이 설정되어 있는 경우 해당 기간이 경과하면 잠금이 자동으로
-해제된다.
-
-PASSWORD_LOCK_TIME
-
-차단된 계정이 해제되기 위해 경과되어야 하는 날짜(단위: 일)를 지정한다. 예를
-들어, 이 값을 5로 지정했을 때 계정이 잠긴다면, 해당 계정은 5일이 지난 후에
-잠금이 풀리고 로그인이 가능해진다.
-
-PASSWORD_LIFE_TIME
-
-계정의 패스워드가 유효한 기간(단위: 일)을 지정한다. 마지막으로 패스워드를 변경한
-시점을 기준으로 PASSWORD_LIFE_TIME이 적용된다.
-
-PASSWORD_GRACE_TIME
-
-계정의 패스워드가 만료된 이후의 변경할 수 있는 유예 기간(단위: 일)을 지정한다.
-패스워드 유효 기간이 만료되면 유예 기간이 경과하기 전에 해당 계정으로 로그인하여
-패스워드를 변경해야 한다. 만약 패스워드 유예기간도 경과하면, SYS 계정으로
-로그인하여 해당 계정의 패스워드를 변경해야 한다.
-
-PASSWORD_REUSE_TIME
-
-동일한 패스워드를 재사용하기 위해 경과해야 하는 기간(단위:일)을 지정한다. 즉,
-여기에 설정한 기간이 지난 후에 동일한 패스워드를 재사용할 수 있다.
-
-PASSWORD_REUSE_MAX
-
-동일한 패스워드를 재사용하기 위한 패스워드 변경 횟수를 지정한다. 즉, 여기에
-설정한 횟수만큼 패스워드를 변경한 후에 동일한 패스워드를 재사용할 수 있다.
-
-주의: PASSWORD_REUSE_MAX 또는 PASSWORD_REUSE_TIME 중 하나만 지정하면, 동일한
-패스워드를 재사용할 수 없다.
-
-PASSWORD_VERIFY_FUNCTION
-
-여기에 사용자 정의 콜백 함수(CALLBACK function)를 등록하여 패스워드를 검증하도록
-할 수 있다. 사용자 정의 콜백 함수는 반드시 'TRUE'를 반환해야 한다.
-
-패스워드 검증용 콜백 함수는 아래와 같은 입력 파라미터와 반환 타입을 가져야 한다:
-
-CREATE OR REPLACE FUNCTION pwd_verify_function (
-
-username varchar(20),
-
-password varchar(20))
-
-RETURN varchar(100)
-
-AS
-
-result varchar(100);
-
-...
-
-BEGIN
-
-...
-
-result := 'TRUE';
-
-RETURN result;
-
-END;
-
-/
-
-#### 제한 사항
-
-한 사용자는 여러 데이터 테이블스페이스를 사용할 수 있다. 그러나 한 사용자는 임시
-테이블스페이스는 하나만 사용할 수 있다.
-
-사용자가 명시적으로 시스템 언두 테이블스페이스에 접근하거나, 언두 테이블스페이스
-내에 테이블이나 인덱스 등을 생성하는 것은 불가능하다. 또한, 시스템 언두
-테이블스페이스는 데이터베이스 내에 오직 하나만 존재하며, 사용자가 이를
-생성하거나 삭제할 수 없다.
-
-#### 예제
-
-\<질의\> 사용자 명이 uare1이고 암호가 rose1인 사용자를 생성하라.
-
-iSQL\> CREATE USER uare1 IDENTIFIED BY rose1;
-
-Create success.
-
-\<질의\> 사용자 이름이 uare4이고 암호가 rose4인 사용자를 생성하라. 또한
-user_data를 사용자의 기본 테이블스페이스로, temp_data 테이블스페이스를 임시
-테이블스페이스로 사용하며, 메모리 테이블스페이스인 SYS_TBS_MEMORY에 대해 접근
-권한을 가지고 있다.
-
-iSQL\> CREATE USER uare4
-
-IDENTIFIED BY rose4
-
-DEFAULT TABLESPACE user_data
-
-TEMPORARY TABLESPACE temp_data
-
-ACCESS SYS_TBS_MEMORY ON;
-
-Create success.
-
-\<질의\> 로그인을 5번 실패하면 해당 계정이 잠기고, 5일 후에 잠금이 풀리게 되는
-사용자 rose2를 생성한다.
-
-CREATE USER rose2 IDENTIFIED BY rose2
-
-LIMIT (FAILED_LOGIN_ATTEMPTS 5, PASSWORD_LOCK_TIME 5);
-
-\<질의\> 5일 후에 패스워드가 만료되고, 그 후 5일간 유예기간을 갖는 사용자
-rose3을 생성한다.
-
-CREATE USER rose3 IDENTIFIED BY rose3
-
-LIMIT (PASSWORD_LIFE_TIME 5, PASSWORD_GRACE_TIME 5);
-
-\<질의\> 패스워드를 3회 변경하고 10일이 지난 후에 동일한 패스워드를 재사용할 수
-있는 사용자 rose4를 생성한다.
-
-CREATE USER rose4 IDENTIFIED BY rose4
-
-LIMIT (PASSWORD_REUSE_MAX 3, PASSWORD_REUSE_TIME 10);
-
-### CREATE VIEW
-
-#### 구문
-
-create_view ::=
-
-query_restriction_clause ::=
-
-#### 전제 조건
-
-아래의 조건 중 하나 이상을 만족해야 사용할 수 있다.
-
-- SYS 사용자이다.
-- 사용자 자신의 스키마에 테이블을 생성하려면, CREATE TABLE 또는 CREATE ANY
-  TABLE 시스템 권한을 가지고 있어야 한다.
-- 다른 사용자의 스키마에 테이블을 생성하려면, CREATE ANY TABLE 시스템 권한을
-  가지고 있어야 한다.
-
-#### 설명
-
-명시된 이름으로 새로운 뷰를 생성한다. 뷰(view)란 하나 이상의 테이블 또는 뷰를
-기반으로 하는 논리적인 테이블(logical table)이다. 뷰는 실제 데이터를 가지고 있지
-않다. 뷰의 기반이 된 테이블을 베이스 테이블(base table)이라 한다.
-
-OR REPLACE
-
-이 절은 뷰가 이미 존재한다면 같은 이름의 뷰로 교체할 때 사용된다. 즉, 이 절은
-존재하는 뷰를 제거한 후 재 생성하는 대신에 기존 뷰의 정의를 변경하는 기능을
-제공한다.
-
-FORCE
-
-뷰의 베이스 테이블 존재 여부와 뷰를 내포하고 있는 스키마 소유자의 권한 유무에
-상관없이 뷰가 생성되도록 하는 옵션이다.
-
-이는 의미상으로 오류를 내포한 무효한 상태의 뷰가 생성될 수 있음을 의미한다. 이런
-경우, 뷰에 대해 SELECT 문 수행 시 오류가 발생할 것이기 때문에, FORCE 옵션을
-사용해 뷰를 생성한 후에는 뷰를 SELECT 해보거나 SYS_VIEWS\_ 메타 테이블을 조회해
-뷰의 상태를 확인해야 한다.
-
-NO FORCE
-
-이 옵션을 사용하면 뷰의 베이스 테이블이 존재하고 뷰를 내포하고 있는 스키마
-소유자가 권한을 가지고 있을 때만 뷰가 생성된다. 이 옵션이 기본값이다.
-
-user_name
-
-생성될 뷰의 소유자 이름을 명시한다. 생략하면 Altibase는 현재 세션에 연결된
-사용자의 스키마에 뷰를 생성한다.
-
-view_name
-
-생성될 뷰의 이름을 명시한다. 뷰의 이름은 1장의 "[객체 이름
-규칙](#object_naming_rule)"을 따라야 한다.
-
-alias_name
-
-베이스 테이블로부터 검색하는 대상이 표현식인 경우 표현식을 위한 별칭을 명시해야
-한다. 이 별칭이 뷰의 칼럼 명이 된다. 별칭의 개수는 subquery의 검색 대상(표현식과
-칼럼)의 총 개수와 동일해야 한다.
-
-subquery
-
-베이스 테이블로부터 조회하는 열과 행을 식별하는 부질의를 명시한다.
-
-WITH READ ONLY
-
-뷰가 읽기 전용임을 지정할 수 있다. 이 옵션을 명시하지 않으면, INSERT, UPDATE,
-DELETE 같은 변경 연산을 수행할 수 있는 Updatable View가 생성된다.
-
-#### 주의 사항
-
-- 뷰가 저장된 스키마의 소유자는 뷰의 기반이 되는 테이블 또는 뷰로부터 SELECT
-  문을 수행하는데 필요한 권한을 가지고 있어야 한다.
-- 베이스 테이블에 대한 SELECT문의 검색 대상에 명시할 수 있는 표현식의 개수는
-  최대 1024개이다.
-- CURRVAL과 NEXTVAL 의사열을 베이스 테이블에 대한 SELECT문의 검색 대상에
-  사용할 수 없다.
-
-#### 예제
-
-##### 뷰 생성하기
-
-\<질의\> 다음 예제는 employees 테이블을 기반으로 한 이름이 avg_sal인 뷰를
-생성한다. 뷰는 각 부서의 평균 월급을 부서별로 보여준다.
-
-iSQL\> CREATE VIEW avg_sal AS
-
-SELECT dno, AVG(salary) emp_avg_sal
-
-FROM employees
-
-GROUP BY dno;
-
-Create success.
-
-iSQL\> SELECT \* FROM avg_sal;
-
-AVG_SAL.DNO AVG_SAL.EMP_AVG_SAL
-
-\------------------------------------
-
-A001 2066.66667
-
-C001 1576.66667
-
-C002 1660
-
-D001 2075.75
-
-F001 1845
-
-6 rows selected.
-
-부질의 내에서 표현식 AVG(salary)에 대한 별칭으로 emp_avg_sal이 제공되어 있기
-때문에, 뷰의 칼럼을 위한 별칭은 명시할 필요가 없다.
-
-##### 조인 뷰[^6] 생성하기
-
-[^6]: 1 조인 뷰는 뷰의 부질의에 조인을 내포하는 것을 의미한다.
-
-\<질의\> 다음 뷰는 주문된 상품을 담당하고 있는 사원 이름과 상품을 주문한 고객의
-이름을 보여준다.
-
-iSQL\> CREATE VIEW emp_cus AS
-
-SELECT DISTINCT e.e_firstname, e.e_lastname,
-
-c.c_firstname, c.c_lastname
-
-FROM employees e, customers c, orders o
-
-WHERE e.eno = o.eno AND o.cno = c.cno;
-
-Create success.
-
-iSQL\> SELECT \* FROM emp_cus;
-
-E_FIRSTNAME E_LASTNAME C_FIRSTNAME C_LASTNAME
-
-\---------------------------------------------------------------------------------------------
-
-Alvar Marquez Estevan Sanchez
-
-Sandra Hammond Pierre Martin
-
-.
-
-.
-
-.
-
-William Blake Saeed Pahlavi
-
-Sandra Hammond Saeed Pahlavi
-
-22 rows selected.
-
-### CREATE MATERIALIZED VIEW
-
-#### 구문
-
-create_materialized_view ::=
-
-[table_partitioning_clause ::=](#table_partitioning_clause), [tablespace_clause
-::=](#tablespace_clause), [logging_clause ::=](#logging_clause),
-[lob_column_properties ::=](#lob_column_properties)
-
-physical_attributes_clause ::=
-
-[storage_clause ::=](#storage_clause)
-
-build_clause ::=
-
-refresh_clause ::=
-
-#### 전제 조건
-
-아래의 조건 중 하나 이상을 만족해야 사용할 수 있다.
-
-- SYS 사용자이다.
-- 사용자 자신의 스키마에 materialized view를 생성하려면, CREATE MATERIALIZED
-  VIEW 또는 CREATE ANY MATERIALIZED VIEW 시스템 권한을 가지고 있어야 한다.
-  또한, 자신의 소유가 아닌 베이스 테이블 각각에 대한 SELECT 객체 권한 또는
-  SELECT ANY TABLE 시스템 권한이 있어야 한다.
-- 다른 사용자의 스키마에 materialized view를 생성하려면, CREATE ANY
-  MATERIALIZED VIEW 시스템 권한을 가지고 있어야 한다. 또한, 소유자의 소유가
-  아닌 베이스 테이블 각각에 대한 SELECT 객체 권한 또는 SELECT ANY TABLE 시스템
-  권한이 있어야 한다.
-- Materialized view를 생성하면, materialized view 객체와 함께 데이터베이스
-  내부적으로 사용될 한 개의 뷰와 한 개의 테이블이 자동으로 materialized view의
-  스키마에 생성된다. 추가로 생성되는 이러한 객체들은 materialized view의
-  데이터를 유지하기 위해 사용된다. Materialized View를 생성하려는 사용자는
-  이러한 객체들을 생성하는데 필요한 권한을 가지고 있어야 한다.
-
-#### 설명
-
-명시된 이름으로 새로운 materialized view를 생성한다. Materialized view란 쿼리의
-결과를 저장하고 있는 데이터베이스 객체이다. 쿼리의 FROM 절에는 테이블, 뷰, 및
-다른 materialized view가 올 수 있다. 이러한 객체들을 "베이스 테이블"이라고 한다.
-
-Materialized view는 쿼리문의 결과를 일반 테이블처럼 테이블스페이스에 저장하며,
-주로 데이터 웨어하우스 목적으로 사용된다. 즉, 빈번히 실행되며 수행에 많은 시간이
-소요되는 조인이나 집계 함수가 포함된 쿼리문을 materialized view로 생성해 두면,
-쿼리 실행 시 수행 시간을 단축할 수 있다.
-
-Altibase는 읽기 전용 materialized view만 제공한다.
-
-user_name
-
-생성될 materialized view의 소유자 이름을 명시한다. 생략하면 Altibase는 현재
-세션에 연결된 사용자의 스키마에 materialized view를 생성한다.
-
-mview_name
-
-생성될 materialized view의 이름을 명시한다. materialized view의 이름은 1장의
-"[객체 이름 규칙](#object_naming_rule)"을 따라야 한다. Altibase는 지정한
-materialized view의 이름과 동일한 이름으로 materialized view의 데이터를 유지하기
-위해 사용되는 테이블을 자동으로 생성한다.
-
-c_alias
-
-베이스 테이블로부터 검색하는 대상이 표현식인 경우 표현식을 위한 별칭을 명시해야
-한다. 이 별칭이 materialized view의 칼럼 명이 된다. 별칭의 개수는 subquery의
-검색 대상(표현식과 칼럼)의 총 개수와 동일해야 한다.
-
-table_partitioning_clause
-
-CREATE TABLE 구문의 *table_partitioning_clause* 설명을 참고하라.
-
-segment_attributes_clause
-
-CREATE TABLE 구문의 *segment_attributes_clause* 설명을 참고하라.
-
-lob_column_properties
-
-CREATE TABLE 구문의 *lob_column_properties* 설명을 참고하라.
-
-phsical_attributes_clause
-
-CREATE TABLE 구문의 *phsical_attributes_clause* 설명을 참고하라.
-
-build_clause 절
-
-이 절은 Materialized view의 데이터가 최초로 구축되는 시점을 지정한다. 이 절을
-생략하면 기본값은 IMMEDIATE이다.
-
-- IMMEDIATE: Materialized view가 생성되는 시점에 데이터 구축.
-- DEFERRED: Materialized view이 생성된 후 리프레쉬가 수행될 때 데이터 구축.
-
-refresh_clause 절
-
-Materialized view의 베이스 테이블이 변경되면, materialized view의 데이터도
-업데이트되어야 한다. 이 절은 Materialized view가 refresh되는 방법과 시기를
-지정한다. 이 절을 생략하면 FORCE와 ON DEMAND가 기본값으로 설정된다.
-
-REFRESH 키워드 뒤에 COMPLETE, FAST, FORCE 중의 하나 또는 ON DEMAND, ON COMMIT
-중의 하나는 반드시 지정되어야 한다.
-
-- COMPLETE: Materialized view를 생성할 때 정의한 subquery를 수행하여 데이터가
-  구축될 것을 지정한다.
-- FAST: 현재 미지원.
-- FORCE: refresh가 발생할 때, fast refresh가 가능하면 수행하고, 그렇지 않으면
-  complete refresh로 수행할 것을 데이터베이스에 지시한다. Altibase는 현재
-  FAST를 지원하지 않으므로, FORCE를 지정하는 것은 COMPLETE를 지정한 것과
-  동일하다.
-- ON DEMAND: 사용자가 요청할 때에만 refresh가 되도록 지정한다.
-- ON COMMIT: 현재 미지원
-- NEVER REFRESH: 현재 미지원
-
-참고: Altibase가 기본적으로 제공하는 REFERESH_MATERIALIZED_VIEW 저장 프로시저를
-호출해서 사용자가 materialized view의 refresh를 수동으로 요청할 수 있다.
-REFERESH_MATERIALIZED_VIEW 저장 프로시저에 대한 자세한 내용은 *Stored Procedures
-Manual*의 "10장 내장 함수와 저장 프로시저"를 참고하라.
-
-subquery 절
-
-Materialized view의 쿼리문을 명시한다. 사용자가 materialized view를 생성하면, 이
-절에 명시한 부질의가 실행되며, 그 결과가 materialized view에 저장된다.
-
-#### 예제
-
-\<질의\> employees 테이블을 베이스 테이블로 하여 이름이 mv1인 materialized
-view를 생성하라. 이 때 build절과 refresh절을 지정하지 않았기 때문에, 사용자
-요청으로만 refresh가 가능하며, refresh시에 complete refresh가 수행된다.
-
-CREATE MATERIALIZED VIEW mv1 AS
-
-SELECT \* FROM employees;
