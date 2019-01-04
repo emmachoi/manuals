@@ -7730,6 +7730,8 @@ PARTITION BY RANGE (product_id)
 
 위의 설명을 그림으로 나타내면 다음과 같다.
 
+
+
 ![create_table_lob](media/SQL/create_table_lob.gif)
 
 
