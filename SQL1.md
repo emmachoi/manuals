@@ -7316,6 +7316,8 @@ MY_DEPT.MEMBER
 
 ![partition_default](media/SQL/partition_default.gif)
 
+<a name="table_partition_description"><a/>
+
 **table_partition_description ::=**
 
 ![TABLE_PARTITION_DESCRIPTION_2](media/SQL/TABLE_PARTITION_DESCRIPTION_2.gif)
@@ -7501,11 +7503,22 @@ DML 작업이 수행되는 순간에 테이블 세그먼트를 위한 공간이 
 이름을 지정할 수 있다. LOCALUNIQUE 제약조건은 파티션드 테이블에 사용될 수 있다.
 
 - PRIMARY KEY
+  : 기본키의 값은 테이블 내에서 유일해야 하며 기본키에 속하는 칼럼은 널(NULL) 값을
+  가질 수 없다. 한 테이블 내에 정의 가능한 기본키의 개수는 하나이며, 최대 32개
+  칼럼들의 조합에 대해 기본 키를 생성할 수 있다.
+
 - UNIQUE
+
 - LOCALUNIQUE
+
+  각 지역 인덱스별로 UNIQUE 제약조건을 만족해야 함을 명시하는 키워드이다.
+
 - (NOT) NULL
+
 - CHECK
+
 - 참조 무결성(referential integrity)
+
 - TIMESTAMP
 
 - *PRIMARY KEY*
