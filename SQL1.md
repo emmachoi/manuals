@@ -7219,13 +7219,19 @@ MY_DEPT.MEMBER
 
 **encrypt_clause::=**
 
-
+![encrypt_clause](D:\emmachoigit\manuals\media\SQL\encrypt_clause.gif)
 
 **variable_clause::=**
 
+![variable_clause](D:\emmachoigit\manuals\media\SQL\variable_clause.gif)
+
 **in_row_clause::=**
 
+![in_row_clause](D:\emmachoigit\manuals\media\SQL\in_row_clause.gif)
+
 **default_clause::=**
+
+![default_clause](D:\emmachoigit\manuals\media\SQL\default_clause.gif)
 
 **column_constraint ::=**
 
@@ -7233,36 +7239,58 @@ MY_DEPT.MEMBER
 
 **unique_clause ::=**
 
-**sort_order_clause ::=**
+![unique_clause](D:\emmachoigit\manuals\media\SQL\unique_clause.gif)
 
 **unique_specification ::=**
 
+
+
+![unique_specification](D:\emmachoigit\manuals\media\SQL\unique_specification.gif)
+
+
+
+
+
 **sort_order_clause ::=**
+
+![sort_order_clause](D:\emmachoigit\manuals\media\SQL\sort_order_clause.gif)
 
 **directkey_clause ::=**
 
+![directkey_clause](D:\emmachoigit\manuals\media\SQL\directkey_clause.gif)
+
 **using_index_clause ::=**
 
-
+![using_index_clause_image117](D:\emmachoigit\manuals\media\SQL\using_index_clause_image117.gif)
 
 **index_attribute_clause ::=**
+
+![index_attribute_clause_image118](D:\emmachoigit\manuals\media\SQL\index_attribute_clause_image118.gif)
 
 [memory_index_attributes ::=](#memory_index_attributes), [disk_index_attributes
 ::=](#disk_index_attributes)
 
 **references_clause::=**
 
+![references_clause](D:\emmachoigit\manuals\media\SQL\references_clause.gif)
+
 **check_clause ::=**
+
+![check_clause](D:\emmachoigit\manuals\media\SQL\check_clause.gif)
 
 <a name="table_constraint"><a/>
 
 **table_constraint ::=**
 
+![table_constraint](D:\emmachoigit\manuals\media\SQL\table_constraint.gif)
+
 **table_unique_clause ::=**
 
+![table_unique_clause](D:\emmachoigit\manuals\media\SQL\table_unique_clause.gif)
 
+**referential_constraint ::=**
 
-referential_constraint ::=
+![referential_constraint](D:\emmachoigit\manuals\media\SQL\referential_constraint.gif)
 
 [references_clause ::=](#references_clause)
 
@@ -7270,7 +7298,7 @@ referential_constraint ::=
 
 **temporary_attributes_clause ::=**
 
-
+![temporary_attributes_clause](D:\emmachoigit\manuals\media\SQL\temporary_attributes_clause.gif)
 
 
 
@@ -7278,44 +7306,52 @@ referential_constraint ::=
 
 **table_partitioning_clause ::=**
 
-[range_partitioning ::=](#range_partitioning), [hash_partitioning
-::=](#hash_partitioning), [list_partitioning ::=](#list_partitioning),
-[row_movement_clause ::=](#row_movement_clause)
+![table_partitioning_clause_image123](D:\emmachoigit\manuals\media\SQL\table_partitioning_clause_image123.gif)
 
 **range_partitioning ::=**
 
-
+![range_partitioning_image124](D:\emmachoigit\manuals\media\SQL\range_partitioning_image124.gif)
 
 **partition_default_clause ::=**
 
+![partition_default](D:\emmachoigit\manuals\media\SQL\partition_default.gif)
+
 **table_partition_description ::=**
+
+![TABLE_PARTITION_DESCRIPTION_2](D:\emmachoigit\manuals\media\SQL\TABLE_PARTITION_DESCRIPTION_2.gif)
 
 [lob_column_properties ::=](#lob_column_properties)*,* [access_mode_clause
 ::=](#access_mode_clause_CREATETALBE)
 
 **partition_range_clause ::=**
 
-<a name="table_partition_description"><a/>
+![partition_range_clause_image126](D:\emmachoigit\manuals\media\SQL\partition_range_clause_image126.gif)
 
-**table_partition_description ::=**
+[table_partition_description ::=](#table_partition_description)
 
 
 
 **hash_partitioning ::=**
 
+![hash_paritioning_image126_1](D:\emmachoigit\manuals\media\SQL\hash_paritioning_image126_1.gif)
+
 [table_partition_description ::=](#table_partition_description)
+
+
 
 
 
 **list_partitioning ::=**
 
-
+![list_partitioning_image127](D:\emmachoigit\manuals\media\SQL\list_partitioning_image127.gif)
 
 [partition_default_clause ::=](#partition_default_clause)
 
 **partition_list_clause ::=**
 
-[table_partition_description ::=](#table_partition_description)
+
+
+![table_list_clause_image128](D:\emmachoigit\manuals\media\SQL\table_list_clause_image128.gif)
 
 
 
@@ -7337,7 +7373,7 @@ referential_constraint ::=
 
 **tablespace_clause ::=**
 
-
+![tablespace_clause](D:\emmachoigit\manuals\media\SQL\tablespace_clause.gif)
 
 <a name="physical_attributes_clause"><a/>
 
@@ -7345,49 +7381,51 @@ referential_constraint ::=
 
 **physical_attributes_clause ::=**
 
-
+![physical_attributes_clause_image130_1](D:\emmachoigit\manuals\media\SQL\physical_attributes_clause_image130_1.gif)
 
 **storage_clause ::=**
 
-
+![storage_clause](D:\emmachoigit\manuals\media\SQL\storage_clause.gif)
 
 <a name="log_compression_clause"><a/>
 
 **log_compression_clause ::=**
 
-![]()
+![log_compression_clause_image130_2](D:\emmachoigit\manuals\media\SQL\log_compression_clause_image130_2.gif)
+
+
 
 <a name="logging_clause"><a/>
 
 **logging_clause ::=**
 
-
+![logging_clause](D:\emmachoigit\manuals\media\SQL\logging_clause.gif)
 
 <a name="parallel_clause"><a/>
 
 **parallel_clause::=**
 
-
+![PARALLEL_CLAUSE](D:\emmachoigit\manuals\media\SQL\PARALLEL_CLAUSE.gif)
 
 <a name="table_compression_clause"><a/>
 
 **table_compression_clause ::=**
 
-
+![table_compression](D:\emmachoigit\manuals\media\SQL\table_compression.gif)
 
 <a name="lob_column_properties"><a/>
 
 **lob_column_properties ::=**
 
-
+![lob_column_properties_image133](D:\emmachoigit\manuals\media\SQL\lob_column_properties_image133.gif)
 
 **LOB_storage_clause ::=**
 
-
+![lob_storage_clause_image134](D:\emmachoigit\manuals\media\SQL\lob_storage_clause_image134.gif)
 
 **lob_attributes ::=**
 
-
+![lob_attribute](D:\emmachoigit\manuals\media\SQL\lob_attribute.gif)
 
 #### 전제 조건
 
@@ -7403,7 +7441,7 @@ referential_constraint ::=
 
 명시된 이름의 새로운 테이블을 생성한다.
 
-[GLOBAL] TEMPORARY
+*[GLOBAL] TEMPORARY*
 
 [GLOBAL] TEMPORARY는 테이블이 임시 테이블임을 지정한다. GLOBAL 지정 여부에 따른
 차이점은 없으므로 생략해도 된다. 이렇게 생성된 테이블의 정의는 모든 세션에서 볼
@@ -7427,14 +7465,13 @@ DML 작업이 수행되는 순간에 테이블 세그먼트를 위한 공간이 
 작업이 허용된다. 하지만, Altibase 내부적으로 DDL 작업 수행 전에 커밋을 먼저 하기
 때문에, 임시 테이블에 대한 DDL 수행 후에 그 테이블의 데이터는 사라진다.
 
-임시 테이블의 제약 사항:
-
-- 임시 테이블은 파티셔닝이 불가능하다.
-- 임시 테이블에는 외래 키를 지정할 수 없다.
-- lob_storage_clause의 TABLESPACE에는 임시 테이블을 저장하는 휘발성
-  테이블스페이스만 올 수 있다.
-- 임시 테이블은 휘발성 테이블스페이스만 저장할 수 있다.
-- 임시 테이블에 대해서는 분산 트랜잭션이 지원되지 않는다.
+- 임시 테이블의 제약 사항:
+  - 임시 테이블은 파티셔닝이 불가능하다.
+  - 임시 테이블에는 외래 키를 지정할 수 없다.
+  - lob_storage_clause의 TABLESPACE에는 임시 테이블을 저장하는 휘발성
+    테이블스페이스만 올 수 있다.
+  - 임시 테이블은 휘발성 테이블스페이스만 저장할 수 있다.
+  - 임시 테이블에 대해서는 분산 트랜잭션이 지원되지 않는다.
 
 *user_name*
 
@@ -7471,11 +7508,10 @@ DML 작업이 수행되는 순간에 테이블 세그먼트를 위한 공간이 
 - 참조 무결성(referential integrity)
 - TIMESTAMP
 
-*PRIMARY KEY*
-
-기본키의 값은 테이블 내에서 유일해야 하며 기본키에 속하는 칼럼은 널(NULL) 값을
-가질 수 없다. 한 테이블 내에 정의 가능한 기본키의 개수는 하나이며, 최대 32개
-칼럼들의 조합에 대해 기본 키를 생성할 수 있다.
+- *PRIMARY KEY*
+  기본키의 값은 테이블 내에서 유일해야 하며 기본키에 속하는 칼럼은 널(NULL) 값을
+  가질 수 없다. 한 테이블 내에 정의 가능한 기본키의 개수는 하나이며, 최대 32개
+  칼럼들의 조합에 대해 기본 키를 생성할 수 있다.
 
 *LOCALUNIQUE*
 
@@ -7502,9 +7538,7 @@ UNIQUE 제약조건을 정의하면 유니크 키에 해당하는 칼럼 (또는
 *CHECK condition*
 
 해당 칼럼에 대한 무결성 규칙(Integrity Rule)을 지정한다. *column_constraint*
-절의 *condition* 내에서는 해당 칼럼만 참조할 수 있다.
-
-CHECK 제약조건의 검사조건에는 아래와 같은 몇 가지 제한 사항이 있다.
+절의 *condition* 내에서는 해당 칼럼만 참조할 수 있다. CHECK 제약조건의 검사조건에는 아래와 같은 몇 가지 제한 사항이 있다.
 
 - 부질의(subquery), 시퀀스, LEVEL 또는 ROWNUM 등의 모든 의사칼럼(Pseudo
   Column), 및 SYSDATE 또는 USER_ID 같은 비결정적(Non-deterministic) SQL 함수가
@@ -7517,14 +7551,14 @@ CHECK 제약조건의 검사조건에는 아래와 같은 몇 가지 제한 사�
 이 절은 Direct Key 인덱스를 생성시 사용할 수 있다. Direct Key 인덱스에 대한
 자세한 내용은 CREATE INDEX](#create-index) 구문을 참고한다
 
-check_clause
+*check_clause*
 
 이 절에는 테이블의 각 레코드 값이 만족해야 하는 조건을 지정한다. 조건의 결과는
 참, 거짓, 또는 NULL 중 하나이어야 한다.
 
 이 절은 칼럼 제약조건 또는 테이블 전체 제약조건이 될 수 있다.
 
-table_constraint
+*table_constraint*
 
 한 칼럼 또는 칼럼들의 조합에 대한 제약조건을 명시하는 절이다. 다음의 테이블
 제약조건이 있다.
@@ -7535,7 +7569,7 @@ table_constraint
 - CHECK
 - 참조 무결성(referential integrity)
 
-using_index_clause
+*using_index_clause*
 
 제약조건을 위해 자동으로 생성되는 인덱스가 저장될 테이블스페이스를 지정하는
 절이다.
