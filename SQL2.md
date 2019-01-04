@@ -239,9 +239,7 @@ CREATE TABLESPACE 구문을 수행하여도 기본적으로 데이터 테이블�
 
 *SIZE*
 
-테이블스페이스의 초기 크기를 명시한다.
-
-이는 메모리 테이블스페이스의 기본 확장 크기의 배수여야 한다. (즉,
+테이블스페이스의 초기 크기를 명시한다. 이는 메모리 테이블스페이스의 기본 확장 크기의 배수여야 한다. (즉,
 EXPAND_CHUNK_PAGE_COUNT 프로퍼티에 지정된 페이지 개수 \* 메모리 테이블스페이스의
 한 페이지 크기 (32kB))
 
@@ -276,10 +274,9 @@ AUTOEXTEND 옵션이 꺼진다.
 AUTOEXTEND를 ON으로 지정하고 이 값을 명시하지 않을 경우, 기본값은
 EXPAND_CHUNK_PAGE_COUNT프로퍼티에 지정한 값이다.
 
-AUTOEXTEND가 OFF일 때 이 값은 의미없다.
+AUTOEXTEND가 OFF일 때 이 값은 의미없다. 
 
-이 값은 Kilobytes(K), Megabytes(M), 또는 Gigabytes(G) 단위로 명시할 수 있다.
-단위를 명시하지 않을 경우 기본 단위는 Kilobytes이다.
+이 값은 Kilobytes(K), Megabytes(M), 또는 Gigabytes(G) 단위로 명시할 수 있다. 단위를 명시하지 않을 경우 기본 단위는 Kilobytes이다.
 
 *maxsize_clause*
 
@@ -288,8 +285,7 @@ AUTOEXTEND가 OFF일 때 이 값은 의미없다.
 
 AUTOEXTEND가 OFF이면 이 값은 의미없다.
 
-이 값은 Kilobytes(K), Megabytes(M), 또는 Gigabytes(G) 단위로 명시할 수 있다.
-단위를 명시하지 않을 경우 기본 단위는 Kilobytes이다.
+이 값은 Kilobytes(K), Megabytes(M), 또는 Gigabytes(G) 단위로 명시할 수 있다. 단위를 명시하지 않을 경우 기본 단위는 Kilobytes이다.
 
 *UNLIMITED*
 
@@ -306,9 +302,7 @@ AUTOEXTEND가 OFF이면 이 값은 의미없다.
 이미지”라고 한다.
 
 checkpoint_path절은 체크포인트 이미지 파일이 저장될 체크포인트 경로(Path)들을
-지정한다.
-
-체크포인트 경로를 지정하지 않은 경우 MEM_DB_DIR 프로퍼티에 지정한 경로가 기본
+지정한다. 체크포인트 경로를 지정하지 않은 경우 MEM_DB_DIR 프로퍼티에 지정한 경로가 기본
 경로로 사용된다.
 
 *checkpoint_path*
@@ -340,50 +334,57 @@ iSQL> CREATE MEMORY DATA TABLESPACE user_data SIZE 512M;
 Create success.
 ```
 
-\<질의 2\> 초기 크기가 512MB이고, 128MB 단위로 자동 확장되는[^4] 사용자 정의
+\<질의 2\> 초기 크기가 512MB이고, 128MB 단위로 자동 확장되는[<sup>4</sup>] 사용자 정의
 메모리 데이터 테이블스페이스를 생성한다. (체크포인트 이미지는 MEM_DB_DIR
 프로퍼티에 지정된 경로에 저장된다. 분할될 체크포인트 이미지 파일의 크기는
 DEFAULT_MEM_DB_FILE_SIZE 프로퍼티의 값을 따른다.)
 
-[^4]: 테이블스페이스의 최대 크기를 MAXSIZE절을 이용하여 지정하지 않았으므로, 기본적으로 UNLIMITTED를 지정한 것과 같다. 이 경우 시스템에 존재하는 모든 메모리
-테이블스페이스와 휘발성 테이블스페이스의 크기의 총합이 MEM_MAX_DB_SIZE
-프로퍼티에 지정된 값을 벗어나지 않는 한도 내에서 테이블스페이스의 확장이
-이루어진다.
+> [<sup>4</sup>] 테이블스페이스의 최대 크기를 MAXSIZE절을 이용하여 지정하지 않았으므로, 기본적으로 UNLIMITTED를 지정한 것과 같다. 이 경우 시스템에 존재하는 모든 메모리
+> 테이블스페이스와 휘발성 테이블스페이스의 크기의 총합이 MEM_MAX_DB_SIZE
+> 프로퍼티에 지정된 값을 벗어나지 않는 한도 내에서 테이블스페이스의 확장이
+> 이루어진다.
 
-iSQL\> CREATE MEMORY DATA TABLESPACE user_data
-
-SIZE 512M
-
+```
+iSQL> CREATE MEMORY DATA TABLESPACE user_data 
+SIZE 512M 
 AUTOEXTEND ON NEXT 128M;
-
 Create success.
+```
 
 \<질의 3\> 초기 크기가 512MB 이고, 최대 1GB까지 128MB 단위로 자동 확장되는
 사용자 정의 메모리 데이터 테이블스페이스를 생성한다. (체크포인트 이미지는
 다중화를 위해 3개의 디렉토리에 나누어 저장하고, 분할될 체크포인트 이미지 파일의
 크기를 256M로 한다.)
 
-iSQL\> CREATE MEMORY DATA TABLESPACE user_data
-
-SIZE 512M AUTOEXTEND ON NEXT 128M MAXSIZE 1G
-
-CHECKPOINT PATH ‘/dbs/path1’, ‘/dbs/path2’, ‘/dbs/path3’
-
+```
+iSQL> CREATE MEMORY DATA TABLESPACE user_data 
+SIZE 512M AUTOEXTEND ON NEXT 128M MAXSIZE 1G 
+CHECKPOINT PATH ‘/dbs/path1’, ‘/dbs/path2’, ‘/dbs/path3’ 
 SPLIT EACH 256M;
-
 Create success.
+```
+
+
 
 ### CREATE VOLATILE TABLESPACE 
 
 #### 구문 
 
-create_tablespace ::=
+**create_tablespace ::=**
 
-initsize_clause ::=
+![create_tablespace_image145](D:\emmachoigit\manuals\media\SQL\create_tablespace_image145.gif)
 
-autoextend_clause ::=
+**initsize_clause ::=**
 
-maxsize_clause ::=
+![initsize_clause_image141](D:\emmachoigit\manuals\media\SQL\initsize_clause_image141.gif)
+
+**autoextend_clause ::=**
+
+![autoextend_clause](D:\emmachoigit\manuals\media\SQL\autoextend_clause.gif)
+
+**maxsize_clause ::=**
+
+![maxsize_clause](D:\emmachoigit\manuals\media\SQL\maxsize_clause.gif)
 
 #### 전제 조건
 
@@ -396,29 +397,26 @@ maxsize_clause ::=
 생성하는 구문이다. 이 구문으로 생성한 테이블스페이스에는 휘발성 테이블을 생성할
 수 있다.
 
-VOLATILE
+*VOLATILE*
 
 휘발성 테이블스페이스를 생성할 것을 지정한다.
 
-DATA
+*DATA*
 
 사용자의 데이터를 저장할 테이블스페이스를 생성할 것을 지정한다. DATA 키워드 없이
 CREATE TABLESPACE 구문을 수행하여도 기본으로 데이터 테이블스페이스가 생성된다.
 
-tablespace_name
+*tablespace_name*
 
-생성될 테이블스페이스의 이름을 명시한다. 테이블스페이스 이름은 1장의 "[객체 이름
-규칙](#object_naming_rule)"을 따라야 한다.
+생성될 테이블스페이스의 이름을 명시한다. 테이블스페이스 이름은  2장 "객체 이름 규칙"을 따라야 한다.
 
-initsize_clause
+*initsize_clause*
 
 생성될 테이블스페이스의 초기 크기를 지정한다.
 
-SIZE
+*SIZE*
 
-테이블스페이스의 초기 크기를 명시한다.
-
-이는 메모리 테이블스페이스의 기본 확장 크기의 배수여야 한다. (즉,
+테이블스페이스의 초기 크기를 명시한다. 이는 메모리 테이블스페이스의 기본 확장 크기의 배수여야 한다. (즉,
 EXPAND_CHUNK_PAGE_COUNT 프로퍼티에 지정된 페이지 개수 \* 메모리 테이블스페이스의
 한 페이지 크기 (32kB))
 
@@ -429,25 +427,22 @@ EXPAND_CHUNK_PAGE_COUNT 프로퍼티에 지정된 페이지 개수 \* 메모리 
 이 값은 Kilobytes(K), Megabytes(M), 또는 Gigabytes(G) 단위로 명시할 수 있다.
 단위를 명시하지 않을 경우 기본 단위는 Kilobytes이다.
 
-autoextend_clause
+*autoextend_clause*
 
 테이블스페이스가 자동으로 확장될 지 여부를 명시한다. 이 절을 생략하면,
 AUTOEXTEND는 기본으로 꺼진다.
 
-ON
+*ON*
 
 AUTOEXTEND 옵션이 켜진다.
 
-OFF
+*OFF*
 
 AUTOEXTEND 옵션이 꺼진다.
 
-NEXT
+*NEXT*
 
-테이블스페이스가 자동으로 크기가 증가될 때 증가할 양을 명시한다.
-
-단, 이 크기는 메모리 테이블스페이스의 기본 확장 크기의 배수여야 한다.
-(EXPAND_CHUNK_PAGE_COUNT 프로퍼티에 지정된 페이지 개수 \* 메모리
+테이블스페이스가 자동으로 크기가 증가될 때 증가할 양을 명시한다. 단, 이 크기는 메모리 테이블스페이스의 기본 확장 크기의 배수여야 한다. (EXPAND_CHUNK_PAGE_COUNT 프로퍼티에 지정된 페이지 개수 \* 메모리
 테이블스페이스의 한 페이지 크기 (32kB))
 
 AUTOEXTEND를 ON으로 지정하고 이 값을 명시하지 않을 경우, 기본값은
@@ -458,7 +453,7 @@ AUTOEXTEND가 OFF일 때 이 값은 의미없다.
 이 값은 Kilobytes(K), Megabytes(M), 또는 Gigabytes(G) 단위로 명시할 수 있다.
 단위를 명시하지 않을 경우 기본 단위는 Kilobytes이다.
 
-maxsize_clause
+*maxsize_clause*
 
 테이블스페이스 자동 확장 시 확장할 수 있는 최대 크기를 명시한다. AUTOEXTEND는 ON
 으로 지정하고 이 값을 명시하지 않을 경우 기본값은 UNLIMITED이다.
@@ -468,7 +463,7 @@ AUTOEXTEND가 OFF이면 이 값은 의미없다.
 이 값은 Kilobytes(K), Megabytes(M), 또는 Gigabytes(G) 단위로 명시할 수 있다.
 단위를 명시하지 않을 경우 기본 단위는 Kilobytes이다.
 
-UNLIMITED
+*UNLIMITED*
 
 테이블스페이스가 자동 확장되는 크기에 제한이 없음을 명시한다.
 
@@ -481,27 +476,35 @@ UNLIMITED
 \<질의 1\> 초기 크기가 512MB이고, 자동 확장되지 않는 사용자 정의 휘발성 데이터
 테이블스페이스를 생성한다.
 
-iSQL\> CREATE VOLATILE DATA TABLESPACE user_data SIZE 512M;
-
+```
+iSQL> CREATE VOLATILE DATA TABLESPACE user_data SIZE 512M;
 Create success.
+```
 
 \<질의 2\> 초기 크기가 512MB이고, 128MB 단위로 자동 확장되는 사용자 정의 휘발성
 데이터 테이블스페이스를 생성한다.
 
-iSQL\> CREATE VOLATILE DATA TABLESPACE user_data SIZE 512M AUTOEXTEND ON NEXT
+```
+iSQL> CREATE VOLATILE DATA TABLESPACE user_data SIZE 512M AUTOEXTEND ON NEXT
 128M;
-
 Create success.
+```
 
 ### CREATE TEMPORARY TABLESPACE 
 
 #### 구문
 
-create_temporary_tablespace ::=
+**create_temporary_tablespace ::=**
 
-datafile_spec ::=
+![create_temporary_tablespace_image148](D:\emmachoigit\manuals\media\SQL\create_temporary_tablespace_image148.gif)
 
-autoexetend_clause ::=
+**datafile_spec ::=**
+
+![datafile_spec](D:\emmachoigit\manuals\media\SQL\datafile_spec.gif)
+
+**autoexetend_clause ::=**
+
+![autoextend_clause](D:\emmachoigit\manuals\media\SQL\autoextend_clause.gif)
 
 #### 전제 조건
 
@@ -517,12 +520,11 @@ SYS 사용자이거나 CREATE TABLESPACE 시스템 권한을 가진 사용자만
 데이터베이스 내에 데이터베이스 객체를 영구적으로 저장하려면 CREATE DISK
 TABLESPACE 문을 사용하도록 한다.
 
-tblspace_name
+*tblspace_name*
 
-생성할 임시 테이블스페이스 이름을 명시한다. 테이블스페이스 이름은 1장의 "[객체
-이름 규칙](#object_naming_rule)"을 따라야 한다.
+생성할 임시 테이블스페이스 이름을 명시한다. 테이블스페이스 이름은  2장 "객체 이름 규칙"을 따라야 한다.
 
-TEMPFILE datafile_space
+*TEMPFILE datafile_space*
 
 임시 테이블스페이스를 구성하는 임시 파일(들)을 명시하는 절이다.
 
@@ -531,13 +533,12 @@ TEMPFILE datafile_space
 \<질의\> 임시 테이블스페이스를 구성하는 데이터 파일이 tbs.temp인 5MB의 temp_data
 테이블스페이스를 생성한다.
 
-iSQL\> CREATE TEMPORARY TABLESPACE temp_data
-
-TEMPFILE '/tmp/tbs.temp' SIZE 5M
-
-AUTOEXTEND ON;
-
+```
+iSQL> CREATE TEMPORARY TABLESPACE temp_data
+  TEMPFILE '/tmp/tbs.temp' SIZE 5M 
+  AUTOEXTEND ON; 
 Create success.
+```
 
 
 
@@ -545,25 +546,31 @@ Create success.
 
 #### 구문
 
-create_trigger ::=
+**create_trigger ::=**
 
-![](D:/emmachoigit/manuals/media/SQL/e52f0369710a1fb044d43082fb24c858.png)
+![create_trigger](D:\emmachoigit\manuals\media\SQL\create_trigger.gif)
 
-simple_dml_trigger ::=
+**simple_dml_trigger ::=**
 
-trigger_event ::=
+![simple_dml_trigger_image151](D:\emmachoigit\manuals\media\SQL\simple_dml_trigger_image151.gif)
 
-referencing_clause ::=
+**trigger_event ::=**
 
-trigger_action::=
+![trigger_event_image152](D:\emmachoigit\manuals\media\SQL\trigger_event_image152.gif)
+
+**referencing_clause ::=**
+
+![referencing_clause_image152_1](D:\emmachoigit\manuals\media\SQL\referencing_clause_image152_1.gif)
+
+**trigger_action::=**
 
 ![](D:/emmachoigit/manuals/media/SQL/9c08ef3d3a9a235c54020897664f1e76.png)
 
-psm_body::=
+**psm_body::=**
 
 ![](D:/emmachoigit/manuals/media/SQL/9bdcf9256b030ef2f125cae49db1e626.jpg)
 
-instead_of_dml_trigger::=
+**instead_of_dml_trigger::=**
 
 ![](D:/emmachoigit/manuals/media/SQL/15bb3089ca8a5848774adf787ad4e5ed.png)
 
@@ -581,46 +588,43 @@ instead_of_dml_trigger::=
 
 명시된 이름으로 트리거를 생성한다.
 
-OR REPLACE
+*OR REPLACE*
 
 이 절은 트리거가 이미 존재한다면 같은 이름의 트리거로 교체할 때 사용된다. 즉, 이
 절은 존재하는 트리거를 제거한 후 재생성하는 대신에 기존 트리거의 정의를
 변경한다.
 
-user_name
+*user_name*
 
 생성될 트리거의 소유자 이름을 명시한다. 생략하면 Altibase는 현재 사용자가 소유한
 테이블에 트리거를 생성한다.
 
-trigger_name
+*trigger_name*
 
-생성될 트리거의 이름을 명시한다. 트리거 이름은 1장의 "[객체 이름
-규칙](#object_naming_rule)"을 따라야 한다.
+생성될 트리거의 이름을 명시한다. 트리거 이름은 2장 "객체 이름 규칙"을 따라야 한다.
 
-AFTER
+*AFTER*
 
 트리거가 동작될 시점을 지정한다. AFTER 옵션은 *trigger_event*가 수행된 후에
 트리거가 동작될 것을 지정한다.
 
-BEFORE
+*BEFORE*
 
 BEFORE 옵션은 *trigger_event*가 수행되기 전에 트리거가 동작될 것을 지정한다.
 
-INSTEAD OF
+*INSTEAD OF*
 
 INSTEAD OF 옵션은 트리거를 유발한 DML 구문은 수행되지 않고 트리거만 동작할 것을
 지정한다. INSTEAD OF 트리거는 뷰에만 생성할 수 있다. 만약 뷰에 LOB 칼럼이 있는
 경우 INSTEAD OF 옵션으로 트리거를 생성할 수는 있으나, 트리거의 동작을 유발하는
 DML문이 실행될 때 오류가 발생한다.
 
-trigger_event
+*trigger_event*
 
 이는 테이블의 데이터를 변경시키는 이벤트로 트리거의 동작을 유발시킨다. 단
 데이터베이스의 무결성을 지키기 위해 이중화 수신자에 의해 적용되는 테이블
 데이터의 변경은 트리거 이벤트로 처리되지 않는다 (즉, 트리거 동작을 유발시키지
-않는다).
-
-*trigger_event*로 다음의 세 가지 유형의 DML문을 지정할 수 있다.
+않는다). *trigger_event*로 다음의 세 가지 유형의 DML문을 지정할 수 있다.
 
 - DELETE  
   해당 테이블의 데이터를 삭제하는 DELETE 구문 수행 시 트리거 동작이 유발된다.
@@ -634,7 +638,7 @@ trigger_event
   UPDATE 트리거 이벤트에 OF 절을 사용할 경우 OF 절에 명시된 컬럼이 변경될
   경우에만 트리거를 동작시킨다.
 
-ON table_name
+*ON table_name*
 
 트리거가 동작할지를 결정하기 위해 참조하는 테이블을 지정한다. 트리거는
 *table_name*에 정의된 테이블의 변경에 따라 동작이 유발될 것이다.
@@ -648,7 +652,7 @@ ON table_name
 User_name이 생략되면, Altibase는 현재 사용자 소유의 테이블을 기반으로 트리거를
 생성할 것이다.
 
-REFERENCING 절
+*REFERENCING 절*
 
 트리거의 특성상 old row와 new row의 개념을 갖는다. 즉, 트리거가 참조하는
 테이블의 데이터 변경시, 변경된 각 row는 이전 값과 이후 값을 갖게 된다.
@@ -668,7 +672,7 @@ REFERENCING 절은 다음과 같은 제약을 갖는다.
   내에서 이들 데이터를 변경하는 것이 가능하다. 트리거 이벤트가 DELETE문일 경우
   이후 값이 없기 때문에 이후 값 참조는 불가능하다.
 
-trigger_action
+*trigger_action*
 
 트리거 작동 절은 다음과 같은 세 가지 부분으로 구성된다.
 
@@ -677,7 +681,7 @@ trigger_action
   명시
 - Action body: 트리거가 실제로 무엇을 수행하는지 명시
 
-###### **FOR EACH {ROW\|STATEMENT}**
+*FOR EACH {ROW\|STATEMENT}*
 
 트리거 수행 단위를 명시한다. 테이블의 데이터 변경시 여기에 명시된 단위에 따라서
 트리거가 발생한다. 기본값은 FOR EACH STATEMENT이다.
@@ -689,7 +693,7 @@ trigger_action
 - FOR EACH STATEMENT: 트리거 동작을 유발하는 DML 구문의 수행 후 또는 전에 한
   번만 트리거가 동작하게 된다.
 
-###### **WHEN search_condition**
+*WHEN search_condition*
 
 트리거가 동작 여부를 결정하는 조건을 명시한다. WHEN 절의 *search_conditio*n이
 TRUE 인 경우에만 트리거의 action body가 수행되며, FALSE인 경우에는 트리거의
@@ -703,7 +707,7 @@ WHEN 절에 조건을 사용하기 위해서는 다음과 같은 제약을 만�
 - WHEN 절에는 부질의를 사용할 수 없다.
 - WHEN 절에는 저장 프로시저를 사용할 수 없다.
 
-###### **psm_body**
+*psm_body*
 
 트리거의 “action body”를 의미하며, 트리거가 수행할 구문이 여기에 기술된다. 저장
 프로시저의 블록 구문과 동일한 방법으로 기술할 수 있다.
@@ -720,7 +724,7 @@ Psm_body는 다음과 같은 제약을 만족하여야 한다.
 - 회기하는 트리거, 즉 trigger_event에 명시된 연산을 수행하는 트리거는 생성할
   수 없다.
 
-###### **ENABLE \| DISABLE**
+*ENABLE \| DISABLE*
 
 사용자가 트리거를 생성할 때 활성화(enable) 또는 비활성화(disable)를 선택할 수
 있다. 기본 값은 활성화 상태이다.
@@ -760,151 +764,126 @@ orders 테이블에서 삭제될 때, 트리거는 FOR EACH ROW 기준으로 동
 테이블의 ono, cno, qty 및 arrival_date 칼럼의 원래 값을 참조한다. 이 트리거는
 orders 테이블에서 삭제된 행의 값을 log_tbl에 입력한다.
 
-iSQL\> CREATE TABLE log_tbl(
-
-ono BIGINT,
-
-cno BIGINT,
-
-qty INTEGER,
-
-arrival_date DATE,
-
-sysdate DATE);
-
+```
+iSQL> CREATE TABLE log_tbl(
+  ono BIGINT,
+  cno BIGINT,
+  qty INTEGER,
+  arrival_date DATE,
+  sysdate DATE);
 Create success.
 
-iSQL\> CREATE TRIGGER del_trigger
-
-AFTER DELETE ON orders
-
-REFERENCING OLD ROW old_row
-
-FOR EACH ROW
-
-AS BEGIN
-
-INSERT INTO log_tbl VALUES(old_row.ono, old_row.cno, old_row.qty,
-old_row.arrival_date, sysdate);
-
-END;
-
+iSQL> CREATE TRIGGER del_trigger
+  AFTER DELETE ON orders
+  REFERENCING OLD ROW old_row
+  FOR EACH ROW
+  AS BEGIN
+    INSERT INTO log_tbl VALUES(old_row.ono, old_row.cno, old_row.qty, old_row.arrival_date, sysdate);
+  END;
 /
-
 Create success.
 
-iSQL\> DELETE FROM orders WHERE processing = 'D';
-
+iSQL> DELETE FROM orders WHERE processing = 'D';
 2 rows deleted.
-
-iSQL\> SELECT \* FROM log_tbl;
-
-ONO CNO QTY ARRIVAL_DATE
-
-\------------------------------------------------------------------------
-
+iSQL> SELECT * FROM log_tbl;
+ONO                  CNO                  QTY         ARRIVAL_DATE
+------------------------------------------------------------------------
 SYSDATE
-
-\---------------
-
-11290011 17 1000 05-DEC-2011
-
+---------------
+11290011             17                   1000        05-DEC-2011
 25-APR-2012
-
-11290100 11 500 07-DEC-2011
-
+11290100             11                   500         07-DEC-2011
 25-APR-2012
-
 2 rows selected.
+```
 
 \<질의\> 다음의 예제에서, 트리거는 scores 테이블에 레코드가 입력될 때, score
 칼럼의 값이 지정되어 있지 않으면(NULL이면) 이 값을 0으로 변경한다. 이를 위해서
 FOR EACH ROW 기준으로 발생되는 BEFORE INSERT 트리거를 생성하면 된다.
 
-iSQL\> CREATE TABLE scores( id INTEGER, score INTEGER );  
+```
+iSQL> CREATE TABLE scores( id INTEGER, score INTEGER );
+Create success.
+iSQL> CREATE TRIGGER scores_trigger
+BEFORE INSERT ON scores
+REFERENCING NEW ROW NEW_ROW
+FOR EACH ROW
+AS BEGIN
+  IF NEW_ROW.SCORE IS NULL THEN
+     NEW_ROW.SCORE := 0;
+  END IF;
+END;
+/
 Create success.
 
-iSQL\> CREATE TRIGGER scores_trigger  
-BEFORE INSERT ON scores  
-REFERENCING NEW ROW NEW_ROW  
-FOR EACH ROW  
-AS BEGIN  
-IF NEW_ROW.SCORE IS NULL THEN  
-NEW_ROW.SCORE := 0;  
-END IF;  
-END;  
-/  
-Create success.
-
-iSQL\> INSERT INTO scores VALUES( 1, 20 );  
+iSQL> INSERT INTO scores VALUES( 1, 20 );
+1 row inserted.
+iSQL> INSERT INTO scores VALUES( 5, NULL );
+1 row inserted.
+iSQL> INSERT INTO scores VALUES( 17, 75 );
 1 row inserted.
 
-iSQL\> INSERT INTO scores VALUES( 5, NULL );  
-1 row inserted.
-
-iSQL\> INSERT INTO scores VALUES( 17, 75 );  
-1 row inserted.
-
-iSQL\> SELECT \* FROM SCORES;  
-
-## ID          SCORE        
-
-1           20           
-5           0            
-17          75           
+iSQL> SELECT * FROM SCORES;
+ID          SCORE       
+---------------------------
+1           20          
+5           0           
+17          75          
 3 rows selected.
+```
 
 \<질의\> 트리거를 비활성화(disable) 상태로 생성하여 동작을 확인한 후에
 활성화(enable) 상태로 변경하여 동작을 확인한다.
 
-iSQL\> CREATE TABLE scores( id INTEGER, score INTEGER );
-
+```
+iSQL> CREATE TABLE scores( id INTEGER, score INTEGER );
 Create success.
 
-iSQL\> CREATE TRIGGER scores_trigger  
-BEFORE INSERT ON scores  
-REFERENCING NEW ROW NEW_ROW  
-FOR EACH ROW  
-DISABLE  
-AS BEGIN  
-IF NEW_ROW.SCORE IS NULL THEN  
-NEW_ROW.SCORE := 0;  
-END IF;  
-END;  
-/  
+iSQL> CREATE TRIGGER scores_trigger
+BEFORE INSERT ON scores
+REFERENCING NEW ROW NEW_ROW
+FOR EACH ROW
+DISABLE
+AS BEGIN
+IF NEW_ROW.SCORE IS NULL THEN
+NEW_ROW.SCORE := 0;
+END IF;
+END;
+/
 Create success.
 
-iSQL\> INSERT INTO scores VALUES( 1, 20 );  
-1 row inserted.  
-iSQL\> INSERT INTO scores VALUES( 5, NULL );  
-1 row inserted.  
-iSQL\> INSERT INTO scores VALUES( 17, 75 );  
+iSQL> INSERT INTO scores VALUES( 1, 20 );
+1 row inserted.
+iSQL> INSERT INTO scores VALUES( 5, NULL );
+1 row inserted.
+iSQL> INSERT INTO scores VALUES( 17, 75 );
 1 row inserted.
 
-iSQL\> SELECT \* FROM SCORES;  
-
-## ID SCORE  
-
-1 20  
-5  
-17 75  
+iSQL> SELECT * FROM SCORES;
+ID SCORE
+---------------------------
+1 20
+5
+17 75
 3 rows selected.
 
-iSQL\> ALTER TRIGGER scores_trigger ENABLE;  
+iSQL> ALTER TRIGGER scores_trigger ENABLE;
 Alter success.
 
-iSQL\> INSERT INTO scores VALUES( 100, NULL );  
+iSQL> INSERT INTO scores VALUES( 100, NULL );
 1 row inserted.
 
-iSQL\> SELECT \* FROM SCORES;  
-
-## ID SCORE  
-
-1 20  
-5  
-17 75  
-100 0  
+iSQL> SELECT * FROM SCORES;
+ID SCORE
+---------------------------
+1 20
+5
+17 75
+100 0
 4 rows selected.
+```
+
+
 
 ### CREATE USER 
 
@@ -912,7 +891,11 @@ iSQL\> SELECT \* FROM SCORES;
 
 **create_user ::=**
 
-**<a name="password_parameters"><a/>password_parameters ::=**
+![create_user_image155](D:\emmachoigit\manuals\media\SQL\create_user_image155.gif)
+
+**<a name="password_parameters"><a/>**
+
+**password_parameters ::=**
 
 ![password_parameters](D:/emmachoigit/manuals/media/SQL/password_parameters.gif)
 
@@ -928,7 +911,7 @@ SYS 사용자와 CREATE USER 시스템 권한을 가진 사용자만이 사용�
 user_name
 
 생성될 사용자 이름을 명시한다. 사용자의 이름은 데이터베이스 내에서 유일해야
-한다. 사용자 이름은 2장의 "[객체 이름 규칙](#object_naming_rule)"을 따라야 한다.
+한다. 사용자 이름은 2장의 "객체 이름 규칙"을 따라야 한다.
 
 IDENTIFIED BY password
 
@@ -939,7 +922,7 @@ Altibase는 비밀 번호를 사용해서 사용자를 인증한다. 사용자 �
 CASE_SENSITIVE_PASSWORD 프로퍼티를 1로 설정한 다음, CREATE USER 구문으로
 사용자를 생성할 때 암호를 큰따옴표(")로 묶는다.
 
-사용자 비밀 번호는 2장의 "[객체 이름 규칙](#비밀번호)"을 따라야 한다.
+사용자 비밀 번호는 2장의 "객체 이름 규칙"을 따라야 한다.
 
 TEMPORARY TABLESPACE 절
 
