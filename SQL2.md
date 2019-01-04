@@ -8,19 +8,19 @@
 
 **create_disk_tablespace ::=**
 
-![create_disk_tablespace_image137](D:\emmachoigit\manuals\media\SQL\create_disk_tablespace_image137.gif)
+![create_disk_tablespace_image137](media/SQL/create_disk_tablespace_image137.gif)
 
 **datafile_spec ::=**
 
-![datafile_spec](D:\emmachoigit\manuals\media\SQL\datafile_spec.gif)
+![datafile_spec](media/SQL/datafile_spec.gif)
 
 **autoextend_clause ::=**
 
-![autoextend_clause](D:\emmachoigit\manuals\media\SQL\autoextend_clause.gif)
+![autoextend_clause](media/SQL/autoextend_clause.gif)
 
 **maxsize_clause ::=**
 
-![maxsize_clause](D:\emmachoigit\manuals\media\SQL\maxsize_clause.gif)
+![maxsize_clause](media/SQL/maxsize_clause.gif)
 
 #### 전제 조건
 
@@ -188,27 +188,27 @@ Create success.
 
 **create_memory_tablespace ::=**
 
-![create_memory_tablespace_image140](D:\emmachoigit\manuals\media\SQL\create_memory_tablespace_image140.gif)
+![create_memory_tablespace_image140](media/SQL/create_memory_tablespace_image140.gif)
 
 **initsize_clause ::=**
 
-![initsize_clause _image141](D:\emmachoigit\manuals\media\SQL\initsize_clause _image141.gif)
+![initsize_clause _image141](media/SQL/initsize_clause _image141.gif)
 
 **autoextend_clause ::=**
 
-![autoextend_clause](D:\emmachoigit\manuals\media\SQL\autoextend_clause.gif)
+![autoextend_clause](media/SQL/autoextend_clause.gif)
 
 **maxsize_clause ::=**
 
-![maxsize_clause](D:\emmachoigit\manuals\media\SQL\maxsize_clause.gif)
+![maxsize_clause](media/SQL/maxsize_clause.gif)
 
 **checkpoint_path_clause ::=**
 
-![checkpoint_path_clause_image143](D:\emmachoigit\manuals\media\SQL\checkpoint_path_clause_image143.gif)
+![checkpoint_path_clause_image143](media/SQL/checkpoint_path_clause_image143.gif)
 
 **splitsize_clause ::=**
 
-![splitsize_clause_image144](D:\emmachoigit\manuals\media\SQL\splitsize_clause_image144.gif)
+![splitsize_clause_image144](media/SQL/splitsize_clause_image144.gif)
 
 #### 전제 조건
 
