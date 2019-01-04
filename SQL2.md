@@ -908,12 +908,12 @@ SYS 사용자와 CREATE USER 시스템 권한을 가진 사용자만이 사용�
 명시된 사용자 이름, 암호, 테이블스페이스 접근 권한으로 데이터베이스 사용자를
 생성하는 구문이다.
 
-user_name
+*user_name*
 
 생성될 사용자 이름을 명시한다. 사용자의 이름은 데이터베이스 내에서 유일해야
 한다. 사용자 이름은 2장의 "객체 이름 규칙"을 따라야 한다.
 
-IDENTIFIED BY password
+*IDENTIFIED BY password*
 
 Altibase는 비밀 번호를 사용해서 사용자를 인증한다. 사용자 비밀 번호의 최대
 길이는 40바이트이다. 만일 이보다 더 긴 문자열의 비밀 번호를 명시하여 사용자를
@@ -924,21 +924,19 @@ CASE_SENSITIVE_PASSWORD 프로퍼티를 1로 설정한 다음, CREATE USER 구�
 
 사용자 비밀 번호는 2장의 "객체 이름 규칙"을 따라야 한다.
 
-TEMPORARY TABLESPACE 절
+*TEMPORARY TABLESPACE 절*
 
 이는 사용자가 테이블에 연산 수행시 중간 결과가 저장될 용도로 사용될 기본 임시
 테이블스페이스(DEFAULT TEMPORARY TABLESPACE)를 지정하는 절이다.
 
-이를 명시하지 않으면 시스템 임시 테이블스페이스[^5]가 해당 사용자의 기본 임시
+이를 명시하지 않으면 시스템 임시 테이블스페이스<sup>[5]</sup>가 해당 사용자의 기본 임시
 테이블스페이스로 지정된다.
 
-[^5]: SYSTEM TEMPORARY TABLESPACE는 쿼리 수행 중에 발생되는 임시 데이타들을
-
-저장하는데 사용된다. 로깅이 수행되지 않기 때문에 매체 오류시 이 테이블스페이스의
-데이터는 복구가 불가능하다.
+> <sup>[5]</sup>: SYSTEM TEMPORARY TABLESPACE는 쿼리 수행 중에 발생되는 임시 데이타들을 저장하는데 사용된다. 로깅이 수행되지 않기 때문에 매체 오류시 이 테이블스페이스의
+> 데이터는 복구가 불가능하다.
 
 사용자가 디스크 기반 테이블에 대한 SQL문을 수행할 때 일반적으로 임시
-테이블스페이스가 사용된다.
+테이블스페이스가 사용된다. 
 
 만약 SQL문내의 모든 테이블들이 메모리에 존재하는 테이블이라면, 쿼리 수행시
 Altibase가 사용하는 공간도 모두 메모리이며, 사용자가 힌트를 사용하지 않는다면
@@ -946,14 +944,14 @@ Altibase가 사용하는 공간도 모두 메모리이며, 사용자가 힌트�
 
 임시 테이블스페이스는 한 사용자에 하나만 지정할 수 있다.
 
-DEFAULT TABLESPACE 절
+*DEFAULT TABLESPACE 절*
 
 사용자가 생성한 객체를 저장할 기본 테이블스페이스를 명시한다. 이 절을 생략하면
 시스템 메모리 기본 테이블스페이스가 사용자의 기본 테이블스페이스가 된다.
 
 기본 테이블스페이스는 한 사용자에 하나만 지정할 수 있다.
 
-ACCESS 절
+*ACCESS 절*
 
 명시한 (*tablespace_name*) 테이블스페이스에 접근 가능 여부를 지정하는 절이다.
 ACCESS *tablespace_name* ON으로 지정한 테이블스페이스에 대해서는 사용자는 접근
@@ -963,81 +961,73 @@ ACCESS *tablespace_name* ON으로 지정한 테이블스페이스에 대해서�
 물론, ALTER TABLESPACE 시스템 권한이 부여된 사용자는 테이블스페이스 접근이
 가능하다.
 
-ENABLE/ DISABLE
+*ENABLE/ DISABLE*
 
 사용자의 TCP 접속을 허용하거나 제한할 수 있다. 이 절은 SYS 사용자만 수행할 수
 있다.
 
-FAILED_LOGIN_ATTEMPTS
+*FAILED_LOGIN_ATTEMPTS*
 
 로그인을 시도할 때 이 값에 설정한 횟수만큼 실패하면 해당 계정은 잠금이 해제될
 때까지 로그인이 불가능하다.  
 PASSWORD_LOCK_TIME이 설정되어 있는 경우 해당 기간이 경과하면 잠금이 자동으로
 해제된다.
 
-PASSWORD_LOCK_TIME
+*PASSWORD_LOCK_TIME*
 
 차단된 계정이 해제되기 위해 경과되어야 하는 날짜(단위: 일)를 지정한다. 예를
 들어, 이 값을 5로 지정했을 때 계정이 잠긴다면, 해당 계정은 5일이 지난 후에
 잠금이 풀리고 로그인이 가능해진다.
 
-PASSWORD_LIFE_TIME
+*PASSWORD_LIFE_TIME*
 
 계정의 패스워드가 유효한 기간(단위: 일)을 지정한다. 마지막으로 패스워드를 변경한
 시점을 기준으로 PASSWORD_LIFE_TIME이 적용된다.
 
-PASSWORD_GRACE_TIME
+*PASSWORD_GRACE_TIME*
 
 계정의 패스워드가 만료된 이후의 변경할 수 있는 유예 기간(단위: 일)을 지정한다.
 패스워드 유효 기간이 만료되면 유예 기간이 경과하기 전에 해당 계정으로 로그인하여
 패스워드를 변경해야 한다. 만약 패스워드 유예기간도 경과하면, SYS 계정으로
 로그인하여 해당 계정의 패스워드를 변경해야 한다.
 
-PASSWORD_REUSE_TIME
+*PASSWORD_REUSE_TIME*
 
 동일한 패스워드를 재사용하기 위해 경과해야 하는 기간(단위:일)을 지정한다. 즉,
 여기에 설정한 기간이 지난 후에 동일한 패스워드를 재사용할 수 있다.
 
-PASSWORD_REUSE_MAX
+*PASSWORD_REUSE_MAX*
 
 동일한 패스워드를 재사용하기 위한 패스워드 변경 횟수를 지정한다. 즉, 여기에
 설정한 횟수만큼 패스워드를 변경한 후에 동일한 패스워드를 재사용할 수 있다.
 
-주의: PASSWORD_REUSE_MAX 또는 PASSWORD_REUSE_TIME 중 하나만 지정하면, 동일한
-패스워드를 재사용할 수 없다.
+> 주의: PASSWORD_REUSE_MAX 또는 PASSWORD_REUSE_TIME 중 하나만 지정하면, 동일한
+> 패스워드를 재사용할 수 없다.
 
-PASSWORD_VERIFY_FUNCTION
+*PASSWORD_VERIFY_FUNCTION*
 
 여기에 사용자 정의 콜백 함수(CALLBACK function)를 등록하여 패스워드를 검증하도록
 할 수 있다. 사용자 정의 콜백 함수는 반드시 'TRUE'를 반환해야 한다.
 
 패스워드 검증용 콜백 함수는 아래와 같은 입력 파라미터와 반환 타입을 가져야 한다:
 
+```
 CREATE OR REPLACE FUNCTION pwd_verify_function (
-
-username varchar(20),
-
-password varchar(20))
-
-RETURN varchar(100)
-
+  username varchar(20),
+  password varchar(20))
+  RETURN varchar(100)
 AS
-
-result varchar(100);
-
+result        varchar(100);
 ...
-
 BEGIN
-
-...
-
-result := 'TRUE';
-
-RETURN result;
-
+    ...
+    result := 'TRUE';
+    RETURN result;
 END;
-
 /
+```
+
+
 
 #### 제한 사항
 
@@ -1053,55 +1043,62 @@ END;
 
 \<질의\> 사용자 명이 uare1이고 암호가 rose1인 사용자를 생성하라.
 
-iSQL\> CREATE USER uare1 IDENTIFIED BY rose1;
-
+```
+iSQL> CREATE USER uare1 IDENTIFIED BY rose1;
 Create success.
+```
 
 \<질의\> 사용자 이름이 uare4이고 암호가 rose4인 사용자를 생성하라. 또한
 user_data를 사용자의 기본 테이블스페이스로, temp_data 테이블스페이스를 임시
 테이블스페이스로 사용하며, 메모리 테이블스페이스인 SYS_TBS_MEMORY에 대해 접근
 권한을 가지고 있다.
 
-iSQL\> CREATE USER uare4
-
-IDENTIFIED BY rose4
-
-DEFAULT TABLESPACE user_data
-
-TEMPORARY TABLESPACE temp_data
-
-ACCESS SYS_TBS_MEMORY ON;
-
+```
+iSQL> CREATE USER uare4
+        IDENTIFIED BY rose4
+        DEFAULT TABLESPACE user_data
+        TEMPORARY TABLESPACE temp_data
+        ACCESS SYS_TBS_MEMORY ON;
 Create success.
+```
 
 \<질의\> 로그인을 5번 실패하면 해당 계정이 잠기고, 5일 후에 잠금이 풀리게 되는
 사용자 rose2를 생성한다.
 
-CREATE USER rose2 IDENTIFIED BY rose2
-
-LIMIT (FAILED_LOGIN_ATTEMPTS 5, PASSWORD_LOCK_TIME 5);
+```
+iSQL> CREATE USER rose2 IDENTIFIED BY rose2 
+  LIMIT (FAILED_LOGIN_ATTEMPTS 5, PASSWORD_LOCK_TIME 5);
+```
 
 \<질의\> 5일 후에 패스워드가 만료되고, 그 후 5일간 유예기간을 갖는 사용자
 rose3을 생성한다.
 
-CREATE USER rose3 IDENTIFIED BY rose3
-
-LIMIT (PASSWORD_LIFE_TIME 5, PASSWORD_GRACE_TIME 5);
+```
+iSQL> CREATE USER rose3 IDENTIFIED BY rose3
+  LIMIT (PASSWORD_LIFE_TIME 5, PASSWORD_GRACE_TIME 5);
+```
 
 \<질의\> 패스워드를 3회 변경하고 10일이 지난 후에 동일한 패스워드를 재사용할 수
 있는 사용자 rose4를 생성한다.
 
-CREATE USER rose4 IDENTIFIED BY rose4
+```
+iSQL> CREATE USER rose4 IDENTIFIED BY rose4
+  LIMIT (PASSWORD_REUSE_MAX 3, PASSWORD_REUSE_TIME 10);
+```
 
-LIMIT (PASSWORD_REUSE_MAX 3, PASSWORD_REUSE_TIME 10);
+
 
 ### CREATE VIEW
 
 #### 구문
 
-create_view ::=
+**create_view ::=**
 
-query_restriction_clause ::=
+![create_view_image156](D:\emmachoigit\manuals\media\SQL\create_view_image156.gif)
+
+**query_restriction_clause ::=**
+
+![query_restriction_clause_image157](D:\emmachoigit\manuals\media\SQL\query_restriction_clause_image157.gif)
 
 #### 전제 조건
 
@@ -1119,13 +1116,13 @@ query_restriction_clause ::=
 기반으로 하는 논리적인 테이블(logical table)이다. 뷰는 실제 데이터를 가지고 있지
 않다. 뷰의 기반이 된 테이블을 베이스 테이블(base table)이라 한다.
 
-OR REPLACE
+*OR REPLACE*
 
 이 절은 뷰가 이미 존재한다면 같은 이름의 뷰로 교체할 때 사용된다. 즉, 이 절은
 존재하는 뷰를 제거한 후 재 생성하는 대신에 기존 뷰의 정의를 변경하는 기능을
 제공한다.
 
-FORCE
+*FORCE*
 
 뷰의 베이스 테이블 존재 여부와 뷰를 내포하고 있는 스키마 소유자의 권한 유무에
 상관없이 뷰가 생성되도록 하는 옵션이다.
@@ -1135,32 +1132,31 @@ FORCE
 사용해 뷰를 생성한 후에는 뷰를 SELECT 해보거나 SYS_VIEWS\_ 메타 테이블을 조회해
 뷰의 상태를 확인해야 한다.
 
-NO FORCE
+*NO FORCE*
 
 이 옵션을 사용하면 뷰의 베이스 테이블이 존재하고 뷰를 내포하고 있는 스키마
 소유자가 권한을 가지고 있을 때만 뷰가 생성된다. 이 옵션이 기본값이다.
 
-user_name
+*user_name*
 
 생성될 뷰의 소유자 이름을 명시한다. 생략하면 Altibase는 현재 세션에 연결된
 사용자의 스키마에 뷰를 생성한다.
 
-view_name
+*view_name*
 
-생성될 뷰의 이름을 명시한다. 뷰의 이름은 1장의 "[객체 이름
-규칙](#object_naming_rule)"을 따라야 한다.
+생성될 뷰의 이름을 명시한다. 뷰의 이름은 2장 "객체 이름 규칙"을 따라야 한다.
 
-alias_name
+*alias_name*
 
 베이스 테이블로부터 검색하는 대상이 표현식인 경우 표현식을 위한 별칭을 명시해야
 한다. 이 별칭이 뷰의 칼럼 명이 된다. 별칭의 개수는 subquery의 검색 대상(표현식과
 칼럼)의 총 개수와 동일해야 한다.
 
-subquery
+*subquery*
 
 베이스 테이블로부터 조회하는 열과 행을 식별하는 부질의를 명시한다.
 
-WITH READ ONLY
+*WITH READ ONLY*
 
 뷰가 읽기 전용임을 지정할 수 있다. 이 옵션을 명시하지 않으면, INSERT, UPDATE,
 DELETE 같은 변경 연산을 수행할 수 있는 Updatable View가 생성된다.
@@ -1181,77 +1177,55 @@ DELETE 같은 변경 연산을 수행할 수 있는 Updatable View가 생성된�
 \<질의\> 다음 예제는 employees 테이블을 기반으로 한 이름이 avg_sal인 뷰를
 생성한다. 뷰는 각 부서의 평균 월급을 부서별로 보여준다.
 
-iSQL\> CREATE VIEW avg_sal AS
-
-SELECT dno, AVG(salary) emp_avg_sal
-
+```
+iSQL> CREATE VIEW avg_sal AS
+  SELECT dno, AVG(salary) emp_avg_sal
 FROM employees
-
-GROUP BY dno;
-
+  GROUP BY dno;
 Create success.
-
-iSQL\> SELECT \* FROM avg_sal;
-
-AVG_SAL.DNO AVG_SAL.EMP_AVG_SAL
-
-\------------------------------------
-
-A001 2066.66667
-
-C001 1576.66667
-
-C002 1660
-
-D001 2075.75
-
-F001 1845
-
+iSQL> SELECT * FROM avg_sal;
+AVG_SAL.DNO  AVG_SAL.EMP_AVG_SAL 
+------------------------------------
+A001  2066.66667  
+C001  1576.66667  
+C002  1660     
+D001  2075.75   
+F001  1845     
+                  
 6 rows selected.
+```
 
 부질의 내에서 표현식 AVG(salary)에 대한 별칭으로 emp_avg_sal이 제공되어 있기
 때문에, 뷰의 칼럼을 위한 별칭은 명시할 필요가 없다.
 
-##### 조인 뷰[^6] 생성하기
+##### 조인 뷰<sup>[6]</sup> 생성하기
 
-[^6]: 1 조인 뷰는 뷰의 부질의에 조인을 내포하는 것을 의미한다.
+> <sup>[6]</sup>:조인 뷰는 뷰의 부질의에 조인을 내포하는 것을 의미한다.
 
 \<질의\> 다음 뷰는 주문된 상품을 담당하고 있는 사원 이름과 상품을 주문한 고객의
 이름을 보여준다.
 
-iSQL\> CREATE VIEW emp_cus AS
-
-SELECT DISTINCT e.e_firstname, e.e_lastname,
-
-c.c_firstname, c.c_lastname
-
-FROM employees e, customers c, orders o
-
-WHERE e.eno = o.eno AND o.cno = c.cno;
-
+```
+iSQL> CREATE VIEW emp_cus AS 
+ SELECT DISTINCT e.e_firstname, e.e_lastname, 
+  c.c_firstname, c.c_lastname 
+ FROM employees e, customers c, orders o 
+ WHERE e.eno = o.eno AND o.cno = c.cno;
 Create success.
-
-iSQL\> SELECT \* FROM emp_cus;
-
-E_FIRSTNAME E_LASTNAME C_FIRSTNAME C_LASTNAME
-
-\---------------------------------------------------------------------------------------------
-
-Alvar Marquez Estevan Sanchez
-
-Sandra Hammond Pierre Martin
-
+iSQL> SELECT * FROM emp_cus;
+E_FIRSTNAME           E_LASTNAME            C_FIRSTNAME           C_LASTNAME
+---------------------------------------------------------------------------------------------
+Alvar                 Marquez               Estevan               Sanchez
+Sandra                Hammond               Pierre                Martin
 .
-
 .
-
 .
-
-William Blake Saeed Pahlavi
-
-Sandra Hammond Saeed Pahlavi
-
+William               Blake                 Saeed                 Pahlavi
+Sandra                Hammond               Saeed                 Pahlavi
 22 rows selected.
+```
+
+
 
 ### CREATE MATERIALIZED VIEW
 
