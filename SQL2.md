@@ -3826,8 +3826,6 @@ No rows selected.
   Grant success.
   ```
 
-
-
   사용자uare9은 SYS로부터 객체 book에 대한 REFERENCES 권한을 WITH GRANT OPTION
   으로 부여 받았기 때문에, uare9은 다른 사용자(uare10)에게 객체 book에 대해
   REFERENCES 객체 권한을 부여할 수 있다.
