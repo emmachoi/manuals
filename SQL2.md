@@ -3821,6 +3821,8 @@ No rows selected.
 2. SYS는 사용자uare9에게 객체 book에 대한 REFERENCES 권한을 WITH GRANT OPTION
   으로 부여한다.
 
+
+
   ```
   iSQL> GRANT REFERENCES ON book TO uare9 WITH GRANT OPTION;
   Grant success.
