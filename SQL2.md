@@ -3821,8 +3821,6 @@ No rows selected.
 2. SYS는 사용자uare9에게 객체 book에 대한 REFERENCES 권한을 WITH GRANT OPTION
   으로 부여한다.
 
-
-
   ```
   iSQL> GRANT REFERENCES ON book TO uare9 WITH GRANT OPTION;
   Grant success.
@@ -3912,7 +3910,6 @@ No rows selected.
    Create success.
    ```
 
-
 5. uare9은 SYS로부터 ALL PRIVILEGES를 부여 받았으므로 다른 사용자를 생성할 수
   있다.
 
@@ -3920,9 +3917,6 @@ No rows selected.
   iSQL> CREATE USER uare10 IDENTIFIED BY rose10;
   Create success.
   ```
-
-
-
 
 6. SYS는 uare9에게 REFERENCES 권한을 WITH GRANT OPTION으로 부여했기 때문에,
   uare9는 다른 사용자(uare10)에게 이 권한을 부여할 수 있다.
@@ -3933,10 +3927,10 @@ No rows selected.
   ```
 
 
-
-
 7. GRANT ANY PRIVILEGES를 부여 받은 uare9이 다른 사용자(uare10)에게 시스템
   권한을 부여한다.
+
+
 
   ```
   iSQL> GRANT ALTER ANY TABLE, INSERT ANY TABLE, SELECT ANY TABLE, DELETE ANY
