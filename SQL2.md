@@ -4086,26 +4086,31 @@ No rows selected.
 13. 사용자 uare10의 REFERENCES 권한과 함께 관련된 참조 무결성
     제약조건(referential integrity constraints)도 같이 삭제한다.
 
+    ```
+    iSQL> REVOKE REFERENCES ON sys.book FROM uare10 CASCADE CONSTRAINTS;
+    Revoke success.
+    ```
 
-iSQL\> REVOKE REFERENCES ON sys.book FROM uare10 CASCADE CONSTRAINTS;
 
-Revoke success.
+
 
 14. 사용자 uare9의 모든 시스템 권한을 해제한다.
 
-iSQL\> CONNECT sys/manager;
+    ```
+    iSQL> CONNECT sys/manager;
+    Connect success.
+    iSQL> REVOKE ALL PRIVILEGES FROM uare9;
+    Revoke success.
+    ```
 
-Connect success.
-
-iSQL\> REVOKE ALL PRIVILEGES FROM uare9;
-
-Revoke success.
 
 15. 사용자 uare9의 GRANT ANY PRIVILEGES 권한을 해제한다.
 
-iSQL\> REVOKE GRANT ANY PRIVILEGES FROM uare9;
+    ```
+    iSQL> REVOKE GRANT ANY PRIVILEGES FROM uare9;
+    Revoke success.
+    ```
 
-Revoke success.
 
 16. 사용자 uare9의 REFERENCES 권한을 해제한다.
 
