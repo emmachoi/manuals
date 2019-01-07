@@ -10,7 +10,7 @@
 
 **create_table ::=**
 
-![CREATE_TABLE_2](D:/emmachoigit/manuals/media/SQL/CREATE_TABLE_2.gif)
+![CREATE_TABLE_2](media/SQL/CREATE_TABLE_2.gif)
 
 [table_constraint
 ::=](#table_constraint), [temporary_attributes_clause
@@ -25,37 +25,37 @@
 
 **column_definition ::=**
 
-![column_definition_image113](D:/emmachoigit/manuals/media/SQL/column_definition_image113.gif)
+![column_definition_image113](media/SQL/column_definition_image113.gif)
 
 **encrypt_clause::=**
 
-![encrypt_clause](D:/emmachoigit/manuals/media/SQL/encrypt_clause.gif)
+![encrypt_clause](media/SQL/encrypt_clause.gif)
 
 **variable_clause::=**
 
-![variable_clause](D:/emmachoigit/manuals/media/SQL/variable_clause.gif)
+![variable_clause](media/SQL/variable_clause.gif)
 
 **in_row_clause::=**
 
-![in_row_clause](D:/emmachoigit/manuals/media/SQL/in_row_clause.gif)
+![in_row_clause](media/SQL/in_row_clause.gif)
 
 **default_clause::=**
 
-![default_clause](D:/emmachoigit/manuals/media/SQL/default_clause.gif)
+![default_clause](media/SQL/default_clause.gif)
 
 **column_constraint ::=**
 
-![column_constraint_image114](D:/emmachoigit/manuals/media/SQL/column_constraint_image114.gif)
+![column_constraint_image114](media/SQL/column_constraint_image114.gif)
 
 **unique_clause ::=**
 
-![unique_clause](D:/emmachoigit/manuals/media/SQL/unique_clause.gif)
+![unique_clause](media/SQL/unique_clause.gif)
 
 **unique_specification ::=**
 
 
 
-![unique_specification](D:/emmachoigit/manuals/media/SQL/unique_specification.gif)
+![unique_specification](media/SQL/unique_specification.gif)
 
 
 
@@ -63,44 +63,44 @@
 
 **sort_order_clause ::=**
 
-![sort_order_clause](D:/emmachoigit/manuals/media/SQL/sort_order_clause.gif)
+![sort_order_clause](media/SQL/sort_order_clause.gif)
 
 **directkey_clause ::=**
 
-![directkey_clause](D:/emmachoigit/manuals/media/SQL/directkey_clause.gif)
+![directkey_clause](media/SQL/directkey_clause.gif)
 
 **using_index_clause ::=**
 
-![using_index_clause_image117](D:/emmachoigit/manuals/media/SQL/using_index_clause_image117.gif)
+![using_index_clause_image117](media/SQL/using_index_clause_image117.gif)
 
 **index_attribute_clause ::=**
 
-![index_attribute_clause_image118](D:/emmachoigit/manuals/media/SQL/index_attribute_clause_image118.gif)
+![index_attribute_clause_image118](media/SQL/index_attribute_clause_image118.gif)
 
 [memory_index_attributes ::=](#memory_index_attributes), [disk_index_attributes
 ::=](#disk_index_attributes)
 
 **references_clause::=**
 
-![references_clause](D:/emmachoigit/manuals/media/SQL/references_clause.gif)
+![references_clause](media/SQL/references_clause.gif)
 
 **check_clause ::=**
 
-![check_clause](D:/emmachoigit/manuals/media/SQL/check_clause.gif)
+![check_clause](media/SQL/check_clause.gif)
 
 <a name="table_constraint"><a/>
 
 **table_constraint ::=**
 
-![table_constraint](D:/emmachoigit/manuals/media/SQL/table_constraint.gif)
+![table_constraint](media/SQL/table_constraint.gif)
 
 **table_unique_clause ::=**
 
-![table_unique_clause](D:/emmachoigit/manuals/media/SQL/table_unique_clause.gif)
+![table_unique_clause](media/SQL/table_unique_clause.gif)
 
 **referential_constraint ::=**
 
-![referential_constraint](D:/emmachoigit/manuals/media/SQL/referential_constraint.gif)
+![referential_constraint](media/SQL/referential_constraint.gif)
 
 [references_clause ::=](#references_clause)
 
@@ -108,7 +108,7 @@
 
 **temporary_attributes_clause ::=**
 
-![temporary_attributes_clause](D:/emmachoigit/manuals/media/SQL/temporary_attributes_clause.gif)
+![temporary_attributes_clause](media/SQL/temporary_attributes_clause.gif)
 
 
 
@@ -116,28 +116,28 @@
 
 **table_partitioning_clause ::=**
 
-![table_partitioning_clause_image123](D:/emmachoigit/manuals/media/SQL/table_partitioning_clause_image123.gif)
+![table_partitioning_clause_image123](media/SQL/table_partitioning_clause_image123.gif)
 
 **range_partitioning ::=**
 
-![range_partitioning_image124](D:/emmachoigit/manuals/media/SQL/range_partitioning_image124.gif)
+![range_partitioning_image124](media/SQL/range_partitioning_image124.gif)
 
 **partition_default_clause ::=**
 
-![partition_default](D:/emmachoigit/manuals/media/SQL/partition_default.gif)
+![partition_default](media/SQL/partition_default.gif)
 
 <a name="table_partition_description"><a/>
 
 **table_partition_description ::=**
 
-![TABLE_PARTITION_DESCRIPTION_2](D:/emmachoigit/manuals/media/SQL/TABLE_PARTITION_DESCRIPTION_2.gif)
+![TABLE_PARTITION_DESCRIPTION_2](media/SQL/TABLE_PARTITION_DESCRIPTION_2.gif)
 
 [lob_column_properties ::=](#lob_column_properties)*,* [access_mode_clause
 ::=](#access_mode_clause_CREATETALBE)
 
 **partition_range_clause ::=**
 
-![partition_range_clause_image126](D:/emmachoigit/manuals/media/SQL/partition_range_clause_image126.gif)
+![partition_range_clause_image126](media/SQL/partition_range_clause_image126.gif)
 
 [table_partition_description ::=](#table_partition_description)
 
@@ -145,7 +145,7 @@
 
 **hash_partitioning ::=**
 
-![hash_paritioning_image126_1](D:/emmachoigit/manuals/media/SQL/hash_paritioning_image126_1.gif)
+![hash_paritioning_image126_1](media/SQL/hash_paritioning_image126_1.gif)
 
 [table_partition_description ::=](#table_partition_description)
 
@@ -155,7 +155,7 @@
 
 **list_partitioning ::=**
 
-![list_partitioning_image127](D:/emmachoigit/manuals/media/SQL/list_partitioning_image127.gif)
+![list_partitioning_image127](media/SQL/list_partitioning_image127.gif)
 
 [partition_default_clause ::=](#partition_default_clause)
 
@@ -163,7 +163,7 @@
 
 
 
-![table_list_clause_image128](D:/emmachoigit/manuals/media/SQL/table_list_clause_image128.gif)
+![table_list_clause_image128](media/SQL/table_list_clause_image128.gif)
 
 
 
@@ -171,7 +171,7 @@
 
 **row_movement_clause ::=**
 
-![row_movement_clause](D:/emmachoigit/manuals/media/SQL/row_movement_clause.gif)
+![row_movement_clause](media/SQL/row_movement_clause.gif)
 
 
 
@@ -179,13 +179,13 @@
 
 **access_mode_clause ::=**
 
-![ACCESS_MODE_CLAUSE_](D:/emmachoigit/manuals/media/SQL/ACCESS_MODE_CLAUSE_.gif)
+![ACCESS_MODE_CLAUSE_](media/SQL/ACCESS_MODE_CLAUSE_.gif)
 
 <a name="tablespace_clause"><a/>
 
 **tablespace_clause ::=**
 
-![tablespace_clause](D:/emmachoigit/manuals/media/SQL/tablespace_clause.gif)
+![tablespace_clause](media/SQL/tablespace_clause.gif)
 
 <a name="physical_attributes_clause"><a/>
 
@@ -193,17 +193,17 @@
 
 **physical_attributes_clause ::=**
 
-![physical_attributes_clause_image130_1](D:/emmachoigit/manuals/media/SQL/physical_attributes_clause_image130_1.gif)
+![physical_attributes_clause_image130_1](media/SQL/physical_attributes_clause_image130_1.gif)
 
 **storage_clause ::=**
 
-![storage_clause](D:/emmachoigit/manuals/media/SQL/storage_clause.gif)
+![storage_clause](media/SQL/storage_clause.gif)
 
 <a name="log_compression_clause"><a/>
 
 **log_compression_clause ::=**
 
-![log_compression_clause_image130_2](D:/emmachoigit/manuals/media/SQL/log_compression_clause_image130_2.gif)
+![log_compression_clause_image130_2](media/SQL/log_compression_clause_image130_2.gif)
 
 
 
@@ -211,33 +211,33 @@
 
 **logging_clause ::=**
 
-![logging_clause](D:/emmachoigit/manuals/media/SQL/logging_clause.gif)
+![logging_clause](media/SQL/logging_clause.gif)
 
 <a name="parallel_clause"><a/>
 
 **parallel_clause::=**
 
-![PARALLEL_CLAUSE](D:/emmachoigit/manuals/media/SQL/PARALLEL_CLAUSE.gif)
+![PARALLEL_CLAUSE](media/SQL/PARALLEL_CLAUSE.gif)
 
 <a name="table_compression_clause"><a/>
 
 **table_compression_clause ::=**
 
-![table_compression](D:/emmachoigit/manuals/media/SQL/table_compression.gif)
+![table_compression](media/SQL/table_compression.gif)
 
 <a name="lob_column_properties"><a/>
 
 **lob_column_properties ::=**
 
-![lob_column_properties_image133](D:/emmachoigit/manuals/media/SQL/lob_column_properties_image133.gif)
+![lob_column_properties_image133](media/SQL/lob_column_properties_image133.gif)
 
 **LOB_storage_clause ::=**
 
-![lob_storage_clause_image134](D:/emmachoigit/manuals/media/SQL/lob_storage_clause_image134.gif)
+![lob_storage_clause_image134](media/SQL/lob_storage_clause_image134.gif)
 
 **lob_attributes ::=**
 
-![lob_attribute](D:/emmachoigit/manuals/media/SQL/lob_attribute.gif)
+![lob_attribute](media/SQL/lob_attribute.gif)
 
 #### 전제 조건
 
@@ -543,7 +543,7 @@ PARTITION BY RANGE (product_id)
 
 
 
-![create_table_lob](D:/emmachoigit/manuals/media/SQL/create_table_lob.gif)
+![create_table_lob](media/SQL/create_table_lob.gif)
 
 
 
@@ -1781,15 +1781,15 @@ Create success.
 
 **trigger_action::=**
 
-![](D:/emmachoigit/manuals/media/SQL/9c08ef3d3a9a235c54020897664f1e76.png)
+![](media/SQL/9c08ef3d3a9a235c54020897664f1e76.png)
 
 **psm_body::=**
 
-![](D:/emmachoigit/manuals/media/SQL/9bdcf9256b030ef2f125cae49db1e626.jpg)
+![](media/SQL/9bdcf9256b030ef2f125cae49db1e626.jpg)
 
 **instead_of_dml_trigger::=**
 
-![](D:/emmachoigit/manuals/media/SQL/15bb3089ca8a5848774adf787ad4e5ed.png)
+![](media/SQL/15bb3089ca8a5848774adf787ad4e5ed.png)
 
 #### 전제 조건
 
@@ -2114,7 +2114,7 @@ ID SCORE
 
 **password_parameters ::=**
 
-![password_parameters](D:/emmachoigit/manuals/media/SQL/password_parameters.gif)
+![password_parameters](media/SQL/password_parameters.gif)
 
 #### 전제 조건
 
