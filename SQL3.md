@@ -940,6 +940,8 @@ lock_mode에 명시한 잠금 모드로 특정한 모드 내에서 테이블 잠
 
 ![pivot_clause](media/SQL/pivot_clause.gif)
 
+<a name="pivot_for_clause"><a/>
+
 **pivot_for_clause ::=**
 
 ![pivot_for_clause](media/SQL/pivot_for_clause.gif)
@@ -1034,7 +1036,7 @@ SYS 사용자, 테이블 소유자, SELECT ANY TABLE 시스템 권한을 가진 
 
 한 개 이상의 테이블 또는 뷰에서 데이터를 검색하는 구문이다.
 
-with_clause
+*with_clause*
 
 Altibase는 with_clause 절을 인라인 뷰 또는 임시 테이블로 처리하여 최적화한다.
 
@@ -1051,26 +1053,25 @@ Reference*의 Altibase 프로퍼티 장을 참조한다.
 
 사용자는 이 절을 주질의 및 대부분 유형의 부질의에 명시할 수 있다.
 
-제약 사항:
+- 제약 사항:
+  - 하나의 SQL 문에 하나의 with_clause만 명시할 수 있다. query_name은 자신을
+    정의하는 부질의에서는 사용할 수 없다. 단 with_clause 안에서 여러 개의 쿼리
+    이름을 정의하는 경우, 뒤이어 정의되는 다른 부질의에는 앞서 정의한 다른 쿼리
+    이름을 사용할 수 있다.
+  - RECURSIVE WITH 구문에서 주 질의와 재귀 질의의 위치가 변경되면 안된다. 또한
+    query_name을 재귀 질의에서 한 번은 명시적으로 참조해야 한다. 그러나 재귀
+    질의에서는 집계 함수, DISTINCT 키워드, GROUP BY 절을 사용할 수 없다.
+  - RECURSIVE WITH 구문의 주 질의에 query_name을 참조하는 서브쿼리를 사용할 수
+    없다.
+  - RECURSIVE WITH 구문의 재귀 질의에 query_name을 참조하는 뷰 또는 Outer Join의
+    오른쪽 테이블에 사용할 수 없다.
 
-- 하나의 SQL 문에 하나의 with_clause만 명시할 수 있다. query_name은 자신을
-  정의하는 부질의에서는 사용할 수 없다. 단 with_clause 안에서 여러 개의 쿼리
-  이름을 정의하는 경우, 뒤이어 정의되는 다른 부질의에는 앞서 정의한 다른 쿼리
-  이름을 사용할 수 있다.
-- RECURSIVE WITH 구문에서 주 질의와 재귀 질의의 위치가 변경되면 안된다. 또한
-  query_name을 재귀 질의에서 한 번은 명시적으로 참조해야 한다. 그러나 재귀
-  질의에서는 집계 함수, DISTINCT 키워드, GROUP BY 절을 사용할 수 없다.
-- RECURSIVE WITH 구문의 주 질의에 query_name을 참조하는 서브쿼리를 사용할 수
-  없다.
-- RECURSIVE WITH 구문의 재귀 질의에 query_name을 참조하는 뷰 또는 Outer Join의
-  오른쪽 테이블에 사용할 수 없다.
-
-TOP (*expr*)
+*TOP (expr)*
 
 쿼리의 결과 집합 중 반환할 행의 개수를 지정하는 절이다. *expr*에는 정수만 올 수
 있다.
 
-select_list 절
+*select_list 절*
 
 DISTINCT를 명시할 경우 결과 집합에서 중복된 레코드는 제거된다.
 
@@ -1084,7 +1085,7 @@ SELECT 리스트에 \*만 명시한 것은 FROM 절의 모든 테이블과 뷰�
 의미한다. SELECT 리스트에 \*가 칼럼 또는 수식과 함께 명시된 경우에도 마찬가지
 의미이다.
 
-FROM 절
+*FROM 절*
 
 같은 별명(alias_name)을 FROM 절에 두 번 이상 사용할 수 없다. 같은 테이블 명을
 FROM절에 여러 번 사용할 때, 다른 별명을 주어야 한다. 즉, 별명을 명시하지 않고
@@ -1092,77 +1093,74 @@ FROM절에 여러 번 사용할 때, 다른 별명을 주어야 한다. 즉, 별
 
 FROM절에 올 수 있는 테이블 또는 뷰의 최대 개수는 32개이다.
 
-###### **OUTER JOIN**
+- *OUTER JOIN*
 
-조인 조건을 만족하지 않는 데이터를 처리하기 위한 JOIN의 확장 형태이다. (INNER)
-JOIN이 두 테이블에서 키 값이 일치하는 데이터만 가져오는 것에 비해 OUTER JOIN은
-어느 한 쪽의 데이터를 모두 가져온다. 즉, 한 테이블의 행에 대응하는 행이 다른
-테이블에 존재하지 않을 때, 빈 칼럼들에 대해서 결과 집합에는 NULL로 채워져서
-반환된다.
+  조인 조건을 만족하지 않는 데이터를 처리하기 위한 JOIN의 확장 형태이다. (INNER)
+  JOIN이 두 테이블에서 키 값이 일치하는 데이터만 가져오는 것에 비해 OUTER JOIN은
+  어느 한 쪽의 데이터를 모두 가져온다. 즉, 한 테이블의 행에 대응하는 행이 다른
+  테이블에 존재하지 않을 때, 빈 칼럼들에 대해서 결과 집합에는 NULL로 채워져서
+  반환된다.
 
-###### **인라인 뷰(Inline View)**
+- *인라인 뷰(Inline View)*
 
-FROM 절에 오는 부질의(subquery)를 인라인 뷰라고 한다.
+  FROM 절에 오는 부질의(subquery)를 인라인 뷰라고 한다.
 
-###### **Lateral View**
+- *Lateral View*
 
-FROM 절에 오는 인라인 뷰는 FROM 절에 나열된 다른 객체나 상위 쿼리에 있는 객체를
-참조할 수 없다. 그러나 FROM 절의 인라인 뷰를 Lateral View로 정의하면 인라인 뷰의
-외부 객체를 참조할 수 있게 된다.
+  FROM 절에 오는 인라인 뷰는 FROM 절에 나열된 다른 객체나 상위 쿼리에 있는 객체를
+  참조할 수 없다. 그러나 FROM 절의 인라인 뷰를 Lateral View로 정의하면 인라인 뷰의
+  외부 객체를 참조할 수 있게 된다.
 
-인라인 뷰를 Lateral View로 정의하려면, LATERAL 또는 APPLY 키워드를 인라인 뷰
-앞에 지정하면 된다. 단, Lateral View가 참조할 수 있는 객체는 해당 Lateral View의
-왼쪽에 지정된 객체들뿐이다. Lateral View로 정의하더라도 Lateral View가 외부
-객체를 참조하지 않으면, Altibase 서버가 해당 Lateral View를 일반적인 인라인 뷰로
-취급한다.APPLY 키워드는 인라인 뷰를 Lateral View로 정의하면서 APPLY 키워드의
-왼쪽 객체와 해당 Lateral View의 조인도 함께 수행한다. 일반적인 조인문이 ON
-키워드 뒤에 조인 조건을 지정하는 것과 달리, APPLY 키워드를 사용하는 조인의
-경우에는 조인 조건이 필요 없다.
+  인라인 뷰를 Lateral View로 정의하려면, LATERAL 또는 APPLY 키워드를 인라인 뷰
+  앞에 지정하면 된다. 단, Lateral View가 참조할 수 있는 객체는 해당 Lateral View의
+  왼쪽에 지정된 객체들뿐이다. Lateral View로 정의하더라도 Lateral View가 외부
+  객체를 참조하지 않으면, Altibase 서버가 해당 Lateral View를 일반적인 인라인 뷰로
+  취급한다.APPLY 키워드는 인라인 뷰를 Lateral View로 정의하면서 APPLY 키워드의
+  왼쪽 객체와 해당 Lateral View의 조인도 함께 수행한다. 일반적인 조인문이 ON
+  키워드 뒤에 조인 조건을 지정하는 것과 달리, APPLY 키워드를 사용하는 조인의
+  경우에는 조인 조건이 필요 없다.
 
-APPLY 키워드를 사용해서 다음의 조인 유형을 지정할 수 있다.
+  APPLY 키워드를 사용해서 다음의 조인 유형을 지정할 수 있다.
+  - CROSS APPLY는 왼쪽 객체와 Lateral View를 Inner Join 할 것을 지정한다.
+  - OUTER APPLY는 왼쪽 객체와 Lateral View를 Left Outer Join 할 것을 지정한다.
 
-- CROSS APPLY는 왼쪽 객체와 Lateral View를 Inner Join 할 것을 지정한다.
-- OUTER APPLY는 왼쪽 객체와 Lateral View를 Left Outer Join 할 것을 지정한다.
+  > **주의사항**:  아래와 같이 Lateral View를 사용하는 경우, 오류 메시지가 반환된다.
+  >
+  > - Lateral View에서 Fixed Table을 참조하는 경우
+  > - Lateral View에 PIVOT 절, UNPIVOT 절이 사용된 경우
+  > - Lateral View에서 해당 Lateral View의 오른쪽에 지정된 객체를 참조하는 경우
+  > - Lateral View가 참조하는 객체와 Lateral View를 Right Outer Join 또는
+  >   Full-Outer Join을 하는 경우
+  > - LATERAL 키워드와 APPLY 키워드를 붙여서 같이 사용한 경우
+  > - APPLY 키워드와 ON 절을 함께 사용한 경우
 
-주의사항:
+- *pivot_clause*
 
-아래와 같이 Lateral View를 사용하는 경우, 오류 메시지가 반환된다.
+  pivot_clause는 데이터 집계 연산 및 별개의 행으로 존재하는 데이터를 칼럼으로
+  재배열하여 보여주기 위해 사용할 수 있다. 이것은 GROUP BY 절에 두 개의 칼럼을
+  사용할 때보다 데이터를 더 읽기 쉽게 보여준다.  
 
-- Lateral View에서 Fixed Table을 참조하는 경우
-- Lateral View에 PIVOT 절, UNPIVOT 절이 사용된 경우
-- Lateral View에서 해당 Lateral View의 오른쪽에 지정된 객체를 참조하는 경우
-- Lateral View가 참조하는 객체와 Lateral View를 Right Outer Join 또는
-  Full-Outer Join을 하는 경우
-- LATERAL 키워드와 APPLY 키워드를 붙여서 같이 사용한 경우
-- APPLY 키워드와 ON 절을 함께 사용한 경우
+  편의상, 많은 수의 칼럼 출력 또는 변형 연산의 결과로 생기는 특정 칼럼들의 이름을
+  명시하는 어려움을 방지하기 위해서 pivot_clause는 일반적으로 인라인 뷰와 함께
+  사용된다.  
 
-###### **pivot_clause**
+  pivot_clause는 다음의 단계를 수행한다.
 
-pivot_clause는 데이터 집계 연산 및 별개의 행으로 존재하는 데이터를 칼럼으로
-재배열하여 보여주기 위해 사용할 수 있다. 이것은 GROUP BY 절에 두 개의 칼럼을
-사용할 때보다 데이터를 더 읽기 쉽게 보여준다.  
-편의상, 많은 수의 칼럼 출력 또는 변형 연산의 결과로 생기는 특정 칼럼들의 이름을
-명시하는 어려움을 방지하기 위해서 pivot_clause는 일반적으로 인라인 뷰와 함께
-사용된다.  
-pivot_clause는 다음의 단계를 수행한다.
+  1. 먼저 pivot_clause 는 마치 GROUP BY 절처럼 그룹 연산을 수행한다. 그 결과는 pivot_clause내의 참조되지 않은 모든 칼럼과 pivot_in_clause에 명시된 값에 대해 그룹화된다.
+  2. 다음으로 pivot_clause는 결과로 나온 그룹화된 칼럼들과 집계된 값들을 회전된
+     표 형식으로 배열한다.
 
-1. 먼저 pivot_clause 는 마치 GROUP BY 절처럼 그룹 연산을 수행한다. 그 결과는
-   pivot_clause내의 참조되지 않은 모든 칼럼과 pivot_in_clause에 명시된 값에
-   대해 그룹화된다.
-2. 다음으로 pivot_clause는 결과로 나온 그룹화된 칼럼들과 집계된 값들을 회전된
-   표 형식으로 배열한다.
+- *pivot_for_clause*
 
-###### **pivot_for_clause**
+  pivot_in_clause에 명시된 값이 칼럼 형태로 바꾸어질 때 이에 해당하는 칼럼 이름을
+  명시한다.
 
-pivot_in_clause에 명시된 값이 칼럼 형태로 바꾸어질 때 이에 해당하는 칼럼 이름을
-명시한다.
+- *pivot_in_clause*
 
-###### **pivot_in_clause**
+  pivot_for_clause에 명시된 칼럼들에 존재하는 값을 이 절에 명시할 수 있다. 이
+  값들은 pivot 연산에서 칼럼 이름으로 사용될 것이다.
 
-pivot_for_clause에 명시된 칼럼들에 존재하는 값을 이 절에 명시할 수 있다. 이
-값들은 pivot 연산에서 칼럼 이름으로 사용될 것이다.
-
-###### **unpivot_clause**
+**unpivot_clause**
 
 unpivot_clause는 칼럼의 데이터들을 행으로 변환시켜 결과를 반환한다.
 
