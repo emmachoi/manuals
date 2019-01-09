@@ -1160,37 +1160,42 @@ FROM절에 올 수 있는 테이블 또는 뷰의 최대 개수는 32개이다.
   pivot_for_clause에 명시된 칼럼들에 존재하는 값을 이 절에 명시할 수 있다. 이
   값들은 pivot 연산에서 칼럼 이름으로 사용될 것이다.
 
-**unpivot_clause**
+- *unpivot_clause*
 
-unpivot_clause는 칼럼의 데이터들을 행으로 변환시켜 결과를 반환한다.
+  unpivot_clause는 칼럼의 데이터들을 행으로 변환시켜 결과를 반환한다. 
 
-INCLUDE \| EXCLUDE NULLS 옵션은 UNPIVOT 절로 생성되는 칼럼의 값에 NULL을 허용할
-것인지를 선택할 수 있다. EXCLUDE NULLS는 NULL 값이 생략된 결과를 반환하며,
-생략하면 EXCLUDE NULLS로 동작한다.
+  INCLUDE \| EXCLUDE NULLS 옵션은 UNPIVOT 절로 생성되는 칼럼의 값에 NULL을 허용할
+  것인지를 선택할 수 있다. EXCLUDE NULLS는 NULL 값이 생략된 결과를 반환하며,
+  생략하면 EXCLUDE NULLS로 동작한다.
 
-column_name에는 UNPIVOT 구문으로 생성되는 칼럼에 해당하는 값들이 반환되는 칼럼
-이름을 지정한다.
+  column_name에는 UNPIVOT 구문으로 생성되는 칼럼에 해당하는 값들이 반환되는 칼럼
+  이름을 지정한다.
 
-unpivot_clause에서 사용한 칼럼의 개수만큼 pivot_for_clause 와 pivot_in_clause에
-사용되는 칼럼 개수도 같아야 한다. 또한 alias의 개수도 같아야 한다.
+  unpivot_clause에서 사용한 칼럼의 개수만큼 pivot_for_clause 와 pivot_in_clause에
+  사용되는 칼럼 개수도 같아야 한다. 또한 alias의 개수도 같아야 한다.
 
-unpivot ( ( column, column ) for ( column, column ) in ( ( column, column ) as (
-column, column ) ) );
+  ```
+  unpivot ( ( column, column ) for ( column, column ) in ( ( column, column ) as (
+  column, column ) ) );
+  ```
 
-다음처럼 칼럼 개수가 다른 구문은 지원하지 않는다.
+  다음처럼 칼럼 개수가 다른 구문은 지원하지 않는다.
 
-unpivot ( ( column, column ) for column in ( ( column, column ) as column ) );
+  ```
+  unpivot ( ( column, column ) for column in ( ( column, column ) as column ) );
+  ```
 
-###### **Table Function**
 
-사용자 정의 함수에서 Associative Array 타입이나 Record 타입을 사용할 때 반환되는
-결과를 테이블 형태로 변환하여 출력한다.
+- *Table Function*
 
-where 조건절
+  사용자 정의 함수에서 Associative Array 타입이나 Record 타입을 사용할 때 반환되는
+  결과를 테이블 형태로 변환하여 출력한다.
+
+*where 조건절*
 
 WHERE 절의 조건에 대한 설명은 8장 조건 연산자를 참고한다.
 
-Hierarchical Query 절
+*Hierarchical Query 절*
 
 계층적 질의(Hierarchical query)란 데이터 조회시 계층적 구조로 출력되는
 쿼리문이다. 테이블에 부모, 자식 관계를 가지는 데이터가 존재하는 경우 이 쿼리문을
@@ -1203,72 +1208,76 @@ BY절로 수립된 계층적 순서가 바뀔 수 있으므로 주의가 필요�
 BY를 사용하면 계층 구조를 보존하면서 동일한 레벨의 자식들 사이에서 순서를 정할
 수 있다.
 
-###### **START WITH 절**
+- *START WITH 절*
 
-계층적 질의의 루트 행으로 사용될 행을 식별하는 조건을 명시하는 절이다. 이 조건을
-만족하는 모든 행들이 루트 행으로 사용된다. 이 절을 생략하면 Altibase는 테이블에
-있는 모든 행들을 루트 행으로 사용한다.
+  계층적 질의의 루트 행으로 사용될 행을 식별하는 조건을 명시하는 절이다. 이 조건을
+  만족하는 모든 행들이 루트 행으로 사용된다. 이 절을 생략하면 Altibase는 테이블에
+  있는 모든 행들을 루트 행으로 사용한다.
 
-ROWNUM 의사칼럼은 이 절에 사용될 수 없다.
+  ROWNUM 의사칼럼은 이 절에 사용될 수 없다.
 
-###### **CONNECT BY 절**
+- *CONNECT BY 절*
 
-계층 구조에서 부모 행들과 자식 행들간의 관계를 식별하는 조건을 명시한다.
+  계층 구조에서 부모 행들과 자식 행들간의 관계를 식별하는 조건을 명시한다.
 
-CONNECT BY 절은 부질의를 포함할 수 없고 조인과 함께 사용될 수도 없다.
+  CONNECT BY 절은 부질의를 포함할 수 없고 조인과 함께 사용될 수도 없다.
 
-CONNECT BY 절은 WHERE 절 이후 ORDER BY, GROUP BY, HAVING 절 이전에 사용하여야
-한다.
+  CONNECT BY 절은 WHERE 절 이후 ORDER BY, GROUP BY, HAVING 절 이전에 사용하여야
+  한다.
 
-NOCYLE 키워드는 계층적 질의의 결과 집합에 순환구조가 존재하더라도, 순환이
-발생하기 전까지의 행을 반환할 것을 데이터베이스에 요구한다.
+  NOCYLE 키워드는 계층적 질의의 결과 집합에 순환구조가 존재하더라도, 순환이
+  발생하기 전까지의 행을 반환할 것을 데이터베이스에 요구한다.
 
-###### **SYS_CONNECT_BY_PATH함수는 계층적 질의에서 현재 행까지의 PATH 정보를 쉽게 가져올 수 있다. 이 함수에 대한 자세한 내용은 "6장 SQL 함수"를 참고하라.**
+  SYS_CONNECT_BY_PATH함수는 계층적 질의에서 현재 행까지의 PATH 정보를 쉽게 가져올 수 있다. 이 함수에 대한 자세한 내용은 "6장 SQL 함수"를 참고하라.
 
-###### **PRIOR 연산자**
+- *PRIOR 연산자*
 
-이전에 검색된 행과 현재 행을 구분하기 위해서 PRIOR 연산자를 사용한다. 즉,
-부모행을 언급하기 위해 반드시 PRIOR 연산자를 사용해야 한다.
+  이전에 검색된 행과 현재 행을 구분하기 위해서 PRIOR 연산자를 사용한다. 즉,
+  부모행을 언급하기 위해 반드시 PRIOR 연산자를 사용해야 한다.
 
-PRIOR 연산자는 CONNECT BY 절을 포함하는 질의문의 SELECT 리스트, WHERE 절, 또는
-CONNECT BY 절에서만 사용할 수 있다.
+  PRIOR 연산자는 CONNECT BY 절을 포함하는 질의문의 SELECT 리스트, WHERE 절, 또는
+  CONNECT BY 절에서만 사용할 수 있다.
 
-질의에 집합 연산자 (UNION, INTERSECT, 등)가 사용되면, PRIOR 연산자는 ORDER BY
-절에 올 수 없다.
+  질의에 집합 연산자 (UNION, INTERSECT, 등)가 사용되면, PRIOR 연산자는 ORDER BY
+  절에 올 수 없다.
 
-###### **CONNECT_BY_ROOT 연산자**
+- *CONNECT_BY_ROOT 연산자*
 
-CONNECT_BY_ROOT는 계층적 질의에서만 사용 가능한 단일 연산자이다. 칼럼에 이
-연산자를 사용하면 루트 행의 칼럼 값을 반환한다.
+  CONNECT_BY_ROOT는 계층적 질의에서만 사용 가능한 단일 연산자이다. 칼럼에 이
+  연산자를 사용하면 루트 행의 칼럼 값을 반환한다.
 
-START WITH 조건 또는 CONNECT BY 조건에 이 연산자를 사용할 수 없다.
+  START WITH 조건 또는 CONNECT BY 조건에 이 연산자를 사용할 수 없다.
 
-###### **CONNECT_BY_ISLEAF 의사칼럼**
 
-CONNECT_BY_ISLEAF 의사칼럼은 현재 행이 CONNECT BY 조건에 의해 정의된 트리에서
-리프 노드(자식 노드가 없는 노드)인 경우 1을 반환하고, 그렇지 않으면 0을
-반환한다.
+- *CONNECT_BY_ISLEAF 의사칼럼*
 
-###### **LEVEL 의사칼럼**
+  CONNECT_BY_ISLEAF 의사칼럼은 현재 행이 CONNECT BY 조건에 의해 정의된 트리에서
+  리프 노드(자식 노드가 없는 노드)인 경우 1을 반환하고, 그렇지 않으면 0을
+  반환한다.
 
-계층적 질의를 포함하는 SQL문은 *select_list*에 LEVEL 의사칼럼을 포함할 수 있다.
-LEVEL 의사칼럼은 루트 행과 종속 행간의 계층적 거리를 나타낸다. 즉, 루트 행의
-LEVEL은 1이고, 자식 행의 LEVEL은 2, 손자 행의 LEVEL은 3, 등이 된다.
+- *LEVEL 의사칼럼*
 
-LEVEL의사칼럼은 WHERE 절, ORDER BY 절, GROUP BY 절, HAVING 절에서도 사용
-가능하다. 또한, LEVEL 의사칼럼은 다음 예처럼 쿼리문에 CONNECT BY 절이 없더라도
-*select_list* 에 올 수 있다:
+  계층적 질의를 포함하는 SQL문은 *select_list*에 LEVEL 의사칼럼을 포함할 수 있다.
+  LEVEL 의사칼럼은 루트 행과 종속 행간의 계층적 거리를 나타낸다. 즉, 루트 행의
+  LEVEL은 1이고, 자식 행의 LEVEL은 2, 손자 행의 LEVEL은 3, 등이 된다.
 
-select level from t1;
+  LEVEL의사칼럼은 WHERE 절, ORDER BY 절, GROUP BY 절, HAVING 절에서도 사용
+  가능하다. 또한, LEVEL 의사칼럼은 다음 예처럼 쿼리문에 CONNECT BY 절이 없더라도
+  *select_list* 에 올 수 있다:
 
-###### **IGNORE** 
+  ```
+  select level from t1;
+  ```
 
-행들간 계층 관계가 순환 형태를 이룰 경우 Altibase는 오류를 반환한다. (여기서
-순환이란 한 행이 다른 행의 부모 행도 되고 자식 행도 되는 경우를 말한다.) 단,
-IGNORE LOOP이 명시되었을 경우, 질의 수행시의 순환 형성이 오류를 발생시키지 않고,
-순환 형태의 행들이 질의 결과 집합에서 제거된다.
 
-GROUP BY 절
+- *IGNORE*
+
+  행들간 계층 관계가 순환 형태를 이룰 경우 Altibase는 오류를 반환한다. (여기서
+  순환이란 한 행이 다른 행의 부모 행도 되고 자식 행도 되는 경우를 말한다.) 단,
+  IGNORE LOOP이 명시되었을 경우, 질의 수행시의 순환 형성이 오류를 발생시키지 않고,
+  순환 형태의 행들이 질의 결과 집합에서 제거된다.
+
+*GROUP BY 절*
 
 GROUP BY 절은 주어진 하나 이상의 표현식에 대해서 같은 값을 가지는 레코드들끼리
 그룹짓고, 각 그룹별로 집계한 정보를 한 행으로 반환받기 위해 사용되는 절이다.
@@ -1279,21 +1288,20 @@ WHERE 조건을 사용하여 반환되는 그룹을 제한할 수 없는 대신�
 HAVING 및 GROUP BY 절은 WHERE 절과 *hierarchical_clause* 뒤에 위치시킨다. 만약
 ORDER BY 절이 있다면 이는 쿼리문의 맨 마지막에 와야 한다.
 
-rollup_cube_clause, grouping_sets_clause
+*rollup_cube_clause, grouping_sets_clause*
 
 ROLLUP, CUBE, GROUPING SETS는 GROUP BY절이 확장된 것으로써, 여러 개의 그룹화
 세트를 지정할 수 있다. 즉, ROLLUP, CUBE 또는 GROUPING SETS를 사용하면 GROUP BY
 절을 포함하는 여러 쿼리를 UNION ALL로 결합한 것과 동일한 결과를 얻을 수 있다.
 
-제약 사항:
+- 제약 사항:
+  - GROUP BY 절에서 ROLLUP ,CUBE 또는 GROUPING SETS는 한 번만 명시할 수 있다.
+  - SELECT 대상에 부질의(subquery)를 인자로 가지는 집계 함수를 사용할 수 없다.
+  - ROLLUP, CUBE 또는 GROUPING SETS과 window 함수를 함께 사용할 수 없다.
+  - CUBE절에 최대 15개의 수식을 지정할 수 있다.
+  - GROUPING SETS와 중첩 집계 함수를 함께 사용할 수 없다.
 
-- GROUP BY 절에서 ROLLUP ,CUBE 또는 GROUPING SETS는 한 번만 명시할 수 있다.
-- SELECT 대상에 부질의(subquery)를 인자로 가지는 집계 함수를 사용할 수 없다.
-- ROLLUP, CUBE 또는 GROUPING SETS과 window 함수를 함께 사용할 수 없다.
-- CUBE절에 최대 15개의 수식을 지정할 수 있다.
-- GROUPING SETS와 중첩 집계 함수를 함께 사용할 수 없다.
-
-ROLLUP
+*ROLLUP*
 
 ROLLUP은 GROUP BY 절과 함께 사용되며, GROUP BY 절에 의해서 그룹 지어진 집합
 결과에 대하여 상세한 정보를 반환하는 기능을 수행한다.
@@ -1305,60 +1313,85 @@ ROLLUP은 그룹화 칼럼들의 개수가 n개일 때 (n+1)개의 GROUP BY가 �
 들어, GROUP BY 절 내에 ROLLUP(a,b,c)를 사용하면 반환되는 그룹의 조합은 다음과
 같다:
 
-> (a,b,c), (a,b), (a), ( )
+```
+(a,b,c), (a,b), (a), ( )
+```
 
-###### **부분 롤업(Partial ROLLUP)**
 
-아래 예제와 같이 GROUP BY의 그룹화 칼럼 중 일부분에만 ROLLUP을 적용하는 것을
-"부분 ROLLUP"이라고 한다:
 
-GROUP BY a, ROLLUP(b, c), d
+- *부분 롤업(Partial ROLLUP)*
 
-이 경우, 반환되는 그룹의 조합은 다음과 같다:
+  아래 예제와 같이 GROUP BY의 그룹화 칼럼 중 일부분에만 ROLLUP을 적용하는 것을
+  "부분 ROLLUP"이라고 한다:
 
-(a, d, b, c), (a, d, b), (a, d)
+  ```
+  GROUP BY a, ROLLUP(b, c), d
+  ```
 
-###### **복합 칼럼(Composite Columns) 사용하기**
+  이 경우, 반환되는 그룹의 조합은 다음과 같다:
 
-아래 예제와 같이 ROLLUP 절에 복합 칼럼의 리스트를 명시할 수 있다:
+  ```
+  (a, d, b, c), (a, d, b), (a, d)
+  ```
 
-GROUP BY ROLLUP((a, b), (c, d))
 
-이 경우, 반환되는 그룹의 조합은 다음과 같다:
+- *복합 칼럼(Composite Columns) 사용하기*
 
-(a, b, c, d), (a, b), ( )
+  아래 예제와 같이 ROLLUP 절에 복합 칼럼의 리스트를 명시할 수 있다:
 
-CUBE
+  ```
+  GROUP BY ROLLUP((a, b), (c, d))
+  ```
+
+  이 경우, 반환되는 그룹의 조합은 다음과 같다:
+
+  ```
+  (a, b, c, d), (a, b), ( )
+  ```
+
+
+*CUBE*
 
 CUBE는 명시된 그룹화 칼럼들의 가능한 모든 조합으로 그룹화를 수행한다. 그룹화
 칼럼의 개수가 n개일 때, CUBE는 2n개의 조합에 대해 그룹화를 수행한다. 예를 들어,
 GROUP BY CUBE(a,b,c)를 명시하면, (23=8)개의 조합이 아래와 같이 반환된다:
 
-> (a,b,c), (a,b), (a,c), (b,c), (a), (b), (c), ( )
+```
+(a,b,c), (a,b), (a,c), (b,c), (a), (b), (c), ( )
+```
 
-###### **부분 큐브(Partial CUBE)**
+- *부분 큐브(Partial CUBE)*
 
-부분 CUBE는 부분 ROLLUP과 유사하다. 즉, CUBE 연산자에 명시한 칼럼들의 가능한
-모든 조합이 CUBE 바깥에 있는 칼럼과 함께 결합되어 반환되는 그룹이 결정된다. 부분
-CUBE의 문법은 다음과 같다:
+  부분 CUBE는 부분 ROLLUP과 유사하다. 즉, CUBE 연산자에 명시한 칼럼들의 가능한
+  모든 조합이 CUBE 바깥에 있는 칼럼과 함께 결합되어 반환되는 그룹이 결정된다. 부분
+  CUBE의 문법은 다음과 같다:
 
-GROUP BY a, CUBE(b, c), d
+  ```
+  GROUP BY a, CUBE(b, c), d
+  ```
 
-이 경우, 아래의 조합에 대한 소계가 반환된다:
+  이 경우, 아래의 조합에 대한 소계가 반환된다:
 
-(a, d, b, c), (a, d, b), (a, d, c), (a, d)
+  ```
+  (a, d, b, c), (a, d, b), (a, d, c), (a, d)
+  ```
 
-###### **복합 칼럼(Composite Columns) 사용하기**
+- *복합 칼럼(Composite Columns) 사용하기*
 
-아래 예제와 같이 CUBE 절에 복합 칼럼의 리스트를 명시할 수 있다:
+  아래 예제와 같이 CUBE 절에 복합 칼럼의 리스트를 명시할 수 있다:
 
-GROUP BY CUBE((a, b), (c, d))
+  ```
+  GROUP BY CUBE((a, b), (c, d))
+  ```
 
-이 경우, 반환되는 그룹의 조합은 다음과 같다:
+  이 경우, 반환되는 그룹의 조합은 다음과 같다:
 
-(a, b, c, d), (a, b), (c, d), ( )
+  ```
+  (a, b, c, d), (a, b), (c, d), ( )
+  ```
 
-GROUPING SETS
+
+*GROUPING SETS*
 
 ROLLUP이나 CUBE에 의해 생성되는 그룹화 세트 중에서 일부만 필요한 경우에 GROUPING
 SETS에 원하는 그룹화 세트만 지정할 수 있다.
@@ -1369,40 +1402,56 @@ GROUPING SETS은 그룹화된 칼럼의 개수가 n개일 때 n개의 GROUP BY�
 들어, GROUP BY절 내에 GROUPING SETS(a, b, c)를 사용하면 반환되는 그룹의 조합은
 다음과 같다.
 
-> (a), (b), (c)
+```
+(a), (b), (c)
+```
 
-###### **부분 GROUPING SETS (Partial GROUPING SETS)**
 
-아래 예제와 같이 GROUP BY의 그룹화 칼럼 중 일부분에만 GROUPING SETS을 적용하는
-것을 "부분 GROUPING SETS"이라고 한다.
 
-GROUP BY a, GROUPING SETS(b, c), d
+- *부분 GROUPING SETS (Partial GROUPING SETS)*
 
-이 경우, 반환되는 그룹의 조합은 다음과 같다:
+  아래 예제와 같이 GROUP BY의 그룹화 칼럼 중 일부분에만 GROUPING SETS을 적용하는
+  것을 "부분 GROUPING SETS"이라고 한다.
 
-(a, b, d), (a, c, d)
+  ```
+  GROUP BY a, GROUPING SETS(b, c), d
+  ```
 
-###### **복합 칼럼(Composite Columns) 사용하기**
+  이 경우, 반환되는 그룹의 조합은 다음과 같다:
 
-아래 예제와 같이 GROUPING SETS절에 복합 칼럼의 리스트를 명시할 수 있다.
+  ```
+  (a, b, d), (a, c, d)
+  ```
 
-GROUP BY GROUPING SETS((a, b), (c, d))
 
-이와 같이 GROUPING SETS 목록에서 내부 괄호 안에 2개 이상의 칼럼들이 있는 경우
-하나의 칼럼으로 취급된다. 반환되는 그룹의 조합은 다음과 같다.
+- *복합 칼럼(Composite Columns) 사용하기*
 
-(a, b), (c, d)
+  아래 예제와 같이 GROUPING SETS절에 복합 칼럼의 리스트를 명시할 수 있다.
 
-###### **빈 그룹(Empty Group) 사용하기**
+  ```
+  GROUP BY GROUPING SETS((a, b), (c, d))
+  ```
 
-아래 예제와 같이 GROUPING SETS절에 빈 괄호("()")를 사용해서 '빈 그룹'을 명시할
-수 있다.
+  이와 같이 GROUPING SETS 목록에서 내부 괄호 안에 2개 이상의 칼럼들이 있는 경우
+  하나의 칼럼으로 취급된다. 반환되는 그룹의 조합은 다음과 같다.
 
-GROUP BY GROUPING SETS((), a, b, c)
+  ```
+  (a, b), (c, d)
+  ```
 
-빈 그룹은 그룹화 없이 총계를 구하기 위해 사용할 수 있다.
 
-HAVING 조건절
+- *빈 그룹(Empty Group) 사용하기*
+
+  아래 예제와 같이 GROUPING SETS절에 빈 괄호("()")를 사용해서 '빈 그룹'을 명시할
+  수 있다.
+
+  ```
+  GROUP BY GROUPING SETS((), a, b, c)
+  ```
+
+  빈 그룹은 그룹화 없이 총계를 구하기 위해 사용할 수 있다.
+
+*HAVING 조건절*
 
 HAVING 절에는 상수, 집계 함수(aggregate functions), GROUP BY 절에 명시된
 표현식과 이들을 조합한 표현식만 올 수 있다.
@@ -1411,7 +1460,7 @@ HAVING 절에는 상수, 집계 함수(aggregate functions), GROUP BY 절에 명
 
 HAVING 절의 조건문에 대한 자세한 설명은 "8장 조건 연산자"를 참고하기 바란다.
 
-UNION (ALL), INTERSECT, MINUS
+*UNION (ALL), INTERSECT, MINUS*
 
 집합 연산자는 두 SELECT 문의 결과 집합을 하나로 결합한다. 각 질의가 반환하는
 칼럼들의 개수와 데이터 타입이 동일해야 하지만, 칼럼 길이는 달라도 된다. 집합
@@ -1420,7 +1469,7 @@ UNION (ALL), INTERSECT, MINUS
 
 집합 연산자에 대한 자세한 설명은 5장 집한 연산자를 참고한다.
 
-ORDER BY 절
+*ORDER BY 절*
 
 검색된 레코드들을 정렬하는 절이다. 결과 집합은 오름차순 또는 내림차순으로 정렬
 가능하다. 기본으로 오름차순 정렬된다.
@@ -1465,7 +1514,7 @@ GROUP BY 절이 있다면, 다음의 표현식이 ORDER BY 절에 올 수 있다
 NULLS FIRST 또는 NULLS LAST 키워드를 사용해서 NULL을 정렬 순서에서 맨 처음 또는
 맨 마지막에 위치시킬 수 있다.
 
-LIMIT 절
+*LIMIT 절*
 
 LIMIT 절은 반환되는 행의 개수를 제한하기 위해 사용된다.
 
@@ -1475,7 +1524,7 @@ LIMIT 절은 반환되는 행의 개수를 제한하기 위해 사용된다.
 
 부질의에서도 LIMIT절을 사용할 수 있다.
 
-FOR UPDATE 절
+*FOR UPDATE 절*
 
 현재 트랜잭션이 끝날 때까지 다른 사용자들이 행(row)을 잠그거나 수정할 수 없도록
 선택된 행을 잠근다.
@@ -1488,7 +1537,10 @@ WAIT 옵션은 테이블의 잠금을 획득하기 위해 얼마나 대기할지
 
 FOR UPDATE 절은 최 상위 SELECT 문에서만 사용 가능하다. 즉, 부질의에는 사용할 수
 없다. 그러므로 다음과 같은 질의는 사용할 수 없다:  
+
+```
 select eno from employees where (select eno from departments for update);
+```
 
 FOR UPDATE 절은 DISTINCT, GROUP BY절, 집계 함수, 집합 연산자(UNION, INTERSECT
 등)와 함께 사용 할 수 없다.
@@ -1508,7 +1560,7 @@ FROM 절이나 WHERE 절 중의 하나에 지정할 수 있다. 조인 조건에
 결과를 다른 테이블과 조인한다. 쿼리 옵티마이저는 조인할 테이블의 순서를 결정할
 때 조인 조건, 인덱스, 통계 정보 등에 기반한다.
 
-\* 주의: LOB 칼럼은 조인 조건에 사용될 수 없다.
+> 주의: LOB 칼럼은 조인 조건에 사용될 수 없다.
 
 Altibase는 아래의 조인을 지원한다.
 
@@ -1518,29 +1570,33 @@ Altibase는 아래의 조인을 지원한다.
 - Semi Join
 - Anti Join
 
-##### Cross Join
+*Cross Join*
 
 조인 조건을 갖지 않는 두 테이블을 결합한다. 한 테이블의 각 로우는 다른 테이블의
 각각의 로우와 결합한다. Cartesian Products라고도 한다.
 
 아래는 Cross Join 쿼리의 예제이다.
 
-SELECT \* FROM T1, T2;
+```
+SELECT * FROM T1, T2;
+```
 
-##### Inner Join
+*Inner Join*
 
 Inner Join은 일반적인 조인을 말하며, 두 테이블에서 조인 조건을 만족하는 로우들만
 결합해서 반환한다.
 
 아래는 Inner Join 쿼리의 예제이다.
 
-SELECT \* FROM T1, T2 WHERE T1.i1 = T2.i1;
+```
+SELECT * FROM T1, T2 WHERE T1.i1 = T2.i1;
+SELECT * FROM T1 INNER JOIN T2 ON T1.i1 = T2.i1;
+SELECT * FROM T1, T2, T3 WHERE T1.i1 = T2.i1 AND T2.i1 < T3.i2;
+```
 
-SELECT \* FROM T1 INNER JOIN T2 ON T1.i1 = T2.i1;
 
-SELECT \* FROM T1, T2, T3 WHERE T1.i1 = T2.i1 AND T2.i1 \< T3.i2;
 
-##### Outer Join
+*Outer Join*
 
 Outer Join은 두 개의 다른 테이블에서 조인 조건을 만족하는 로우를 판별해서
 반환한다. Inner Join과 Outer Join의 차이점은 한 테이블에만 조인 조건을 만족하는
@@ -1548,238 +1604,195 @@ Outer Join은 두 개의 다른 테이블에서 조인 조건을 만족하는 �
 해당 로우를 반환하지 않는 반면 Outer Join은 조인 조건을 만족하는 로우가 없는
 테이블의 값을 NULL로 반환한다.
 
-Outer Join은 다음 세 종류가 있다.
+Outer Join은 다음 세 종류가 있다 : Left Outer Join, Right Outer Join, Full Outer Join
 
-- Left Outer Join
-- Right Outer Join
-- Full Outer Join
+- *Left Outer Join*
 
-###### **Left Outer Join**
+  LEFT OUTER JOIN 키워드의 왼편에 테이블 A가, 오른편에 테이블 B가 있을 때, 조인
+  조건을 만족하는 A의 모든 로우가 반환된다. B에 만족하는 로우가 없는 경우에는
+  결과집합의 해당 자리에 NULL이 반환된다.
 
-LEFT OUTER JOIN 키워드의 왼편에 테이블 A가, 오른편에 테이블 B가 있을 때, 조인
-조건을 만족하는 A의 모든 로우가 반환된다. B에 만족하는 로우가 없는 경우에는
-결과집합의 해당 자리에 NULL이 반환된다.
+  아래는 Left Outer Join 쿼리의 예제이다.
 
-아래는 Left Outer Join 쿼리의 예제이다.
+  ```
+  SELECT * FROM A LEFT OUTER JOIN B ON A.c1 = B.c1;
+  SELECT * FROM A, B WHERE A.c1 = B.c1(+);
+  ```
 
-SELECT \* FROM A LEFT OUTER JOIN B ON A.c1 = B.c1;
 
-SELECT \* FROM A, B WHERE A.c1 = B.c1(+);
+- *Right Outer Join*
 
-###### **Right Outer Join**
+  RIGHT OUTER JOIN 키워드의 왼편에 테이블 A가, 오른편에 테이블 B가 있을 때, 조인
+  조건을 만족하는 B의 모든 로우가 반환된다. A에 만족하는 로우가 없는 경우에는
+  결과집합의 해당 자리에 NULL이 반환된다.
 
-RIGHT OUTER JOIN 키워드의 왼편에 테이블 A가, 오른편에 테이블 B가 있을 때, 조인
-조건을 만족하는 B의 모든 로우가 반환된다. A에 만족하는 로우가 없는 경우에는
-결과집합의 해당 자리에 NULL이 반환된다.
+  아래는 Right Outer Join 쿼리의 예제이다.
 
-아래는 Right Outer Join 쿼리의 예제이다.
+  ```
+  SELECT * FROM A RIGHT OUTER JOIN B ON A.c1 = B.c1;
+  SELECT * FROM A, B WHERE A.c1(+) = B.c1;
+  ```
 
-SELECT \* FROM A RIGHT OUTER JOIN B ON A.c1 = B.c1;
 
-SELECT \* FROM A, B WHERE A.c1(+) = B.c1;
+- *Full Outer Join*
 
-###### **Full Outer Join**
+  FULL OUTER JOIN 키워드의 왼편에 테이블 A가, 오른편에 테이블 B가 있을 때, A와 B
+  중 한 테이블에만 조인 조건을 만족하는 로우가 있어도 해당 로우가 반환된다. 조인
+  조건을 만족하는 로우가 없는 테이블에 대해서는 결과집합의 해당 자리에 NULL이
+  반환된다.
 
-FULL OUTER JOIN 키워드의 왼편에 테이블 A가, 오른편에 테이블 B가 있을 때, A와 B
-중 한 테이블에만 조인 조건을 만족하는 로우가 있어도 해당 로우가 반환된다. 조인
-조건을 만족하는 로우가 없는 테이블에 대해서는 결과집합의 해당 자리에 NULL이
-반환된다.
+  아래는 Full Outer Join 쿼리의 예제이다.
 
-아래는 Full Outer Join 쿼리의 예제이다.
+  ```
+  SELECT * FROM A FULL OUTER JOIN B ON A.c1 = B.c1;
+  ```
 
-SELECT \* FROM A FULL OUTER JOIN B ON A.c1 = B.c1;
 
-##### Semi Join
+*Semi Join*
 
 테이블 A와 테이블 B를 Semi Join하는 경우, B에 존재하는 A의 모든 로우를 반환한다.
 A의 한 로우에 대해서 B의 여러 로우가 일치하더라도 한 로우만 반환된다.
 
 아래는 Semi Join 쿼리의 예제이다.
 
-SELECT \* FROM T1 WHERE EXISTS ( SELECT i1 FROM T2 WHERE T1.i1 = T2.i1 );
+```
+SELECT * FROM T1 WHERE EXISTS ( SELECT i1 FROM T2 WHERE T1.i1 = T2.i1 ); 
+SELECT * FROM T1 WHERE i1 IN ( SELECT i1 FROM T2 );
+```
 
-SELECT \* FROM T1 WHERE i1 IN ( SELECT i1 FROM T2 );
 
-##### Anti Join
+
+*Anti Join*
 
 테이블 A와 테이블 B를 Anti Join하는 경우, B에 존재하지 않는 A의 로우들만
 반환한다.
 
-SELECT \* FROM T1 WHERE NOT EXISTS ( SELECT i1 FROM T2 WHERE T1.i1 = T2.i1 );
-
-SELECT \* FROM T1 WHERE i1 NOT IN ( SELECT i1 FROM T2 );
+```
+SELECT * FROM T1 WHERE NOT EXISTS ( SELECT i1 FROM T2 WHERE T1.i1 = T2.i1 );
+SELECT * FROM T1 WHERE i1 NOT IN ( SELECT i1 FROM T2 );
+```
 
 ##### 예제
 
 위에서 설명한 각 조인의 실행 결과를 보여주기 위해 employee와 dept 테이블을
 생생한다.
 
+```
 CREATE TABLE employee(name VARCHAR(10), empid INTEGER, deptname VARCHAR(20));
-
 CREATE TABLE dept(deptname VARCHAR(20), manager VARCHAR(10));
 
-INSERT INTO employee VALUES('Harry', 3415, 'Finance');
-
-INSERT INTO employee VALUES('Sally', 2241, 'Sales');
-
-INSERT INTO employee VALUES('George', 3401, 'Finance');
-
-INSERT INTO employee VALUES('Harriet', 2202, 'Production');
+INSERT INTO employee VALUES('Harry', 	3415, 	'Finance');
+INSERT INTO employee VALUES('Sally', 	2241, 	'Sales');
+INSERT INTO employee VALUES('George', 	3401, 	'Finance');
+INSERT INTO employee VALUES('Harriet', 	2202, 	'Production');
 
 INSERT INTO dept VALUES('Sales','Bob');
-
 INSERT INTO dept VALUES('Sales','Thomas');
-
 INSERT INTO dept VALUES('Production','Katie');
-
 INSERT INTO dept VALUES('Production','Mark');
+```
 
 아래는 Cross Join 쿼리와 그 결과이다.
 
-iSQL\> SELECT \* FROM employee, dept;
-
-NAME EMPID DEPTNAME DEPTNAME MANAGER
-
-\--------------------------------------------------------------------------------------
-
-Harry 3415 Finance Sales Bob
-
-Harry 3415 Finance Sales Thomas
-
-Harry 3415 Finance Production Katie
-
-Harry 3415 Finance Production Mark
-
-Sally 2241 Sales Sales Bob
-
-Sally 2241 Sales Sales Thomas
-
-Sally 2241 Sales Production Katie
-
-Sally 2241 Sales Production Mark
-
-George 3401 Finance Sales Bob
-
-George 3401 Finance Sales Thomas
-
-George 3401 Finance Production Katie
-
-George 3401 Finance Production Mark
-
-Harriet 2202 Production Sales Bob
-
-Harriet 2202 Production Sales Thomas
-
-Harriet 2202 Production Production Katie
-
-Harriet 2202 Production Production Mark
-
+```
+iSQL> SELECT * FROM employee, dept;
+NAME        EMPID       DEPTNAME              DEPTNAME              MANAGER
+--------------------------------------------------------------------------------------
+Harry       3415        Finance               Sales                 Bob
+Harry       3415        Finance               Sales                 Thomas
+Harry       3415        Finance               Production            Katie
+Harry       3415        Finance               Production            Mark
+Sally       2241        Sales                 Sales                 Bob
+Sally       2241        Sales                 Sales                 Thomas
+Sally       2241        Sales                 Production            Katie
+Sally       2241        Sales                 Production            Mark
+George      3401        Finance               Sales                 Bob
+George      3401        Finance               Sales                 Thomas
+George      3401        Finance               Production            Katie
+George      3401        Finance               Production            Mark
+Harriet     2202        Production            Sales                 Bob
+Harriet     2202        Production            Sales                 Thomas
+Harriet     2202        Production            Production            Katie
+Harriet     2202        Production            Production            Mark
 16 rows selected.
+```
 
 아래는 Inner Join 쿼리와 그 결과이다.
 
-iSQL\> SELECT \* FROM employee A, dept B WHERE A.deptname = B.deptname;
-
-NAME EMPID DEPTNAME DEPTNAME MANAGER
-
-\--------------------------------------------------------------------------------------
-
-Sally 2241 Sales Sales Thomas
-
-Sally 2241 Sales Sales Bob
-
-Harriet 2202 Production Production Mark
-
-Harriet 2202 Production Production Katie
-
+```
+iSQL> SELECT * FROM employee A, dept B WHERE A.deptname = B.deptname;
+NAME        EMPID       DEPTNAME              DEPTNAME              MANAGER
+--------------------------------------------------------------------------------------
+Sally       2241        Sales                 Sales                 Thomas
+Sally       2241        Sales                 Sales                 Bob
+Harriet     2202        Production            Production            Mark
+Harriet     2202        Production            Production            Katie
 4 rows selected.
+```
 
 아래는 Left Outer Join 쿼리와 그 결과이다.
 
-iSQL\> SELECT \* FROM employee A LEFT OUTER JOIN dept B ON A.deptname =
-B.deptname;
-
-NAME EMPID DEPTNAME DEPTNAME MANAGER
-
-\--------------------------------------------------------------------------------------
-
-Harry 3415 Finance
-
-Sally 2241 Sales Sales Thomas
-
-Sally 2241 Sales Sales Bob
-
-George 3401 Finance
-
-Harriet 2202 Production Production Mark
-
-Harriet 2202 Production Production Katie
-
+```
+iSQL> SELECT * FROM employee A LEFT OUTER JOIN dept B ON A.deptname = B.deptname;
+NAME        EMPID       DEPTNAME              DEPTNAME              MANAGER
+--------------------------------------------------------------------------------------
+Harry       3415        Finance
+Sally       2241        Sales                 Sales                 Thomas
+Sally       2241        Sales                 Sales                 Bob
+George      3401        Finance
+Harriet     2202        Production            Production            Mark
+Harriet     2202        Production            Production            Katie
 6 rows selected.
+```
 
 아래는 Right Outer Join 쿼리와 그 결과이다.
 
-iSQL\> SELECT \* FROM employee A RIGHT OUTER JOIN dept B ON A.deptname =
-B.deptname;
-
-NAME EMPID DEPTNAME DEPTNAME MANAGER
-
-\--------------------------------------------------------------------------------------
-
-Sally 2241 Sales Sales Bob
-
-Sally 2241 Sales Sales Thomas
-
-Harriet 2202 Production Production Katie
-
-Harriet 2202 Production Production Mark
-
+```
+iSQL> SELECT * FROM employee A RIGHT OUTER JOIN dept B ON A.deptname = B.deptname;
+NAME        EMPID       DEPTNAME              DEPTNAME              MANAGER
+--------------------------------------------------------------------------------------
+Sally       2241        Sales                 Sales                 Bob
+Sally       2241        Sales                 Sales                 Thomas
+Harriet     2202        Production            Production            Katie
+Harriet     2202        Production            Production            Mark
 4 rows selected.
+```
 
 아래는 Semi Outer Join 쿼리와 그 결과이다.
 
-iSQL\> SELECT \* FROM employee A WHERE EXISTS ( SELECT deptname FROM dept B
-WHERE A.deptname = B.deptname );
-
-NAME EMPID DEPTNAME
-
-\--------------------------------------------------
-
-Sally 2241 Sales
-
-Harriet 2202 Production
-
+```
+iSQL> SELECT * FROM employee A WHERE EXISTS ( SELECT deptname FROM dept B WHERE A.deptname = B.deptname );
+NAME        EMPID       DEPTNAME
+--------------------------------------------------
+Sally       2241        Sales
+Harriet     2202        Production
 2 rows selected.
+```
 
 아래는 Anti Outer Join 쿼리와 그 결과이다.
 
-iSQL\> SELECT \* FROM employee A WHERE NOT EXISTS ( SELECT deptname FROM dept B
-WHERE A.deptname = B.deptname );
-
-NAME EMPID DEPTNAME
-
-\--------------------------------------------------
-
-Harry 3415 Finance
-
-George 3401 Finance
-
+```
+iSQL> SELECT * FROM employee A WHERE NOT EXISTS ( SELECT deptname FROM dept B WHERE A.deptname = B.deptname );
+NAME        EMPID       DEPTNAME
+--------------------------------------------------
+Harry       3415        Finance
+George      3401        Finance
 2 rows selected.
+```
+
+
 
 #### HINTS 절
 
-힌트의 문법과 자세한 설명은 "[힌트 구문](#hint_syntax)"과 "[힌트
-목록](#힌트-목록)"을 참고하기 바란다.
+힌트의 문법과 자세한 설명은 "힌트 구문"과 "힌트 목록"을 참고하기 바란다.
 
 #### 제약사항
 
 Altibase는 SQL질의 및 저장프로시저 수행에 있어 다음과 같은 제약을 가진다.
 
-- 최대 65536개까지의 내부 튜플[^7]만 질의 처리에 사용될 수 있다.
+- 최대 65536개까지의 내부 튜플<sup>[7]</sup>만 질의 처리에 사용될 수 있다.
 
-  [^7]: 내부 튜플(internal tuple)은 알티베이스가 질의 처리를 위해 할당하는
-
-  메모리의 단위이다
+  > <sup>[7]</sup> 내부 튜플(internal tuple) : 알티베이스가 질의 처리를 위해 할당하는 메모리의 단위이다
 
 - FROM절에에 최대 32개 까지의 테이블 또는 뷰를 사용할 수 있다.
 
@@ -1800,686 +1813,437 @@ Altibase는 SQL질의 및 저장프로시저 수행에 있어 다음과 같은 �
 
 \<질의\> 모든 사원의 이름, 고용일, 월급을 검색하라.
 
-iSQL\> SELECT e_firstname, e_lastname, join_date, salary
-
-FROM employees;
-
-E_FIRSTNAME E_LASTNAME JOIN_DATE SALARY
-
-\-----------------------------------------------------------------------
-
-Chan-seung Moon
-
-Susan Davenport 18-NOV-2009 1500
-
-Ken Kobain 11-JAN-2010 2000
-
+```
+iSQL> SELECT e_firstname, e_lastname, join_date, salary 
+ FROM employees;
+E_FIRSTNAME           E_LASTNAME            JOIN_DATE    SALARY
+-----------------------------------------------------------------------
+Chan-seung            Moon
+Susan                 Davenport             18-NOV-2009  1500
+Ken                   Kobain                11-JAN-2010  2000
 .
-
 .
-
 .
-
 20 rows selected.
+```
 
 \<질의\> 급여가 가장 많은 사원의 이름, 고용일, 월급을 검색하라.
 
-iSQL\> SELECT TOP (1) e_firstname, e_lastname, join_date, salary
-
-2 FROM employees ORDER BY salary;
-
-E_FIRSTNAME E_LASTNAME JOIN_DATE SALARY
-
-\--------------------------------------------------------------------------
-
-Gottlieb Fleischer 24-JAN-2004 500
-
+```
+iSQL> SELECT TOP (1) e_firstname, e_lastname, join_date, salary
+    2  FROM employees ORDER BY salary;
+E_FIRSTNAME           E_LASTNAME            JOIN_DATE    SALARY
+--------------------------------------------------------------------------
+Gottlieb              Fleischer             24-JAN-2004  500
 1 row selected.
+```
 
 \<질의\> FROM절 이하가 생략된 쿼리의 예제이다.
 
-iSQL\> SELECT cos(0), 256;
-
-COS(0) 256
-
-\--------------------------------------
-
-1 256
-
+```
+iSQL> SELECT cos(0), 256;
+COS(0)                 256
+--------------------------------------
+1                      256
 1 row selected.
+```
 
 \<질의\> 현재 날짜와 departments 테이블의 모든 칼럼 값을 검색하라.
 
-iSQL\> SELECT sysdate, \*
-
-FROM departments;
-
-SYSDATE DNO DNAME DEP_LOCATION MGR_NO
-
-\--------------------------------------------------------------------------------------------
-
-26-JUN-2013 1001 RESEARCH DEVELOPMENT DEPT 1 New York 16
-
-26-JUN-2013 1002 RESEARCH DEVELOPMENT DEPT 2 Sydney 13
-
-26-JUN-2013 1003 SOLUTION DEVELOPMENT DEPT Osaka 14
-
-26-JUN-2013 2001 QUALITY ASSURANCE DEPT Seoul 17
-
-26-JUN-2013 3001 CUSTOMERS SUPPORT DEPT London 4
-
-26-JUN-2013 3002 PRESALES DEPT Peking 5
-
-26-JUN-2013 4001 MARKETING DEPT Brasilia 8
-
-26-JUN-2013 4002 BUSINESS DEPT Palo Alto 7
-
+```
+iSQL> SELECT sysdate, *
+ FROM departments;
+SYSDATE      DNO         DNAME                           DEP_LOCATION     MGR_NO
+--------------------------------------------------------------------------------------------
+26-JUN-2013  1001        RESEARCH DEVELOPMENT DEPT 1     New York         16
+26-JUN-2013  1002        RESEARCH DEVELOPMENT DEPT 2     Sydney           13
+26-JUN-2013  1003        SOLUTION DEVELOPMENT DEPT       Osaka            14
+26-JUN-2013  2001        QUALITY ASSURANCE DEPT          Seoul            17
+26-JUN-2013  3001        CUSTOMERS SUPPORT DEPT          London           4
+26-JUN-2013  3002        PRESALES DEPT                   Peking           5
+26-JUN-2013  4001        MARKETING DEPT                  Brasilia         8
+26-JUN-2013  4002        BUSINESS DEPT                   Palo Alto        7
 8 rows selected.
+```
+
+
 
 ##### WITH subquery 절 사용
 
 \<질의\> dept_costs와 avg_cost라는 쿼리 이름을 생성하여 주 질의에서 이들 이름을
 사용한다.
 
-iSQL\> WITH
-
-2 dept_costs AS (
-
-3 SELECT DNAME, SUM(salary) dept_total
-
-4 FROM employees e, departments d
-
-5 WHERE e.dno = d.dno
-
-6 GROUP BY DNAME),
-
-7 avg_cost AS (
-
-8 SELECT SUM(dept_total)/COUNT(\*) avg
-
-9 FROM dept_costs)
-
-10 SELECT \* FROM dept_costs
-
-11 WHERE dept_total \> (SELECT avg FROM avg_cost)
-
-12 ORDER BY DNAME;
-
-DEPT_COSTS.DNAME DEPT_COSTS.DEPT_TOTAL
-
-\---------------------------------------------------------
-
-BUSINESS DEPT 4190
-
-RESEARCH DEVELOPMENT DEPT 1 4300
-
-SOLUTION DEVELOPMENT DEPT 9753
-
+```
+iSQL> WITH
+    2 dept_costs AS (
+    3 SELECT DNAME, SUM(salary) dept_total
+    4 FROM employees e, departments d
+    5          WHERE e.dno = d.dno
+    6          GROUP BY DNAME),
+    7 avg_cost AS (
+    8     SELECT SUM(dept_total)/COUNT(*) avg
+    9         FROM dept_costs)
+    10 SELECT * FROM dept_costs
+    11 WHERE dept_total > (SELECT avg FROM avg_cost)
+    12    ORDER BY DNAME;
+DEPT_COSTS.DNAME                DEPT_COSTS.DEPT_TOTAL 
+---------------------------------------------------------
+BUSINESS DEPT                   4190        
+RESEARCH DEVELOPMENT DEPT 1     4300        
+SOLUTION DEVELOPMENT DEPT       9753        
 3 rows selected.
+```
+
+
 
 ##### 파티션을 사용한 조회
 
+```
 CREATE TABLE T1 (I1 INTEGER)
-
 PARTITION BY RANGE (I1)
-
-(
-
+( 
 PARTITION P1 VALUES LESS THAN (100),
-
 PARTITION P2 VALUES LESS THAN (200),
-
-PARTITION P3 VALUES DEFAULT
-
+PARTITION P3 VALUES DEFAULT 
 ) TABLESPACE SYS_TBS_DISK_DATA;
 
 INSERT INTO T1 VALUES (55);
 
 INSERT INTO T1 VALUES (123);
 
-SELECT \* FROM T1 PARTITION (P1);
+SELECT * FROM T1 PARTITION (P1);
+ I1
+----------
+ 55
 
-I1
+SELECT * FROM T1 PARTITION (P2);
+ I1
+----------
+ 123
 
-\----------
-
-55
-
-SELECT \* FROM T1 PARTITION (P2);
-
-I1
-
-\----------
-
-123
-
-SELECT \* FROM T1 PARTITION (P3);
-
+SELECT * FROM T1 PARTITION (P3);
 No rows selected.
+```
+
+
 
 ##### 검색 조건 사용
 
 \<질의\> 월급이 100만원 이하인 직원의 이름, 업무, 입사일, 월급을 월급 순서로
 정렬하라.
 
-iSQL\> SELECT e_firstname, e_lastname, emp_job, salary
-
-FROM employees
-
-WHERE salary \< 1500
-
-ORDER BY 4 DESC;
-
-E_FIRSTNAME E_LASTNAME EMP_JOB SALARY
-
-\------------------------------------------------------------------------
-
-Takahiro Fubuki PM 1400
-
-Curtis Diaz planner 1200
-
-Jason Davenport webmaster 1000
-
-Mitch Jones PM 980
-
-Gottlieb Fleischer manager 500
-
+```
+iSQL> SELECT e_firstname, e_lastname, emp_job, salary 
+ FROM employees 
+ WHERE salary < 1500 
+ ORDER BY 4 DESC;
+E_FIRSTNAME           E_LASTNAME            EMP_JOB          SALARY
+------------------------------------------------------------------------
+Takahiro              Fubuki                PM               1400
+Curtis                Diaz                  planner          1200
+Jason                 Davenport             webmaster        1000
+Mitch                 Jones                 PM               980
+Gottlieb              Fleischer             manager          500
 5 rows selected.
+```
+
+
 
 ##### Hierachical query 사용 검색
 
 \<질의\> id 열의 값이 0인 행을 루트로 하는 행들을 얻기 위한 계층적 질의문은
 다음과 같다.
 
-iSQL\> CREATE TABLE hier_order(id INTEGER, parent INTEGER);
-
+```
+iSQL> CREATE TABLE hier_order(id INTEGER, parent INTEGER);
 Create success.
-
-iSQL\> INSERT INTO hier_order VALUES(0, NULL);
-
+iSQL> INSERT INTO hier_order VALUES(0, NULL);
 1 row inserted.
-
-iSQL\> INSERT INTO hier_order VALUES(1, 0);
-
+iSQL> INSERT INTO hier_order VALUES(1, 0);
 1 row inserted.
-
-iSQL\> INSERT INTO hier_order VALUES(2, 1);
-
+iSQL> INSERT INTO hier_order VALUES(2, 1);
 1 row inserted.
-
-iSQL\> INSERT INTO hier_order VALUES(3, 1);
-
+iSQL> INSERT INTO hier_order VALUES(3, 1);
 1 row inserted.
-
-iSQL\> INSERT INTO hier_order VALUES(4, 1);
-
+iSQL> INSERT INTO hier_order VALUES(4, 1);
 1 row inserted.
-
-iSQL\> INSERT INTO hier_order VALUES(5, 0);
-
+iSQL> INSERT INTO hier_order VALUES(5, 0);
 1 row inserted.
-
-iSQL\> INSERT INTO hier_order VALUES(6, 0);
-
+iSQL> INSERT INTO hier_order VALUES(6, 0);
 1 row inserted.
-
-iSQL\> INSERT INTO hier_order VALUES(7, 6);
-
+iSQL> INSERT INTO hier_order VALUES(7, 6);
 1 row inserted.
-
-iSQL\> INSERT INTO hier_order VALUES(8, 7);
-
+iSQL> INSERT INTO hier_order VALUES(8, 7);
 1 row inserted.
-
-iSQL\> INSERT INTO hier_order VALUES(9, 7);
-
+iSQL> INSERT INTO hier_order VALUES(9, 7);
 1 row inserted.
-
-iSQL\> INSERT INTO hier_order VALUES(10, 6);
-
+iSQL> INSERT INTO hier_order VALUES(10, 6);
 1 row inserted.
-
-iSQL\> SELECT ID, parent, LEVEL
-
+iSQL> SELECT ID, parent, LEVEL
 FROM hier_order START WITH id = 0 CONNECT BY PRIOR id = parent ORDER BY level;
-
-ID PARENT LEVEL
-
-\------------------------------------------------
-
-0 1
-
-6 0 2
-
-5 0 2
-
-1 0 2
-
-10 6 3
-
-4 1 3
-
-7 6 3
-
-3 1 3
-
-2 1 3
-
-8 7 4
-
-9 7 4
-
+ID          PARENT      LEVEL                
+------------------------------------------------
+0                       1                    
+6           0           2                    
+5           0           2                    
+1           0           2                    
+10          6           3                    
+4           1           3                    
+7           6           3                    
+3           1           3                    
+2           1           3                    
+8           7           4                    
+9           7           4                    
 11 rows selected.
+```
+
+![hier_kor](media/SQL/hier_kor.gif)
 
 [그림 4‑1] 계층적 구조 데이터
 
 \<질의\> START WITH 절을 생략하여 테이블 내의 모든 행을 루트 행으로 사용하고
 PRIOR id = parent 조건을 만족하는 질의이다.
 
-iSQL\> SELECT id, parent, level
-
+```
+iSQL> SELECT id, parent, level
 FROM hier_order CONNECT BY PRIOR id = parent ORDER BY id;
-
-ID PARENT LEVEL
-
-\------------------------------------------------
-
-0 1
-
-1 0 1
-
-1 0 2
-
-2 1 1
-
-2 1 3
-
-2 1 2
-
-3 1 2
-
-3 1 1
-
-3 1 3
-
-4 1 1
-
-4 1 2
-
-4 1 3
-
-5 0 1
-
-5 0 2
-
-6 0 2
-
-6 0 1
-
-7 6 1
-
-7 6 2
-
-7 6 3
-
-8 7 3
-
-8 7 1
-
-8 7 2
-
-8 7 4
-
-9 7 2
-
-9 7 3
-
-9 7 4
-
-9 7 1
-
-10 6 1
-
-10 6 2
-
-10 6 3
-
+ID          PARENT      LEVEL                
+------------------------------------------------
+0                       1                    
+1           0           1                    
+1           0           2                    
+2           1           1                    
+2           1           3                    
+2           1           2                    
+3           1           2                    
+3           1           1                    
+3           1           3                    
+4           1           1                    
+4           1           2                    
+4           1           3                    
+5           0           1                    
+5           0           2                    
+6           0           2                    
+6           0           1                    
+7           6           1                    
+7           6           2                    
+7           6           3                    
+8           7           3                    
+8           7           1                    
+8           7           2                    
+8           7           4                    
+9           7           2                    
+9           7           3                    
+9           7           4                    
+9           7           1                    
+10          6           1                    
+10          6           2                    
+10          6           3                    
 30 rows selected.
+```
 
 \<질의\> 다음 계층적 질의문은 순환을 형성하는 행을 제외한 결과 집합을 얻기
 위하여 IGNORE LOOP 절을 사용한 예이다.
 
-iSQL\> CREATE TABLE triple(
-
-num INTEGER,
-
-tri INTEGER,
-
-PRIMARY KEY(num, tri));
-
+```
+iSQL> CREATE TABLE triple(
+  num INTEGER,
+  tri INTEGER,
+  PRIMARY KEY(num, tri));
 Create success.
-
-iSQL\> CREATE OR REPLACE PROCEDURE proc_tri
-
+iSQL> CREATE OR REPLACE PROCEDURE proc_tri
 AS
-
-v1 INTEGER;
-
+  v1 INTEGER;
 BEGIN
-
-FOR v1 IN 1 .. 1000
-
-INSERT INTO triple VALUES(v1, v1 \* 3);
-
-END ;
-
-INSERT INTO triple VALUES(1, 1);
-
+  FOR v1 IN 1 .. 1000 LOOP
+    INSERT INTO triple VALUES(v1, v1 * 3);
+  END LOOP;
+  INSERT INTO triple VALUES(1, 1);
 END;
-
 /
-
 Create success.
-
-iSQL\> EXEC proc_tri;
-
+iSQL> EXEC proc_tri;
 Execute success.
-
-iSQL\> SELECT num, tri, level
-
-FROM triple
-
-WHERE num \< 3001
-
-START WITH num = 1
-
-CONNECT BY PRIOR tri = num
-
-IGNORE ;
-
-NUM TRI LEVEL
-
-\------------------------------------------------
-
-1 1 1
-
-1 3 2
-
-3 9 3
-
-9 27 4
-
-27 81 5
-
-81 243 6
-
-243 729 7
-
-729 2187 8
-
-1 3 1
-
-3 9 2
-
-9 27 3
-
-27 81 4
-
-81 243 5
-
-243 729 6
-
-729 2187 7
-
+iSQL> SELECT num, tri, level
+  FROM triple
+  WHERE num < 3001
+    START WITH num = 1
+    CONNECT BY PRIOR tri = num
+    IGNORE LOOP;
+NUM         TRI         LEVEL                
+------------------------------------------------
+1           1           1                    
+1           3           2                    
+3           9           3                    
+9           27          4                    
+27          81          5                    
+81          243         6                    
+243         729         7                    
+729         2187        8                    
+1           3           1                    
+3           9           2                    
+9           27          3                    
+27          81          4                    
+81          243         5                    
+243         729         6                    
+729         2187        7                    
 15 rows selected.
+```
 
 \<질의\> 계층적 질의에서 CONNECT_BY_ROOT 연산자를 사용해서 각 id의 루트 노드를
 구하라.
 
+```
 CREATE TABLE hier_order(id INTEGER, name varchar(10), parent INTEGER);
-
 INSERT INTO hier_order VALUES(0, 'Moon', NULL);
-
 INSERT INTO hier_order VALUES(1, 'Davenport', 0);
-
 INSERT INTO hier_order VALUES(2, 'Kobain', 1);
-
 INSERT INTO hier_order VALUES(3, 'Foster', 1);
-
 INSERT INTO hier_order VALUES(4, 'Ghorbani', 1);
-
 INSERT INTO hier_order VALUES(5, 'Momoi', 0);
-
 INSERT INTO hier_order VALUES(6, 'Fleischer', 0);
-
 INSERT INTO hier_order VALUES(7, 'Wang', 6);
-
 INSERT INTO hier_order VALUES(8, 'Diaz', 7);
-
 INSERT INTO hier_order VALUES(9, 'Liu', 7);
-
 INSERT INTO hier_order VALUES(10, 'Hammond', 6);
 
-iSQL\> SELECT id, CONNECT_BY_ROOT id "Root_Id"
-
-FROM hier_order
-
-WHERE LEVEL \> 1
-
-START WITH id = 0
-
-CONNECT BY PRIOR id = parent
-
-ORDER BY id, "Root_Id";
-
-ID Root_Id
-
-\---------------------------
-
-1 0
-
-2 0
-
-3 0
-
-4 0
-
-5 0
-
-6 0
-
-7 0
-
-8 0
-
-9 0
-
-10 0
-
+iSQL> SELECT id, CONNECT_BY_ROOT id "Root_Id"
+   FROM hier_order
+   WHERE LEVEL > 1
+   START WITH id = 0 
+   CONNECT BY PRIOR id = parent 
+   ORDER BY id, "Root_Id";
+ID          Root_Id
+---------------------------
+1           0
+2           0
+3           0
+4           0
+5           0
+6           0
+7           0
+8           0
+9           0
+10          0
 10 rows selected.
+```
 
 \<질의\> 계층적 질의에서 CONNECT_BY_ISLEAF 의사 칼럼을 사용해서 각 행이 리프
 노드인지 여부를 구하라.
 
-iSQL\> SELECT id, CONNECT_BY_ISLEAF "IsLeaf",
-
-LEVEL
-
-FROM hier_order
-
-START WITH id = 0
-
-CONNECT BY PRIOR id = parent
-
-ORDER BY id, "IsLeaf";
-
-ID IsLeaf LEVEL
-
-\----------------------------------------------------------
-
-0 0 1
-
-1 0 2
-
-2 1 3
-
-3 1 3
-
-4 1 3
-
-5 1 2
-
-6 0 2
-
-7 0 3
-
-8 1 4
-
-9 1 4
-
-10 1 3
-
+```
+iSQL> SELECT id, CONNECT_BY_ISLEAF "IsLeaf",
+       LEVEL
+  FROM hier_order
+  START WITH id = 0 
+  CONNECT BY PRIOR id = parent 
+  ORDER BY id, "IsLeaf";
+ID          IsLeaf               LEVEL
+----------------------------------------------------------
+0           0                    1
+1           0                    2
+2           1                    3
+3           1                    3
+4           1                    3
+5           1                    2
+6           0                    2
+7           0                    3
+8           1                    4
+9           1                    4
+10          1                    3
 11 rows selected.
+```
 
 \<질의\> ORDER SIBLINGS BY를 사용해서 계층 구조를 보존하면서, name을 기준으로
 정렬하라.
 
-iSQL\> SELECT name, id, parent, LEVEL
-
-FROM hier_order
-
-START WITH id = 0
-
-CONNECT BY PRIOR id = parent
-
-ORDER SIBLINGS BY name;
-
-NAME ID PARENT LEVEL
-
-\--------------------------------------------------------------
-
-Moon 0 1
-
-Davenport 1 0 2
-
-Foster 3 1 3
-
-Ghorbani 4 1 3
-
-Kobain 2 1 3
-
-Fleischer 6 0 2
-
-Hammond 10 6 3
-
-Wang 7 6 3
-
-Diaz 8 7 4
-
-Liu 9 7 4
-
-Momoi 5 0 2
-
+```
+iSQL> SELECT name, id, parent, LEVEL
+      FROM hier_order
+      START WITH id = 0
+      CONNECT BY PRIOR id = parent
+      ORDER SIBLINGS BY name;
+NAME        ID          PARENT      LEVEL
+--------------------------------------------------------------
+Moon        0                       1
+Davenport   1           0           2
+Foster      3           1           3
+Ghorbani    4           1           3
+Kobain      2           1           3
+Fleischer   6           0           2
+Hammond     10          6           3
+Wang        7           6           3
+Diaz        8           7           4
+Liu         9           7           4
+Momoi       5           0           2
 11 rows selected.
+```
+
+
 
 ##### Recursive query 검색
 
 \<질의\> id 열의 값이 0인 행을 루트로 하는 행들을 얻기 위한 계층적 질의문은
 다음과 같다. (순환 데이타)
 
-iSQL\> INSERT INTO hier_order VALUES(7, 9);
-
+```
+iSQL> INSERT INTO hier_order VALUES(7, 9);
 1 row inserted.
-
-iSQL\> WITH q1 (q1_i1,q1_i2, lvl) as
-
-2 (
-
-3 SELECT id,parent,1 FROM hier_order WHERE id = 0
-
-4 UNION ALL
-
-5 SELECT a.id,a.parent,lvl+1 from hier_order a, q1 b where a.parent = b.q1_i1
-
-6 )
-
-7 select \* from q1 limit 18;
-
-Q1_I1 Q1_I2 LVL
-
-\----------------------------------------
-
-0 1
-
-1 0 2
-
-5 0 2
-
-6 0 2
-
-2 1 3
-
-3 1 3
-
-4 1 3
-
-7 6 3
-
-10 6 3
-
-8 7 4
-
-9 7 4
-
-7 9 5
-
-8 7 6
-
-9 7 6
-
-7 9 7
-
-8 7 8
-
-9 7 8
-
-7 9 9
-
+iSQL> WITH q1 (q1_i1,q1_i2, lvl) as
+    2 (
+    3 SELECT id,parent,1 FROM hier_order WHERE id = 0
+    4 UNION ALL
+    5 SELECT a.id,a.parent,lvl+1 from hier_order a, q1 b where a.parent = b.q1_i1
+    6 )
+    7 select * from q1 limit 18;
+Q1_I1       Q1_I2       LVL         
+----------------------------------------
+0                       1           
+1           0           2           
+5           0           2           
+6           0           2           
+2           1           3           
+3           1           3           
+4           1           3           
+7           6           3           
+10          6           3           
+8           7           4           
+9           7           4           
+7           9           5           
+8           7           6           
+9           7           6           
+7           9           7           
+8           7           8           
+9           7           8           
+7           9           9           
 18 rows selected.
+```
+
+
 
 ##### GROUP BY를 이용한 조회
 
 \<질의\> 부서별 급여 평균을 계산하라.
 
-iSQL\> SELECT dno, AVG(salary) AS avg_sal
-
-FROM employees
-
-GROUP BY dno;
-
-DNO AVG_SAL
-
-\---------------------------
-
-1001 2150
-
-1002 1340
-
-1003 2438.25
-
-2001 1400
-
-3001 1800
-
-3002 2500
-
-4001 1550
-
-4002 1396.66667
-
-1500
-
+```
+iSQL> SELECT dno, AVG(salary) AS avg_sal 
+ FROM employees 
+ GROUP BY dno;
+DNO         AVG_SAL
+---------------------------
+1001        2150
+1002        1340
+1003        2438.25
+2001        1400
+3001        1800
+3002        2500
+4001        1550
+4002        1396.66667
+            1500
 9 rows selected.
+```
+
+
 
 - SELECT 목록의 열 중 집계 함수가 사용되지 않은 모든 열은 GROUP BY 절에 있어야
   한다.
@@ -2492,509 +2256,328 @@ DNO AVG_SAL
 \<질의\> 여러 열에 GROUP BY 절을 사용해서 각 부서내에서 각 직위별로 지급되는
 급여 총액을 출력하라.
 
-iSQL\> SELECT dno, emp_job, COUNT(emp_job) num_emp, SUM(salary) sum_sal
-
-FROM employees
-
-GROUP BY dno, emp_job;
-
-DNO EMP_JOB NUM_EMP SUM_SAL
-
-\-------------------------------------------------------------------
-
-3002 CEO 1
-
-designer 1 1500
-
-1001 engineer 1 2000
-
-3001 PL 1 1800
-
-3002 PL 1 2500
-
-1002 programmer 1 1700
-
-4002 manager 1 500
-
-4001 manager 1
-
-4001 planner 2 3100
-
-1003 programmer 1 4000
-
-1003 webmaster 2 3750
-
-4002 sales rep 3 3690
-
-1002 PM 1 980
-
-1003 PM 1 2003
-
-1001 manager 1 2300
-
-2001 PM 1 1400
-
+```
+iSQL> SELECT dno, emp_job, COUNT(emp_job) num_emp, SUM(salary) sum_sal 
+ FROM employees 
+ GROUP BY dno, emp_job;
+DNO         EMP_JOB          NUM_EMP              SUM_SAL
+-------------------------------------------------------------------
+3002        CEO              1
+            designer         1                    1500
+1001        engineer         1                    2000
+3001        PL               1                    1800
+3002        PL               1                    2500
+1002        programmer       1                    1700
+4002        manager          1                    500
+4001        manager          1
+4001        planner          2                    3100
+1003        programmer       1                    4000
+1003        webmaster        2                    3750
+4002        sales rep        3                    3690
+1002        PM               1                    980
+1003        PM               1                    2003
+1001        manager          1                    2300
+2001        PM               1                    1400
 16 rows selected.
+```
 
 \<질의\> 평균 급여가 \$1500 USD를 넘는 부서의 평균 급여를 출력하라.
 
-iSQL\> SELECT dno, AVG(salary)
-
-FROM employees
-
-WHERE AVG(salary) \> 1500
-
-GROUP BY dno;
-
-[ERR-31061 : An aggregate function is not allowed here.
-
-0003 : WHERE AVG(SALARY) \> 1500000
-
-\^ \^
-
+```
+iSQL> SELECT dno, AVG(salary)
+  FROM employees
+  WHERE AVG(salary) > 1500
+  GROUP BY dno;
+[ERR-31061 : An aggregate function is not allowed here. 
+0003 :   WHERE AVG(SALARY) > 1500000
+              ^                    ^
 ]
+```
 
 \<질의\> HAVING 절을 사용하여 위의 오류를 수정할 수 있다.
 
-iSQL\> SELECT dno, AVG(salary)
-
-FROM employees
-
-GROUP BY dno
-
-HAVING AVG(salary) \> 1500;
-
-DNO AVG(SALARY)
-
-\---------------------------
-
-1001 2150
-
-1003 2438.25
-
-3001 1800
-
-3002 2500
-
-4001 1550
-
+```
+iSQL> SELECT dno, AVG(salary) 
+ FROM employees 
+ GROUP BY dno 
+ HAVING AVG(salary) > 1500;
+DNO         AVG(SALARY)
+---------------------------
+1001        2150
+1003        2438.25
+3001        1800
+3002        2500
+4001        1550
 5 rows selected.
+```
 
 \<질의\> 3개 이상 주문된 상품번호와 그 상품들의 총 수를 출력하라.
 
-iSQL\> SELECT gno, COUNT(\*)
-
-FROM orders
-
-GROUP BY gno
-
-HAVING COUNT(\*) \> 2;
-
-GNO COUNT
-
-\------------------------------------
-
-A111100002 3
-
-C111100001 4
-
-D111100008 3
-
-E111100012 3
-
+```
+iSQL> SELECT gno, COUNT(*)
+  FROM orders
+  GROUP BY gno
+  HAVING COUNT(*) > 2;
+GNO         COUNT                
+------------------------------------
+A111100002  3                    
+C111100001  4                    
+D111100008  3                    
+E111100012  3                    
 4 rows selected.
+```
 
 \<질의\> 12월 한 달 동안 2개 이상 주문된 상품번호와 그 상품들의 평균 주문양을
 평균 주문양 순서대로 출력하라.
 
-iSQL\> SELECT gno, AVG(qty) month_avg
-
-FROM orders
-
-WHERE order_date BETWEEN '01-Dec-2011' AND '31-Dec-2011'
-
-GROUP BY gno
-
-HAVING COUNT(\*) \> 1
-
-ORDER BY AVG(qty);
-
-GNO MONTH_AVG
-
-\---------------------------
-
-A111100002 35
-
-D111100003 300
-
-D111100004 750
-
-C111100001 1637.5
-
-D111100010 1750
-
-D111100002 1750
-
-E111100012 4233.33333
-
-D111100008 5500
-
+```
+iSQL> SELECT gno, AVG(qty) month_avg
+  FROM orders
+  WHERE order_date BETWEEN '01-Dec-2011' AND '31-Dec-2011'
+  GROUP BY gno
+  HAVING COUNT(*) > 1
+  ORDER BY AVG(qty);
+GNO         MONTH_AVG   
+---------------------------
+A111100002  35          
+D111100003  300         
+D111100004  750         
+C111100001  1637.5      
+D111100010  1750        
+D111100002  1750        
+E111100012  4233.33333  
+D111100008  5500        
 8 rows selected.
+```
 
 \<질의\> GROUP BY절에 ROLLUP을 사용해서 다음 세 조합에 대해 급여의 소계를
 구한다: (dno, sex), (dno), (총계).
 
-iSQL\> select dno, sex, sum(SALARY) from employees group by rollup( dno, sex);
-
-DNO SEX SUM(SALARY)
-
-\---------------------------------
-
-1001 F 2300
-
-1001 M 2000
-
-1001 4300
-
-1002 M 2680
-
-1002 2680
-
-1003 F 4000
-
-1003 M 5753
-
-1003 9753
-
-2001 M 1400
-
-2001 1400
-
-3001 M 1800
-
-3001 1800
-
-3002 M 2500
-
-3002 2500
-
-4001 M 3100
-
-4001 3100
-
-4002 F 1890
-
-4002 M 2300
-
-4002 4190
-
-F 1500
-
-1500
-
-31223
-
+```
+iSQL> select dno, sex, sum(SALARY) from employees group by rollup( dno, sex);
+DNO         SEX  SUM(SALARY)
+---------------------------------
+1001        F  2300
+1001        M  2000
+1001           4300
+1002        M  2680
+1002           2680
+1003        F  4000
+1003        M  5753
+1003           9753
+2001        M  1400
+2001           1400
+3001        M  1800
+3001           1800
+3002        M  2500
+3002           2500
+4001        M  3100
+4001           3100
+4002        F  1890
+4002        M  2300
+4002           4190
+            F  1500
+               1500
+               31223
 22 rows selected.
+```
 
 \<질의\> GROUP BY절에 CUBE를 사용해서 그룹화 칼럼의 모든 조합에 대한 급여의
 소계를 구한다: (dno, sex), (dno), (sex), (총계).
 
-iSQL\> select dno, sex, sum(SALARY) from employees group by cube( dno, sex);
-
-DNO SEX SUM(SALARY)
-
-\---------------------------------
-
-31223
-
-1001 F 2300
-
-1001 M 2000
-
-1001 4300
-
-1002 M 2680
-
-1002 2680
-
-1003 F 4000
-
-1003 M 5753
-
-1003 9753
-
-2001 M 1400
-
-2001 1400
-
-3001 M 1800
-
-3001 1800
-
-3002 M 2500
-
-3002 2500
-
-4001 M 3100
-
-4001 3100
-
-4002 F 1890
-
-4002 M 2300
-
-4002 4190
-
-F 1500
-
-1500
-
-F 9690
-
-M 21533
-
+```
+iSQL> select dno, sex, sum(SALARY) from employees group by cube( dno, sex);
+DNO         SEX  SUM(SALARY)
+---------------------------------
+               31223
+1001        F  2300
+1001        M  2000
+1001           4300
+1002        M  2680
+1002           2680
+1003        F  4000
+1003        M  5753
+1003           9753
+2001        M  1400
+2001           1400
+3001        M  1800
+3001           1800
+3002        M  2500
+3002           2500
+4001        M  3100
+4001           3100
+4002        F  1890
+4002        M  2300
+4002           4190
+            F  1500
+               1500
+            F  9690
+            M  21533
 24 rows selected.
+```
 
 \<질의\> GROUP BY 절에 GROUPING SETS를 사용해서 다음의 세 그룹화에 대해 급여
 소계를 구하라: (dno,sex), (dno), ()
 
-iSQL\> SELECT dno, sex, SUM(salary)
-
-FROM employees
-
+```
+iSQL> SELECT dno, sex, SUM(salary) 
+FROM employees 
 GROUP BY GROUPING SETS( (dno, sex), dno, () );
-
-DNO SEX SUM(SALARY)
-
-\---------------------------------
-
-3002 M 2500
-
-F 1500
-
-1001 M 2000
-
-3001 M 1800
-
-1002 M 2680
-
-4002 M 2300
-
-4001 M 3100
-
-1003 F 4000
-
-1003 M 5753
-
-4002 F 1890
-
-1001 F 2300
-
-2001 M 1400
-
-3002 2500
-
-1500
-
-1001 4300
-
-3001 1800
-
-1002 2680
-
-4002 4190
-
-4001 3100
-
-1003 9753
-
-2001 1400
-
-31223
-
+DNO         SEX  SUM(SALARY)
+---------------------------------
+3002        M  2500
+            F  1500
+1001        M  2000
+3001        M  1800
+1002        M  2680
+4002        M  2300
+4001        M  3100
+1003        F  4000
+1003        M  5753
+4002        F  1890
+1001        F  2300
+2001        M  1400
+3002           2500
+               1500
+1001           4300
+3001           1800
+1002           2680
+4002           4190
+4001           3100
+1003           9753
+2001           1400
+               31223
 22 rows selected.
+```
+
+
 
 ##### ORDER BY를 이용한 조회
 
 \<질의\> 모든 사원의 이름, 부서 번호 및 급여를 부서 번호를 기준으로 정렬한 후
 급여를 기준으로 해서 내림차순으로 출력하라.
 
-iSQL\> SELECT e_firstname, e_lastname, dno, salary
-
-FROM employees
-
-ORDER BY dno, salary DESC;
-
-E_FIRSTNAME E_LASTNAME DNO SALARY
-
-\-------------------------------------------------------------------------
-
-Wei-Wei Chen 1001 2300
-
-Ken Kobain 1001 2000
-
-Ryu Momoi 1002 1700
-
-Mitch Jones 1002 980
-
-Elizabeth Bae 1003 4000
-
+```
+iSQL> SELECT e_firstname, e_lastname, dno, salary 
+ FROM employees 
+ ORDER BY dno, salary DESC;
+E_FIRSTNAME           E_LASTNAME            DNO         SALARY
+-------------------------------------------------------------------------
+Wei-Wei               Chen                  1001        2300
+Ken                   Kobain                1001        2000
+Ryu                   Momoi                 1002        1700
+Mitch                 Jones                 1002        980
+Elizabeth             Bae                   1003        4000
 .
-
 .
-
 .
-
 20 rows selected.
+```
 
 \<질의\> 다음은 모든 사원의 이름 및 급여를 부서 번호를 기준으로 정렬한 후 급여를
 기준으로 해서 내림차순으로 출력하는 질의이다. (SELECT 목록에 없는 열을 기준으로
 정렬할 수도 있다.)
 
-iSQL\> SELECT e_firstname, e_lastname, salary
-
-FROM employees
-
-ORDER BY dno, salary DESC;
-
-E_FIRSTNAME E_LASTNAME SALARY
-
-\------------------------------------------------------------
-
-Wei-Wei Chen 2300
-
-Ken Kobain 2000
-
-Ryu Momoi 1700
-
-Mitch Jones 980
-
-Elizabeth Bae 4000
-
+```
+iSQL> SELECT e_firstname, e_lastname, salary 
+ FROM employees 
+ ORDER BY dno, salary DESC;
+E_FIRSTNAME           E_LASTNAME            SALARY
+------------------------------------------------------------
+Wei-Wei               Chen                  2300
+Ken                   Kobain                2000
+Ryu                   Momoi                 1700
+Mitch                 Jones                 980
+Elizabeth             Bae                   4000
 .
-
 .
-
 .
-
 20 rows selected.
+```
+
+
 
 ##### 연산자 사용 조회
 
 \<질의\> 재고 상품의 이름, 각 제품의 재고 값을 출력하라.
 
-iSQL\> SELECT gname, (stock\*price) inventory_value
-
-FROM goods;
-
-GNAME INVENTORY_VALUE
-
-\-------------------------------------
-
-IM-300 78000000
-
-IM-310 9800000
-
-NT-H5000 27924000
-
+```
+iSQL> SELECT gname, (stock*price) inventory_value 
+ FROM goods;
+GNAME      INVENTORY_VALUE 
+-------------------------------------
+IM-300     78000000 
+IM-310     9800000 
+NT-H5000   27924000
 .
-
 .
-
 .
-
 30 rows selected.
+```
+
+
 
 ##### 별명(alias_name)을 사용한 조회
 
 \<질의\> 부서 위치에 별명(지역명)을 지정하여 검색하라.
 
-iSQL\> SELECT dname, 'District Name', dep_location location
-
-FROM departments;
-
-DNAME 'District Name' LOCATION
-
-\------------------------------------------------
-
-Applied Technology Team District Name Mapo
-
-Engine Development Team District Name Yeoido
-
-Marketing Team District Name Gangnam
-
-Planning & Management Team District Name Gangnam
-
-Sales Team District Name Shinchon
-
+```
+iSQL> SELECT dname, 'District Name', dep_location location
+ FROM departments;
+DNAME                        'District Name'       LOCATION 
+------------------------------------------------
+Applied Technology Team       District Name        Mapo 
+Engine Development Team       District Name        Yeoido 
+Marketing Team                District Name        Gangnam 
+Planning & Management Team    District Name        Gangnam 
+Sales Team                    District Name        Shinchon 
 5 rows selected.
+```
+
+
 
 ##### LIMIT절을 사용한 조회
 
 \<질의\> employees테이블에서 사원 이름을 3번째 레코드 부터 5명만 출력하라.
 
-iSQL\> SELECT e_firstname first_name, e_lastname last_name
-
-FROM employees
-
-LIMIT 3, 5;
-
-FIRST_NAME LAST_NAME
-
-\-----------------------------------------------
-
-Ken Kobain
-
-Aaron Foster
-
-Farhad Ghorbani
-
-Ryu Momoi
-
-Gottlieb Fleischer
-
+```
+iSQL> SELECT e_firstname first_name, e_lastname last_name 
+ FROM employees 
+ LIMIT 3, 5;
+FIRST_NAME            LAST_NAME
+-----------------------------------------------
+Ken                   Kobain
+Aaron                 Foster
+Farhad                Ghorbani
+Ryu                   Momoi
+Gottlieb              Fleischer
 5 rows selected.
+```
 
 \<질의\> 관리자 테이블에서 첫 번째 레코드에 해당하는 사원의 이름과 급여를
 출력하라.
 
-iSQL\> CREATE TABLE managers(
-
-mgr_no INTEGER PRIMARY KEY,
-
-m_lastname VARCHAR(20),
-
-m_firstname VARCHAR(20),
-
-address VARCHAR(60));
-
+```
+iSQL> CREATE TABLE managers(
+ mgr_no INTEGER PRIMARY KEY, 
+ m_lastname VARCHAR(20), 
+ m_firstname VARCHAR(20), 
+ address VARCHAR(60));
 Create success.
-
-iSQL\> INSERT INTO managers VALUES(7, 'Fleischer', 'Gottlieb', '44-25
-YouIDo-dong Youngdungpo-gu Seoul Korea');
-
+iSQL> INSERT INTO managers VALUES(7, 'Fleischer', 'Gottlieb', '44-25 YouIDo-dong Youngdungpo-gu Seoul Korea');
 1 row inserted.
-
-iSQL\> INSERT INTO managers VALUES(8, 'Wang', 'Xiong', '3101 N Wabash Ave
-Brooklyn NY');
-
+iSQL> INSERT INTO managers VALUES(8, 'Wang', 'Xiong', '3101 N Wabash Ave Brooklyn NY');
 1 row inserted.
-
-iSQL\> INSERT INTO managers VALUES(12, 'Hammond', 'Sandra', '130 Gongpyeongno
-Jung-gu Daegu Korea');
-
+iSQL> INSERT INTO managers VALUES(12, 'Hammond', 'Sandra', '130 Gongpyeongno Jung-gu Daegu Korea');
 1 row inserted.
-
-iSQL\> SELECT e_firstname, e_lastname, salary FROM employees WHERE eno = (SELECT
-mgr_no FROM managers LIMIT 1);
-
-E_FIRSTNAME E_LASTNAME SALARY
-
-\------------------------------------------------------------
-
-Gottlieb Fleischer 500
-
+iSQL> SELECT e_firstname, e_lastname, salary FROM employees WHERE eno = (SELECT mgr_no FROM managers LIMIT 1);
+E_FIRSTNAME           E_LASTNAME            SALARY
+------------------------------------------------------------
+Gottlieb              Fleischer             500
 1 row selected.
+```
+
+
 
 ##### FOR UPDATE를 사용한 조회
 
