@@ -2592,84 +2592,69 @@ Gottlieb              Fleischer             500
 
 ##### HINTS를 사용한 조회
 
-###### **Table Access Method Hints**
+- *Table Access Method Hints*
 
-\- full scan, index scan, index ascending order scan, index descending order
-scan, no index scan
+  : full scan, index scan, index ascending order scan, index descending order
+  scan, no index scan
 
-다음은 사원들 중 모든 여사원의 번호, 이름, 직업을 검색하는 질의이다.
+  다음은 사원들 중 모든 여사원의 번호, 이름, 직업을 검색하는 질의이다.
 
-SELECT eno, e_firstname, e_lastname, emp_job FROM employees WHERE sex = 'F';
+  ```
+  SELECT eno, e_firstname, e_lastname, emp_job FROM employees WHERE sex = 'F';
+  ```
 
-예를 들어, 많은 수의 사원들이 있는 사원 테이블의 성별(SEX) 칼럼에 인덱스가
-정의되어 있고, 이 칼럼의 값은 ‘M’ 또는 ‘F’이다.
+  예를 들어, 많은 수의 사원들이 있는 사원 테이블의 성별(SEX) 칼럼에 인덱스가
+  정의되어 있고, 이 칼럼의 값은 ‘M’ 또는 ‘F’이다.
 
-만약, 남자 직원과 여자 직원의 비율이 같다면 full scan으로 전체 테이블을 검색하는
-것이 index scan으로 검색하는 것보다 더 빠를 것이다. 그러나, 만약 여자 직원의
-비율이 남자 직원보다 상대적으로 적다면, index scan이 전체 테이블의 full scan
-보다 빠를 것이다. 즉, 칼럼이 서로 다른 두 개의 값만을 가지고 있을 때, 쿼리
-옵티마이저는 각 값의 행들이 50%씩 존재한다고 가정해서 비용 기반 접근 방식으로서
-index scan 보다 전체 테이블의 full scan을 선택한다.
+  만약, 남자 직원과 여자 직원의 비율이 같다면 full scan으로 전체 테이블을 검색하는
+  것이 index scan으로 검색하는 것보다 더 빠를 것이다. 그러나, 만약 여자 직원의
+  비율이 남자 직원보다 상대적으로 적다면, index scan이 전체 테이블의 full scan
+  보다 빠를 것이다. 즉, 칼럼이 서로 다른 두 개의 값만을 가지고 있을 때, 쿼리
+  옵티마이저는 각 값의 행들이 50%씩 존재한다고 가정해서 비용 기반 접근 방식으로서
+  index scan 보다 전체 테이블의 full scan을 선택한다.
 
-아래의 질의들에서 access 회수를 비교해 보면 각각 20과 4인 것을 알수 있다.
+  아래의 질의들에서 access 회수를 비교해 보면 각각 20과 4인 것을 알수 있다.
 
-\<질의\> 성별이 여자인 직원의 사원 번호, 이름, 직업을 출력하라. (full scan 이용)
+  \<질의\> 성별이 여자인 직원의 사원 번호, 이름, 직업을 출력하라. (full scan 이용)
 
-iSQL\> SELECT /\*+ FULL SCAN(employees) \*/ eno, e_firstname, e_lastname,
-emp_job
+  ```
+  iSQL> SELECT /*+ FULL SCAN(employees) */ eno, e_firstname, e_lastname, emp_job
+   FROM employees 
+   WHERE sex = 'F';
+  ENO E_FIRSTNAME E_LASTNAME EMP_JOB 
+  ------------------------------------------------
+  .
+  .
+  .
+  ------------------------------------------------
+  PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 65 )
+   SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, SELF_ID: 2 )
+  ------------------------------------------------
+  ```
 
-FROM employees
 
-WHERE sex = 'F';
 
-ENO E_FIRSTNAME E_LASTNAME EMP_JOB
+  \<질의\> 성별이 여자인 직원의 사원 번호, 이름, 직업을 출력하라. (index 이용)
 
-\------------------------------------------------
+  ```
+  iSQL> CREATE INDEX gender_index ON employees(sex);
+  Create success.
+  iSQL> SELECT /*+ INDEX(employees, gender_INDEX) use gender_index because there are few female employees */ eno, e_firstname, e_lastname, emp_job
+   FROM employees
+   WHERE sex = 'F';
+  ENO E_FIRSTNAME E_LASTNAME EMP_JOB 
+  ------------------------------------------------
+  .
+  .
+  .
+  ------------------------------------------------
+  PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 65 )
+   SCAN ( TABLE: EMPLOYEES, INDEX: GENDER_INDEX, ACCESS: 4, SELF_ID: 2 )
+  ------------------------------------------------
+  ```
 
-.
 
-.
 
-.
-
-\------------------------------------------------
-
-PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 65 )
-
-SCAN ( TABLE: EMPLOYEES, FULL SCAN, ACCESS: 20, SELF_ID: 2 )
-
-\------------------------------------------------
-
-\<질의\> 성별이 여자인 직원의 사원 번호, 이름, 직업을 출력하라. (index 이용)
-
-iSQL\> CREATE INDEX gender_index ON employees(sex);
-
-Create success.
-
-iSQL\> SELECT /\*+ INDEX(employees, gender_INDEX) use gender_index because there
-are few female employees \*/ eno, e_firstname, e_lastname, emp_job
-
-FROM employees
-
-WHERE sex = 'F';
-
-ENO E_FIRSTNAME E_LASTNAME EMP_JOB
-
-\------------------------------------------------
-
-.
-
-.
-
-.
-
-\------------------------------------------------
-
-PROJECT ( COLUMN_COUNT: 4, TUPLE_SIZE: 65 )
-
-SCAN ( TABLE: EMPLOYEES, INDEX: GENDER_INDEX, ACCESS: 4, SELF_ID: 2 )
-
-\------------------------------------------------
 
 \<질의\> 1사분기(1월에서 3월까지) 동안의 모든 주문에 대한 주문번호, 상품번호,
 주문량을 출력하라 (index 이용). 각 월에 해당하는 주문 테이블의 이름이
