@@ -3114,24 +3114,24 @@ SYS 사용자, 테이블 소유자, UPDATE ANY TABLE 시스템 권한을 가진 
 파티션을 명시할 경우 해당 파티션에서 조건을 만족하는 레코드의 칼럼 값을
 변경한다.
 
-user_name
+*user_name*
 
 변경될 레코드가 속한 테이블의 소유자 이름을 명시한다. 생략하면 Altibase는
 테이블이 현재 세션에 연결된 사용자의 스키마에 속한 것으로 간주한다.
 
-tbl_name
+*tbl_name*
 
 변경될 레코드가 속한 테이블의 이름을 명시한다.
 
-view_name
+*view_name*
 
 갱신될 뷰의 이름을 명시한다.
 
-subquery
+*subquery*
 
 갱신 대상이 될 뷰를 서브쿼리로 명시한다.
 
-set_clause_list
+*set_clause_list*
 
 변경할 칼럼 이름과 값을 명시한다. 이 절에서 부질의를 사용할 수 있으며, 아래의
 사항을 유의한다.
@@ -3142,7 +3142,7 @@ set_clause_list
 - 부질의를 사용할 때, 칼럼에 DEFAULT을 할당하면 칼럼의 DEFAULT 속성 값으로
   갱신된다.
 
-TIMESTAMP 칼럼의 데이터 수정
+*TIMESTAMP 칼럼의 데이터 수정*
 
 TIMESTAMP 칼럼에 대해 UPDATE문 수행 시 기본적으로 칼럼 값이 시스템 시간 값으로
 갱신된다. 따라서 TIMESTAMP 칼럼의 데이터 수정 시 값을 명시하지 않으면 널이 아닌
@@ -3151,27 +3151,23 @@ TIMESTAMP 칼럼에 대해 UPDATE문 수행 시 기본적으로 칼럼 값이 �
 TIMESTAMP 칼럼의 값을 시스템 시간으로 변경하는 또다른 방법은 칼럼 값에
 DEFAULT키워드를 사용하는 것이다.
 
-returning_clause
+*returning_clause*
 
 DELETE 구문의 returning_clause를 참고하라.
 
 #### HINTS 옵션
 
-힌트의 문법과 자세한 설명은 "[힌트 구문](#hint_syntax)"과 "[힌트
-목록](#힌트-목록)"을 참고하기 바란다.
+힌트의 문법과 자세한 설명은 "힌트 구문"과 "힌트 목록"을 참고하기 바란다.
 
 #### 주의 사항
 
-SET 절에 같은 칼럼을 두번 이상 사용할 수 없다.
-
-파티션 키 칼럼의 값이 수정되어 그 데이터가 포함된 레코드가 다른 파티션으로
-이동해야 할 필요가 있을 경우, 파티션드 테이블이 ENABLE ROW MOVEMENT 옵션을
-이용해서 생성되었거나 ALTER TABLE ENABLE ROW MOVEMENT 구문으로 테이블 속성이
-변경되었다면 레코드가 자동으로 이동되지만, 그렇지 않을 때에는 에러가 발생한다.
-
-널 제약조건이 있는 칼럼에 널을 삽입하거나 그 칼럼의 값을 널로 변경할 수 없다.
-
-CHECK 제약조건으로 인해 UPDATE가 실패할 수 있다.
+- SET 절에 같은 칼럼을 두번 이상 사용할 수 없다.
+- 파티션 키 칼럼의 값이 수정되어 그 데이터가 포함된 레코드가 다른 파티션으로
+  이동해야 할 필요가 있을 경우, 파티션드 테이블이 ENABLE ROW MOVEMENT 옵션을
+  이용해서 생성되었거나 ALTER TABLE ENABLE ROW MOVEMENT 구문으로 테이블 속성이
+  변경되었다면 레코드가 자동으로 이동되지만, 그렇지 않을 때에는 에러가 발생한다.
+- 널 제약조건이 있는 칼럼에 널을 삽입하거나 그 칼럼의 값을 널로 변경할 수 없다.
+- CHECK 제약조건으로 인해 UPDATE가 실패할 수 있다.
 
 #### 예제
 
@@ -3179,319 +3175,218 @@ CHECK 제약조건으로 인해 UPDATE가 실패할 수 있다.
 
 \<질의\> 이름이 Davenport인 직원의 월급을 갱신하라.
 
-iSQL\> UPDATE employees
-
+```
+iSQL> UPDATE employees
 SET salary = 2500
-
 WHERE e_lastname = 'Davenport';
-
 1 row updated.
+```
 
 \<질의\> 전 직원의 월급을 7% 인상하라.
 
-iSQL\> UPDATE employees
-
-SET salary = salary \* 1.07;
-
+```
+iSQL> UPDATE employees
+SET salary = salary * 1.07;
 20 rows updated.
+```
+
+
 
 ##### WHERE 절에 부질의를 사용해서 데이터 갱신
 
 \<질의\> MYLEE 직원이 받은 주문들의 수량을 50개씩 빼라.
 
-iSQL\> UPDATE orders
-
+```
+iSQL> UPDATE orders
 SET qty = qty - 50
-
 WHERE eno IN(
-
-SELECT eno
-
-FROM employees
-
-WHERE e_lastname ='Hammond');
-
+ SELECT eno
+ FROM employees
+ WHERE e_lastname ='Hammond');
 9 rows updated.
+```
+
+
 
 ##### 파티션드 테이블의 데이터 갱신
 
-iSQL\> UPDATE T1 PARTITION(P1) SET I1 = 200;
+```
+iSQL> UPDATE T1 PARTITION(P1) SET I1 = 200;
+```
+
+
 
 ##### SET 절에 부질의를 갖는 데이터 갱신
 
 \<질의\> 다음 예제는 두개의 중첩된 SELECT 부질의를 갖는 UPDATE 문의 구조를
 보여준다.
 
-iSQL\> CREATE TABLE bonuses
-
-(eno INTEGER, bonus NUMBER(10, 2) DEFAULT 100, commission NUMBER(10, 2) DEFAULT
-50);
-
+```
+iSQL> CREATE TABLE bonuses
+ (eno INTEGER, bonus NUMBER(10, 2) DEFAULT 100, commission NUMBER(10, 2) DEFAULT 50);
 Create success.
-
-iSQL\> INSERT INTO bonuses(eno)
-
-(SELECT e.eno FROM employees e, orders o
-
-WHERE e.eno = o.eno
-
-GROUP BY e.eno);
-
+iSQL> INSERT INTO bonuses(eno)
+ (SELECT e.eno FROM employees e, orders o
+ WHERE e.eno = o.eno
+ GROUP BY e.eno);
 3 rows inserted.
-
-iSQL\> SELECT \* FROM bonuses;
-
-BONUSES.ENO BONUSES.BONUS BONUSES.COMMISSION
-
-\------------------------------------------------
-
-12 100 50
-
-19 100 50
-
-20 100 50
-
+iSQL> SELECT * FROM bonuses;
+BONUSES.ENO BONUSES.BONUS BONUSES.COMMISSION 
+------------------------------------------------
+12          100           50 
+19          100           50 
+20          100           50 
 3 rows selected.
-
-iSQL\> UPDATE bonuses
-
-SET eno = eno + 100, (bonus, commission) =
-
-(SELECT 1.1 \* AVG(bonus), 1.5 \* AVG(commission) FROM bonuses)
-
-WHERE eno IN
-
-(SELECT eno
-
-FROM orders
-
-WHERE qty \>= 10000);
-
+iSQL> UPDATE bonuses
+SET eno = eno + 100, (bonus, commission) = 
+ (SELECT 1.1 * AVG(bonus), 1.5 * AVG(commission) FROM bonuses)
+ WHERE eno IN 
+ (SELECT eno
+ FROM orders
+ WHERE qty >= 10000);
 1 row updated.
-
-iSQL\> SELECT \* FROM bonuses;
-
-BONUSES.ENO BONUSES.BONUS BONUSES.COMMISSION
-
-\------------------------------------------------
-
-12 100 50
-
-20 100 50
-
-119 110 75
-
+iSQL> SELECT * FROM bonuses;
+BONUSES.ENO BONUSES.BONUS BONUSES.COMMISSION 
+------------------------------------------------
+12          100           50 
+20          100           50 
+119         110           75 
 3 rows selected.
+```
 
-Note: WHERE 절의 부질의 결과가 한 건도 없으면 어떠한 레코드도 영향을 받지
-않으나, SET 절의 부질의 결과가 한 건도 없으면 해당 칼럼은 널값으로 갱신될
-것이다.
+> Note: WHERE 절의 부질의 결과가 한 건도 없으면 어떠한 레코드도 영향을 받지
+> 않으나, SET 절의 부질의 결과가 한 건도 없으면 해당 칼럼은 널값으로 갱신될
+> 것이다.
 
-iSQL\> UPDATE orders
-
+```
+iSQL> UPDATE orders
 SET qty = qty - 50
-
 WHERE eno IN(
-
-SELECT eno
-
-FROM employees
-
-WHERE e_lastname ='Frederick');
-
+ SELECT eno
+ FROM employees
+ WHERE e_lastname ='Frederick');
 No rows updated.
-
-iSQL\> UPDATE employees
-
-SET dno =
-
-(SELECT dno
-
-FROM departments
-
-WHERE dep_location = 'Timbuktu');
-
+iSQL> UPDATE employees 
+SET dno = 
+ (SELECT dno 
+ FROM departments
+ WHERE dep_location = 'Timbuktu');
 20 rows updated.
-
-iSQL\> SELECT e_lastname, dno
-
-FROM employees
-
-WHERE eno = 12;
-
-E_LASTNAME DNO
-
-\-------------------------------
-
-Hammond
-
+iSQL> SELECT e_lastname, dno
+ FROM employees
+ WHERE eno = 12;
+E_LASTNAME DNO 
+-------------------------------
+Hammond 
 1 row selected.
+```
 
 \<질의\> 다음 예제는 UPDATE질의문의 SET절에 DEFAULT를 칼럼에 할당한 후에
 질의문을 수행한다.
 
-iSQL\> CREATE TABLE EMPLOYEES (
-
-ENO INTEGER PRIMARY KEY,
-
+```
+iSQL> CREATE TABLE EMPLOYEES (
+ENO  INTEGER PRIMARY KEY,
 E_LASTNAME CHAR(20) NOT NULL,
-
 E_FIRSTNAME CHAR(20) NOT NULL,
-
 EMP_JOB VARCHAR(15),
-
 EMP_TEL CHAR(15),
-
 DNO SMALLINT,
-
 SALARY NUMBER(10,2) DEFAULT 0,
-
 SEX CHAR(1),
-
 BIRTH CHAR(6),
-
 JOIN_DATE DATE,
-
 STATUS CHAR(1) DEFAULT 'H' );
-
 Create success.
-
-iSQL\> SELECT E_FIRSTNAME, SALARY, EMP_JOB FROM EMPLOYEES WHERE EMP_JOB =
-'manager' ;
-
-E_FIRSTNAME SALARY EMP_JOB
-
-\-------------------------------------------------------
-
-Gottlieb 500 manager
-
-Xiong manager
-
-Wei-Wei 2300 manager
-
+iSQL> SELECT E_FIRSTNAME, SALARY, EMP_JOB FROM EMPLOYEES WHERE EMP_JOB = 'manager' ;
+E_FIRSTNAME          SALARY       EMP_JOB
+-------------------------------------------------------
+Gottlieb              500         manager
+Xiong                              manager
+Wei-Wei               2300        manager
 3 rows selected.
-
-**iSQL\> UPDATE EMPLOYEES SET SALARY=DEFAULT WHERE EMP_JOB = 'manager';**
-
-**3 rows updated.**
-
-**iSQL\> SELECT E_FIRSTNAME, SALARY, EMP_JOB FROM EMPLOYEES WHERE EMP_JOB =
-'manager';**
-
-E_FIRSTNAME SALARY EMP_JOB
-
-\-------------------------------------------------------
-
-Gottlieb 0 manager
-
-Xiong 0 manager
-
-Wei-Wei 0 manager
-
+iSQL> UPDATE EMPLOYEES SET SALARY=DEFAULT WHERE EMP_JOB = 'manager';
+3 rows updated.
+iSQL> SELECT E_FIRSTNAME, SALARY, EMP_JOB FROM EMPLOYEES WHERE EMP_JOB = 'manager';
+E_FIRSTNAME          SALARY       EMP_JOB
+-------------------------------------------------------
+Gottlieb               0           manager
+Xiong                  0           manager
+Wei-Wei                0           manager
 3 rows selected.
+```
+
+
 
 ##### Returing 절을 사용한 갱신
 
 \<질의\> 다음 예제는 갱신된 행의 값을 출력 바인드 변수 :v1, :v2로 반환한다.
 
-iSQL\> create table employees ( eno integer, ename varchar(20));
-
+```
+iSQL> create table employees ( eno integer, ename varchar(20));
 Create success.
+ 
+iSQL> var v1 output integer;
+iSQL> var v2 output varchar(30);
 
-iSQL\> var v1 output integer;
+iSQL> insert into employees values (1, 'jake');
+iSQL> insert into employees values (2, 'nikita');
+iSQL> insert into employees values (3, 'dana');
 
-iSQL\> var v2 output varchar(30);
-
-iSQL\> insert into employees values (1, 'jake');
-
-iSQL\> insert into employees values (2, 'nikita');
-
-iSQL\> insert into employees values (3, 'dana');
-
-iSQL\> prepare update employees set ename='rachel' where eno=3 return eno, ename
-into :v1, :v2;
-
+iSQL> prepare update employees set ename='rachel' where eno=3 return eno, ename into :v1, :v2;
 1 row updated.
 
-iSQL\> print var
-
+iSQL> print var
 [ HOST VARIABLE ]
+-------------------------------------------------------
+NAME                 TYPE                 VALUE
+-------------------------------------------------------
+V1                   INTEGER              3
+V2                   VARCHAR(30)          rachel
+```
 
-\-------------------------------------------------------
 
-NAME TYPE VALUE
-
-\-------------------------------------------------------
-
-V1 INTEGER 3
-
-V2 VARCHAR(30) rachel
 
 ##### 조인 뷰의 데이터 갱신
 
 \<질의\> employees와 departments 테이블의 조인 뷰를 생성한 후, 칼럼 salary를
 갱신한다.
 
-iSQL\> CREATE VIEW simple_emp AS
-
-SELECT e.eno, e.e_lastname, e.salary, d.dname
-
-FROM employees e, departments d
-
-WHERE e.dno = d.dno;
-
+```
+iSQL> CREATE VIEW simple_emp AS
+        SELECT e.eno, e.e_lastname, e.salary, d.dname
+          FROM employees e, departments d
+          WHERE e.dno = d.dno;
 Create success.
-
-iSQL\> select \* from simple_emp;
-
-ENO E_LASTNAME SALARY DNAME
-
-\-----------------------------------------------------------------------------------
-
-3 Kobain 2000 RESEARCH DEVELOPMENT DEPT 1
-
-16 Chen 2300 RESEARCH DEVELOPMENT DEPT 1
-
-6 Momoi 1700 RESEARCH DEVELOPMENT DEPT 2
-
-13 Jones 980 RESEARCH DEVELOPMENT DEPT 2
-
-10 Bae 4000 SOLUTION DEVELOPMENT DEPT
-
-11 Liu 2750 SOLUTION DEVELOPMENT DEPT
-
-14 Miura 2003 SOLUTION DEVELOPMENT DEPT
-
-15 Davenport 1000 SOLUTION DEVELOPMENT DEPT
-
-17 Fubuki 1400 QUALITY ASSURANCE DEPT
-
-4 Foster 1800 CUSTOMERS SUPPORT DEPT
-
-1 Moon PRESALES DEPT
-
-5 Ghorbani 2500 PRESALES DEPT
-
-8 Wang MARKETING DEPT
-
-9 Diaz 1200 MARKETING DEPT
-
-18 Huxley 1900 MARKETING DEPT
-
-7 Fleischer 500 BUSINESS DEPT
-
-12 Hammond 1890 BUSINESS DEPT
-
-19 Marquez 1800 BUSINESS DEPT
-
-20 Blake BUSINESS DEPT
-
+iSQL> select * from simple_emp;
+ENO         E_LASTNAME            SALARY      DNAME
+-----------------------------------------------------------------------------------
+3           Kobain                2000        RESEARCH DEVELOPMENT DEPT 1
+16          Chen                  2300        RESEARCH DEVELOPMENT DEPT 1
+6           Momoi                 1700        RESEARCH DEVELOPMENT DEPT 2
+13          Jones                 980         RESEARCH DEVELOPMENT DEPT 2
+10          Bae                   4000        SOLUTION DEVELOPMENT DEPT
+11          Liu                   2750        SOLUTION DEVELOPMENT DEPT
+14          Miura                 2003        SOLUTION DEVELOPMENT DEPT
+15          Davenport             1000        SOLUTION DEVELOPMENT DEPT
+17          Fubuki                1400        QUALITY ASSURANCE DEPT
+4           Foster                1800        CUSTOMERS SUPPORT DEPT
+1           Moon                              PRESALES DEPT
+5           Ghorbani              2500        PRESALES DEPT
+8           Wang                              MARKETING DEPT
+9           Diaz                  1200        MARKETING DEPT
+18          Huxley                1900        MARKETING DEPT
+7           Fleischer             500         BUSINESS DEPT
+12          Hammond               1890        BUSINESS DEPT
+19          Marquez               1800        BUSINESS DEPT
+20          Blake                             BUSINESS DEPT
 19 rows selected.
 
-iSQL\> UPDATE simple_emp SET salary=3000 WHERE dname='RESEARCH DEVELOPMENT DEPT
-1';
-
+iSQL> UPDATE simple_emp SET salary=3000 WHERE dname='RESEARCH DEVELOPMENT DEPT 1';
 2 rows updated.
+```
+
+
 
 ### MOVE 
 
@@ -3531,52 +3426,56 @@ DELETE 객체 권한을 가진 사용자이어야 한다.
 한 테이블에서 조건을 만족하는 레코드를 찾아 다른 테이블로 이동하는 구문이다.
 또한 특정 파티션에 있는 데이터도 이동이 가능하다.
 
-hints
+*hints*
 
 FROM절에 대한 힌트를 제공한다. 이는 SELECT구문에서 사용하는 힌트와 동일하다.
 
-source_tbl_name, target_tbl_name
+*source_tbl_name, target_tbl_name*
 
 데이터 이동에 관련된 테이블(원본 테이블과 대상 테이블)을 명시한다. 여기에는 뷰나
 메타 테이블이 올 수 없다.
 
-column_commalist
+*column_commalist*
 
 대상 테이블에 속하는 실제 칼럼들의 리스트이다.
 
-expression_commalist
+*expression_commalist*
 
 쉼표로 구분된 표현식들의 리스트이다. 각 표현식은 FROM 테이블에 속한 칼럼, 상수,
 또는 표현식일 수 있다.
 
-where_clause
+*where_clause*
 
 SELECT 구문의 WHERE 절과 구조가 동일하다.
 
-limit_clause
+*limit_clause*
 
 SELECT구문의 LIMIT 절과 구조가 동일하다.
 
 #### 주의 사항
 
-동일한 테이블간의 데이터 이동은 불가능하다.
-
-파티션을 지정할 경우 해당 파티션에 맞지 않는 값은 입력될 수 없다.
-
-CHECK 제약조건으로 인해 MOVE가 실패할 수 있다.
+- 동일한 테이블간의 데이터 이동은 불가능하다.
+- 파티션을 지정할 경우 해당 파티션에 맞지 않는 값은 입력될 수 없다.
+- CHECK 제약조건으로 인해 MOVE가 실패할 수 있다.
 
 #### 예제
 
 \<질의\> t2테이블의 i1, i2 칼럼으로부터 t2.i2=4조건을 만족하는 모든 레코드를 t1
 테이블의 i1, i2 칼럼에 삽입하고 t2 테이블에서 삭제한다.
 
-iSQL\> MOVE INTO T1(I1, I2) FROM T2(I1, I2) WHERE T2.I2 = 4;
+```
+iSQL> MOVE INTO T1(I1, I2) FROM T2(I1, I2) WHERE T2.I2 = 4;
+```
 
 \<질의\> t2테이블의 i1, i2, i3 칼럼으로 이루어진 레코드를 t1 테이블에 삽입하고
 t2테이블에서 삭제한다. (테이블t1에는 t2의 i1, i2, i3 칼럼에 대응되는 칼럼이
 있어야 하며 칼럼 개수가 서로 동일해야 한다.)
 
-iSQL\> MOVE INTO T1 FROM T2(I1, I2, I3);
+```
+iSQL> MOVE INTO T1 FROM T2(I1, I2, I3);
+```
+
+
 
 ### MERGE
 
@@ -3617,43 +3516,41 @@ MERGE 구문은 원본 테이블에서 데이터를 조회(SELECT)하여 대상 
 INSERST, UPDATE 등의 DML 구문이 여러 번 수행되어야 하는 것을 하나의 MERGE
 구문으로 대체할 수 있다.
 
-hints
+*hints*
 
 여기에 명시한 힌트는 적용 가능한 경우 INSERT, UPDATE 작업에 적용될 것이다.
 
-고려 사항:
+- 고려 사항:
+  - 뷰는 대상 테이블로 사용할 수 없다.
+  - 힌트는 MERGE 키워드 다음에만 올 수 있다.
+  - ON 절에 복수의 조건들이 있을 때, 동일한 행에 대하여 각 조건마다 여러 번
+    일치할 때에는 해당 행이 반복하여 갱신 또는 삭제될 수 있다.
 
-- 뷰는 대상 테이블로 사용할 수 없다.
-- 힌트는 MERGE 키워드 다음에만 올 수 있다.
-- ON 절에 복수의 조건들이 있을 때, 동일한 행에 대하여 각 조건마다 여러 번
-  일치할 때에는 해당 행이 반복하여 갱신 또는 삭제될 수 있다.
-
-INTO 절
+*INTO 절*
 
 갱신 또는 삽입할 대상 테이블을 지정하는 절이다. INTO 절에는 뷰는 올 수 없고
 테이블만 올 수 있다.
 
-USING 절
+*USING 절*
 
 원본 데이터를 가져올 테이블 또는 뷰를 지정하는 절이다.
 
-ON 절
+*ON 절*
 
 ON 절에는 MERGE 작업으로 갱신 또는 삽입할 조건들이 명시된다. 조건 뒤에는 조건
 만족 여부에 따라 수행되어야 할 merge 작업이 지정된다. 아래의 세 절을 사용해서
 수행될 merge 작업을 지정할 수 있으며, 각 절은 최대 한 번씩만 명시할 수 있고,
 순서는 상관 없다.
 
-matched_update_clause
+*matched_update_clause*
 
 이 절은 대상 테이블에서 갱신될 칼럼 값을 명시한다. ON 절의 조건을 만족하는 행이
 원본과 대상 테이블에 있을 경우, 이 절의 갱신이 수행된다.
 
-제약 사항:
+- 제약 사항:
+  - ON 조건 절에서 참조되는 칼럼은 갱신이 불가능하다.
 
-- ON 조건 절에서 참조되는 칼럼은 갱신이 불가능하다.
-
-not_matched_insert_clause
+*not_matched_insert_clause*
 
 이 절은 ON 절의 조건을 만족하는 행이 대상 테이블에 없는 경우, 대상 테이블의
 칼럼에 삽입할 값을 명시한다. INSERT 키워드 다음에 칼럼 리스트를 생략하려면,
@@ -3662,7 +3559,7 @@ VALUES 절에 오는 값의 개수는 대상 테이블의 칼럼 수와 일치�
 이 절은 단독으로 또는 *merge_update_specification*과 함께 명시할 수 있으며, 둘
 모두 명시하는 경우에 순서는 상관 없다.
 
-no_rows_insert_clause
+*no_rows_insert_clause*
 
 이 절은 ON 절의 조건을 만족하는 행이 원본 테이블에 없는 경우, 대상 테이블의
 칼럼에 삽입할 값을 명시한다. INSERT 키워드 다음에 칼럼 리스트를 생략하려면,
@@ -3673,81 +3570,51 @@ VALUES 절에 오는 값의 개수는 대상 테이블의 칼럼 수와 일치�
 \<질의\>test_merge 테이블에 존재하는 empno의 경우 USING 절에 명시한 값으로
 갱신되고, 존재하지 않는 경우에는 삽입되는 것을 보여준다.
 
+```
 CREATE TABLE test_merge (empno int, lastname CHAR(20));
-
 INSERT INTO test_merge values(1, 'KIM');
-
 INSERT INTO test_merge values(2, 'LEE');
-
 INSERT INTO test_merge values(5, 'PARK');
-
 INSERT INTO test_merge values(4, 'CHOI');
-
 INSERT INTO test_merge values(7, 'YUN');
 
-iSQL\> SELECT \* FROM test_merge;
-
-EMPNO LASTNAME
-
-\-------------------------------------
-
-1 KIM
-
-2 LEE
-
-5 PARK
-
-4 CHOI
-
-7 YUN
-
+iSQL> SELECT * FROM test_merge;
+EMPNO       LASTNAME
+-------------------------------------
+1           KIM
+2           LEE
+5           PARK
+4           CHOI
+7           YUN
 5 rows selected.
 
-iSQL\> MERGE INTO test_merge old_t
-
+iSQL> MERGE INTO test_merge old_t
 USING
-
-(
-
-SELECT 1 empno, 'KANG' lastname FROM dual UNION ALL
-
-SELECT 7 empno, 'SON' lastname FROM dual UNION ALL
-
-SELECT 9 empno, 'CHEON' lastname FROM dual
-
-) new_t
-
-ON old_t.empno = new_t.empno
-
-WHEN MATCHED THEN
-
-UPDATE SET old_t.lastname = new_t.lastname
-
-WHEN NOT MATCHED THEN
-
-INSERT (old_t.empno, old_t.lastname) VALUES(new_t.empno, new_t.lastname);
-
+     (
+      SELECT 1 empno, 'KANG' lastname FROM dual UNION ALL
+      SELECT 7 empno, 'SON' lastname FROM dual UNION ALL
+      SELECT 9 empno, 'CHEON' lastname FROM dual
+     ) new_t
+  ON old_t.empno = new_t.empno
+ WHEN MATCHED THEN
+      UPDATE SET old_t.lastname = new_t.lastname
+ WHEN NOT MATCHED THEN
+      INSERT (old_t.empno, old_t.lastname) VALUES(new_t.empno, new_t.lastname);
 3 rows merged.
-
-iSQL\> SELECT \* FROM test_merge;
-
-EMPNO LASTNAME
-
-\-------------------------------------
-
-2 LEE
-
-5 PARK
-
-4 CHOI
-
-1 KANG
-
-7 SON
-
-9 CHEON
-
+  
+iSQL> SELECT * FROM test_merge;
+EMPNO       LASTNAME
+-------------------------------------
+2           LEE
+5           PARK
+4           CHOI
+1           KANG
+7           SON
+9           CHEON
 6 rows selected.
+```
+
+
 
 ### ENQUEUE 
 
@@ -3831,7 +3698,11 @@ DEQUEUE 구문의 사용시에 다음과 같은 점에 주의해야 한다.
 
 \<질의\> 메시지 큐 Q1에서 Correlation ID가 237인 메시지들을 모두 읽어라.
 
+```
 DEQUEUE MESSAGE, CORRID FROM Q1 WHERE CORRID=237;
+```
+
+
 
 ## 5.데이터 제어어
 
@@ -3843,18 +3714,18 @@ DEQUEUE MESSAGE, CORRID FROM Q1 WHERE CORRID=237;
 
 **alter_replication_dcl ::=**
 
-![](media/SQL/b5f7242764ac5056238e1a91d5783ddb.png)
+![alter_replication_dcl](media/SQL/alter_replication_dcl.gif)
 
 #### 설명
 
 CREATE REPLICATION 구문으로 이중화 생성 후 이중화의 동작을 제어하는 구문이다.
 이중화에 관한 자세한 내용은 *Replication Manual* 을 참고한다.
 
-STOP
+*STOP*
 
 이중화를 중지한다.
 
-FLUSH
+*FLUSH*
 
 이 구문이 실행된 세션은 이중화 송신 쓰레드에 의해서 현재 로그(FLUSH구문이 실행된
 시점의 로그)까지 변경 내용이 상대방 서버에 전송되도록 *wait_time* 초 만큼
@@ -3865,38 +3736,52 @@ FLUSH
 
 #### 예제
 
-##### 이름이 rep1인 이중화 객체의 이중화를 중지하라.
+- 이름이 rep1인 이중화 객체의 이중화를 중지하라.
 
-\<질의\> 이중화를 중지하라.
+  \<질의\> 이중화를 중지하라.
 
-iSQL\> ALTER REPLICATION rep1 STOP;
+  ```
+  iSQL> ALTER REPLICATION rep1 STOP;
+  Alter success.
+  ```
 
-Alter success.
+
+
+
+
 
 ### ALTER SESSION 
 
 #### 구문
 
-alter_session::=
+**alter_session::=**
+
+![alter_session_image246](media/SQL/alter_session_image246.gif)
 
 [set_transaction_clause::=](#set_transaction)
 
-alter_session_set_clause::=
+**alter_session_set_clause::=**
 
-replication_mode_set_clause::=
+![alter_session_set_clause_image247](media/SQL/alter_session_set_clause_image247.gif)
 
-dblink_session_close_clause::=
+**replication_mode_set_clause::=**
+
+![replication_mode_set_clause_image248](media/SQL/replication_mode_set_clause_image248.gif)
+
+**dblink_session_close_clause::=**
+
+![dblink_session_close_clause_image249](media/SQL/dblink_session_close_clause_image249.gif)
 
 #### 설명
 
 현재 세션(Session)의 속성을 변경하는 구문이다.
 
-alter_session_set_clause
+*alter_session_set_clause*
 
 alter_session_set_clause 절의 property_name과 property\_ value에 관한 자세한
 내용은 Altibase 매뉴얼 중 *General Reference*의 Altibase 프로퍼티 장을 참조한다.
 
-replication_mode_set_clause
+*replication_mode_set_clause*
 
 *replication*\_*mode_set_clause*는 현재 세션에서 수행하는 트랜잭션을 위한 이중화
 모드 속성을 설정하는 절이다.
@@ -3907,7 +3792,7 @@ DEFAULT를 명시하면 이중화는 이중화 객체 생성시 기본모드로 
 
 이중화 모드에 대한 보다 자세한 내용은 *Replication Manual*을 참조한다.
 
-dblink_session \_close_clause
+*dblink_session \_close_clause*
 
 사용자가 서버에 접속하면 서버에는 세션이 생성된다. 이 세션에서 데이터베이스
 링크를 사용하면, 데이터베이스 링크 작업을 위한 데이터베이스 링크 세션이
@@ -3918,7 +3803,7 @@ dblink_session \_close_clause
 
 이 경우 이 절을 사용하여 데이터베이스 링크 세션을 정리할 수 있다.
 
-set_transaction_clause
+*set_transaction_clause*
 
 현재 세션에서 수행되는 트랜잭션에 read only, read/write**오류! 책갈피가 정의되어
 있지 않습니다.** 또는 고립화 수준(isolation level)을 설정할 수 있다. 자세한
@@ -3928,37 +3813,43 @@ set_transaction_clause
 
 \<질의\> 현재 세션은 그냥두고 데이터베이스 링크 세션만 종료한다.
 
-iSQL\> ALTER SESSION CLOSE DATABASE LINK ALL;
+```
+iSQL> ALTER SESSION CLOSE DATABASE LINK ALL;
+```
+
+
 
 ### ALTER SYSTEM 
 
 #### 구문
 
-alter_system ::=
+**alter_system ::=**
 
-![](media/SQL/06225f64896e240962da9ad1a2374037.png)
+![alter_system](media/SQL/alter_system.gif)
 
-alter_system_set_clause ::=
+**alter_system_set_clause ::=**
+
+![alter_session_set_clause_image247](media/SQL/alter_session_set_clause_image247.gif)
 
 #### 설명
 
 Altibase의 시스템 프로퍼티를 변경하는 구문이다. SYS 사용자 또는 ALTER SYSTEM
 권한을 가진 사용자만이 ALTER SYSTEM 문의 모든 기능을 수행할 수 있다.
 
-CHECKPOINT
+*CHECKPOINT*
 
 체크포인트를 수행하는 옵션이다.
 
-MEMORY COMPACT
+*MEMORY COMPACT*
 
 메모리 콤팩션을 수행하는 구문이다. 이 구문은 IBM AIX플랫폼에서만 동작한다.
 
-START/STOP FLUSHER integer
+*START/STOP FLUSHER integer*
 
 Altibase 플러셔를 구동하거나 정지시키는 구문이다. 정수값의 플러셔 ID는
 V\$FLUSHER 성능 뷰를 통해서 조회할 수 있다.
 
-ARCHIVE LOG START/STOP
+*ARCHIVE LOG START/STOP*
 
 START를 실행하면 아카이브로그 쓰레드가 시작되고, STOP하면 종료된다. Altibase가
 아카이브로그 모드로 운영중일때만 이 구문을 실행할 수 있다.
@@ -3967,7 +3858,7 @@ Altibase가 아카이브로그 모드로 운영중인지 여부는 V\$LOG 또는
 뷰에서 확인이 가능하다. 아카이브로그 모드에 대한 자세한 내용은 *Administrator’s
 Manual*의 10장 백업 및 복구를 참고한다.
 
-SWITCH LOGFILE
+*SWITCH LOGFILE*
 
 로그파일을 강제로 아카이브하는 구문이다. 현재 로그파일이 꽉 차지 않았더라도, 이
 구문을 실행하면 Altibase는 사용중이던 로그파일을 닫고 다음 로그파일에 로깅을
@@ -3975,12 +3866,12 @@ SWITCH LOGFILE
 
 이 구문은 sysdba모드로만 수행할 수 있다.
 
-SET alter_system_set_clause
+*SET alter_system_set_clause*
 
 Altibase 프로퍼티 값을 변경하는 구문이다. 프로퍼티에 대한 자세한 내용은 *General
 Reference*의 Altibase 프로퍼티를 참조한다.
 
-FLUSH BUFFER_POOL
+*FLUSH BUFFER_POOL*
 
 버퍼에 있는 모든 페이지를 디스크로 내리고, 버퍼를 비운다.
 
@@ -3989,20 +3880,20 @@ FLUSH BUFFER_POOL
 수행되는 질의문은 접근하는 모든 페이지에 대해서 버퍼 미스(Buffer Miss, 버퍼에서
 레코드를 찾는 데 실패하는 것을 말함)를 발생시킨다.
 
-COMPACT SQL_PLAN_CACHE
+*COMPACT SQL_PLAN_CACHE*
 
 SQL Plan Cache에서 사용되지 않는 실행 계획을 삭제한다.
 
-RESET SQL_PLAN_CACHE
+*RESET SQL_PLAN_CACHE*
 
 SQL Plan Cache에 사용되지 않는 실행 계획을 삭제하고 Plan Cache 관련 통계 정보를
 초기화한다.
 
-START \| STOP \| RELOAD AUDIT
+*START \| STOP \| RELOAD AUDIT*
 
 감사(Auditing)를 시작 또는 중지하거나, 감사 조건을 재적용하는 구문이다.
 
-RELOAD ACCESS LIST
+*RELOAD ACCESS LIST*
 
 IP 패킷의 접근을 허용하거나 차단하는 목록을 갱신한다. sysdba 관리자 모드로만 이
 구문을 수행할 수 있다. ACCESS_LIST_FILE 프로퍼티에 설정된 파일의 목록으로 ACCESS
@@ -4013,25 +3904,41 @@ LIST를 구성한다. ACCESS LIST에 대한 자세한 내용은 ACCESS_LIST 프�
 
 \<질의\> 플러셔 1번을 중지시킨다.
 
-iSQL\> ALTER SYSTEM STOP FLUSHER 1;
+```
+iSQL> ALTER SYSTEM STOP FLUSHER 1;
+```
 
 \<질의\> 아카이브로그 모드일 경우 아카이브 로그 쓰레드를 시작시킨다.
 
-iSQL\> ALTER SYSTEM ARCHIVE LOG START;
+```
+iSQL> ALTER SYSTEM ARCHIVE LOG START;
+```
+
+
 
 ### AUDIT
 
 #### 구문
 
-audit ::=
+**audit ::=**
 
-audit_operation_clause ::=
+![audit](media/SQL/audit.gif)
 
-by_clause ::=
+**audit_operation_clause ::=**
 
-audit_object_clause ::=
+![audit_operation_clause](media/SQL/audit_operation_clause.gif)
 
-ddl_clause ::=
+**by_clause ::=**
+
+![audit_by_clause](media/SQL/audit_by_clause.gif)
+
+**audit_object_clause ::=**
+
+![audit_object_clause](media/SQL/audit_object_clause.gif)
+
+**ddl_clause ::=**
+
+![audit_ddl_clause](media/SQL/audit_ddl_clause.gif)
 
 #### 전제 조건
 
@@ -4043,7 +3950,7 @@ Altibase 서버 내에서 실행되고 있는 특정 구문 또는 모든 구문
 추적하고, 로그를 남기는 것을 감사(Audit)라고 한다. 이 구문을 사용해서 감사
 조건을 설정할 수 있다.
 
-audit_operation_clause
+*audit_operation_clause*
 
 이 절은 Altibase 서버에서 특정한 SQL 구문이 수행되는 것을 감사하도록 지정한다.
 
@@ -4070,11 +3977,11 @@ audit_operation_clause
 
 ALL은 위에 나열한 모든 구문에 대해 감사할 것을 지정한다.
 
-by_clause
+*by_clause*
 
 특정 사용자가 실행하는 구문을 감사할 것을 지정한다.
 
-audit_object_clause
+*audit_object_clause*
 
 이 절은 Altibase 서버에서 특정 객체에 대해 특정한 작업이 수행되는 것을
 감사하도록 지정한다.
@@ -4099,16 +4006,16 @@ audit_object_clause
 ALL은 객체 유형에 대해서 수행 가능한 모든 SQL 구문을 감사할 것을 지정한다. 단,
 위의 표에 나열한 구문에 한해서이다.
 
-object_name
+*object_name*
 
 감사 대상이 되는 객체 이름을 명시한다. 지정할 수 있는 객체의 종류는 테이블, 뷰,
 큐, 시퀀스, 저장 프로시저 및 저장 함수이다.
 
-ddl_clause
+*ddl_clause*
 
 이 절은 Altibase 서버에서 DDL 구문이 수행되는 것을 감사하도록 지정한다.
 
-BY ACCESS \| SESSION
+*BY ACCESS \| SESSION*
 
 BY ACCESS를 지정하면 조건에 부합하는 구문 또는 작업에 대해 각각 하나의 감사
 로그가 기록된다. 예를 들어 BY ACCESS를 지정하여 감사를 진행하면 한 세션에서
@@ -4123,7 +4030,7 @@ BY SESSION을 지정하면 동일한 세션에서 동일한 SQL 구문이 실행
 감사 대상이 CONNECT, DISCONNECT, DDL 경우에는 BY ACCESS\|SESSION을 지원하지
 않는다.
 
-WHENEVER [NOT] SUCCESSFUL
+*WHENEVER [NOT] SUCCESSFUL*
 
 WHENEVER SUCCESSFUL을 지정하면 성공하는 SQL구문과 작업만 감사한다.
 
@@ -4143,52 +4050,63 @@ AUDIT 구문으로 감사 조건을 설정하여도, 서버의 감사 작업에 
 적용되는 것은 아니다. 운영 중인 서버에 새로운 감사 조건들이 적용되기 위해서는
 아래의 구문을 사용해서 감사를 재시작하거나 감사 조건들을 RELOAD해야 한다.
 
-> ALTER SYSTEM STOP AUDIT;
+```
+ALTER SYSTEM STOP AUDIT;
+ALTER SYSTEM START AUDIT;
+ALTER SYSTEM RELOAD AUDIT;
+```
 
-> ALTER SYSTEM START AUDIT;
 
-> ALTER SYSTEM RELOAD AUDIT;
 
 #### 예제
 
 \<질의1\> 사용자 user1의 friends 테이블에 대한 INSERT, UPDATE 또는 DELETE문 수행
 중 실패한 경우에 대한 정보를 모두 기록하라.
 
-iSQL\> AUDIT insert, update, delete ON user1.friends BY ACCESS WHENEVER NOT
+```
+iSQL> AUDIT insert, update, delete ON user1.friends BY ACCESS WHENEVER NOT
 SUCCESSFUL;
+```
 
 \<질의2\> 사용자 user1의 friends 테이블에 대한 DDL문 수행들이 세션에서 모두
 성공한 경우에 로그를 기록하라.
 
-iSQL\> AUDIT all ON user1.friends BY SESSION WHENEVER SUCCESSFUL;
+```
+iSQL> AUDIT all ON user1.friends BY SESSION WHENEVER SUCCESSFUL;
+```
 
 \<질의3\> Altibase 서버에 대해 수행되는 모든 CONNECT, DISCONNECT 구문의 실패
 정보를 기록하라.
 
-iSQL\> AUDIT connect, disconnect WHENEVER NOT SUCCESSFUL;
-
-Audit success
+```
+iSQL> AUDIT connect, disconnect WHENEVER NOT SUCCESSFUL;
+Audit success.
+```
 
 \<질의4\> Altibase 서버 내에서 수행되는 모든 INSERT 구문에 대한 정보를 세션
 단위로 기록하라.
 
-iSQL\> AUDIT insert;
-
+```
+iSQL> AUDIT insert;
 Audit success.
+```
 
 \<질의5\> 사용자 user1이 수행하는 모든 DDL 구문에 대한 로그를 기록하라.
 
-iSQL\> AUDIT DDL BY user1;
-
+```
+iSQL> AUDIT DDL BY user1;
 Audit success.
+```
+
+
 
 ### COMMIT 
 
 #### 구문
 
-commit::=
+**commit::=**
 
-![](media/SQL/ce2daf567e6435f7b5ff96bed4c4021b.png)
+![commit_image252](media/SQL/commit_image252.gif)
 
 #### 설명
 
@@ -4196,11 +4114,11 @@ commit::=
 
 AUTOCOMMIT 모드가 FALSE일때 사용할 수 있다.
 
-WORK
+*WORK*
 
 WORK 키워드는 표준 SQL을 준수하도록 한다.
 
-FORCE global_tx_id
+*FORCE global_tx_id*
 
 XA환경에서 트랜잭션이 in-doubt 상태가 될 경우에 이를 강제로 커밋하는 구문이다.
 
@@ -4215,19 +4133,28 @@ AUTOCOMMIT 모드 시에 이 문장을 수행할 수 없다.
 
 다음 구문은 트랜잭션이 이전에 수행한 모든 명령들을 데이터베이스에 반영한다..
 
-iSQL\> COMMIT;
-
+```
+iSQL> COMMIT;
 Commit success.
+```
+
+
 
 ### DELAUDIT
 
 #### 구문
 
-delaudit ::=
+**delaudit ::=**
 
-delaudit_user_clause ::=
+![delaudit](media/SQL/delaudit.gif)
 
-delaudit_object_clause ::=
+**delaudit_user_clause ::=**
+
+![delaudit_user_clause](media/SQL/delaudit_user_clause.gif)
+
+**delaudit_object_clause ::=**
+
+![delaudit_object_clause](media/SQL/delaudit_object_clause.gif)
 
 #### 전제 조건
 
@@ -4237,7 +4164,7 @@ SYS 사용자만이 이 구문으로 감사 조건을 삭제할 수 있다.
 
 Altibase 서버 내에서 감사를 하기 위해 설정한 감사 조건을 삭제하는 구문이다.
 
-delaudit_user_clause
+*delaudit_user_clause*
 
 AUDIT ... BY *user_name* 구문으로 설정한 구문 감사와 DDL 감사 조건들 중 지정한
 사용자 이름과 일치하는 것을 삭제한다.
@@ -4247,7 +4174,7 @@ ALL
 BY *user_name*절 없이 설정한 구문 감사 조건과 DDL 감사 조건을 일괄적으로
 삭제한다. 객체 감사 조건은 삭제되지 않는다.
 
-delaudit_object_clause
+*delaudit_object_clause*
 
 특정 객체에 대해 설정된 감사 조건을 삭제한다.
 
@@ -4264,46 +4191,52 @@ STOP AUDIT으로 감사를 종료 후 삭제한다.
 \<질의1\> 사용자 user1에 대한 감사 조건을 삭제한다. 구문 실행 후에,
 SYS_AUDIT_OPTS_에서 감사 조건이 삭제된 것을 확인할 수 있다.
 
-iSQL\> DELAUDIT by user1;
-
+```
+iSQL> DELAUDIT by user1;
 Audit success.
-
-iSQL\> SELECT \* from SYSTEM_.SYS_AUDIT_OPTS_;
-
+iSQL> SELECT * from SYSTEM_.SYS_AUDIT_OPTS_;
 No rows selected.
+```
 
 \<질의 2\> 구문 감사가 시작된 후에, DELAUDIT을 실행하면 에러가 발생한다. 감사를
 종료 후 삭제할 수 있다.
 
-iSQL\> alter system start audit;
-
+```
+iSQL> alter system start audit;
 Alter success.
-
-iSQL\> delaudit by user1;
-
+iSQL> delaudit by user1;
 [ERR-313B2 : Audit has already started.]
-
-iSQL\> alter system stop audit;
-
+iSQL> alter system stop audit;
 Alter success.
-
-iSQL\> delaudit by user1;
-
+iSQL> delaudit by user1;
 Audit success.
+```
+
+
 
 ### NOAUDIT
 
 #### 구문
 
-noaudit ::=
+**noaudit ::=**
 
-audit_operation_clause ::=
+![noaudit](media/SQL/noaudit.gif)
 
-by_clause ::=
+**audit_operation_clause ::=**
 
-audit_object_clause ::=
+![noaudit_operation_clause](media/SQL/noaudit_operation_clause.gif)
 
-ddl_clause ::=
+**by_clause ::=**
+
+![noaudit_by_clause](media/SQL/noaudit_by_clause.gif)
+
+**audit_object_clause ::=**
+
+![noaudit_object_clause](media/SQL/noaudit_object_clause.gif)
+
+**ddl_clause ::=**
+
+![audit_ddl_clause](media/SQL/audit_ddl_clause.gif)
 
 #### 전제 조건
 
@@ -4313,7 +4246,7 @@ SYS 사용자만이 이 구문으로 감사 조건을 해제할 수 있다.
 
 NOAUDIT 구문은 이전에 AUDIT 구문으로 설정한 감사 조건을 해제하기 위해 사용된다.
 
-audit_operation_clause
+*audit_operation_clause*
 
 이 절은 특정 SQL 구문에 대한 감사를 중지하기 위해 사용된다.
 
@@ -4323,7 +4256,7 @@ sql_statement_type에는 중지할 감사 작업을 지정한다. 지정 가능�
 ALL은 이전에 AUDIT ALL 구문으로 설정한 모든 구문에 대한 감사를 중지하기 위해
 사용된다.
 
-audit_object_clause
+*audit_object_clause*
 
 이 절은 특정 객체에 대한 감사 조건을 해제하기 위해 사용된다.
 
@@ -4337,7 +4270,7 @@ ddl_clause
 
 이 절은 DDL 구문에 대한 감사를 중지하도록 지정한다.
 
-WHENEVER [NOT] SUCCESSFUL
+*WHENEVER [NOT] SUCCESSFUL*
 
 WHENEVER SUCCESSFUL은 SQL 구문과 객체에 대한 작업이 성공하는 것에 대한 감사를
 중지할 것을 지정한다.
@@ -4354,37 +4287,46 @@ NOAUDIT 구문으로 어떤 감사 조건을 해제하여도, 서버의 감사 �
 것은 아니다. 운영 중인 서버에 감사 조건의 해제가 적용되기 위해서는 아래의 구문을
 사용해서 감사를 재시작하거나 감사 조건들을 RELOAD해야 한다.
 
-> ALTER SYSTEM STOP AUDIT;
+```
+ALTER SYSTEM STOP AUDIT;
+ALTER SYSTEM START AUDIT;
+ALTER SYSTEM RELOAD AUDIT;
+```
 
-> ALTER SYSTEM START AUDIT;
 
-> ALTER SYSTEM RELOAD AUDIT;
 
 #### 예제
 
 \<질의1\> 테이블 friends에서 SELECT 구문의 성공에 대한 감사를 해제하라.
 
-iSQL\> NOAUDIT select ON friends WHENEVER SUCCESSFUL;
-
+```
+iSQL> NOAUDIT select ON friends WHENEVER SUCCESSFUL;
 Audit success.
+```
 
 \<질의2\> SELECT 구문에 대한 감사를 해제하라.
 
-iSQL\> NOAUDIT select;
-
+```
+iSQL> NOAUDIT select;
 Audit success.
+```
 
 \<질의3\> DDL 문에 대한 감사를 해제하라.
 
-iSQL\> NOAUDIT DDL;
-
+```
+iSQL> NOAUDIT DDL;
 Audit success.
+```
+
+
 
 ### SAVEPOINT
 
 #### 구문
 
-savepoint::=
+**savepoint::=**
+
+![savepoint_image253](media/SQL/savepoint_image253.gif)
 
 #### 설명
 
@@ -4398,74 +4340,57 @@ savepoint::=
 
 #### 예제
 
-iSQL\> AUTOCOMMIT OFF;
-
+```
+iSQL> AUTOCOMMIT OFF;
 Set autocommit off success.
-
-iSQL\> CREATE TABLE savept(num INTEGER);
-
+iSQL> CREATE TABLE savept(num INTEGER);
 Create success.
-
-iSQL\> INSERT INTO savept VALUES(1);
-
+iSQL> INSERT INTO savept VALUES(1);
 1 row inserted.
-
-iSQL\> SAVEPOINT sp1;
-
+iSQL> SAVEPOINT sp1;
 Savepoint success.
-
-iSQL\> INSERT INTO savept VALUES(2);
-
+iSQL> INSERT INTO savept VALUES(2);
 1 row inserted.
-
-iSQL\> SELECT \* FROM savept;
-
-SAVEPT.NUM
-
-\--------------
-
-1
-
-2
-
+iSQL> SELECT * FROM savept;
+SAVEPT.NUM 
+--------------
+1 
+2 
 2 rows selected.
+```
 
 저장점 sp1 지점까지 트랜잭션을 롤백한다.
 
-iSQL\> ROLLBACK TO SAVEPOINT sp1;
-
+```
+iSQL> ROLLBACK TO SAVEPOINT sp1;
 Rollback success.
-
-iSQL\> SELECT \* FROM savept;
-
-SAVEPT.NUM
-
-\--------------
-
-1
-
+iSQL> SELECT * FROM savept;
+SAVEPT.NUM 
+--------------
+1 
 1 row selected.
-
-iSQL\> COMMIT;
-
+iSQL> COMMIT;
 Commit success.
+```
+
+
 
 ### ROLLBACK 
 
 #### 구문
 
-rollback ::=
+**rollback ::=**
 
-![](media/SQL/60e568043cca326e4368cab5e5f8c46e.png)
+![rollback_image253](media/SQL/rollback_image253.gif)
 
 #### 설명
 
-ROLLBACK (TO SAVEPOINT)
+*ROLLBACK (TO SAVEPOINT)*
 
 현재의 트랜잭션을 모두 롤백하거나 (이전에 정의한) 저장점까지 부분 롤백하는
 구문이다.
 
-FORCE global_tx_id
+*FORCE global_tx_id*
 
 XA환경에서 “in-doubt”상태의 트랜잭션을 강제로 롤백하는 구문이다.
 
@@ -4478,169 +4403,109 @@ transaction) 아이디, 브랜치 수식자(branch qualifier)를 문자열로 �
 
 #### 예제
 
-iSQL\> AUTOCOMMIT OFF;
-
+```
+iSQL> AUTOCOMMIT OFF;
 Set autocommit off success.
-
-iSQL\> UPDATE employees SET salary = 2300 WHERE eno = 3;
-
+iSQL> UPDATE employees SET salary = 2300 WHERE eno = 3;
 1 row updated.
-
-iSQL\> SAVEPOINT emp3_sal;
-
+iSQL> SAVEPOINT emp3_sal;
 Savepoint success.
-
-iSQL\> DELETE FROM employees WHERE eno = 19;
-
+iSQL> DELETE FROM employees WHERE eno = 19;
 1 row deleted.
-
-iSQL\> SAVEPOINT emp19_ret;
-
+iSQL> SAVEPOINT emp19_ret;
 Savepoint success.
-
-iSQL\> INSERT INTO employees(eno, e_lastname, e_firstname, salary, sex)
-VALUES(21, 'Templeton', 'Kimmie', 3000, 'F');
-
+iSQL> INSERT INTO employees(eno, e_lastname, e_firstname, salary, sex) VALUES(21, 'Templeton', 'Kimmie', 3000, 'F');
 1 row inserted.
-
-iSQL\> SAVEPOINT emp21_join;
-
+iSQL> SAVEPOINT emp21_join;
 Savepoint success.
-
-iSQL\> UPDATE employees SET salary = 2200 WHERE eno=18;
-
+iSQL> UPDATE employees SET salary = 2200 WHERE eno=18;
 1 row updated.
-
-iSQL\> SELECT eno, e_lastname, e_firstname, salary FROM employees WHERE eno in
-(3, 18, 19, 21);
-
-ENO E_LASTNAME E_FIRSTNAME SALARY
-
-\-------------------------------------------------------------------------
-
-3 Kobain Ken 2300
-
-18 Huxley John 2200
-
-21 Templeton Kimmie 3000
-
+iSQL> SELECT eno, e_lastname, e_firstname, salary FROM employees WHERE eno in (3, 18, 19, 21);
+ENO         E_LASTNAME            E_FIRSTNAME           SALARY
+-------------------------------------------------------------------------
+3           Kobain                Ken                   2300
+18          Huxley                John                  2200
+21          Templeton             Kimmie                3000
 3 rows selected.
+```
 
 저장점 emp21_join 지점까지 트랜잭션을 롤백한다.
 
-iSQL\> ROLLBACK TO SAVEPOINT emp21_join;
-
+```
+iSQL> ROLLBACK TO SAVEPOINT emp21_join;
 Rollback success.
-
-iSQL\> SELECT eno, e_lastname, e_firstname, salary FROM employees WHERE eno in
-(3, 18, 19, 21);
-
-ENO E_LASTNAME E_FIRSTNAME SALARY
-
-\-------------------------------------------------------------------------
-
-3 Kobain Ken 2300
-
-18 Huxley John 1900
-
-21 Templeton Kimmie 3000
-
+iSQL> SELECT eno, e_lastname, e_firstname, salary FROM employees WHERE eno in (3, 18, 19, 21);
+ENO         E_LASTNAME            E_FIRSTNAME           SALARY
+-------------------------------------------------------------------------
+3           Kobain                Ken                   2300
+18          Huxley                John                  1900
+21          Templeton             Kimmie                3000
 3 rows selected.
+```
 
 저장점 emp19_ret 지점까지 트랜잭션을 롤백한다.
 
-iSQL\> ROLLBACK TO SAVEPOINT emp19_ret;
-
+```
+iSQL> ROLLBACK TO SAVEPOINT emp19_ret;
 Rollback success.
-
-iSQL\> SELECT eno, e_lastname, e_firstname, salary FROM employees WHERE eno in
-(3, 18, 19, 21);
-
-ENO E_LASTNAME E_FIRSTNAME SALARY
-
-\-------------------------------------------------------------------------
-
-3 Kobain Ken 2300
-
-18 Huxley John 1900
-
+iSQL> SELECT eno, e_lastname, e_firstname, salary FROM employees WHERE eno in (3, 18, 19, 21);
+ENO         E_LASTNAME            E_FIRSTNAME           SALARY
+-------------------------------------------------------------------------
+3           Kobain                Ken                   2300
+18          Huxley                John                  1900
 2 rows selected.
+```
 
 첫 번째 UPDATE 문, 첫번째 DELETE문과 마지막 DML문 (두 번째 INSERT문)에 의해
 수행된 모든 변경을 커밋한다. 모든 다른 DML 문들의 변경사항은 COMMIT 되기 전에
 롤백되어 사라졌다. 또한 저장점 emp21_join은 더 이상 유효하지 않다.
 
-iSQL\> ROLLBACK TO SAVEPOINT emp21_join;
-
+```
+iSQL> ROLLBACK TO SAVEPOINT emp21_join;
 [ERR-11016 : Savepoint not found]
-
-iSQL\> INSERT INTO employees(eno, e_lastname, e_firstname, sex, join_date)
-VALUES(22, 'Chow', 'May', 'F', TO_DATE('2011-11-19 00:00:00', 'YYYY-MM-DD
-HH:MI:SS'));
-
+iSQL> INSERT INTO employees(eno, e_lastname, e_firstname, sex, join_date) VALUES(22, 'Chow', 'May', 'F', TO_DATE('2011-11-19 00:00:00', 'YYYY-MM-DD HH:MI:SS'));
 1 row inserted.
-
-iSQL\> COMMIT;
-
+iSQL> COMMIT;
 Commit success.
-
-iSQL\> SELECT eno, e_lastname, e_firstname, salary FROM employees;
-
-ENO E_LASTNAME E_FIRSTNAME SALARY
-
-\-------------------------------------------------------------------------
-
-1 Moon Chan-seung
-
-2 Davenport Susan 1500
-
-4 Foster Aaron 1800
-
-5 Ghorbani Farhad 2500
-
-6 Momoi Ryu 1700
-
-7 Fleischer Gottlieb 500
-
-8 Wang Xiong
-
-9 Diaz Curtis 1200
-
-10 Bae Elizabeth 4000
-
-11 Liu Zhen 2750
-
-12 Hammond Sandra 1890
-
-13 Jones Mitch 980
-
-14 Miura Yuu 2003
-
-15 Davenport Jason 1000
-
-16 Chen Wei-Wei 2300
-
-17 Fubuki Takahiro 1400
-
-18 Huxley John 1900
-
-20 Blake William
-
-3 Kobain Ken 2300
-
-22 Chow May 0
-
+iSQL> SELECT eno, e_lastname, e_firstname, salary FROM employees;
+ENO         E_LASTNAME            E_FIRSTNAME           SALARY
+-------------------------------------------------------------------------
+1           Moon                  Chan-seung
+2           Davenport             Susan                 1500
+4           Foster                Aaron                 1800
+5           Ghorbani              Farhad                2500
+6           Momoi                 Ryu                   1700
+7           Fleischer             Gottlieb              500
+8           Wang                  Xiong
+9           Diaz                  Curtis                1200
+10          Bae                   Elizabeth             4000
+11          Liu                   Zhen                  2750
+12          Hammond               Sandra                1890
+13          Jones                 Mitch                 980
+14          Miura                 Yuu                   2003
+15          Davenport             Jason                 1000
+16          Chen                  Wei-Wei               2300
+17          Fubuki                Takahiro              1400
+18          Huxley                John                  1900
+20          Blake                 William
+3           Kobain                Ken                   2300
+22          Chow                  May                   0
 20 rows selected.
-
-iSQL\> COMMIT;
-
+iSQL> COMMIT;
 Commit success.
+```
+
+
 
 ### SET TRANSACTION 
 
 #### 구문
 
-set_transaction ::=
+<a name="set_transaction"><a/>
+
+**set_transaction ::=**
+
+![set_transaction_image255](media/SQL/set_transaction_image255.gif)
 
 #### 설명
 
@@ -4656,13 +4521,13 @@ SET TRANSACTION 구문에 의해 수행된 동작들은 다른 사용자들이�
 
 다음과 같은 3개의 고립화 수준 중 하나를 설정할 수 있다.
 
-READ COMMITTED
+*READ COMMITTED*
 
 테이블 내의 커밋된 데이터에 대해 읽기를 허용하며, 커밋되지 않은 데이터에
 대해서는 이전 버전의 값을 읽도록 동작한다. Altibase의 기본 고립화 수준은 READ
 COMMITTED이다.
 
-REPEATABLE READ
+*REPEATABLE READ*
 
 트랜잭션이 읽어간 데이터에 대해 그 트랜잭션이 완료될 때까지 잠금을 걸어서, 해당
 데이터에 대한 다른 트랜잭션의 변경을 금지한다. 이러한 동작은 반복적으로 그 값을
@@ -4672,7 +4537,7 @@ REPEATABLE READ
 최초 조회시에는 보이지 않았지만 삽입 이후에는 보일 것이다. 이를 “Phantom
 Reads”라고 한다.
 
-SERIALIZABLE
+*SERIALIZABLE*
 
 이는 가장 높은 고립화 수준이다. 이는 한번 SELECT하여 가져간 모든 데이터에
 공유잠금을 걸뿐만 아니라, 그 검색 범위안에 있는 모든 키 값에 대해서도 잠금을
@@ -4687,17 +4552,19 @@ SERIALIZABLE
 
 #### 예제
 
-iSQL\> AUTOCOMMIT OFF;
-
+```
+iSQL> AUTOCOMMIT OFF;
 Set autocommit off success.
 
-iSQL\> SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-
+iSQL> SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
 Command execute success.
 
-iSQL\> SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
-
+iSQL> SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
 Command execute success.
+
+```
+
+
 
 | Transaction A                                                | Time Point | Transaction B                                                |
 | ------------------------------------------------------------ | ---------- | ------------------------------------------------------------ |
@@ -4718,7 +4585,11 @@ Command execute success.
 
 #### 구문
 
-SELECT *statement1* **UNION** SELECT *statement2*
+```
+SELECT statement1 UNION SELECT statement2
+```
+
+
 
 #### 설명
 
@@ -4730,45 +4601,37 @@ SELECT *statement1* **UNION** SELECT *statement2*
 \<질의\> 생일이 1980년 이후인 사원과 100개 미만의 주문량을 받은 사원의
 사원번호를 출력하라. 중복된 사원번호는 한번만 출력되게 하라.
 
-iSQL\> SELECT eno
-
-FROM employees
-
-WHERE birth \> '800101'
-
-UNION
-
-SELECT eno
-
-FROM orders
-
-WHERE qty \< 100;
-
+```
+iSQL> SELECT eno
+     FROM employees
+     WHERE birth > '800101'
+     UNION
+     SELECT eno
+     FROM orders
+     WHERE qty < 100;
 ENO
-
-\--------------
-
+--------------
 4
-
 7
-
 8
-
 12
-
 13
-
 15
-
 20
-
 7 rows selected.
+```
+
+
 
 ### UNION ALL
 
 #### 구문
 
-SELECT *statement1* **UNION ALL** SELECT *statement2*
+```
+SELECT statement1 UNION ALL SELECT statement2
+```
+
+
 
 #### 설명
 
@@ -4780,49 +4643,39 @@ SELECT *statement1* **UNION ALL** SELECT *statement2*
 \<질의\> 생일이 1980년 이후인 사원과 100개 미만의 주문량을 받은 사원의
 사원번호를 출력하라. 중복된 사원번호도 모두 출력되게 하라.
 
-iSQL\> SELECT eno
-
-FROM employees
-
-WHERE birth \> '800101'
-
-UNION ALL
-
-SELECT eno
-
-FROM orders
-
-WHERE qty \< 100;
-
+```
+iSQL> SELECT eno
+     FROM employees
+     WHERE birth > '800101'
+     UNION ALL
+     SELECT eno
+     FROM orders
+     WHERE qty < 100;
 ENO
-
-\--------------
-
+--------------
 4
-
 7
-
 8
-
 12
-
 13
-
 15
-
 12
-
 20
-
 20
-
 9 rows selected.
+```
+
+
 
 ### INTERSECT
 
 #### 구문
 
+```
 SELECT *statement1* **INTERSECT** SELECT *statement2*
+```
+
+
 
 #### 설명
 
@@ -4832,27 +4685,28 @@ SELECT *statement1* **INTERSECT** SELECT *statement2*
 
 \<질의\> 한번이라도 주문된 적이 있는 상품을 모두 출력하라.
 
-iSQL\> SELECT gno FROM goods
-
-INTERSECT
-
+```
+iSQL> SELECT gno FROM goods 
+INTERSECT 
 SELECT gno FROM orders;
-
 GNO
-
-\--------------
-
+--------------
 .
-
 .
-
 .
+```
+
+
 
 ### MINUS
 
 #### 구문
 
-SELECT *statement1* **MINUS** SELECT *statement2*
+```
+SELECT statement1 MINUS SELECT statement2
+```
+
+
 
 #### 설명
 
@@ -4862,21 +4716,18 @@ SELECT *statement1* **MINUS** SELECT *statement2*
 
 \<질의\> 한번도 주문된 적이 없는 상품들의 제품번호를 출력하라.
 
-iSQL\> SELECT gno FROM goods
-
+```
+iSQL> SELECT gno FROM goods
 MINUS
-
 SELECT gno FROM orders;
-
-GNO
-
-\--------------
-
+GNO         
+--------------
 .
-
 .
-
 .
+```
+
+
 
 ### 연산 순서
 
@@ -4902,50 +4753,34 @@ SQL 연산자의 연산 우선순위를 내림차순으로 다음 표에 보여�
 \<질의\> 월급이 1850 달러를 넘는 엔지니어의 이름, 직위, 급여와 급여에 상관없이
 모든 영업 사원의 이름, 직위, 급여를 출력하라.
 
-iSQL\> SELECT e_firstname, e_lastname, emp_job, salary
-
+```
+iSQL> SELECT e_firstname, e_lastname, emp_job, salary
 FROM employees
-
 WHERE emp_job = 'sales rep'
-
-OR emp_job = 'engineer'
-
-AND salary \>= 1850;
-
-E_FIRSTNAME E_LASTNAME EMP_JOB SALARY
-
-\------------------------------------------------------------------------------
-
-Ken Kobain engineer 2000
-
-Sandra Hammond sales rep 1890
-
-Alvar Marquez sales rep 1800
-
-William Blake sales rep
-
+  OR emp_job = 'engineer'
+  AND salary >= 1850;
+E_FIRSTNAME           E_LASTNAME            EMP_JOB          SALARY
+------------------------------------------------------------------------------
+Ken                   Kobain                engineer         2000
+Sandra                Hammond               sales rep        1890
+Alvar                 Marquez               sales rep        1800
+William               Blake                 sales rep
 4 rows selected.
+```
 
 \<질의\> 월급이 1850 달러를 넘는 엔지니어의 이름, 직위, 급여와 월급이 1850
 달러를 넘는 영업 사원의 이름, 직위, 급여를 출력하라.
 
-iSQL\> SELECT e_firstname, e_lastname, emp_job, salary
-
+```
+iSQL> SELECT e_firstname, e_lastname, emp_job, salary
 FROM employees
-
 WHERE (emp_job = 'sales rep'
-
-OR emp_job = 'engineer')
-
-AND salary \>= 1850;
-
-E_FIRSTNAME E_LASTNAME EMP_JOB SALARY
-
-\------------------------------------------------------------------------------
-
-Ken Kobain engineer 2000
-
-Sandra Hammond sales rep 1890
-
+  OR emp_job = 'engineer')
+  AND salary >= 1850;
+E_FIRSTNAME           E_LASTNAME            EMP_JOB          SALARY
+------------------------------------------------------------------------------
+Ken                   Kobain                engineer         2000
+Sandra                Hammond               sales rep        1890
 2 rows selected.
+```
 
