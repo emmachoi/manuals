@@ -73,7 +73,11 @@ AVG(PRICE)
 
 ##### 구문 
 
-**CORR** (*expr1, expr2*) **OVER** {...}
+```
+CORR (expr1, expr2) OVER {...}
+```
+
+
 
 ##### 설명
 
@@ -88,21 +92,25 @@ CORR 함수는 집계 함수와 분석 함수로 사용할 수 있다.
 
 \<질의\> 사원번호와 급여의 상관계수를 구한다.
 
-iSQL\> SELECT CORR(ENO,SALARY) FROM employees;
-
+```
+iSQL> SELECT CORR(ENO,SALARY) FROM employees;
 CORR(ENO,SALARY)
-
-\-------------------------
-
-\-0.02180715597157
-
+-------------------------
+-0.02180715597157
 1 row selected.
+```
+
+
 
 #### COUNT
 
 ##### 구문
 
-**COUNT** ( [ \* \| [**ALL** \| **DISTINCT**] *expression* ] )
+```
+COUNT ( [ * | [ALL | DISTINCT] expression ] )
+```
+
+
 
 ##### 설명
 
@@ -113,35 +121,36 @@ CORR(ENO,SALARY)
 
 \<질의\> 사원 테이블의 전체 레코드의 개수를 출력하라.
 
-iSQL\> SELECT COUNT(\*) Rec_count FROM employees;
-
-REC_COUNT
-
-\-----------------------
-
-20
-
+```
+iSQL> SELECT COUNT(*) Rec_count FROM employees;
+REC_COUNT            
+-----------------------
+20                   
 1 row selected.
+```
 
 \<질의\> 사원 테이블 생일 자료의 개수를 출력하라.
 
-iSQL\> SELECT COUNT(birth) Rec_count
-
-FROM employees;
-
-REC_COUNT
-
-\-----------------------
-
-13
-
+```
+iSQL> SELECT COUNT(birth) Rec_count 
+    FROM employees;
+REC_COUNT            
+-----------------------
+13                   
 1 row selected.
+```
+
+
 
 #### COVAR_SAMP
 
 ##### 구문 
 
-**COVAR_SAMP** (*expr1, expr2*) **OVER** {...}
+```
+COVAR_SAMP (expr1, expr2) OVER {...}
+```
+
+
 
 ##### 설명
 
@@ -156,21 +165,25 @@ COVAR_SAMP 함수는 집계 함수와 분석 함수로 사용할 수 있다.
 
 \<질의\> 사원번호와 급여의 표본 공분산을 구한다.
 
-iSQL\> SELECT COVAR_SAMP(ENO,SALARY) FROM employees;
-
+```
+iSQL> SELECT COVAR_SAMP(ENO,SALARY) FROM employees;
 COVAR_SAMP(ENO,SALARY)
-
-\-------------------------
-
-\-95.0698529411784
-
+-------------------------
+-95.0698529411784
 1 row selected.
+```
+
+
 
 #### COVAR_POP
 
 ##### 구문
 
-**COVAR_POP** (*expr1, expr2*) **OVER** {...}
+```
+COVAR_POP (expr1, expr2) OVER {...}
+```
+
+
 
 ##### 설명
 
@@ -185,21 +198,21 @@ COVAR_POP 함수는 집계 함수와 분석 함수로 사용할 수 있다.
 
 \<질의\> 사원번호와 급여의 모공 분산을 구한다.
 
-iSQL\> SELECT COVAR_POP(ENO,SALARY) FROM employees;
-
+```
+iSQL> SELECT COVAR_POP(ENO,SALARY) FROM employees;
 COVAR_POP(ENO,SALARY)
-
-\-------------------------
-
-\-89.4775086505208
-
+-------------------------
+-89.4775086505208
 1 row selected.
+```
+
+
 
 #### CUME_DIST
 
 ##### 구문
 
-![](media/SQL/329bd671992958449cc959b08eaa2c06.png)
+![cume_dist_with_group](media/SQL/cume_dist_with_group.gif)
 
 [window_order_clause::=](#window_order_clause)
 
@@ -208,70 +221,52 @@ COVAR_POP(ENO,SALARY)
 CUME_DIST함수는 결과 집합(또는 파티션)의 특정 멤버를 기준으로 정렬된 그룹의
 누적분포도를 계산한다. 반환 값은 0보다 크고 1보다 작거나 같다.
 
-\* 주의: CUME_DIST의 인자 개수와 WITHIN GROUP절의 인자 개수는 일치해야 하며,
-인자의 타입은 자동으로 호환되지 않는다. CUME_DIST인자의 데이터타입은 제한되지
-않으나 상수사용을 권장한다.
+> 주의: CUME_DIST의 인자 개수와 WITHIN GROUP절의 인자 개수는 일치해야 하며,
+> 인자의 타입은 자동으로 호환되지 않는다. CUME_DIST인자의 데이터타입은 제한되지
+> 않으나 상수사용을 권장한다.
 
 ##### 예제
 
 \<질의\> CUME_DIST함수를 사용하여 급여(SALARY)의 누적분포 값을 확인한다.
 
-iSQL\> select SALARY from EMPLOYEES ORDER BY 1;
-
+```
+iSQL> select SALARY from EMPLOYEES ORDER BY 1;
 SALARY
-
-\--------------
-
+--------------
 500
-
 980
-
 1000
-
 1200
-
 1400
-
 1500
-
 1700
-
 1800
-
 1800
-
 1890
-
 1900
-
 2000
-
 2003
-
 2300
-
 2500
-
 2750
-
 4000
+...
+20 rows selected. 
 
-20 rows selected.
+iSQL>  select cume_dist(1500) within group (order by SALARY ) from EMPLOYEES ;
+CUME_DIST(1500) within group (order by SAL
+---------------------------------------------
+0.333333333333333
+1 row selected.
+```
 
-**iSQL\> select cume_dist(1500) within group (order by SALARY ) from EMPLOYEES
-;**
 
-**CUME_DIST(1500) within group (order by SAL**
-
-**---------------------------------------------**
-
-**0.333333333333333**
-
-**1 row selected.**
 
 #### FIRST
 
 ##### 구문
+
+![first_clause](media/SQL/first_clause.gif)
 
 ##### 설명
 
@@ -284,42 +279,35 @@ VARIANCE, STDDEV 7가지이다.
 \<질의\> 사원 테이블에서 부서별로 연봉을 가장 많이 받는 사원의 사원번호와 연봉을
 구하라.
 
-iSQL\> SELECT dno, MAX(eno) KEEP(DENSE_RANK FIRST ORDER BY salary desc) as
-empno, MAX(salary) AS max_sal
-
-FROM EMPLOYEES
-
-GROUP BY dno;
-
-DNO EMPNO MAX_SAL
-
-\-----------------------------------------
-
-1001 16 2300
-
-1002 6 1700
-
-1003 10 4000
-
-2001 17 1400
-
-3001 4 1800
-
-3002 1 2500
-
-4001 8 1900
-
-4002 20 1090
-
-2 1500
-
+```
+iSQL> SELECT dno, MAX(eno) KEEP(DENSE_RANK FIRST ORDER BY salary desc) as empno, MAX(salary) AS max_sal
+        FROM EMPLOYEES
+        GROUP BY dno;
+DNO          EMPNO          MAX_SAL
+-----------------------------------------
+1001         16              2300
+1002         6               1700
+1003         10              4000
+2001         17              1400
+3001         4               1800
+3002         1               2500
+4001         8               1900
+4002         20              1090
+              2               1500
 9 row selected.
+```
+
+
 
 #### GROUP_CONCAT
 
 ##### 구문
 
-**GROUP_CONCAT** (*expr1* [*, arg1*])
+```
+GROUP_CONCAT (expr1 [, arg1])
+```
+
+
 
 ##### 설명
 
@@ -332,56 +320,40 @@ DNO EMPNO MAX_SAL
 \<질의\> employees 테이블에서 각 부서별로 직원들의 성을 연결한 문자열을
 반환하라.
 
-iSQL\> SELECT dno, CAST(GROUP_CONCAT(e_lastname, '\|') AS VARCHAR (100)) AS
-names FROM employees GROUP BY dno;
-
+```
+iSQL> SELECT dno, CAST(GROUP_CONCAT(e_lastname, '|') AS VARCHAR (100)) AS names FROM employees GROUP BY dno;
 DNO
-
-\--------------
-
+--------------
 NAMES
-
-\--------------------------------------------------------------------------------------------------------
-
+--------------------------------------------------------------------------------------------------------
 1001
-
-Kobain \|Chen
-
+Kobain              |Chen                
 1002
-
-Momoi \|Jones
-
+Momoi               |Jones               
 1003
-
-Bae \|Liu \|Miura \|Davenport
-
+Bae                 |Liu                 |Miura               |Davenport           
 2001
-
-Fubuki
-
+Fubuki              
 3001
-
-Foster
-
+Foster              
 3002
-
-Moon \|Ghorbani
-
+Moon                |Ghorbani            
 4001
-
-Wang \|Diaz \|Huxley
-
+Wang                |Diaz                |Huxley              
 4002
+Fleischer           |Hammond             |Marquez             |Blake               
 
-Fleischer \|Hammond \|Marquez \|Blake
-
-Davenport
-
+Davenport           
 9 rows selected.
+```
+
+
 
 #### LAST
 
 ##### 구문
+
+![last_clause](media/SQL/last_clause.gif)
 
 ##### 설명
 
@@ -394,42 +366,35 @@ VARIANCE, STDDEV이다.
 \<질의\> 사원 테이블에서 부서별로 연봉을 가장 적게 받는 사원의 사원번호와 연봉을
 구하라.
 
-iSQL\> SELECT dno, MIN(eno) KEEP(DENSE_RANK LAST ORDER BY salary desc) as empno,
-MIN(salary) AS min_sal
-
-FROM EMPLOYEES
-
-GROUP BY dno;
-
-DNO EMPNO MIN_SAL
-
-\-----------------------------------------
-
-1001 3 2300
-
-1002 13 1700
-
-1003 15 4000
-
-2001 17 1400
-
-3001 4 1800
-
-3002 5 2500
-
-4001 9 1900
-
-4002 7 1090
-
-2 1500
-
+```
+iSQL> SELECT dno, MIN(eno) KEEP(DENSE_RANK LAST ORDER BY salary desc) as empno, MIN(salary) AS min_sal
+        FROM EMPLOYEES
+        GROUP BY dno;
+DNO          EMPNO          MIN_SAL
+-----------------------------------------
+1001         3               2300
+1002         13              1700
+1003         15              4000
+2001         17              1400
+3001         4               1800
+3002         5               2500
+4001         9               1900
+4002         7               1090
+              2               1500
 9 row selected.
+```
+
+
 
 #### MAX
 
 ##### 구문
 
-**MAX** ([**ALL** \| **DISTINCT**] *expression*)
+```
+MAX ([ALL | DISTINCT] expression)
+```
+
+
 
 ##### 설명
 
@@ -439,21 +404,25 @@ DNO EMPNO MIN_SAL
 
 \<질의\> 상품 테이블에서 가장 비싼 가격을 출력하라.
 
-iSQL\> SELECT MAX(price) FROM goods;
-
-MAX(PRICE)
-
-\--------------
-
-100000
-
+```
+iSQL> SELECT MAX(price) FROM goods;
+MAX(PRICE)  
+--------------
+100000      
 1 row selected.
+```
+
+
 
 #### MIN
 
 ##### 구문
 
-**MIN** ([**ALL** \| **DISTINCT**] *expression*)
+```
+MIN ([ALL | DISTINCT] expression)
+```
+
+
 
 ##### 설명
 
@@ -463,21 +432,21 @@ MAX(PRICE)
 
 \<질의\> 상품 테이블의 가장 싼 가격을 출력하라.
 
-iSQL\> SELECT MIN(price) FROM goods;
-
-MIN(PRICE)
-
-\--------------
-
-966.99
-
+```
+iSQL> SELECT MIN(price) FROM goods;
+MIN(PRICE)  
+--------------
+966.99      
 1 row selected.
+```
+
+
 
 #### PERCENT_RANK
 
 ##### 구문
 
-![](media/SQL/8d447c9db82d548ac74868b4850c24f4.png)
+![percent_rank_with_group](media/SQL/percent_rank_with_group.gif)
 
 [window_order_clause::=](#window_order_clause)
 
@@ -486,77 +455,54 @@ MIN(PRICE)
 PERCENT_RANK 함수는 결과 집합(또는 파티션)의 특정 멤버를 기준으로 백분율순위를
 매긴다. 반환 값은 0에서 1까지의 백분율 순위이다.
 
-\* 주의: PERCENT_RANK의 인자 개수와 WITHIN GROUP절의 인자 개수는 일치해야 하며,
-인자의 타입은 자동으로 호환되지 않는다. PERCENT_RANK인자의 데이터타입은 제한되지
-않으나 상수사용을 권장한다.
+> 주의: PERCENT_RANK의 인자 개수와 WITHIN GROUP절의 인자 개수는 일치해야 하며,
+> 인자의 타입은 자동으로 호환되지 않는다. PERCENT_RANK인자의 데이터타입은 제한되지
+> 않으나 상수사용을 권장한다.
 
 ##### 예제
 
 \<질의\> 부서번호(DNO)가 1003이고 급여(SALARY)가 1000인 직원의 백분율순위를
 출력한다.
 
-iSQL\> select DNO, SALARY from EMPLOYEES ORDER BY 1,2;
-
-DNO SALARY
-
-\---------------------------
-
-1001 2000
-
-1001 2300
-
-1002 980
-
-1002 1700
-
-1003 1000
-
-1003 2003
-
-1003 2750
-
-1003 4000
-
-2001 1400
-
-3001 1800
-
-3002 2500
-
+```
+iSQL> select  DNO, SALARY from EMPLOYEES ORDER BY 1,2;
+DNO         SALARY
+---------------------------
+1001        2000
+1001        2300
+1002        980
+1002        1700
+1003        1000
+1003        2003
+1003        2750
+1003        4000
+2001        1400
+3001        1800
+3002        2500
 3002
-
-4001 1200
-
-4001 1900
-
+4001        1200
+4001        1900
 4001
-
-4002 500
-
-4002 1800
-
-4002 1890
-
+4002        500
+4002        1800
+4002        1890
 4002
-
-1500
-
+            1500
 20 rows selected.
-
-iSQL\> select percent_rank(1003,1000) within group (order by DNO, SALARY ) from
-EMPLOYEES ;
-
+iSQL> select percent_rank(1003,1000) within group (order by DNO, SALARY ) from EMPLOYEES ;
 RNK
-
-\-------------------------
-
+-------------------------
 0.2
-
 1 row selected.
+```
+
+
 
 #### STATS_ONE_WAY_ANOVA
 
 ##### 구문 
+
+![stats_one_way_anova](media/SQL/stats_one_way_anova.gif)
 
 ##### 설명
 
@@ -568,60 +514,109 @@ expr1은 expr2를 그룹화하는 칼럼이며, expr2는 expr1에 속하는 수�
 
 3번째 인자에 대한 설명은 아래의 표와 같다.
 
-| 반환값                    | 설명                                                  |
-|---------------------------|-------------------------------------------------------|
-| SIG                       | Significance                                          |
-| F_RATIO                   | 그룹간의 평균 제곱에 대하여 그룹내의 평균 제곱의 비율 |
-| MEAN_SQUARES_WITHIN       | 그룹내의 평균 제곱                                    |
-| (MSW)                     |                                                       |
-| MEAN_SQUARES_BETWEEN      | 그룹간의 평균 제곱                                    |
-| (MSB)                     |                                                       |
-| DF_WITHIN(DFW)            | 그룹 내 자유도                                        |
-| DF_BETWEEN(DFB)           | 그룹간의 자유도                                       |
-| SUM_SQUARES_WITHIN        | 그룹 내 제곱의 합                                     |
-| (SSW)                     |                                                       |
-| SUM_SQUARES_BETWEEN       | 그룹 사이의 제곱의 합                                 |
-| (SSB)                     |                                                       |
+<table>
+<tbody>
+<tr>
+<th>
+<p>반환값</p>
+</th>
+<th>
+<p>설명</p>
+</th>
+</tr>
+<tr>
+<td>
+<p>SIG</p>
+</td>
+<td>
+<p>Significance</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>F_RATIO</p>
+</td>
+<td>
+<p>그룹간의 평균 제곱에 대하여 그룹내의 평균 제곱의 비율</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>MEAN_SQUARES_WITHIN<br /> (MSW)</p>
+</td>
+<td>
+<p>그룹내의 평균 제곱</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>MEAN_SQUARES_BETWEEN<br /> (MSB)</p>
+</td>
+<td>
+<p>그룹간의 평균 제곱</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>DF_WITHIN(DFW)</p>
+</td>
+<td>
+<p>그룹 내 자유도</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>DF_BETWEEN(DFB)</p>
+</td>
+<td>
+<p>그룹간의 자유도</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>SUM_SQUARES_WITHIN<br /> (SSW)</p>
+</td>
+<td>
+<p>그룹 내 제곱의 합</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>SUM_SQUARES_BETWEEN<br /> (SSB)</p>
+</td>
+<td>
+<p>그룹 사이의 제곱의 합</p>
+</td>
+</tr>
+</tbody>
+</table>
 
 ##### 예제
 
-iSQL\> select \* from t3;
+```
+iSQL> select * from t3;
+        ID      VALUE
+---------- ----------
+         1          1
+         1          2
+         1          3
+         2          3
+         2          4
 
-ID VALUE
+iSQL> select stats_one_way_anova(id, value, 'SUM_SQUARES_BETWEEN') SSB, 
+            stats_one_way_anova(id, value, 'SUM_SQUARES_WITHIN') SSW,
+            stats_one_way_anova(id, value, 'DF_BETWEEN') DFB, 
+            stats_one_way_anova(id, value, 'DF_WITHIN') DFW, 
+            stats_one_way_anova(id, value, 'MEAN_SQUARES_BETWEEN') MSB, 
+            stats_one_way_anova(id, value, 'MEAN_SQUARES_WITHIN') MSW, 
+            stats_one_way_anova(id, value, 'F_RATIO') F, 
+            stats_one_way_anova(id, value, 'SIG') P_VALUE  from t3;
+       SSB        SSW        DFB        DFW        MSB        MSW          F    P_VALUE
+---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+       2.7        2.5          1          3        2.7 .833333333       3.24 .169679927
+```
 
-\---------- ----------
 
-1 1
-
-1 2
-
-1 3
-
-2 3
-
-2 4
-
-iSQL\> select stats_one_way_anova(id, value, 'SUM_SQUARES_BETWEEN') SSB,
-
-stats_one_way_anova(id, value, 'SUM_SQUARES_WITHIN') SSW,
-
-stats_one_way_anova(id, value, 'DF_BETWEEN') DFB,
-
-stats_one_way_anova(id, value, 'DF_WITHIN') DFW,
-
-stats_one_way_anova(id, value, 'MEAN_SQUARES_BETWEEN') MSB,
-
-stats_one_way_anova(id, value, 'MEAN_SQUARES_WITHIN') MSW,
-
-stats_one_way_anova(id, value, 'F_RATIO') F,
-
-stats_one_way_anova(id, value, 'SIG') P_VALUE from t3;
-
-SSB SSW DFB DFW MSB MSW F P_VALUE
-
-----------
-
-2.7 2.5 1 3 2.7 .833333333 3.24 .169679927
 
 #### STDDEV
 
@@ -858,17 +853,27 @@ Altibase는 버전 6.3.1부터 아래의 윈도우 함수를 지원한다.
 
 #### 구문
 
-window_function ::=
+**window_function ::=**
 
-window_specification ::=
 
-window_partition_clause ::=
+
+**window_specification ::=**
+
+
+
+**window_partition_clause ::=**
 
 ![](media/SQL/c757b5e78596fe30326cd3b8207e582e.png)
 
-window_order_clause ::=
+<a name="window_order_clause"><a/>
 
-window_frame_clause ::=
+**window_order_clause ::=**
+
+
+
+**window_frame_clause ::=**
+
+
 
 #### 설명
 
