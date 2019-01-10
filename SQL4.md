@@ -622,7 +622,11 @@ iSQL> select stats_one_way_anova(id, value, 'SUM_SQUARES_BETWEEN') SSB,
 
 ##### 구문
 
-**STDDEV** ([**ALL** \| **DISTINCT**] *expression*)
+```
+STDDEV ([ALL | DISTINCT] expression)
+```
+
+
 
 ##### 설명
 
@@ -635,23 +639,26 @@ STDDEV는 입력된 *expression* 들의 표준편차를 반환한다.
 
 \<질의\> 직원 테이블에서 급여의 표준편차를 구하라.
 
-iSQL\> SELECT STDDEV(salary) standard_deviation
-
-FROM employees;
-
+```
+iSQL> SELECT STDDEV(salary) standard_deviation 
+  FROM employees;
 STANDARD_DEVIATION
-
-\-------------------------
-
+-------------------------
 797.706786762566
-
 1 row selected.
+```
+
+
 
 #### STDDEV_POP
 
 ##### 구문
 
-**STDDEV_POP** (*expression*)
+```
+STDDEV_POP (expression)
+```
+
+
 
 ##### 설명
 
@@ -664,21 +671,25 @@ NULL이 아닌 행의 개수가 1보다 작으면 NULL을 반환한다. 시스�
 
 \<질의\> 직원 테이블에서 급여의 표준편차를 구하라.
 
-iSQL\> SELECT STDDEV_POP(salary) FROM employees;
-
+```
+iSQL> SELECT STDDEV_POP(salary) FROM employees;
 STDDEV_POP(SALARY)
-
-\-------------------------
-
+-------------------------
 773.889256492736
-
 1 row selected.
+```
+
+
 
 #### STDDEV_SAMP
 
 ##### 구문
 
-**STDDEV_SAMP** ([**ALL** \| **DISTINCT**] *expression*)
+```
+STDDEV_SAMP ([ALL | DISTINCT] expression)
+```
+
+
 
 ##### 설명
 
@@ -692,21 +703,25 @@ NULL이 아닌 행의 개수가 2보다 작으면 NULL을 반환한다.
 
 \<질의\> 직원 테이블에서 급여의 표본 표준편차를 구하라.
 
-iSQL\> SELECT STDDEV_SAMP(salary) FROM employees;
-
+```
+iSQL> SELECT STDDEV_SAMP(salary) FROM employees;
 STDDEV_SAMP(SALARY)
-
-\-------------------------
-
+-------------------------
 797.706786762566
-
 1 row selected.
+```
+
+
 
 #### SUM
 
 ##### 구문
 
-**SUM** ([**ALL** \| **DISTINCT**] *expression*)
+```
+SUM ([ALL | DISTINCT] expression)
+```
+
+
 
 ##### 설명
 
@@ -716,21 +731,25 @@ STDDEV_SAMP(SALARY)
 
 \<질의\> 상품 테이블에서 모든 보관 수량의 합을 구하라.
 
-iSQL\> SELECT SUM(stock) FROM goods;
-
-SUM(STOCK)
-
-\-----------------------
-
-379420
-
+```
+iSQL> SELECT SUM(stock) FROM goods;
+SUM(STOCK)           
+-----------------------
+379420               
 1 row selected.
+```
+
+
 
 #### VARIANCE
 
 ##### 구문
 
-**VARIANCE** ([**ALL** \| **DISTINCT**] *expression*)
+```
+VARIANCE ([ALL | DISTINCT] expression)
+```
+
+
 
 ##### 설명
 
@@ -743,21 +762,25 @@ VARIANCE는 입력된 *expression*들의 변동량을 반환한다.
 
 \<질의\> 직원 테이블에서 급여의 변동량을 구하라.
 
-iSQL\> SELECT VARIANCE(salary) variance
-
-FROM employees;
-
+```
+iSQL> SELECT VARIANCE(salary) variance 
+  FROM employees;
 VARIANCE
-
-\-------------------------
-
+-------------------------
 636336.117647059
+```
+
+
 
 #### VAR_POP
 
 ##### 구문
 
-**VAR_POP** (*expression*)
+```
+VAR_POP (expression)
+```
+
+
 
 ##### 설명
 
@@ -773,21 +796,25 @@ NULL이 아닌 행의 개수가 1보다 작으면, NULL을 반환한다.
 
 \<질의\> 직원 테이블에서 급여의 모분산을 구하라.
 
-iSQL\> SELECT VAR_POP(salary) FROM employees;
-
+```
+iSQL> SELECT VAR_POP(salary) FROM employees;
 VAR_POP(SALARY)
-
-\-------------------------
-
+-------------------------
 598904.581314879
-
 1 row selected.
+```
+
+
 
 #### VAR_SAMP
 
 ##### 구문
 
-**VAR_SAMP** (*expression*)
+```
+VAR_SAMP (expression)
+```
+
+
 
 ##### 설명
 
@@ -802,15 +829,15 @@ NULL이 아닌 행의 개수가 2보다 작으면 NULL을 반환한다.
 
 \<질의\> 직원 테이블에서 급여의 표본 분산을 구하라.
 
-iSQL\> SELECT VAR_SAMP(salary) FROM employees;
-
+```
+iSQL> SELECT VAR_SAMP(salary) FROM employees;
 VAR_SAMP(SALARY)
-
-\-------------------------
-
+-------------------------
 636336.117647059
-
 row selected.
+```
+
+
 
 ### 윈도우(분석) 함수
 
@@ -855,11 +882,11 @@ Altibase는 버전 6.3.1부터 아래의 윈도우 함수를 지원한다.
 
 **window_function ::=**
 
-
+![window_funtion](D:\emmachoigit\manuals\media\SQL\window_funtion.gif)
 
 **window_specification ::=**
 
-
+![window_specification](D:\emmachoigit\manuals\media\SQL\window_specification.gif)
 
 **window_partition_clause ::=**
 
@@ -869,11 +896,11 @@ Altibase는 버전 6.3.1부터 아래의 윈도우 함수를 지원한다.
 
 **window_order_clause ::=**
 
-
+![window_order_clause](D:\emmachoigit\manuals\media\SQL\window_order_clause.gif)
 
 **window_frame_clause ::=**
 
-
+![window_frame_clause](D:\emmachoigit\manuals\media\SQL\window_frame_clause.gif)
 
 #### 설명
 
@@ -894,19 +921,19 @@ Altibase는 버전 6.3.1부터 아래의 윈도우 함수를 지원한다.
 
 -   6단계: ORDER BY 절이 있는 경우 처리
 
-window_function
+*window_function*
 
 윈도우 함수로 사용할 함수의 이름을 명시한다.
 
-arg_expr
+*arg_expr*
 
 윈도우 함수를 위한 인자로 사용될 수식을 명시한다.
 
-IGNORE NULLS
+*IGNORE NULLS*
 
 *IGNORE NULLS* 구문을 명시하면 널(null)이 아닌 값이 반환된다.
 
-OVER window_specificatoin
+*OVER window_specificatoin*
 
 OVER는 이 함수가 쿼리의 결과 집합에 대해 작업할 것을 질의 처리기에게 알려주는
 키워드이다.
@@ -918,7 +945,7 @@ OVER는 이 함수가 쿼리의 결과 집합에 대해 작업할 것을 질의 
 결정한다. OVER 키워드 다음에는 분할 및 정렬 정책을 지정하는 아래의 세 하위 절이
 따라올 수 있다.
 
-window_partition_clause
+*window_partition_clause*
 
 이 절은 쿼리 결과 집합을 그룹(파티션)으로 묶을 기준이 되는 한 개 이상의 칼럼
 또는 표현식을 명시한다. 모든 윈도우 함수가 이 절을 지원하지만, 사용은
@@ -928,7 +955,7 @@ window_partition_clause
 집계 관련 함수가 ORDER BY 하위 절 없이 이 절을 사용한다면 함수 인자에 DISTINCT
 키워드를 사용할 수 있다.
 
-window_order_clause
+*window_order_clause*
 
 이 절은 파티션 내에서 데이터 정렬 기준이 되는 한 개 이상의 칼럼 또는 표현식을
 명시한다. 집계 함수는 이 절을 선택적으로 사용할 수 있지만, 순위 함수의 경우 이
@@ -939,7 +966,7 @@ window_order_clause
 NULLS FIRST 또는 NULLS LAST 키워드를 사용해서 NULL을 정렬 순서에서 맨 처음 또는
 맨 마지막에 위치시킬 수 있다.
 
-window_frame_clause
+*window_frame_clause*
 
 이 절은 행을 기준으로 함수의 대상이 되는 윈도우(물리적 또는 논리적인 행의
 집합)를 정의하며, 함수는 윈도우 내의 모든 행에 적용된다. 윈도우는 쿼리 결과 집합
