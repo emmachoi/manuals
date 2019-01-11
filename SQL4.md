@@ -1005,13 +1005,21 @@ ROWS는 행의 수를 기준으로 윈도우를 명시하고, RANGE는 행의 �
 윈도우 함수의 ORDER BY 하위 절에 DATE 타입의 표현식이 사용된 경우, RANGE 절의
 *value* 위치에 아래의 형식을 사용할 수 있다.
 
-INTERVAL *n* [YEAR \| MONTH \| DAY \| HOUR \| MINUTE \| SECOND]
+```
+INTERVAL n [YEAR | MONTH | DAY | HOUR | MINUTE | SECOND]
+```
+
+
 
 #### DENSE_RANK
 
 ##### 구문
 
-**DENSE_RANK** () **OVER** {...}
+```
+DENSE_RANK () OVER {...}
+```
+
+
 
 ##### 설명
 
@@ -1023,7 +1031,11 @@ DENSE_RANK 함수는 RANK함수처럼 결과 집합 또는 파티션의 특정 �
 
 ##### 구문
 
-**FIRST_VALUE** (*expr*) **OVER** {...}
+```
+FIRST_VALUE (expr) OVER {...}
+```
+
+
 
 ##### 설명
 
@@ -1039,7 +1051,11 @@ DENSE_RANK 함수는 RANK함수처럼 결과 집합 또는 파티션의 특정 �
 
 ##### 구문
 
-**FIRST_VALUE_IGNORE_NULLS** (*expr*) **OVER** {...}
+```
+FIRST_VALUE_IGNORE_NULLS (expr) OVER {...}
+```
+
+
 
 ##### 설명
 
@@ -1053,7 +1069,11 @@ FIRST_VALUE 함수와 동일하다.
 
 ##### 구문
 
-**LAG** (*expr* [, *offset* [, *default_value*]]) **OVER** {...}
+```
+LAG (expr [, offset [, default_value]]) OVER {...}
+```
+
+
 
 ##### 설명
 
@@ -1074,7 +1094,11 @@ FIRST_VALUE 함수와 동일하다.
 
 ##### 구문
 
-**LAG_IGNORE_NULLS** (*expr* [, *offset* [, *default_value*]]) **OVER** {...}
+```
+LAG_IGNORE_NULLS (expr [, offset [, default_value]]) OVER {...}
+```
+
+
 
 ##### 설명
 
@@ -1091,7 +1115,11 @@ LAG 함수와 동일하다.
 
 ##### 구문
 
-**LAST_VALUE** (*expr*) **OVER** {...}
+```
+LAST_VALUE (expr) OVER {...}
+```
+
+
 
 ##### 설명
 
@@ -1107,7 +1135,11 @@ LAG 함수와 동일하다.
 
 ##### 구문
 
-**LAST_VALUE_IGNORE_NULLS** (*expr*) **OVER** {...}
+```
+LAST_VALUE_IGNORE_NULLS (expr) OVER {...}
+```
+
+
 
 ##### 설명
 
@@ -1121,7 +1153,11 @@ LAST_VALUE 함수와 동일하다.
 
 ##### 구문
 
-**LEAD** (*expr* [, *offset* [, *default_value*]]) **OVER** {...}
+```
+LEAD (expr [, offset [, default_value]]) OVER {...}
+```
+
+
 
 ##### 설명
 
@@ -1142,7 +1178,11 @@ LAST_VALUE 함수와 동일하다.
 
 ##### 구문
 
-**LEAD_IGNORE_NULLS** (*expr* [, *offset* [, *default_value*]]) **OVER** {...}
+```
+LEAD_IGNORE_NULLS (expr [, offset [, default_value]]) OVER {...}
+```
+
+
 
 ##### 설명
 
@@ -1159,7 +1199,7 @@ LEAD 함수와 동일하다.
 
 ##### 구문 
 
-order_by_clause ::=
+![listagg](D:\emmachoigit\manuals\media\SQL\listagg.gif)
 
 ##### 설명
 
@@ -1175,153 +1215,100 @@ LISTAGG 함수는 집계 함수와 분석 함수로 사용할 수 있다.
 empno로 그룹화하여 job의 순서대로 name을 출력할 때, 이름 사이에 ';'을 삽입하여
 출력하라.
 
-iSQL\> select empno, cast(listagg(name,';') within group( order by job) as
-varchar(100)) "emp_job"
+```
+iSQL> select empno, cast(listagg(name,';') within group( order by job) as varchar(100)) "emp_job"
+    from emp group by empno;  
 
-from emp group by empno;
-
-EMPNO
-
-\--------------
-
-emp_job
-
-\--------------------------------------------------------------------------------------------------------
-
-10
-
-king
-
-20
-
-jun;jake
-
-30
-
-hong;key;ward
-
-40
-
-kuku;adams;cris;ford
-
-50
-
-yoon;poo;blake;smith;poul
-
-60
-
-rin;jones;woo;miller;kim;martin
-
+EMPNO       
+--------------
+emp_job                                                                                               
+emp_job                                                                                               
+--------------------------------------------------------------------------------------------------------
+10          
+king                                                                                                  
+20          
+jun;jake                                                                                              
+30          
+hong;key;ward                                                                                         
+40          
+kuku;adams;cris;ford                                                                                  
+50          
+yoon;poo;blake;smith;poul                                                                             
+60          
+rin;jones;woo;miller;kim;martin                                                                       
 6 rows selected.
+
+```
 
 \<질의\> 다음은 분석 함수에서 LISTAGG를 사용하는 예제이다. emp 테이블에서 job의
 순서대로 name을 출력할 때, 이름 사이에 ';'을 삽입하여 출력하라.
 
-iSQL\> select empno, cast(listagg(name,';') within group( order by job)
+```
+iSQL> select empno, cast(listagg(name,';') within group( order by job) 
+    over ( partition by empno ) as varchar(100)) "emp_job"
+    from emp; 
 
-over ( partition by empno ) as varchar(100)) "emp_job"
-
-from emp;
-
-EMPNO
-
-\--------------
-
-emp_job
-
-\--------------------------------------------------------------------------------------------------------
-
-10
-
-king
-
-20
-
-jun;jake
-
-20
-
-jun;jake
-
-30
-
-hong;key;ward
-
-30
-
-hong;key;ward
-
-30
-
-hong;key;ward
-
-40
-
-kuku;adams;cris;ford
-
-40
-
-kuku;adams;cris;ford
-
-40
-
-kuku;adams;cris;ford
-
-40
-
-kuku;adams;cris;ford
-
-50
-
-yoon;poo;blake;smith;poul
-
-50
-
-yoon;poo;blake;smith;poul
-
-50
-
-yoon;poo;blake;smith;poul
-
-50
-
-yoon;poo;blake;smith;poul
-
-50
-
-yoon;poo;blake;smith;poul
-
-60
-
-rin;jones;woo;miller;kim;martin
-
-60
-
-rin;jones;woo;miller;kim;martin
-
-60
-
-rin;jones;woo;miller;kim;martin
-
-60
-
-rin;jones;woo;miller;kim;martin
-
-60
-
-rin;jones;woo;miller;kim;martin
-
-60
-
-rin;jones;woo;miller;kim;martin
-
+EMPNO       
+--------------
+emp_job                                                                                               
+--------------------------------------------------------------------------------------------------------
+10          
+king                                                                                                  
+20          
+jun;jake                                                                                              
+20          
+jun;jake                                                                                              
+30          
+hong;key;ward                                                                                         
+30          
+hong;key;ward                                                                                         
+30          
+hong;key;ward                                                                                         
+40          
+kuku;adams;cris;ford                                                                                  
+40          
+kuku;adams;cris;ford                                                                                  
+40          
+kuku;adams;cris;ford                                                                                  
+40          
+kuku;adams;cris;ford                                                                                  
+50          
+yoon;poo;blake;smith;poul                                                                             
+50          
+yoon;poo;blake;smith;poul                                                                             
+50          
+yoon;poo;blake;smith;poul                                                                             
+50          
+yoon;poo;blake;smith;poul                                                                             
+50          
+yoon;poo;blake;smith;poul                                                                             
+60          
+rin;jones;woo;miller;kim;martin                                                                       
+60          
+rin;jones;woo;miller;kim;martin                                                                       
+60          
+rin;jones;woo;miller;kim;martin                                                                       
+60          
+rin;jones;woo;miller;kim;martin                                                                       
+60          
+rin;jones;woo;miller;kim;martin                                                                       
+60          
+rin;jones;woo;miller;kim;martin                                                                       
 21 rows selected.
+
+```
+
+
 
 #### NTH_VALUE
 
 ##### 구문
 
-**NTH_VALUE** (*expr*, *offset*) **OVER** {...}
+```
+NTH_VALUE (expr, offset) OVER {...}
+```
+
+
 
 ##### 설명
 
@@ -1337,7 +1324,11 @@ rin;jones;woo;miller;kim;martin
 
 ##### 구문
 
-**NTH_VALUE_IGNORE_NULLS** (*expr*, *offset*) **OVER** {...}
+```
+NTH_VALUE_IGNORE_NULLS (expr, offset) OVER {...}
+```
+
+
 
 ##### 설명
 
@@ -1366,58 +1357,40 @@ NTILE함수는 정렬된 데이터의 특정 멤버를 기준으로 입력된 *e
 \<질의\> 정렬된 급여를 기준으로 3개의 그룹으로 균등하게 나누어서 그룹의 순번을
 확인한다.
 
-iSQL\> select E_FIRSTNAME, SALARY, NTILE(3) OVER(ORDER BY SALARY) FROM
-EMPLOYEES;
-
-E_FIRSTNAME SALARY NTILE(3)OVER(ORDERBYSALARY)
-
-\------------------------------------------------------------------
-
-Gottlieb 500 1
-
-Mitch 980 1
-
-Jason 1000 1
-
-Curtis 1200 1
-
-Takahiro 1400 1
-
-Susan 1500 1
-
-Ryu 1700 1
-
-Aaron 1800 2
-
-Alvar 1800 2
-
-Sandra 1890 2
-
-John 1900 2
-
-Ken 2000 2
-
-Yuu 2003 2
-
-Wei-Wei 2300 2
-
-Farhad 2500 3
-
-Zhen 2750 3
-
-Elizabeth 4000 3
-
-Chan-seung 3
-
-Xiong 3
-
-William 3
-
+```
+iSQL> select E_FIRSTNAME, SALARY, NTILE(3) OVER(ORDER BY SALARY)  FROM EMPLOYEES;
+E_FIRSTNAME           SALARY      NTILE(3)OVER(ORDERBYSALARY)
+------------------------------------------------------------------
+Gottlieb              500         1
+Mitch                 980         1
+Jason                 1000        1
+Curtis                1200        1
+Takahiro              1400        1
+Susan                 1500        1
+Ryu                   1700        1
+Aaron                 1800        2
+Alvar                 1800        2
+Sandra                1890        2
+John                  1900        2
+Ken                   2000        2
+Yuu                   2003        2
+Wei-Wei               2300        2
+Farhad                2500        3
+Zhen                  2750        3
+Elizabeth             4000        3
+Chan-seung                        3
+Xiong                             3
+William                           3
 20 rows selected.
+```
+
+
 
 #### PERCENTILE_CONT
 
 ##### 구문 
+
+![percentile_cont](D:\emmachoigit\manuals\media\SQL\percentile_cont.gif)
 
 ##### 설명 
 
@@ -1435,99 +1408,65 @@ PERCENTILE_CONT 함수는 집계 함수와 분석 함수로 사용할 수 있다
 \<질의\> 다음은 집계 함수에서 PERCENTILE_CONT를 사용하는 예제이다. emp
 테이블에서 empno 내에서 중간 급여를 출력하라.
 
-iSQL\> select empno,
-
-percentile_cont(0.5) within group (order by sal asc) "median asc cont",
-
-percentile_cont(0.5) within group (order by sal desc) "median desc cont"
-
-from emp
-
-group by empno;
-
-EMPNO median asc cont median desc cont
-
-\--------------------------------------------------------------
-
-10 1000 1000
-
-20 1225 1225
-
-30 1300 1300
-
-40 1850 1850
-
-50 1600 1600
-
-60 1375 1375
-
+```
+iSQL> select empno, 
+ percentile_cont(0.5) within group (order by sal asc) "median asc cont",
+ percentile_cont(0.5) within group (order by sal desc) "median desc cont"
+ from emp
+ group by empno;
+EMPNO median asc cont median desc cont 
+--------------------------------------------------------------
+10 1000 1000 
+20 1225 1225 
+30 1300 1300 
+40 1850 1850 
+50 1600 1600 
+60 1375 1375 
 6 rows selected.
+```
 
 \<질의\> 다음은 분석 함수에서 PERCENTILE_CONT를 사용하는 예제이다.
 
-iSQL\> select empno,
-
-percentile_cont(0.5) within group (order by sal asc)
-
-over ( partition by empno ) "median asc cont",
-
-percentile_cont(0.5) within group (order by sal desc)
-
-over ( partition by empno ) "median desc cont"
-
-from emp;
-
-EMPNO median asc cont median desc cont
-
-\--------------------------------------------------------------
-
-10 1000 1000
-
-20 1225 1225
-
-20 1225 1225
-
-30 1300 1300
-
-30 1300 1300
-
-30 1300 1300
-
-40 1850 1850
-
-40 1850 1850
-
-40 1850 1850
-
-40 1850 1850
-
-50 1600 1600
-
-50 1600 1600
-
-50 1600 1600
-
-50 1600 1600
-
-50 1600 1600
-
-60 1375 1375
-
-60 1375 1375
-
-60 1375 1375
-
-60 1375 1375
-
-60 1375 1375
-
-60 1375 1375
-
+```
+iSQL> select empno, 
+ percentile_cont(0.5) within group (order by sal asc) 
+ over ( partition by empno ) "median asc cont",
+ percentile_cont(0.5) within group (order by sal desc) 
+ over ( partition by empno ) "median desc cont"
+ from emp;
+EMPNO median asc cont median desc cont 
+--------------------------------------------------------------
+10 1000 1000 
+20 1225 1225 
+20 1225 1225 
+30 1300 1300 
+30 1300 1300 
+30 1300 1300 
+40 1850 1850 
+40 1850 1850 
+40 1850 1850 
+40 1850 1850 
+50 1600 1600 
+50 1600 1600 
+50 1600 1600 
+50 1600 1600 
+50 1600 1600 
+60 1375 1375 
+60 1375 1375 
+60 1375 1375 
+60 1375 1375 
+60 1375 1375 
+60 1375 1375 
 21 rows selected.
+```
+
+
 
 #### PERCENTILE_DISC
 
 ##### 구문 
+
+![percentile_disc](D:\emmachoigit\manuals\media\SQL\percentile_disc.gif)
 
 ##### 설명
 
@@ -1540,106 +1479,72 @@ EMPNO median asc cont median desc cont
 
 PERCENTILE_DISC 함수는 집계 함수와 분석 함수로 사용할 수 있다.
 
-예제\<질의\> 다음은 집계 함수에서 PERCENTILE_DISC를 사용하는 예제이다. emp
+##### 예제
+
+\<질의\> 다음은 집계 함수에서 PERCENTILE_DISC를 사용하는 예제이다. emp
 테이블에서 empno 내에서 중간 급여를 출력하라. PERCENTILE_CONT가 짝수 개의
 그룹내에서 중앙 값의 평균을 구하는 반면, PERCENTILE_DISC는 중앙 값 사이의 첫번
 째 값을 출력한다.
 
-iSQL\> select empno,
-
-percentile_disc(0.5) within group (order by sal asc) "median asc cont",
-
-percentile_disc(0.5) within group (order by sal desc) "median desc cont"
-
-from emp
-
-group by empno;
-
-EMPNO median asc cont median desc cont
-
-\----------------------------------------------------------
-
-10 1000 1000
-
-20 1200 1250
-
-30 1300 1300
-
-40 1500 2200
-
-50 1600 1600
-
-60 1250 1500
-
+```
+iSQL> select empno, 
+ percentile_disc(0.5) within group (order by sal asc) "median asc cont",
+ percentile_disc(0.5) within group (order by sal desc) "median desc cont"
+ from emp 
+ group by empno; 
+EMPNO median asc cont median desc cont 
+----------------------------------------------------------
+10 1000 1000 
+20 1200 1250 
+30 1300 1300 
+40 1500 2200 
+50 1600 1600 
+60 1250 1500 
 6 rows selected.
+```
 
 \<질의\> 다음은 분석 함수에서 PERCENTILE_DISC를 사용하는 예제이다.
 
-iSQL\> select empno,
-
-percentile_disc(0.5) within group (order by sal asc)
-
-over ( partition by empno ) "median asc cont",
-
-percentile_disc(0.5) within group (order by sal desc)
-
-over ( partition by empno ) "median desc cont"
-
-from emp;
-
-EMPNO median asc cont median desc cont
-
-\----------------------------------------------------------
-
-10 1000 1000
-
-20 1200 1250
-
-20 1200 1250
-
-30 1300 1300
-
-30 1300 1300
-
-30 1300 1300
-
-40 1500 2200
-
-40 1500 2200
-
-40 1500 2200
-
-40 1500 2200
-
-50 1600 1600
-
-50 1600 1600
-
-50 1600 1600
-
-50 1600 1600
-
-50 1600 1600
-
-60 1250 1500
-
-60 1250 1500
-
-60 1250 1500
-
-60 1250 1500
-
-60 1250 1500
-
-60 1250 1500
-
+```
+iSQL> select empno, 
+ percentile_disc(0.5) within group (order by sal asc) 
+ over ( partition by empno ) "median asc cont",
+ percentile_disc(0.5) within group (order by sal desc) 
+ over ( partition by empno ) "median desc cont"
+ from emp;
+EMPNO median asc cont median desc cont 
+----------------------------------------------------------
+10 1000 1000 
+20 1200 1250 
+20 1200 1250 
+30 1300 1300 
+30 1300 1300 
+30 1300 1300 
+40 1500 2200 
+40 1500 2200 
+40 1500 2200 
+40 1500 2200 
+50 1600 1600 
+50 1600 1600 
+50 1600 1600 
+50 1600 1600 
+50 1600 1600 
+60 1250 1500 
+60 1250 1500 
+60 1250 1500 
+60 1250 1500 
+60 1250 1500 
+60 1250 1500 
 21 rows selected.
+```
+
+
 
 #### RANK
 
 ##### 구문
 
-![](media/SQL/0f0bc1973a7c59470ee7d510994723f7.png)
+![rank_with_group](D:\emmachoigit\manuals\media\SQL\rank_with_group.gif)
 
 [window_order_clause::=](#window_order_clause)
 
@@ -1649,78 +1554,53 @@ RANK 함수는 결과 집합 (또는 파티션)의 특정 멤버를 기준으로
 값에는 동일한 순위가 매겨지고, 그만큼 건너뛰어 다음 순위가 매겨진다. 반환 값의
 타입은 BIGINT이다. RANK함수는 집계 함수와 분석 함수로 사용할 수 있다.
 
-\*주의 : RANK의 인자 개수와 WITHIN GROUP 절의 인자 개수는 일치해야 하며, 인자의
-타입은 자동으로 호환되지 않는다. RANK인자의 데이터 타입은 제한되지 않으나 상수
-사용을 권장한다.
+> 주의 : RANK의 인자 개수와 WITHIN GROUP 절의 인자 개수는 일치해야 하며, 인자의
+> 타입은 자동으로 호환되지 않는다. RANK인자의 데이터 타입은 제한되지 않으나 상수
+> 사용을 권장한다.
 
 ##### 예제
 
 \<질의\> 부서번호(DNO)가1003이고 급여가(SALARY)가 1001인 직원의 순위를 출력하라.
 
-iSQL\> select DNO, SALARY from EMPLOYEES ORDER BY 1,2;
-
-DNO SALARY
-
-\---------------------------
-
-1001 2000
-
-1001 2300
-
-1002 980
-
-1002 1700
-
-1003 1000
-
-1003 2003
-
-1003 2750
-
-1003 4000
-
-2001 1400
-
-3001 1800
-
-3002 2500
-
+```
+iSQL> select DNO, SALARY from EMPLOYEES ORDER BY 1,2;
+DNO         SALARY
+---------------------------
+1001        2000
+1001        2300
+1002        980
+1002        1700
+1003        1000
+1003        2003
+1003        2750
+1003        4000
+2001        1400
+3001        1800
+3002        2500
 3002
-
-4001 1200
-
-4001 1900
-
+4001        1200
+4001        1900
 4001
-
-4002 500
-
-4002 1800
-
-4002 1890
-
+4002        500
+4002        1800
+4002        1890
 4002
-
-1500
-
+            1500
 20 rows selected.
-
-iSQL\> select rank(1003,1001) within group (order by DNO, SALARY ) from
-EMPLOYEES ;
-
+iSQL> select rank(1003,1001) within group (order by DNO, SALARY ) from EMPLOYEES ;
 RNK
-
-\-----------------------
-
+-----------------------
 6
-
 1 row selected.
+```
+
+
 
 #### RATIO_TO_REPORT
 
 ##### 구문
 
-![](media/SQL/096f74029f80a64e154575dce49612fa.png)
+![ratio_to_report](D:\emmachoigit\manuals\media\SQL\ratio_to_report.gif)
 
 [window_partition_clause::=](#window_partition_clause)
 
@@ -1735,38 +1615,33 @@ window_partition_clause 구문을 생략하면 반환되는 모든 열의 값을
 
 \<질의\> 사원들의 급여가 각각의 부서 내에서 차지하는 비율을 확인한다.
 
-iSQL\> select E_FIRSTNAME, DNO, SALARY, RATIO_TO_REPORT(SALARY) OVER (PARTITION
-BY DNO) AS Result from EMPLOYEES LIMIT 9;
-
-E_FIRSTNAME DNO SALARY RESULT
-
-\---------------------------------------------------------------
-
-Ken 1001 2000 0.465116279
-
-Wei-Wei 1001 2300 0.534883721
-
-Ryu 1002 1700 0.634328358
-
-Mitch 1002 980 0.365671642
-
-Elizabeth 1003 4000 0.410130216
-
-Zhen 1003 2750 0.281964524
-
-Yuu 1003 2003 0.205372706
-
-Jason 1003 1000 0.102532554
-
-Takahiro 2001 1400 1
-
+```
+iSQL> select E_FIRSTNAME, DNO, SALARY, RATIO_TO_REPORT(SALARY) OVER (PARTITION BY DNO) AS Result from EMPLOYEES LIMIT 9;
+E_FIRSTNAME           DNO         SALARY      RESULT
+---------------------------------------------------------------
+Ken                   1001        2000        0.465116279
+Wei-Wei               1001        2300        0.534883721
+Ryu                   1002        1700        0.634328358
+Mitch                 1002        980         0.365671642
+Elizabeth             1003        4000        0.410130216
+Zhen                  1003        2750        0.281964524
+Yuu                   1003        2003        0.205372706
+Jason                 1003        1000        0.102532554
+Takahiro              2001        1400        1
 9 rows selected.
+```
+
+
 
 #### ROW_NUMBER
 
 ##### 구문
 
-**ROW_NUMBER** () **OVER** {...}
+```
+ROW_NUMBER () OVER {...}
+```
+
+
 
 ##### 설명
 
@@ -1781,256 +1656,151 @@ ROW_NUMBER 함수는 결과 집합 또는 파티션의 특정 멤버를 기준�
 
 \<질의\> 각 부서별로 급여가 낮은 순서대로 출력하라.
 
-iSQL(sysdba)\> SELECT e_lastname, dno, salary, RANK() OVER (PARTITION BY dno
-ORDER BY salary DESC) FROM employees;
-
-E_LASTNAME DNO SALARY RANK
-
-\------------------------------------------------------------------------
-
-Chen 1001 2300 1
-
-Kobain 1001 2000 2
-
-Momoi 1002 1700 1
-
+```
+iSQL(sysdba)> SELECT e_lastname, dno, salary, RANK() OVER (PARTITION BY dno ORDER BY salary DESC) FROM employees;
+E_LASTNAME            DNO         SALARY      RANK
+------------------------------------------------------------------------
+Chen                  1001        2300        1
+Kobain                1001        2000        2
+Momoi                 1002        1700        1
 .
-
 .
-
 .
-
-Hammond 4002 1890 1
-
-Marquez 4002 1800 2
-
-Fleischer 4002 500 3
-
-Blake 4002 4
-
-Davenport 1500 1
-
+Hammond               4002        1890        1
+Marquez               4002        1800        2
+Fleischer             4002        500         3
+Blake                 4002                    4
+Davenport                         1500        1
 20 rows selected.
+```
 
 \<질의\> 다음 예제는 RANK, DENSE_RANK, 및 ROW_NUMBER 함수의 결과가 다름을
 보여준다.
 
-iSQL(sysdba)\> SELECT salary,
-
-RANK() OVER (ORDER BY salary DESC),
-
-DENSE_RANK() OVER (ORDER BY salary DESC),
-
-ROW_NUMBER() OVER (ORDER BY salary DESC)
-
-FROM employees;
-
-SALARY RANK DENSE_RANK ROW_NUMBER
-
-\---------------------------------------------------------------------------
-
-4000 1 1 1
-
-2750 2 2 2
-
-2500 3 3 3
-
-2300 4 4 4
-
-2003 5 5 5
-
-2000 6 6 6
-
-1900 7 7 7
-
-1890 8 8 8
-
-1800 9 9 9
-
-1800 9 9 10
-
-1700 11 10 11
-
-1500 12 11 12
-
-1400 13 12 13
-
-1200 14 13 14
-
-1000 15 14 15
-
-980 16 15 16
-
-500 17 16 17
-
-18 17 18
-
-18 17 19
-
-18 17 20
-
+```
+iSQL(sysdba)> SELECT salary, 
+ RANK() OVER (ORDER BY salary DESC), 
+ DENSE_RANK() OVER (ORDER BY salary DESC), 
+ ROW_NUMBER() OVER (ORDER BY salary DESC) 
+ FROM employees;
+SALARY      RANK                 DENSE_RANK           ROW_NUMBER
+---------------------------------------------------------------------------
+4000        1                    1                    1
+2750        2                    2                    2
+2500        3                    3                    3
+2300        4                    4                    4
+2003        5                    5                    5
+2000        6                    6                    6
+1900        7                    7                    7
+1890        8                    8                    8
+1800        9                    9                    9
+1800        9                    9                    10
+1700        11                   10                   11
+1500        12                   11                   12
+1400        13                   12                   13
+1200        14                   13                   14
+1000        15                   14                   15
+980         16                   15                   16
+500         17                   16                   17
+            18                   17                   18
+            18                   17                   19
+            18                   17                   20
 20 rows selected.
+```
 
 \<질의\> 부서별 최고 급여에 대한 사원 각자의 급여 비율을 모든 사원에 대하여
 구하라.
 
-iSQL(sysdba)\> SELECT e_lastname, dno, salary,
-
-ROUND(salary/MAX(salary) OVER (PARTITION BY dno)\*100) rel_sal
-
-FROM employees;
-
-E_LASTNAME DNO SALARY REL_SAL
-
-\---------------------------------------------------------------
-
-Kobain 1001 2000 87
-
-Chen 1001 2300 100
-
+```
+iSQL(sysdba)> SELECT e_lastname, dno, salary, 
+ ROUND(salary/MAX(salary) OVER (PARTITION BY dno)*100) rel_sal 
+ FROM employees;
+E_LASTNAME            DNO         SALARY      REL_SAL
+---------------------------------------------------------------
+Kobain                1001        2000        87
+Chen                  1001        2300        100
 .
-
 .
-
 .
-
-Diaz 4001 1200 63
-
-Fleischer 4002 500 26
-
-Marquez 4002 1800 95
-
-Blake 4002
-
-Hammond 4002 1890 100
-
-Davenport 1500 100
-
+Diaz                  4001        1200        63
+Fleischer             4002        500         26
+Marquez               4002        1800        95
+Blake                 4002
+Hammond               4002        1890        100
+Davenport                         1500        100
 20 rows selected.
+```
 
 \<질의\> 아래의 예제는 FIRST_VALUE, LAST_VALUE, NTH_VALUE함수를 사용하여 성별로
 최저 급여, 최고 급여 및 세 번째로 적은 급여를 구한다.
 
-iSQL\> select sex, salary,
-
-FIRST_VALUE( salary ) OVER ( PARTITION BY sex ORDER BY salary ROWS BETWEEN
-UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) F_VALUE,
-
-LAST_VALUE( salary ) OVER ( PARTITION BY sex ORDER BY salary ROWS BETWEEN
-UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) L_VALUE,
-
-NTH_VALUE( salary, 3 ) OVER ( PARTITION BY sex ORDER BY salary ROWS BETWEEN
-UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) N_VALUE
-
-from employees;
-
-SEX SALARY F_VALUE L_VALUE N_VALUE
-
-\-----------------------------------------------------------
-
-F 1500 1500 4000 2300
-
-F 1890 1500 4000 2300
-
-F 2300 1500 4000 2300
-
-F 4000 1500 4000 2300
-
-M 500 500 1000
-
-M 980 500 1000
-
-M 1000 500 1000
-
-M 1200 500 1000
-
-M 1400 500 1000
-
-M 1700 500 1000
-
-M 1800 500 1000
-
-M 1800 500 1000
-
-M 1900 500 1000
-
-M 2000 500 1000
-
-M 2003 500 1000
-
-M 2500 500 1000
-
-M 2750 500 1000
-
-M 500 1000
-
-M 500 1000
-
-M 500 1000
-
+```
+iSQL> select sex, salary, 
+       FIRST_VALUE( salary ) OVER ( PARTITION BY sex ORDER BY salary ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) F_VALUE,
+       LAST_VALUE( salary ) OVER ( PARTITION BY sex ORDER BY salary ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) L_VALUE,
+       NTH_VALUE( salary, 3 ) OVER ( PARTITION BY sex ORDER BY salary ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING ) N_VALUE
+    from employees;
+SEX  SALARY      F_VALUE     L_VALUE     N_VALUE     
+-----------------------------------------------------------
+F  1500        1500        4000        2300        
+F  1890        1500        4000        2300        
+F  2300        1500        4000        2300        
+F  4000        1500        4000        2300        
+M  500          500                        1000        
+M  980          500                        1000        
+M  1000        500                        1000        
+M  1200        500                        1000        
+M  1400        500                        1000        
+M  1700        500                        1000        
+M  1800        500                        1000        
+M  1800        500                        1000        
+M  1900        500                        1000        
+M  2000        500                        1000        
+M  2003        500                        1000        
+M  2500        500                        1000        
+M  2750        500                        1000        
+M                 500                        1000        
+M                 500                        1000        
+M                 500                        1000        
 20 rows selected.
+```
 
 \<질의\> 아래는 LAG, LEAD 함수를 사용한 예제이다.
 
-iSQL(sysdba) \> SELECT salary,
-
-RANK() OVER (ORDER BY salary DESC),
-
-DENSE_RANK() OVER (ORDER BY salary DESC),
-
-ROW_NUMBER() OVER (ORDER BY salary DESC),
-
-LAG( salary ) OVER (ORDER BY salary DESC) LAG,
-
-LEAD( salary ) OVER (ORDER BY salary DESC) LEAD
-
-FROM employees;
-
-SALARY RANK DENSE_RANK ROW_NUMBER LAG LEAD
-
-\----------------------------------------------------------------------------------------------------------
-
-4000 1 1 1 2750
-
-2750 2 2 2 4000 2500
-
-2500 3 3 3 2750 2300
-
-2300 4 4 4 2500 2003
-
-2003 5 5 5 2300 2000
-
-2000 6 6 6 2003 1900
-
-1900 7 7 7 2000 1890
-
-1890 8 8 8 1900 1800
-
-1800 9 9 9 1890 1800
-
-1800 9 9 10 1800 1700
-
-1700 11 10 11 1800 1500
-
-1500 12 11 12 1700 1400
-
-1400 13 12 13 1500 1200
-
-1200 14 13 14 1400 1000
-
-1000 15 14 15 1200 980
-
-980 16 15 16 1000 500
-
-500 17 16 17 980
-
-18 17 18 500
-
-18 17 19
-
-18 17 20
-
+```
+iSQL(sysdba) > SELECT salary, 
+       RANK() OVER (ORDER BY salary DESC), 
+       DENSE_RANK() OVER (ORDER BY salary DESC), 
+       ROW_NUMBER() OVER (ORDER BY salary DESC), 
+       LAG( salary ) OVER (ORDER BY salary DESC) LAG,
+       LEAD( salary ) OVER (ORDER BY salary DESC) LEAD
+       FROM employees;
+SALARY      RANK                 DENSE_RANK           ROW_NUMBER           LAG         LEAD        
+----------------------------------------------------------------------------------------------------------
+4000        1                    1                    1                                    2750        
+2750        2                    2                    2                    4000        2500        
+2500        3                    3                    3                    2750        2300        
+2300        4                    4                    4                    2500        2003        
+2003        5                    5                    5                    2300        2000        
+2000        6                    6                    6                    2003        1900        
+1900        7                    7                    7                    2000        1890        
+1890        8                    8                    8                    1900        1800        
+1800        9                    9                    9                    1890        1800        
+1800        9                    9                    10                  1800        1700        
+1700        11                 10                   11                  1800        1500        
+1500        12                 11                   12                  1700        1400        
+1400        13                 12                   13                   1500        1200        
+1200        14                 13                   14                   1400        1000        
+1000        15                 14                   15                   1200        980         
+980          16                 15                   16                   1000        500         
+500          17                 16                   17                   980                     
+                18                 17                   18                   500                     
+                18                 17                   19                                           
+                18                 17                   20                                           
 20 rows selected.
+```
+
+
 
 ### 숫자 함수
 
@@ -2041,7 +1811,11 @@ SALARY RANK DENSE_RANK ROW_NUMBER LAG LEAD
 
 ##### 구문
 
-**ABS** (*number*)
+```
+ABS (number)
+```
+
+
 
 ##### 설명
 
@@ -2051,34 +1825,36 @@ SALARY RANK DENSE_RANK ROW_NUMBER LAG LEAD
 
 \<질의\> 세 숫자의 절대 값을 출력하라.
 
-iSQL\> SELECT ABS(-1), ABS(0.0), ABS(1) FROM dual;
-
-ABS(-1) ABS(0.0) ABS(1)
-
-\----------------------------------------
-
-1 0 1
-
+```
+iSQL> SELECT ABS(-1), ABS(0.0), ABS(1) FROM dual;
+ABS(-1)     ABS(0.0)    ABS(1)      
+----------------------------------------
+1           0           1           
 1 row selected.
+```
 
 \<질의\> 상품 테이블에서 가장 비싼 품목의 가격과 가장 싼 품목의 가격 차이를
 구하라.
 
-iSQL\> SELECT ABS(MIN(price) - MAX(price)) absolute_value FROM goods;
-
-ABSOLUTE_VALUE
-
-\-----------------
-
-99033.01
-
+```
+iSQL> SELECT ABS(MIN(price) - MAX(price)) absolute_value FROM goods;
+ABSOLUTE_VALUE 
+-----------------
+99033.01    
 1 row selected.
+```
+
+
 
 #### ACOS
 
 ##### 구문
 
-**ACOS** (*number*)
+```
+ACOS (number)
+```
+
+
 
 ##### 설명
 
@@ -2087,27 +1863,31 @@ ABSOLUTE_VALUE
 않으면 0.000000을 반환한다. 이 함수는 0에서 π(pi)사이의 DOUBLE타입 숫자 값을
 라디안 단위로 반환한다.
 
-1 라디안(radian) = 180º/pi
+*1 라디안(radian) = 180º/pi*
 
 ##### 예제
 
 \<질의\>
 
-iSQL\> SELECT ACOS(.3) Arc_Cosine FROM dual;
-
-ARC_COSINE
-
-\--------------
-
+```
+iSQL> SELECT ACOS(.3) Arc_Cosine FROM dual;
+ARC_COSINE  
+--------------
 1.2661036727795
-
 1 row selected.
+```
+
+
 
 #### ASIN
 
 ##### 구문
 
-**ASIN** (*number*)
+```
+ASIN (number)
+```
+
+
 
 ##### 설명
 
@@ -2120,21 +1900,25 @@ ARC_COSINE
 
 \<질의\>
 
-iSQL\> SELECT ASIN(.3) Arc_Sine FROM dual;
-
-ARC_SINE
-
-\--------------
-
+```
+iSQL> SELECT ASIN(.3) Arc_Sine FROM dual;
+ARC_SINE    
+--------------
 0.304692654015398
-
 1 row selected.
+```
+
+
 
 #### ATAN
 
 ##### 구문
 
-**ATAN** (*number*)
+```
+ATAN (number)
+```
+
+
 
 ##### 설명
 
@@ -2146,21 +1930,25 @@ ARC_SINE
 
 \<질의\>
 
-iSQL\> SELECT ATAN(.3) Arc_Tangent FROM dual;
-
-ARC_TANGENT
-
-\--------------
-
+```
+iSQL> SELECT ATAN(.3) Arc_Tangent FROM dual;
+ARC_TANGENT 
+--------------
 0.291456794477867
-
 1 row selected.
+```
+
+
 
 #### ATAN2
 
 ##### 구문
 
-**ATAN2** (*n, m*)
+```
+ATAN2 (n, m)
+```
+
+
 
 ##### 설명
 
@@ -2172,21 +1960,25 @@ ARC_TANGENT
 
 \<질의\>
 
-iSQL\> SELECT ATAN2(.3, .2) Arc_Tangent2 FROM dual;
-
-ARC_TANGENT2
-
-\---------------
-
+```
+iSQL> SELECT ATAN2(.3, .2) Arc_Tangent2 FROM dual;
+ARC_TANGENT2 
+---------------
 0.982793723247329
-
 1 row selected.
+```
+
+
 
 #### CEIL
 
 ##### 구문
 
-**CEIL** (*number*)
+```
+CEIL (number)
+```
+
+
 
 ##### 설명
 
@@ -2196,28 +1988,26 @@ ARC_TANGENT2
 
 \<질의\> 각 입력 값에 대해 입력 값 이상의 가장 작은 정수를 구하라.
 
-iSQL\> SELECT CEIL(99.9), CEIL(-99.9) FROM dual;
-
-CEIL(99.9) CEIL(-99.9)
-
-\---------------------------
-
-100 -99
-
+```
+iSQL> SELECT CEIL(99.9), CEIL(-99.9) FROM dual;
+CEIL(99.9)  CEIL(-99.9) 
+---------------------------
+100         -99         
 1 row selected.
+```
 
 \<질의\> 상품 테이블에서 가장 비싼 품목의 가격과 가장 싼 품목의 가격 차이를 구해
 그 값 이상의 가장 작은 정수를 구하라.
 
-iSQL\> SELECT CEIL(ABS (MIN(price) - MAX(price))) Smallest_int FROM goods;
-
-SMALLEST_INT
-
-\---------------
-
-99034
-
+```
+iSQL> SELECT CEIL(ABS (MIN(price) - MAX(price))) Smallest_int FROM goods;
+SMALLEST_INT 
+---------------
+99034       
 1 row selected.
+```
+
+#### COS
 
 ##### 구문
 
@@ -2232,48 +2022,56 @@ SMALLEST_INT
 
 \<질의\>
 
-iSQL\> SELECT COS(180 \* 3.14159265359/180) Cos_of_180_degrees FROM dual;
-
-COS_OF_180_DEGREES
-
-\---------------------
-
-\-1
-
+```
+iSQL> SELECT COS(180 * 3.14159265359/180) Cos_of_180_degrees FROM dual;
+COS_OF_180_DEGREES 
+---------------------
+-1          
 1 row selected.
+```
+
+
 
 #### COSH
 
 ##### 구문
 
-COSH (*number*)
+```
+COSH (number)
+```
+
+
 
 ##### 설명
 
 입력 값의 쌍곡선 코사인(hyperbolic 코사인) 값을 반환하는 함수이다. 반환 데이터
 타입은 DOUBLE이다.
 
-COSH(n) = ( e n + e -n )/2
+*COSH(n) = ( e n + e -n )/2*
 
 ##### 예제
 
 \<질의\>
 
-iSQL\> SELECT COSH(0) FROM dual;
-
-COSH(0)
-
-\--------------
-
-1
-
+```
+iSQL> SELECT COSH(0) FROM dual;
+COSH(0)     
+--------------
+1           
 1 row selected.
+```
+
+
 
 #### EXP
 
 ##### 구문
 
-**EXP** (*n*)
+```
+EXP (n)
+```
+
+
 
 ##### 설명
 
@@ -2284,21 +2082,25 @@ DOUBLE이다.
 
 \<질의\>
 
-iSQL\> SELECT EXP(2.4) FROM dual;
-
-EXP(2.4)
-
-\--------------
-
+```
+iSQL> SELECT EXP(2.4) FROM dual;
+EXP(2.4)    
+--------------
 11.0231763806416
-
 1 row selected.
+```
+
+
 
 #### FLOOR
 
 ##### 구문
 
-**FLOOR** (*number*)
+```
+FLOOR (number)
+```
+
+
 
 ##### 설명
 
@@ -2308,34 +2110,36 @@ EXP(2.4)
 
 \<질의\> 각 입력 값에 대해 입력 값 이하의 가장 큰 정수를 구하라.
 
-iSQL\> SELECT FLOOR(99.9), FLOOR(-99.9) FROM dual;
-
-FLOOR(99.9) FLOOR(-99.9)
-
-\----------------------------
-
-99 -100
-
+```
+iSQL> SELECT FLOOR(99.9), FLOOR(-99.9) FROM dual;
+FLOOR(99.9) FLOOR(-99.9) 
+----------------------------
+99          -100        
 1 row selected.
+```
 
 \<질의\> 상품 테이블에서 가장 비싼 품목의 가격과 가장 싼 품목의 가격 차이를 구해
 그 값 이하의 가장 큰 정수를 구하라.
 
-iSQL\> SELECT FLOOR(ABS(MIN(price) - MAX(price))) Largest_int FROM goods;
-
-LARGEST_INT
-
-\--------------
-
-99033
-
+```
+iSQL> SELECT FLOOR(ABS(MIN(price) - MAX(price))) Largest_int FROM goods;
+LARGEST_INT 
+--------------
+99033       
 1 row selected.
+```
+
+
 
 #### ISNUMERIC
 
 ##### 구문
 
-**ISNUMERIC** (*expr*)
+```
+ISNUMERIC (expr)
+```
+
+
 
 ##### 설명
 
@@ -2346,21 +2150,25 @@ LARGEST_INT
 
 \<질의\> 입력한 데이터 '1.4'가 유효한 숫자형인지 판단하라.
 
-iSQL\> select isnumeric('1.4') from dual;
-
+```
+iSQL> select isnumeric('1.4') from dual;
 ISNUMERIC('1.4')
-
-\-------------------
-
+-------------------
 1
-
 1 row selected.
+```
+
+
 
 #### LN
 
 ##### 구문
 
-**LN** (*n*)
+```
+LN (n)
+```
+
+
 
 ##### 설명
 
@@ -2370,21 +2178,25 @@ LN 함수는 *n*의 자연로그를 반환한다. 입력 값은 0 보다 커야 
 
 \<질의\>
 
-iSQL\> (2.4) FROM dual;
-
-LN(2.4)
-
-\--------------
-
+```
+iSQL> SELECT LN(2.4) FROM dual;
+LN(2.4)     
+--------------
 0.8754687373539
-
 1 row selected.
+```
+
+
 
 #### LOG
 
 ##### 구문
 
-**LOG** (*m, n*)
+```
+LOG (m, n)
+```
+
+
 
 ##### 설명
 
@@ -2395,21 +2207,25 @@ LOG 함수는 밑이 *m*인 *n*의 로그를 반환한다. 밑 *m*은 0과 1이 
 
 \<질의\>
 
-iSQL\> SELECT LOG(10, 100) FROM dual;
-
-LOG(10, 100)
-
-\---------------
-
-2
-
+```
+iSQL> SELECT LOG(10, 100) FROM dual;
+LOG(10, 100) 
+---------------
+2           
 1 row selected.
+```
+
+
 
 #### MOD
 
 ##### 구문
 
-**MOD** (*m, n*)
+```
+MOD (m, n)
+```
+
+
 
 ##### 설명
 
@@ -2419,33 +2235,35 @@ LOG(10, 100)
 
 \<질의\> 10을 3으로 나눈 나머지를 구하라.
 
-iSQL\> SELECT MOD(10, 3) FROM dual;
-
-MOD(10, 3)
-
-\--------------
-
-1
-
+```
+iSQL> SELECT MOD(10, 3) FROM dual;
+MOD(10, 3)  
+--------------
+1           
 1 row selected.
+```
 
 \<질의\> 모든 사람의 급여의 합을 가장 적은 사람의 급여로 나눈 나머지를 구하라.
 
-iSQL\> SELECT MOD(SUM(salary), MIN(salary)) Remainder FROM employees;
-
-REMAINDER
-
-\--------------
-
-223000
-
+```
+iSQL> SELECT MOD(SUM(salary), MIN(salary)) Remainder FROM employees;
+REMAINDER   
+--------------
+223000      
 1 row selected.
+```
+
+
 
 #### POWER
 
 ##### 구문
 
-**POWER** (*m, n*)
+```
+POWER (m, n)
+```
+
+
 
 ##### 설명
 
@@ -2456,21 +2274,25 @@ POWER 함수는 *m*의 *n* 제곱을 반환한다. *m*과 *n*은 임의의 숫�
 
 \<질의\>
 
-iSQL\> SELECT POWER(3, 2) FROM dual;
-
-POWER(3, 2)
-
-\--------------
-
-9
-
+```
+iSQL> SELECT POWER(3, 2) FROM dual;
+POWER(3, 2) 
+--------------
+9           
 1 row selected.
+```
+
+
 
 #### RAND
 
 ##### 구문
 
-**RAND** ()
+```
+RAND ()
+```
+
+
 
 ##### 설명
 
@@ -2481,21 +2303,25 @@ POWER(3, 2)
 
 \<질의\>
 
-iSQL\> SELECT RAND() FROM dual;
-
+```
+iSQL> SELECT RAND() FROM dual;
 RAND
-
-\-------------------------
-
+-------------------------
 0.981041718735602
-
 1 row selected.
+```
+
+
 
 #### RANDOM
 
 ##### 구문
 
-**RANDOM** (*number*)
+```
+RANDOM (number)
+```
+
+
 
 ##### 설명
 
@@ -2510,33 +2336,35 @@ RAND
 
 \<질의\>
 
-iSQL\> SELECT RANDOM(0) FROM dual;
-
-RANDOM(0)
-
-\--------------
-
-16838
-
+```
+iSQL> SELECT RANDOM(0) FROM dual;
+RANDOM(0)   
+--------------
+16838       
 1 row selected.
+```
 
 \<질의\>
 
-iSQL\> SELECT RANDOM(100) FROM dual;
-
-RANDOM(100)
-
-\--------------
-
-12662
-
+```
+iSQL> SELECT RANDOM(100) FROM dual;
+RANDOM(100) 
+--------------
+12662       
 1 row selected.
+```
+
+
 
 #### ROUND
 
 ##### 구문
 
-**ROUND** ( *n1* [ , *n2* ] )
+```
+ROUND ( n1 [ , n2 ] )
+```
+
+
 
 ##### 설명
 
@@ -2550,27 +2378,25 @@ RANDOM(100)
 \<질의\> 다음 ROUND 함수로 표현한 두 개의 식의 결과를 출력하라: ROUND(123.9994,
 3), ROUND(123.9995, 3)
 
-iSQL\> SELECT ROUND(123.9994, 3), ROUND(123.9995, 3) FROM dual;
-
-ROUND(123.9994, 3) ROUND(123.9995, 3)
-
-\-----------------------------------------
-
-123.999 124
-
+```
+iSQL> SELECT ROUND(123.9994, 3), ROUND(123.9995, 3) FROM dual;
+ROUND(123.9994, 3) ROUND(123.9995, 3) 
+-----------------------------------------
+123.999     124         
 1 row selected.
+```
 
 \<질의\> 가장 싼 상품의 값을 정수값으로 반올림해서 출력하라.
 
-iSQL\> SELECT ROUND( MIN(price) ) FROM goods;
-
-ROUND( MIN(PRICE) )
-
-\----------------------
-
-967
-
+```
+iSQL> SELECT ROUND( MIN(price) ) FROM goods;
+ROUND( MIN(PRICE) ) 
+----------------------
+967         
 1 row selected.
+```
+
+
 
 | 예제              | 결과 |
 |-------------------|------|
@@ -2589,7 +2415,11 @@ ROUND는 항상 값을 반환한다. *n2*가 음수이고 이 값이 소수점 �
 
 ##### 구문
 
-**SIGN** (*number*)
+```
+SIGN (number)
+```
+
+
 
 ##### 설명
 
@@ -2600,45 +2430,41 @@ ROUND는 항상 값을 반환한다. *n2*가 음수이고 이 값이 소수점 �
 
 \<질의\>
 
-iSQL\> SELECT SIGN(15), SIGN(0), SIGN(-15) FROM dual;
-
-SIGN(15) SIGN(0) SIGN(-15)
-
-\----------------------------------------
-
-1 0 -1
-
+```
+iSQL> SELECT SIGN(15), SIGN(0), SIGN(-15) FROM dual;
+SIGN(15)    SIGN(0)     SIGN(-15)   
+----------------------------------------
+1           0           -1          
 1 row selected.
+```
 
 \<질의\> 급여가 1000달러보다 많으면 1, 적으면 –1, 1000달러이면 0을 출력하라.
 
-iSQL\> SELECT e_firstname, e_lastname, SIGN(salary-1000) As Wage_class
-
-FROM employees;
-
-E_FIRSTNAME E_LASTNAME WAGE_CLASS
-
-\------------------------------------------------------------
-
-Chan-seung Moon
-
-Susan Davenport 1
-
-Ken Kobain 1
-
+```
+iSQL> SELECT e_firstname, e_lastname, SIGN(salary-1000) As Wage_class
+        FROM employees;
+E_FIRSTNAME           E_LASTNAME            WAGE_CLASS  
+------------------------------------------------------------
+Chan-seung            Moon                              
+Susan                 Davenport             1           
+Ken                   Kobain                1           
 .
-
 .
-
 .
-
 20 rows selected.
+```
+
+
 
 #### SIN
 
 ##### 구문
 
-**SIN** (*n*)
+```
+SIN (n)
+```
+
+
 
 ##### 설명
 
@@ -2649,47 +2475,55 @@ DOUBLE이다.
 
 \<질의\>
 
-iSQL\> SELECT SIN (30 \* 3.14159265359/180) Sine_of_30_degrees FROM dual;
-
-SINE_OF_30_DEGREES
-
-\---------------------
-
-0.5
-
+```
+iSQL> SELECT SIN (30 * 3.14159265359/180) Sine_of_30_degrees FROM dual;
+SINE_OF_30_DEGREES 
+---------------------
+0.5         
 1 row selected.
+```
+
+
 
 #### SINH
 
 ##### 구문
 
-**SINH** (*n*)
+```
+SINH (n)
+```
+
+
 
 ##### 설명
 
 입력한 *n*의 hyperbolic 사인을 반환하는 함수이다.
 
-SINH(*n*) = ( e n - e -n )/2
+*SINH(n) = ( e<sup> n</sup> - e<sup> -n</sup> )/2*
 
 ##### 예제
 
 \<질의\>
 
-iSQL\> SELECT SINH(1) Hyperbolic_sine_of_1 FROM dual;
-
-HYPERBOLIC_SINE_OF_1
-
-\-----------------------
-
-1.175201
-
+```
+iSQL> SELECT SINH(1) Hyperbolic_sine_of_1 FROM dual;
+HYPERBOLIC_SINE_OF_1 
+-----------------------
+1.175201    
 1 row selected.
+```
+
+
 
 #### SQRT
 
 ##### 구문
 
-**SQRT** (*n*)
+```
+SQRT (n)
+```
+
+
 
 ##### 설명
 
@@ -2699,21 +2533,25 @@ SQRT 함수는 *n*의 제곱근을 반환한다. *n*은 음수가 아니어야 �
 
 \<질의\> 10의 제곱근을 구하라.
 
-iSQL\> SELECT SQRT(10) FROM dual;
-
-SQRT(10)
-
-\--------------
-
-3.162278
-
+```
+iSQL> SELECT SQRT(10) FROM dual;
+SQRT(10)    
+--------------
+3.162278    
 1 row selected.
+```
+
+
 
 #### TAN
 
 ##### 구문
 
-**TAN** (*n*)
+```
+TAN (n) 
+```
+
+
 
 ##### 설명
 
@@ -2724,21 +2562,25 @@ SQRT(10)
 
 \<질의\> 135도 각도의 탄젠트를 구하라.
 
-iSQL\> SELECT TAN (135 \* 3.14159265359/180) Tangent_of_135_degrees FROM dual;
-
-TANGENT_OF_135_DEGREES
-
-\-------------------------
-
-\-1
-
+```
+iSQL> SELECT TAN (135 * 3.14159265359/180) Tangent_of_135_degrees FROM dual;
+TANGENT_OF_135_DEGREES 
+-------------------------
+-1          
 1 row selected.
+```
+
+
 
 #### TANH
 
 ##### 구문
 
-**TANH** (*n*)
+```
+TANH (n)
+```
+
+
 
 ##### 설명
 
@@ -2748,21 +2590,25 @@ TANGENT_OF_135_DEGREES
 
 \<질의\>
 
-iSQL\> SELECT TANH(.5) Hyperbolic_tangent_of\_ FROM dual;
-
-HYPERBOLIC_TANGENT_OF\_
-
-\-------------------------
-
-0.462117
-
+```
+iSQL> SELECT TANH(.5) Hyperbolic_tangent_of_ FROM dual;
+HYPERBOLIC_TANGENT_OF_ 
+-------------------------
+0.462117    
 1 row selected.
+```
+
+
 
 #### TRUNC(number)
 
 ##### 구문
 
-**TRUNC** ( *n1* [ , *n2* ] )
+```
+TRUNC ( n1 [ , n2 ] )
+```
+
+
 
 ##### 설명
 
@@ -2775,33 +2621,35 @@ HYPERBOLIC_TANGENT_OF\_
 
 \<질의\> 다음의 각 수식에 대해 TRUNC 함수의 결과를 구하라.
 
-iSQL\> SELECT TRUNC(15.79, 1), TRUNC(15.79, -1) FROM dual;
-
-TRUNC(15.79, 1) TRUNC(15.79, -1)
-
-\------------------------------------
-
-15.7 10
-
+```
+iSQL> SELECT TRUNC(15.79, 1), TRUNC(15.79, -1) FROM dual;
+TRUNC(15.79, 1) TRUNC(15.79, -1) 
+------------------------------------
+15.7        10          
 1 row selected.
+```
 
 \<질의\> 가장 싼 상품의 정수값을 출력하라.
 
-iSQL\> SELECT TRUNC(MIN(price)) FROM goods;
-
-TRUNC(MIN(PRICE))
-
-\--------------------
-
-966
-
+```
+iSQL> SELECT TRUNC(MIN(price)) FROM goods;
+TRUNC(MIN(PRICE)) 
+--------------------
+966         
 1 row selected.
+```
+
+
 
 #### BITAND
 
 ##### 구문
 
-**BITAND** (bit*\_a*, bit*\_b*)
+```
+BITAND (bit_a, bit_b)
+```
+
+
 
 ##### 설명
 
@@ -2809,21 +2657,25 @@ bit_a와 bit_a의 비트에 대한 AND 연산 결과를 반환하는 함수이�
 
 ##### 예제
 
-iSQL\> SELECT TO_CHAR( BITAND( BIT'01010101', BIT'10101010' ) ) FROM DUAL;
-
+```
+iSQL> SELECT TO_CHAR( BITAND( BIT'01010101', BIT'10101010' ) ) FROM DUAL;
 TO_CHAR( BITAND( BIT'01010101', BIT'1010
-
-\--------------------------------------------
-
+--------------------------------------------
 00000000
-
 1 row selected.
+```
+
+
 
 #### BITOR
 
 ##### 구문
 
-**BITOR** (*bit_a, bit_b*)
+```
+BITOR (bit_a, bit_b)
+```
+
+
 
 ##### 설명
 
@@ -2831,19 +2683,24 @@ bit_a와 bit_b의 비트에 대한 OR 연산 결과를 반환하는 함수이다
 
 ##### 예제
 
-iSQL\> SELECT TO_CHAR( BITOR( BIT'01010101', BIT'10101010' ) ) FROM DUAL;
-
+```
+iSQL> SELECT TO_CHAR( BITOR( BIT'01010101', BIT'10101010' ) ) FROM DUAL;
 TO_CHAR( BITOR( BIT'01010101', BIT'10101
-
-\--------------------------------------------
-
+--------------------------------------------
 11111111
+```
+
+
 
 #### BITXOR
 
 ##### 구문
 
-**BITXOR** (*bit_a, bit_b*)
+```
+BITXOR (bit_a, bit_b)
+```
+
+
 
 ##### 설명
 
@@ -2851,21 +2708,25 @@ bit_a와 bit_b의 비트에 대한 XOR(exlusive OR) 연산 결과를 반환하�
 
 ##### 예제
 
-iSQL\> SELECT TO_CHAR( BITXOR( BIT'01010101', BIT'10101010' ) ) FROM DUAL;
-
+```
+iSQL> SELECT TO_CHAR( BITXOR( BIT'01010101', BIT'10101010' ) ) FROM DUAL;
 TO_CHAR( BITXOR( BIT'01010101', BIT'1010
-
-\--------------------------------------------
-
+--------------------------------------------
 11111111
-
 1 row selected.
+```
+
+
 
 #### BITNOT
 
 ##### 구문
 
-**BITNOT** (*bit_a*)
+```
+BITNOT (bit_a)
+```
+
+
 
 ##### 설명
 
@@ -2873,37 +2734,41 @@ bit_a의 비트에 대한 NOT 연산 결과를 반환하는 함수이다.
 
 ##### 예제
 
-iSQL\> SELECT TO_CHAR( BITNOT( BIT'01010101' ) ) FROM DUAL;
-
+```
+iSQL> SELECT TO_CHAR( BITNOT( BIT'01010101' ) ) FROM DUAL;
 TO_CHAR( BITNOT( BIT'01010101' ) )
-
-\--------------------------------------
-
+--------------------------------------
 10101010
-
 1 row selected.
+```
+
+
 
 ### 문자 함수
 
 문자 함수는 문자 또는 문자열을 입력 받아서 문자나 숫자 값을 반환한다. 이들은
 반환하는 데이터 타입에 따라서 크게 두 가지 종류로 분류될 수 있다.
 
-##### 문자 값을 반환하는 문자 함수
+- ##### 문자 값을 반환하는 문자 함수
 
-CHR, CONCAT, DIGITS, INITCAP, LOWER, LPAD, LTRIM, NCHR, PKCS7PAD16,
-PKCS7UNPAD16,RANDOM_STRING, REPLICATE, REPLACE2, REVERSE_STR, RPAD, RTRIM,
-STUFF, SUBSTRB(SUBSTRING), TRANSLATE, TRIM, UPPER
+  CHR, CONCAT, DIGITS, INITCAP, LOWER, LPAD, LTRIM, NCHR, PKCS7PAD16,
+  PKCS7UNPAD16,RANDOM_STRING, REPLICATE, REPLACE2, REVERSE_STR, RPAD, RTRIM,
+  STUFF, SUBSTRB(SUBSTRING), TRANSLATE, TRIM, UPPER
 
-##### 숫자 값을 반환하는 문자 함수
+- ##### 숫자 값을 반환하는 문자 함수
 
-ASCII, INSTR(POSITION), CHAR_LENGTH(CHARACTER_LENGTH, LENGTH), INSTRB,
-OCTET_LENGTH(LENGTHB), SIZEOF
+  ASCII, INSTR(POSITION), CHAR_LENGTH(CHARACTER_LENGTH, LENGTH), INSTRB,
+  OCTET_LENGTH(LENGTHB), SIZEOF
 
 #### ASCII
 
 ##### 구문
 
-**ASCII** (*expr*)
+```
+ASCII (expr)
+```
+
+
 
 ##### 설명
 
@@ -2913,25 +2778,25 @@ OCTET_LENGTH(LENGTHB), SIZEOF
 
 \<질의\> 문자 'A'의 ASCII 코드를 출력하라.
 
-iSQL\> SELECT ASCII('A') FROM dual;
+```
+ISQL> SELECT ASCII('A') FROM DUAL;
+ASCII('A')  
+--------------
+65          
+1 ROW SELECTED.
+```
 
-ASCII('A')
 
-\--------------
-
-65
-
-1 row selected.
 
 #### CHAR_LENGTH, CHARACTER_LENGTH, LENGTH
 
 ##### 구문
 
-**CHAR_LENGTH** (*expr*)
-
-**CHARACTER_LENGTH** (*expr*)
-
-**LENGTH** (*expr*)
+```
+CHAR_LENGTH (expr)
+CHARACTER_LENGTH (expr)
+LENGTH (expr)
+```
 
 ##### 설명
 
@@ -2939,42 +2804,36 @@ ASCII('A')
 
 ##### 예제
 
-\<질의\> 관리자 테이블에서 주소의 길이를 출력하라.
+\<질의\> 관리자 테이블에서 주소의 길이를 출력하라. 단, 데이터베이스 캐릭터 셋이 KO16KSC5601 이다.
 
-단, 데이터베이스 캐릭터 셋이 KO16KSC5601 이다.
-
+```
 CREATE TABLE managers(
-
-mgr_no INTEGER PRIMARY KEY,
-
+mgr_no INTEGER PRIMARY KEY, 
 m_lastname VARCHAR(20),
-
 m_firstname VARCHAR(20),
-
 address VARCHAR(60));
-
-INSERT INTO managers VALUES(1, 'Jones', 'Davey', '3101 N. Wabash Ave. Brooklyn,
-NY');
-
+INSERT INTO managers VALUES(1, 'Jones', 'Davey', '3101 N. Wabash Ave. Brooklyn, NY');
 INSERT INTO managers VALUES(15, 'Min', 'Sujin', ' 서울 마포구 아현 1');
 
-iSQL\> SELECT CHAR_LENGTH(address) FROM managers;
-
+iSQL> SELECT CHAR_LENGTH(address) FROM managers;
 CHAR_LENGTH (ADDRESS)
-
-\------------------------
-
+------------------------
 32
-
 11
-
 2 rows selected.
+```
+
+
 
 #### CHOSUNG
 
 ##### 구문
 
-**CHOSUNG** (*expr1*)
+```
+CHOSUNG (expr1)
+```
+
+
 
 ##### 설명
 
@@ -2982,30 +2841,36 @@ CHAR_LENGTH (ADDRESS)
 CHAR, VARCHAR 타입의 문자열이 올 수 있다. 한글 이외의 언어로 된 문자열을 입력
 문자열로 사용하면 입력 문자열이 그대로 반환된다.
 
-\* 주의: 문자집합(character set)이 KSC5601인 데이터베이스의 CHAR, VARCHAR 타입
-칼럼을 입력 문자열로 사용할 때에만 초성이 정확하게 반환된다. 유니코드를 사용하는
-NCHAR, NVARCHAR 타입의 칼럼을 입력 문자열로 사용하면 초성이 정확하게 반환되지
-않으므로 주의하라.
+> 주의
+>
+> 문자집합(character set)이 KSC5601인 데이터베이스의 CHAR, VARCHAR 타입
+> 칼럼을 입력 문자열로 사용할 때에만 초성이 정확하게 반환된다. 유니코드를 사용하는
+> NCHAR, NVARCHAR 타입의 칼럼을 입력 문자열로 사용하면 초성이 정확하게 반환되지
+> 않으므로 주의하라.
 
 ##### 예제
 
 \<질의\> '알티베이스'에서 초성을 추출하라.
 
-iSQL\> SELECT CHOSUNG('알티베이스') chosung FROM dual;
-
+```
+iSQL> SELECT CHOSUNG('알티베이스') chosung FROM dual;
 CHOSUNG
-
-\-----------
-
+-----------
 ㅇㅌㅂㅇㅅ
-
 1 row selected.
+```
+
+
 
 #### CHR
 
 ##### 구문
 
-**CHR** (*n*)
+```
+CHR (n)
+```
+
+
 
 ##### 설명
 
@@ -3013,56 +2878,50 @@ CHOSUNG
 
 ##### 예제
 
-\<질의\> ‘ALTIBASE’를 ASCII 코드값을 이용해서 출력하기
+\<질의\> ‘ALTIBASE’를 ASCII 코드값을 이용해서 출력하기.
 
-iSQL\> SELECT CHR(65) \|\| CHR(76) \|\| CHR(84) \|\| CHR(73) \|\| CHR(66) \|\|
-CHR(65) \|\| CHR(83) \|\| CHR(69) mmdbms
-
+```
+iSQL> SELECT CHR(65) || CHR(76) || CHR(84) || CHR(73) || CHR(66) || CHR(65) || CHR(83) || CHR(69) mmdbms
 FROM dual;
-
-MMDBMS
-
-\------------------------------------
-
-ALTIBASE
-
+MMDBMS                            
+------------------------------------
+ALTIBASE                          
 1 row selected.
+```
 
 \<질의\> SELECT 질의 결과를 적절한 포맷으로 출력하기 위해 ASCII 코드 값 10을
 갖는 줄 바꿈 문자를 이용해라.
 
-iSQL\> SELECT RTRIM(c_firstname) \|\| ' ' \|\| c_lastname \|\| CHR(10) \|\| sex
-\|\| ' ' \|\| cus_job \|\| CHR(10) \|\| address cus_info
-
+```
+iSQL> SELECT RTRIM(c_firstname) || ' ' || c_lastname || CHR(10) || sex || ' ' || cus_job || CHR(10) || address cus_info
 FROM customers
-
 WHERE cno = 10;
-
-CUS_INFO
-
-\------------------------------------------------
-
+CUS_INFO                                                                                                        
+------------------------------------------------
 Anh Dung Nguyen
-
 M
-
 8A Ton Duc Thang Street District 1 HCMC Vietnam
-
 1 row selected.
+```
 
-\* 참고:
-
-| 제어 문자   | ASCII 코드 값 |
-|-------------|---------------|
-| 탭          | 9             |
-| 줄 바꿈     | 10            |
-| 캐리지 리턴 | 13            |
+> 참고
+>
+> | 제어 문자   | ASCII 코드 값 |
+> |-------------|---------------|
+> | 탭          | 9             |
+> | 줄 바꿈     | 10            |
+> | 캐리지 리턴 | 13            |
+>
 
 #### CONCAT
 
 ##### 구문
 
-**CONCAT** (*expr1*, *expr2*)
+```
+CONCAT (expr1, expr2)
+```
+
+
 
 ##### 설명
 
@@ -3071,27 +2930,28 @@ M
 
 ##### 예제
 
-iSQL\> SELECT CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(RTRIM(e_firstname), ' '),
-
+```
+iSQL> SELECT CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(RTRIM(e_firstname), ' '),
 RTRIM(e_lastname)), ' is a ' ), emp_job ), '.') Job
-
 FROM employees
-
 WHERE eno = 10;
-
 JOB
-
-\-------------------------------------------------------------------
-
+-------------------------------------------------------------------
 Elizabeth Bae is a programmer.
-
 1 row selected.
+```
+
+
 
 #### DIGITS
 
 ##### 구문
 
-**DIGITS** (*n*)
+```
+DIGITS (n)
+```
+
+
 
 ##### 설명
 
@@ -3105,25 +2965,28 @@ INTEGER일 경우 10자리, BIGINT일 경우 19 자리의 문자열이 반환된
 
 \<질의\> 다른 숫자 데이터 형의 세 입력 숫자를 문자열로 출력하라.
 
+```
 CREATE TABLE T1 (I1 SMALLINT, I2 INTEGER, I3 BIGINT);
-
 NSERT INTO T1 VALUES (357, 12, 5000);
 
-iSQL\> SELECT DIGITS(I1), DIGITS(I2), DIGITS(I3) FROM T1;
-
-DIGITS(I1) DIGITS(I2) DIGITS(I3)
-
-\------------------------------------------------
-
-00357 0000000012 0000000000000005000
-
+iSQL> SELECT DIGITS(I1), DIGITS(I2), DIGITS(I3) FROM T1;
+DIGITS(I1)  DIGITS(I2)  DIGITS(I3)           
+------------------------------------------------
+00357  0000000012  0000000000000005000  
 1 row selected.
+```
+
+
 
 #### INITCAP
 
 ##### 구문
 
-**INITCAP** (*expr*)
+```
+INITCAP (expr)
+```
+
+
 
 ##### 설명
 
@@ -3134,25 +2997,25 @@ DIGITS(I1) DIGITS(I2) DIGITS(I3)
 
 \<질의\> 'the soap' 문자열의 각 단어의 첫 문자를 대문자로 출력하라.
 
-iSQL\> SELECT INITCAP ('the soap') Capital FROM dual;
-
-CAPITAL
-
-\------------
-
-The soap
-
+```
+iSQL> SELECT INITCAP ('the soap') Capital FROM dual;
+CAPITAL   
+------------
+The soap  
 1 row selected.
+```
+
+
 
 #### INSTR, INSTRB, POSITION
 
 ##### 구문
 
-**INSTR** (*expr*, *substring* [, *start* [, *occurrence*]])
-
-**INSTRB** (*expr*, *substring* [,*start* [, *occurrence*]])
-
-**POSITION** (*expr*, *substring* [,*start* [, *occurrence*]])
+```
+INSTR (expr, substring [, start [, occurrence]])
+INSTRB (expr, substring [,start [, occurrence]])
+POSITION (expr, substring [,start [, occurrence]])
+```
 
 ##### 설명
 
@@ -3177,36 +3040,37 @@ POSITION 함수는 INSTR과 같은 함수이다.
 \<질의\> 문자열 ‘CORPORATE FLOOR’에서 ‘OR’의 위치를, 앞에서 3번째 문자부터
 탐색을 시작하여 2번째로 탐색된 문자열의 위치를 출력하라.
 
-iSQL\> SELECT INSTR ('CORPORATE FLOOR','OR', 3, 2) Instring FROM dual;
-
-INSTRING
-
-\--------------
-
-14
-
+```
+iSQL> SELECT INSTR ('CORPORATE FLOOR','OR', 3, 2)  Instring FROM dual;
+INSTRING    
+--------------
+14          
 1 row selected.
+```
 
 \<질의\> 문자열 ‘알티베이스5 데이터베이스’에서 ‘베이’의 위치를 뒤에서 3번째
 문자부터 탐색을 시작하여 2번째로 탐색된 문자열의 위치를 출력하라. (단,
 데이터베이스 문자 집합이 KO16KSC5601로 설정되어 있다.)
 
-iSQL\> SELECT INSTR ('알티베이스5 데이터베이스','베이', 3, 2) Instring FROM
-dual;
-
-INSTRING
-
-\--------------
-
-11
-
+```
+iSQL> SELECT INSTR ('알티베이스5 데이터베이스','베이', 3, 2)  Instring FROM dual;
+INSTRING    
+--------------
+11          
 1 row selected.
+```
+
+
 
 #### LOWER
 
 ##### 구문
 
-**LOWER** (*expr*)
+```
+LOWER (expr)
+```
+
+
 
 ##### 설명
 
@@ -3216,21 +3080,25 @@ INSTRING
 
 \<질의\> 입력 문자열을 소문자로 변환하여 출력하라.
 
-iSQL\> SELECT LOWER('ONE PAGE PROPOSAL') Lowercase FROM dual;
-
-LOWERCASE
-
-\---------------------
-
-one page proposal
-
+```
+iSQL> SELECT LOWER('ONE PAGE PROPOSAL') Lowercase FROM dual;
+LOWERCASE          
+---------------------
+one page proposal  
 1 row selected.
+```
+
+
 
 #### LPAD
 
 ##### 구문
 
-**LPAD** (*expr1*, *n* [,*expr2*])
+```
+LPAD (expr1, n [,expr2])
+```
+
+
 
 ##### 설명
 
@@ -3247,21 +3115,25 @@ one page proposal
 \<질의\> 다음은 “abc”라는 문자열의 왼쪽에 “xyz”라는 문자열을 삽입하여 총 10
 글자를 반환하는 예이다.
 
-iSQL\> SELECT LPAD('abc', 10, 'xyz') Lpad_ex FROM dual;
-
-LPAD_EX
-
-\------------------------------------------------
-
-xyzxyzxabc
-
+```
+iSQL> SELECT LPAD('abc', 10, 'xyz') Lpad_ex FROM dual;
+LPAD_EX     
+------------------------------------------------
+xyzxyzxabc  
 1 row selected.
+```
+
+
 
 #### LTRIM
 
 ##### 구문
 
-**LTRIM** (*expr1* [,*expr2*])
+```
+LTRIM (expr1 [,expr2])
+```
+
+
 
 ##### 설명
 
@@ -3278,53 +3150,45 @@ xyzxyzxabc
 \<질의\> 문자열 'abaAabLEFT TRIM' 중 가장 왼쪽에 나타나 있는 a와 b를 제외한
 문자열을 출력하라.
 
-iSQL\> SELECT LTRIM ('abaAabLEFT TRIM', 'ab') Ltrim_ex FROM dual;
-
-LTRIM_EX
-
-\-------------------
-
-AabLEFT TRIM
-
+```
+iSQL> SELECT LTRIM ('abaAabLEFT TRIM', 'ab') Ltrim_ex FROM dual; 
+LTRIM_EX         
+-------------------
+AabLEFT TRIM     
 1 row selected.
+```
 
 \<질의\> 각 사원의 입사일 정보에서 날짜를 제거하여 입사 년월만 출력하라.
 
-iSQL\> SELECT e_lastname, LTRIM(LTRIM(join_date, '1234567890'), '-') Join_Month
-
-FROM employees;
-
-E_LASTNAME JOIN_MONTH
-
-\-----------------------------------------------------------
-
+```
+iSQL> SELECT e_lastname, LTRIM(LTRIM(join_date, '1234567890'), '-') Join_Month 
+ FROM employees;
+E_LASTNAME            JOIN_MONTH
+-----------------------------------------------------------
 .
-
 .
-
 .
-
-Ghorbani DEC-2009
-
-Momoi SEP-2010
-
-Fleischer JAN-2004
-
-Wang NOV-2009
-
+Ghorbani              DEC-2009
+Momoi                 SEP-2010
+Fleischer             JAN-2004
+Wang                  NOV-2009
 .
-
 .
-
 .
-
 20 rows selected.
+```
+
+
 
 #### NCHR
 
 ##### 구문
 
-**NCHR** (*n*)
+```
+NCHR (n)
+```
+
+
 
 ##### 설명
 
@@ -3335,21 +3199,25 @@ Wang NOV-2009
 
 내셔날 캐릭터 셋의 187(U+00BB)을 문자로 나타낸다.
 
-iSQL\> SELECT NCHR(187) FROM DUAL;
-
+```
+iSQL> SELECT NCHR(187) FROM DUAL;
 NC
-
-\--
-
-\>\>
-
+--
+>>
 1 row selected.
+```
+
+
 
 #### OCTET_LENGTH, LENGTHB
 
 ##### 구문
 
-**OCTET_LENGTH** (*expr*)
+```
+OCTET_LENGTH (expr)
+```
+
+
 
 ##### 설명
 
@@ -3365,37 +3233,37 @@ LENGTHB 는 OCTET_LENGT와 같은 함수이다.
 \<질의\> 문자열 '우리나라'의 길이를 바이트 단위로 출력하라. (단, 데이터베이스
 캐릭터 셋이 K016KSC5601로 설정되어 있다.)
 
-iSQL\> SELECT OCTET_LENGTH('우리나라') FROM dual;
-
-OCTET_LENGTH('우리나라')
-
-\---------------------------
-
-8
-
+```
+iSQL> SELECT OCTET_LENGTH('우리나라') FROM dual;
+OCTET_LENGTH('우리나라') 
+---------------------------
+8           
 1 row selected.
+```
 
 \<질의\> 관리자 테이블에서 주소의 길이를 바이트 단위로 출력하라.
 
-iSQL\> SELECT OCTET_LENGTH(address)
-
+```
+iSQL> SELECT OCTET_LENGTH(address) 
 FROM managers;
-
-OCTET_LENGTH(ADDRESS)
-
-\------------------------
-
-32
-
-18
-
+OCTET_LENGTH(ADDRESS) 
+------------------------
+32          
+18          
 2 rows selected.
+```
+
+
 
 #### PKCS7PAD16
 
 ##### 구문
 
-**PKCS7PAD16** (*expr)*
+```
+PKCS7PAD16 (expr)
+```
+
+
 
 ##### 설명
 
@@ -3419,7 +3287,11 @@ AESDECRYPT 예제를 참조하라.
 
 ##### 구문
 
-**PKCS7UNPAD16** (*expr*)
+```
+PKCS7UNPAD16 (expr)
+```
+
+
 
 ##### 설명
 
@@ -3438,7 +3310,11 @@ AESDECRYPT 예제를 참조하라.
 
 ##### 구문
 
-**RANDOM_STRING** (*option*, *length*)
+```
+RANDOM_STRING (option, length)
+```
+
+
 
 ##### 설명
 
@@ -3462,41 +3338,37 @@ AESDECRYPT 예제를 참조하라.
 
 \<질의\>
 
-iSQL\> SELECT RANDOM_STRING( 'U', 10 ) from dual;
-
+```
+iSQL> SELECT RANDOM_STRING( 'U', 10 ) from dual;
 RANDOM_STRING( 'U', 10 )
-
-\---------------------------
-
+---------------------------
 BCJVFUMXPK
-
 1 row selected.
 
-iSQL\> SELECT RANDOM_STRING( 'l', 10 ) from dual;
-
+iSQL> SELECT RANDOM_STRING( 'l', 10 ) from dual;
 RANDOM_STRING( 'l', 10 )
-
-\----------------------------
-
+----------------------------
 fgddcmpydo
-
 1 row selected.
 
-iSQL\> SELECT RANDOM_STRING( 'p', 10 ) from dual;
-
+iSQL> SELECT RANDOM_STRING( 'p', 10 ) from dual;
 RANDOM_STRING( 'p', 10 )
-
-\----------------------------
-
-fEn\$bLq6jZ
-
+----------------------------
+fEn$bLq6jZ
 1 row selected.
+```
+
+
 
 #### REGEXP_COUNT
 
 ##### 구문
 
-**REGEXP_COUNT** (*expr*, *pattern_expr[*, *start]*)
+```
+REGEXP_COUNT (expr, pattern_expr[, start])
+```
+
+
 
 ##### 설명
 
@@ -3518,46 +3390,42 @@ fEn\$bLq6jZ
 
 \<질의\> 입력한 문자열에서 'Guro'라는 표현이 처음부터 몇 번 나타나는지 출력한다.
 
-iSQL\> SELECT
-
+```
+iSQL> SELECT 
 REGEXP_COUNT('Daerungpost-Tower II Guro-3 Dong, Guro-gu Seoul',
-
 'Guro', 1) "REGEXP_COUNT"
-
 FROM DUAL;
-
 REGEXP_COUNT
-
-\---------------
-
+---------------
 2
-
 1 row selected.
+```
 
 \<질의\> 입력한 문자열에서 띄어쓰기가 없는 substring이 처음부터 몇 번 나타나는지
 출력한다.
 
-iSQL\> SELECT
-
-REGEXP_COUNT('Daerungpost-Tower II Guro-3 Dong, Guro-gu Seoul',
-
-'[\^ ]+', 1) "REGEXP_COUNT"
-
-FROM DUAL;
-
+```
+iSQL> SELECT
+        REGEXP_COUNT('Daerungpost-Tower II Guro-3 Dong, Guro-gu Seoul',
+       '[^ ]+', 1) "REGEXP_COUNT"
+       FROM DUAL;
 REGEXP_COUNT
-
-\---------------
-
+---------------
 6
-
 1 row selected.
+```
+
+
 
 #### REGEXP_INSTR
 
 ##### 구문
 
-**REGEXP_INSTR** (*expr*, *pattern_expr* [, *start* [, *occurrence*]])
+```
+REGEXP_INSTR (expr, pattern_expr [, start [, occurrence]])
+```
+
+
 
 ##### 설명
 
@@ -3577,28 +3445,28 @@ REGEXP_INSTR는 INSTR 함수의 기능을 확장한 함수이다.
 \<질의\> 다음 예제는 문자열에서 공백이 포함되지 않은 substring의 출현을 찾는다.
 5번째로 나타나는 공백이 포함되지 않은 substring의 첫 위치를 출력한다.
 
-iSQL\> SELECT
-
+```
+iSQL> SELECT 
 REGEXP_INSTR('Daerungpost-Tower II Guro-3 Dong, Guro-gu Seoul',
-
-'[\^ ]+', 1, 5) "REGEXP_INSTR"
-
+'[^ ]+', 1, 5) "REGEXP_INSTR"
 FROM DUAL;
-
 REGEXP_INSTR
-
-\---------------
-
+---------------
 35
-
 1 row selected.
+```
+
+
 
 #### REGEXP_REPLACE
 
 ##### 구문
 
-**REGEXP_REPLACE** (*expr*, *pattern_expr [, replace_string [, start
-[,occurrence]]])*
+```
+REGEXP_REPLACE (expr, pattern_expr [, replace_string [, start [,occurrence]]])
+```
+
+
 
 ##### 설명
 
@@ -3627,27 +3495,28 @@ expr이 그대로 반환된다.
 \<질의\> 입력한 문자열에서 'Guro'와 일치하는 문자열 중 2번째를 'Mapo'로
 치환하라.
 
-iSQL\> SELECT
-
+```
+iSQL> SELECT
 REGEXP_REPLACE('Daerungpost-Tower II Guro-3 Dong, Guro-gu Seoul',
-
 'Guro', 'Mapo', 1, 2) "REGEXP_REPLACE"
-
 FROM DUAL;
+REGEXP_REPLACE 
+----------------------------------------------------------------------
+Daerungpost-Tower II Guro-3 Dong, Mapo-gu Seoul 
+1 row selected. 
+```
 
-REGEXP_REPLACE
 
-\----------------------------------------------------------------------
-
-Daerungpost-Tower II Guro-3 Dong, Mapo-gu Seoul
-
-1 row selected.
 
 #### REGEXP_SUBSTR
 
 ##### 구문
 
-**REGEXP_SUBSTR** (*expr*, *pattern_expr* [, *start* [, *occurrence*]])
+```
+REGEXP_SUBSTR (expr, pattern_expr [, start [, occurrence]])
+```
+
+
 
 ##### 설명
 
@@ -3672,43 +3541,40 @@ REGEXP_SUBSTR 함수는 *expr*에서 *pattern_expr*과 일치하는 문자열을
 \<질의\> 입력한 문자열에서 'Guro'와 일치하는 문자열이 2번째 나오는 substring을
 반환하라.
 
-iSQL\> SELECT
-
+```
+iSQL> SELECT 
 REGEXP_SUBSTR('Daerungpost-Tower II Guro-3 Dong, Guro-gu Seoul',
-
 'Guro', 1, 2) "REGEXP_SUBSTR"
-
 FROM DUAL;
-
 REGEXP_SUBSTR
-
-\---------------
-
+---------------
 Guro
-
 1 row selected.
+```
 
 \<질의\> 입력한 문자열에서 띄어쓰기가 없는 3번째 문자열을 반환하라.
 
-iSQL\> SELECT
-
-REGEXP_SUBSTR('Daerungpost-Tower II Guro-3 Dong, Guro-gu Seoul',
-
-'[\^ ]+', 1, 3) "REGEXP_SUBSTR" FROM DUAL;
-
+```
+iSQL> SELECT
+  REGEXP_SUBSTR('Daerungpost-Tower II Guro-3 Dong, Guro-gu Seoul',
+  '[^ ]+', 1, 3) "REGEXP_SUBSTR" FROM DUAL;
 REGEXP_SUBSTR
-
-\---------------------------------------------------
-
+---------------------------------------------------
 Guro-3
-
 1 row selected.
+```
+
+
 
 #### REPLACE2
 
 ##### 구문
 
-**REPLACE2** (*expr1* , *expr2*, [*expr3*])
+```
+REPLACE2 (expr1 , expr2, [expr3])
+```
+
+
 
 ##### 설명
 
@@ -3724,41 +3590,39 @@ TRANSLATE 함수가 각 문자에 대해 하나씩 치환되는 것에 반해 RE
 \<질의\> departments 테이블의 dname칼럼의 값에서 “team”을 “division”으로 모두
 치환하라.
 
-iSQL\> SELECT REPLACE2(dname, 'team', 'division')
-
+```
+iSQL> SELECT REPLACE2(dname, 'team', 'division')
 FROM departments;
-
-REPLACE2(DNAME, 'team', 'division')
-
-\------------------------------------------------
-
+REPLACE2(DNAME, 'team', 'division') 
+------------------------------------------------
 Engine Development Division
-
 Marketing Division
-
 Planning and Management Division
-
 Sales Division
-
 5 rows selected.
+```
 
 \<질의\> 다음 예제는 “abcdefghi” 문자열에서 “cde”를 “xx”로 바꾼다.
 
-iSQL\> SELECT REPLACE2('abcdefghicde', 'cde', 'xx') FROM dual;
-
-REPLACE2('abcdefghicde', 'cde', 'xx')
-
-\-----------------------------------------
-
-abxxfghixx
-
+```
+iSQL> SELECT REPLACE2('abcdefghicde', 'cde', 'xx') FROM dual;
+REPLACE2('abcdefghicde', 'cde', 'xx')  
+-----------------------------------------
+abxxfghixx                
 1 row selected.
+```
+
+
 
 #### REPLICATE
 
 ##### 구문
 
-**REPLICATE** (*expr, n*)
+```
+REPLICATE (expr, n)
+```
+
+
 
 ##### 설명
 
@@ -3769,21 +3633,25 @@ abxxfghixx
 
 \<질의\> 문자열 “KSKIM”을 3회 반복한 문자열을 출력하라.
 
-iSQL\> SELECT REPLICATE ('KSKIM', 3) FROM dual;
-
+```
+iSQL> SELECT REPLICATE ('KSKIM', 3) FROM dual;
 REPLICATE ('KSKIM', 3)
-
-\-----------------------------------
-
+-----------------------------------
 KSKIMKSKIMKSKIM
-
 1 row selected.
+```
+
+
 
 #### RPAD
 
 ##### 구문
 
-**RPAD** (*expr1*, *n* [,*expr2*])
+```
+RPAD (expr1, n [,expr2])
+```
+
+
 
 ##### 설명
 
@@ -3800,21 +3668,23 @@ KSKIMKSKIMKSKIM
 \<질의\> 다음은 “123”이라는 문자 식의 오른쪽에 “0” 문자열을 삽입하여 총 10 자리
 숫자를 반환하는 예이다.
 
-iSQL\> SELECT TO_NUMBER(RPAD('123', 10, '0')) rpad_ex FROM dual;
-
-RPAD_EX
-
-\--------------
-
-1230000000
-
+```
+iSQL> SELECT TO_NUMBER(RPAD('123', 10, '0')) rpad_ex FROM dual;
+RPAD_EX     
+--------------
+1230000000  
 1 row selected.
+```
 
 #### RTRIM
 
 ##### 구문
 
-**RTRIM** (*expr1* [, *expr2*])
+```
+RTRIM (expr1 [, expr2])
+```
+
+
 
 ##### 설명
 
@@ -3831,53 +3701,45 @@ RPAD_EX
 \<질의\> 문자열 “RIGHTTRIMbaAbab” 가장 오른쪽에 나타나는 ‘a’와 ‘b’문자를 제거한
 문자열을 출력하라.
 
-iSQL\> SELECT RTRIM ('RIGHTTRIMbaAbab', 'ab') rtrim_ex FROM dual;
-
-RTRIM_EX
-
-\-------------------
-
-RIGHTTRIMbaA
-
+```
+iSQL> SELECT RTRIM ('RIGHTTRIMbaAbab', 'ab') rtrim_ex FROM dual;
+RTRIM_EX         
+-------------------
+RIGHTTRIMbaA     
 1 row selected.
+```
 
 \<질의\> 각 사원의 입사일 정보에서 년도를 제거하여 입사 일월만 출력하라.
 
-iSQL\> SELECT e_lastname, RTRIM(RTRIM(join_date, '1234567890'), '-') Join_Date
-
-FROM employees;
-
-E_LASTNAME JOIN_DATE
-
-\---------------------------------------------------------------------------
-
+```
+iSQL> SELECT e_lastname, RTRIM(RTRIM(join_date, '1234567890'), '-') Join_Date 
+ FROM employees;
+E_LASTNAME            JOIN_DATE
+---------------------------------------------------------------------------
 .
-
 .
-
 .
-
-Ghorbani 20-DEC
-
-Momoi 09-SEP
-
-Fleischer 24-JAN
-
-Wang 29-NOV
-
+Ghorbani              20-DEC
+Momoi                 09-SEP
+Fleischer             24-JAN
+Wang                  29-NOV
 .
-
 .
-
 .
-
 20 rows selected.
+```
+
+
 
 #### SIZEOF
 
 ##### 구문
 
-**SIZEOF** (*expr*)
+```
+SIZEOF (expr)
+```
+
+
 
 ##### 설명
 
@@ -3897,21 +3759,25 @@ Note: SIZEOF 함수는 INTEGER, BIGINT, SMALLINT데이터 타입에 대해서는
 
 \<질의\> 테이블 dual의 칼럼 dummy에 할당된 크기를 출력하라.
 
-iSQL\> SELECT SIZEOF(dummy) FROM dual;
+```
+iSQL> SELECT SIZEOF(dummy) FROM dual;
+SIZEOF(DUMMY)   
+--------------
+1           
+1 row selected. 
+```
 
-SIZEOF(DUMMY)
 
-\--------------
-
-1
-
-1 row selected.
 
 #### SUBSTR, SUBSTRB, SUBSTRING
 
 ##### 구문
 
-**SUBSTR** (*expr*, *start* [, *length*])
+```
+SUBSTR (expr, start [, length])
+```
+
+
 
 ##### 설명
 
@@ -3938,46 +3804,46 @@ SUBSTRING은 SUBSTR와 같은 함수이다.
 \<질의\> 문자열 “SALESMAN”의 첫번째 문자부터 시작해서 길이 5만큼의 substring을
 반환하라.
 
-iSQL\> SELECT SUBSTR('SALESMAN', 1 ,5) Substring FROM dual;
-
-SUBSTRING
-
-\-------------
-
-SALES
-
+```
+iSQL> SELECT SUBSTR('SALESMAN', 1 ,5) Substring FROM dual;
+SUBSTRING  
+-------------
+SALES     
 1 row selected.
+```
 
 \<질의\> 입력 문자열 “ABCDEFG”의 substring을 반환하라.
 
-iSQL\> SELECT SUBSTR('ABCDEFG', -5 ,4) Substring FROM dual;
-
-SUBSTRING
-
-\-------------
-
-CDEF
-
+```
+iSQL> SELECT SUBSTR('ABCDEFG', -5 ,4) Substring FROM dual;
+SUBSTRING  
+-------------
+CDEF     
 1 row selected.
+```
 
 \<질의\> 문자열 “ABCDEFG”에서 5번째 바이트 부터 2 바이트 길이 만큼의 문자를
 출력하라.
 
-iSQL\> SELECT SUBSTRB('ABCDEFG', 5, 2) Substring_with_bytes FROM dual;
-
-SUBSTRING_WITH_BYTES
-
-\------------------------
-
-EF
-
+```
+iSQL> SELECT SUBSTRB('ABCDEFG', 5, 2) Substring_with_bytes FROM dual;
+SUBSTRING_WITH_BYTES  
+------------------------
+EF       
 1 row selected.
+```
+
+
 
 #### TRANSLATE
 
 ##### 구문
 
-**TRANSLATE** (*expr1* , *expr2*, *expr3*)
+```
+TRANSLATE (expr1 , expr2, expr3)
+```
+
+
 
 ##### 설명
 
@@ -3999,65 +3865,55 @@ TRANSLATE는 *expr1*의 각 문자를 체크하여 *expr2* 중에 있는지 확�
 
 \<질의\> 재고량이 50000개가 넘는 상품의 이름에서 “M”을 “L”로 바꾸어라.
 
-iSQL\> SELECT TRANSLATE(gname, 'M', 'L')
-
+```
+iSQL> SELECT TRANSLATE(gname, 'M', 'L')
 FROM goods
-
-WHERE stock \> 50000;
-
-TRANSLATE(GNAME, 'M', 'L')
-
-\--------------------------------------------
-
-TL-U200
-
-L-190G
-
+WHERE stock > 50000;
+TRANSLATE(GNAME, 'M', 'L')                
+--------------------------------------------
+TL-U200                                   
+L-190G                                    
 2 rows selected.
+```
 
 \<질의\> 문자열의 대문자는 소문자로 변환하라.
 
-iSQL\> SELECT
-
-TRANSLATE('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
-
-'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-
-'abcdefghijlkmnopqrstuvwxyz')
-
+```
+iSQL> SELECT 
+TRANSLATE('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',        
+'ABCDEFGHIJKLMNOPQRSTUVWXYZ',                  
+'abcdefghijlkmnopqrstuvwxyz')  
 FROM dual;
-
-TRANSLATE('0123456789ABCDEFGHIJKLMNOPQRS
-
-\------------------------------------------------
-
-0123456789abcdefghijlkmnopqrstuvwxyz0123456789
-
+TRANSLATE('0123456789ABCDEFGHIJKLMNOPQRS 
+------------------------------------------------
+0123456789abcdefghijlkmnopqrstuvwxyz0123456789 
 1 row selected.
+```
 
 \<질의\> 라이센스 번호에서 알파벳 문자는 제거하고 숫자만 남겨서 반환하라.
 
-iSQL\> SELECT TRANSLATE('3PQR334',
-
+```
+iSQL> SELECT TRANSLATE('3PQR334',
 '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-
 '0123456789') License
-
 FROM dual;
-
-LICENSE
-
-\------------------
-
-3334
-
+LICENSE         
+------------------
+3334            
 1 row selected.
+```
+
+
 
 #### TRIM
 
 ##### 구문
 
-**TRIM** (*expr1* [, *expr2*])
+```
+TRIM (expr1 [, expr2])
+```
+
+
 
 ##### 설명
 
@@ -4079,21 +3935,25 @@ TRIM은 *expr2*에 존재하지 않는 첫번째 문자로 시작하고 *expr2*�
 \<질의\> 문자열 “abbAaBbAbba”에서 양쪽 끝에서부터 a와 b를 제거한 문자열을
 출력하라.
 
-iSQL\> SELECT TRIM ('abbAaBbAbba', 'ab') trim_ex FROM dual;
-
-TRIM_EX
-
-\---------------
-
-AaBbA
-
+```
+iSQL> SELECT TRIM ('abbAaBbAbba', 'ab') trim_ex FROM dual;
+TRIM_EX      
+---------------
+AaBbA        
 1 row selected.
+```
+
+
 
 #### UPPER
 
 ##### 구문
 
-**UPPER** (*char*)
+```
+UPPER (char)
+```
+
+
 
 ##### 설명
 
@@ -4103,21 +3963,25 @@ AaBbA
 
 \<질의\> 문자열 “Capital”을 대문자로 출력하라.
 
-iSQL\> SELECT UPPER('Capital') Uppercase FROM dual;
-
-UPPERCASE
-
-\-------------
-
-CAPITAL
-
+```
+iSQL> SELECT UPPER('Capital') Uppercase FROM dual;
+UPPERCASE  
+-------------
+CAPITAL  
 1 row selected.
+```
+
+
 
 #### REVERSE_STR
 
 ##### 구문
 
-**REVERSE_STR** (*expr*)
+```
+REVERSE_STR (expr)
+```
+
+
 
 ##### 설명
 
@@ -4127,34 +3991,36 @@ CAPITAL
 
 \<질의\> 문자열 “KSKIM”을 거꾸로 출력하라.
 
-iSQL\> SELECT REVERSE_STR ('KSKIM') FROM dual;
-
-REVERSE_STR ('KSKIM')
-
-\-------------------------
-
-MIKSK
-
+```
+iSQL> SELECT REVERSE_STR ('KSKIM') FROM dual;
+REVERSE_STR ('KSKIM')  
+-------------------------
+MIKSK  
 1 row selected.
+```
 
 \<질의\> 문자열 ‘알티베이스5’를 거꾸로 출력하라. (단, 데이터베이스 문자 집합이
 KO16KSC5601로 설정되어 있다.)
 
-iSQL\> SELECT REVERSE_STR ('알티베이스4') FROM dual;
-
-REVERSE_STR ('알티베이스5')
-
-\-------------------------
-
+```
+iSQL> SELECT REVERSE_STR ('알티베이스4') FROM dual;
+REVERSE_STR ('알티베이스5')  
+-------------------------
 5스이베티알
-
 1 row selected.
+```
+
+
 
 #### STUFF
 
 ##### 구문
 
-**STUFF** (*expr1*, *start*, *length*, *expr2*)
+```
+STUFF (expr1, start, length, expr2)
+```
+
+
 
 ##### 설명
 
@@ -4176,64 +4042,56 @@ REVERSE_STR ('알티베이스5')
 
 \<질의\> STUFF 함수를 이용하여 “KDHONG”을 “KILDONG HONG”으로 변환하라.
 
-iSQL\> SELECT STUFF (‘KDHONG’, 2, 1, ‘ILDONG ’) FROM dual;
-
+```
+iSQL> SELECT STUFF (‘KDHONG’, 2, 1, ‘ILDONG ’) FROM dual;
 STUFF (‘KDHONG’, 2, 1, ‘ILDONG ’)
-
-\--------------------------------------------------
-
+--------------------------------------------------
 KILDONG HONG
-
 1 row selected.
+```
 
 \<질의\> *expr2*을 *expr1* 앞에 삽입하라.
 
-iSQL\> SELECT STUFF (‘KDHONG’, 1, 0, ‘ILDONG ’) FROM dual;
-
+```
+iSQL> SELECT STUFF (‘KDHONG’, 1, 0, ‘ILDONG ’) FROM dual;
 STUFF (‘KDHONG’, 1, 0, ‘ILDONG ’)
-
-\--------------------------------------------------
-
+--------------------------------------------------
 ILDONG KDHONG
-
 1 row selected.
+```
 
 \<질의\> *expr2*을 *expr1* 뒤에 삽입하라.
 
-iSQL\> SELECT STUFF (‘KDHONG’, 7, 0, ‘ILDONG ’) FROM dual;
-
+```
+iSQL> SELECT STUFF (‘KDHONG’, 7, 0, ‘ILDONG ’) FROM dual;
 STUFF (‘KDHONG’, 7, 0, ‘ILDONG ’)
-
-\--------------------------------------------------
-
-KDHONGILDONG
-
+--------------------------------------------------
+KDHONGILDONG 
 1 row selected.
+```
 
 \<질의\> *start*의 왼쪽에 *expr2*가 삽입되도록 *length*를 0으로 입력하라.
 
-iSQL\> SELECT STUFF (‘KDHONG’, 2, 0, ‘ILDONG ’) FROM dual;
-
+```
+iSQL> SELECT STUFF (‘KDHONG’, 2, 0, ‘ILDONG ’) FROM dual;
 STUFF (‘KDHONG’, 2, 0, ‘ILDONG ’)
-
-\--------------------------------------------------
-
+--------------------------------------------------
 KILDONG DHONG
-
 1 row selected.
+```
 
 \<질의\> 데이터베이스 문자 집합이 KO16KSC5601로 설정된 경우 STUFF 함수를
 이용해서 입력 문자열의 내용을 변경하라.
 
-iSQL\> SELECT STUFF ('알티베이스0', 5, 1, '데이터베이스') FROM dual;
-
+```
+iSQL> SELECT STUFF ('알티베이스0', 5, 1, '데이터베이스') FROM dual;
 STUFF ('알티베이스0', 5, 1, '데이터베이스’)
-
-\------------------------------------------------
-
+------------------------------------------------
 알티베이데이터베이스0
-
 1 row selected.
+```
+
+
 
 ### 날짜시간 함수
 
@@ -4250,7 +4108,11 @@ DATE 데이터 타입과 이 타입의 데이터 반환시 사용되는 날짜�
 
 ##### 구문
 
-**ADD_MONTHS** (*date, number*)
+```
+ADD_MONTHS (date, number)
+```
+
+
 
 ##### 설명
 
@@ -4262,41 +4124,39 @@ DATE 데이터 타입과 이 타입의 데이터 반환시 사용되는 날짜�
 
 \<질의\> 사원번호가 10인 사원의 입사일과 입사 6개월 후의 날짜를 출력하라.
 
-iSQL\> SELECT join_date, ADD_MONTHS(join_date, 6)
-
-FROM employees
-
-WHERE eno = 10;
-
-JOIN_DATE ADD_MONTHS(JOIN_DATE, 6)
-
-\-----------------------------------------
-
-05-JAN-2010 05-JUL-2010
-
+```
+iSQL> SELECT join_date, ADD_MONTHS(join_date, 6) 
+ FROM employees 
+ WHERE eno = 10;
+JOIN_DATE    ADD_MONTHS(JOIN_DATE, 6)
+-----------------------------------------
+05-JAN-2010  05-JUL-2010
 1 row selected.
+```
 
 \<질의\> 사원번호가 20인 사원의 입사일과 입사 6개월 후의 날짜를 출력하라.
 
-iSQL\> SELECT join_date, ADD_MONTHS(join_date, 6)
-
-FROM employees
-
-WHERE eno = 20;
-
-JOIN_DATE ADD_MONTHS(JOIN_DATE, 6)
-
-\-----------------------------------------
-
-28-FEB-2010 31-AUG-2010
-
+```
+iSQL> SELECT join_date, ADD_MONTHS(join_date, 6) 
+ FROM employees 
+ WHERE eno = 20;
+JOIN_DATE    ADD_MONTHS(JOIN_DATE, 6)
+-----------------------------------------
+28-FEB-2010  31-AUG-2010
 1 row selected.
+```
+
+
 
 #### CONV_TIMEZONE
 
 ##### 구문
 
-**CONV_TIMEZONE(expr, src_tz, dest_tz)**
+```
+CONV_TIMEZONE(expr, src_tz, dest_tz)
+```
+
+
 
 ##### 설명
 
@@ -4310,32 +4170,30 @@ JOIN_DATE ADD_MONTHS(JOIN_DATE, 6)
 출력하고, SYSDATE 함수 출력과 비교한다. 데이터베이스 서버의 타임 존이 KST이므로,
 결과가 같을 것이다.
 
-iSQL\> SELECT to_char(conv_timezone(unix_date, '+00:00', 'KST'), 'MM/DD HH:MI')
-kst_date FROM dual;
-
+```
+iSQL> SELECT to_char(conv_timezone(unix_date, '+00:00', 'KST'), 'MM/DD HH:MI') kst_date FROM dual;
 KST_DATE
-
-\--------------------------------------
-
+--------------------------------------
 06/12 17:27
-
 1 row selected.
-
-iSQL\> SELECT to_char(sysdate, 'MM/DD HH:MI') FROM dual;
-
+iSQL> SELECT to_char(sysdate, 'MM/DD HH:MI') FROM dual;
 TO_CHAR(SYSDATE, 'MM/DD HH:MI')
-
-\--------------------------------------
-
+--------------------------------------
 06/12 17:27
-
 1 row selected.
+```
+
+
 
 #### CURRENT_DATE
 
 ##### 구문
 
-**CURRENT_DATE**
+```
+CURRENT_DATE
+```
+
+
 
 ##### 설명
 
@@ -4346,21 +4204,25 @@ TO_CHAR(SYSDATE, 'MM/DD HH:MI')
 
 \<질의\> 시스템의 현재 날짜를 클라이언트 타임 존 기준으로 출력하라.
 
-iSQL\> SELECT to_char(current_date,'YYYY MM/DD HH:MI') current_date FROM DUAL;
-
+```
+iSQL> SELECT to_char(current_date,'YYYY MM/DD HH:MI') current_date FROM DUAL;
 CURRENT_DATE
-
-\-----------------------------------------------------
-
+-----------------------------------------------------
 2013 06/12 15:33
-
 1 row selected.
+```
+
+
 
 #### CURRENT_TIMESTAMP
 
 ##### 구문
 
-**CURRENT_TIMESTAMP**
+```
+CURRENT_TIMESTAMP
+```
+
+
 
 ##### 설명
 
@@ -4373,22 +4235,23 @@ CURRENT_DATE
 
 \<질의\> 시스템의 현재 날짜를 클라이언트 타임 존 기준으로 출력하라.
 
-iSQL\> SELECT to_char(current_timestamp,'YYYY MM/DD HH:MI') current_timestamp
-FROM DUAL;
-
+```
+iSQL> SELECT to_char(current_timestamp,'YYYY MM/DD HH:MI') current_timestamp FROM DUAL;
 CURRENT_TIMESTAMP
-
-\-----------------------------------------------------
-
+-----------------------------------------------------
 2013 06/12 15:34
-
 1 row selected.
+```
 
 #### DATEADD
 
 ##### 구문
 
-**DATEADD** (*date*, *number*, *date_field_name*)
+```
+DATEADD (date, number, date_field_name)
+```
+
+
 
 ##### 설명
 
@@ -4417,23 +4280,26 @@ DATEADD 함수에 사용할 수 있는 *date_field_name*은 다음과 같다.
 
 \<질의\> 입사한지 40일이 안 된 사원의 수를 구하라.
 
-iSQL\> SELECT COUNT(\*) FROM employees
-
-WHERE join_date \> DATEADD (SYSDATE, -40, ‘DAY’);
-
+```
+iSQL> SELECT COUNT(*) FROM employees
+WHERE join_date > DATEADD (SYSDATE, -40, ‘DAY’);
 COUNT
-
-\----------
-
+----------
 5
-
 1 row selected.
+```
+
+
 
 #### DATEDIFF
 
 ##### 구문
 
-**DATEDIFF** (*startdate*, *enddate*, *date_field_name*)
+```
+DATEDIFF (startdate, enddate, date_field_name)
+```
+
+
 
 ##### 설명
 
@@ -4477,28 +4343,32 @@ DATEDIFF 함수가 반환하는 값의 범위는 *date_field_name*의 값에 따
 
 \<질의\> 2005년 8월 31일과 2005년 11월 30일 간의 개월 수의 차를 구하라.
 
-iSQL\> SELECT DATEDIFF ('31-AUG-2005', '30-NOV-2005', 'MONTH') FROM dual;
-
-DATEDIFF ('31-AUG-2005', '30-NOV-2005',
-
-\-------------------------------------------
-
-3
-
+```
+iSQL> SELECT DATEDIFF ('31-AUG-2005', '30-NOV-2005', 'MONTH') FROM dual;
+DATEDIFF ('31-AUG-2005', '30-NOV-2005',  
+-------------------------------------------
+3                    
 1 row selected.
+```
+
+
 
 #### DATENAME
 
 ##### 구문
 
-**DATENAME** (*date*, *date_field_name*)
+```
+DATENAME (date, date_field_name)
+```
+
+
 
 ##### 설명
 
 이 함수는 입력 *date_field_name*에 따라서 지정한 *date*의 월 또는 요일의 이름을
 반환한다.
 
-다음표는 DATENAME 함수에 사용 가능한 *date_field_name*을 보여준다.
+다음 표는 DATENAME 함수에 사용 가능한 *date_field_name*을 보여준다.
 
 | Date Field Name     | 설명                    |
 |---------------------|-------------------------|
@@ -4528,21 +4398,25 @@ DATEDIFF ('31-AUG-2005', '30-NOV-2005',
 
 \<질의\> 1980년 12월 28일의 월의 이름을 구하라.
 
-iSQL\> SELECT DATENAME ('28-DEC-1980', 'Month') FROM dual;
-
-DATENAME ('28-DEC-1980', 'Month')
-
-\-------------------------------------
-
-December
-
+```
+iSQL> SELECT DATENAME ('28-DEC-1980', 'Month') FROM dual;
+DATENAME ('28-DEC-1980', 'Month')  
+-------------------------------------
+December    
 1 row selected.
+```
+
+
 
 #### DB_TIMEZONE
 
 ##### 구문
 
-**DB_TIMEZONE()**
+```
+DB_TIMEZONE()
+```
+
+
 
 ##### 설명
 
@@ -4553,23 +4427,24 @@ December
 
 \<질의\> 데이터베이스 서버에 설정되어 있는 타임 존을 출력하라.
 
-iSQL\> SELECT DB_TIMEZONE() FROM DUAL;
-
+```
+iSQL> SELECT DB_TIMEZONE() FROM DUAL;
 DB_TIMEZONE
-
-\--------------------------------------------
-
-\+09:00
-
+--------------------------------------------
++09:00
 1 row selected.
+```
+
+
 
 #### EXTRACT, DATEPART
 
 ##### 구문
 
-**EXTRACT** (*date*, *date_field_name*)
-
-**DATEPART** (*date*, *date_field_name*)
+```
+EXTRACT (date, date_field_name)
+DATEPART (date, date_field_name)
+```
 
 ##### 설명
 
@@ -4596,25 +4471,27 @@ DB_TIMEZONE
 
 \<질의\> 사원번호가 10인 사원이 입사한 분기를 구하라.
 
-iSQL\> SELECT DATEPART (join_date, 'QUARTER')
-
+```
+iSQL> SELECT DATEPART (join_date, 'QUARTER')
 FROM employees
-
 WHERE eno = 10;
-
 DATEPART (JOIN_DATE, 'QUARTER')
-
-\----------------------------------
-
+----------------------------------
 1
-
 1 row selected.
+```
+
+
 
 #### MONTHS_BETWEEN 
 
 ##### 구문
 
-**MONTHS_BETWEEN** (*date1*, *date2*)
+```
+MONTHS_BETWEEN (date1, date2)
+```
+
+
 
 ##### 설명
 
@@ -4634,22 +4511,25 @@ DATEPART (JOIN_DATE, 'QUARTER')
 
 \<질의\> 1995년 2월 2일에서 1995년 1월 1일을 뺀 값을 개월 수로 구하라.
 
-iSQL\> SELECT MONTHS_BETWEEN (TO_DATE('02-02-1995','MM-DD-YYYY'),
-TO_DATE('01-01-1995','MM-DD-YYYY') ) Months FROM DUAL;
-
-MONTHS
-
-\-------------------------
-
-1.03225806451613
-
+```
+iSQL> SELECT MONTHS_BETWEEN (TO_DATE('02-02-1995','MM-DD-YYYY'), TO_DATE('01-01-1995','MM-DD-YYYY') ) Months FROM DUAL;
+MONTHS                 
+-------------------------
+1.03225806451613      
 1 row selected.
+```
+
+<a name="round-1"><a/>
 
 #### ROUND 
 
 ##### 구문
 
-**ROUND** (*date* [, *date_field_name*])
+```
+ROUND (date [, date_field_name])
+```
+
+
 
 ##### 설명
 
@@ -4658,36 +4538,40 @@ MONTHS
 
 다음 표는 ROUND함수에 사용 가능한 *date_field_name*을 보여준다.
 
-| Date Field Name          | 설명                                                                                               |
-|--------------------------|----------------------------------------------------------------------------------------------------|
-| CENTURY SCC CC           | 반올림한 세기의 첫번째 날을 반환함. xx51년 이상은 다음 세기로 올림. (단, 세기는 xxx1년부터 시작함) |
-| YEAR SYYYY YYYY YYY YY Y | 7월 1일부터 다음 해로 올림.                                                                        |
-| QUARTER Q                | 반올림한 분기의 첫번째 날을 반환함. 분기의 두 번째 달의 16일부터 다음 분기로 올림.                 |
-| MONTH MON MM RM          | 16일부터 다음 달로 올림.                                                                           |
-| WEEK WW                  | 목요일부터 다음 주 일요일로 올림.                                                                  |
-| DAY DDD DD J             | PM 12:00부터 다음 일로 올림.                                                                       |
-| HOUR HH HH12 HH24        | 30분부터 다음 시로 올림.                                                                           |
-| MINUTE MI                | 30초부터 다음 분으로 올림.                                                                         |
+| Date Field Name                                       | 설명                                                         |
+| ----------------------------------------------------- | ------------------------------------------------------------ |
+| CENTURY <br />SCC <br />CC                            | 반올림한 세기의 첫번째 날을 반환함. xx51년 이상은 다음 세기로 올림. (단, 세기는 xxx1년부터 시작함) |
+| YEAR<br />SYYYY <br />YYYY <br />YYY <br />YY <br />Y | 7월 1일부터 다음 해로 올림.                                  |
+| QUARTER <br />Q                                       | 반올림한 분기의 첫번째 날을 반환함. 분기의 두 번째 달의 16일부터 다음 분기로 올림. |
+| MONTH <br />MON <br />MM <br />RM                     | 16일부터 다음 달로 올림.                                     |
+| WEEK <br />WW                                         | 목요일부터 다음 주 일요일로 올림.                            |
+| DAY <br />DDD <br />DD <br />J                        | PM 12:00부터 다음 일로 올림.                                 |
+| HOUR <br />HH <br />HH12 <br />HH24                   | 30분부터 다음 시로 올림.                                     |
+| MINUTE <br />MI                                       | 30초부터 다음 분으로 올림.                                   |
 
 ##### 예제
 
 \<질의\> 1980년 12월 27일을 YEAR로 반올림하여 출력하라.
 
-iSQL\> SELECT ROUND ( TO_DATE('27-DEC-1980', 'DD-MON-YYYY'), 'YEAR') FROM dual;
-
-ROUND ( TO_DATE('27-DEC-1980', 'DD-MON-Y
-
-\-------------------------------------------
-
-1981/01/01 00:00:00
-
+```
+iSQL> SELECT ROUND ( TO_DATE('27-DEC-1980', 'DD-MON-YYYY'), 'YEAR') FROM dual;
+ROUND ( TO_DATE('27-DEC-1980', 'DD-MON-Y 
+-------------------------------------------
+1981/01/01 00:00:00  
 1 row selected.
+```
+
+
 
 #### LAST_DAY
 
 ##### 구문
 
-**LAST_DAY** (*date*)
+```
+LAST_DAY (date)
+```
+
+
 
 ##### 설명
 
@@ -4698,41 +4582,40 @@ DATE이다.
 
 \<질의\> 12월의 마지막 일을 출력하라.
 
-iSQL\> SELECT LAST_DAY(TO_DATE('15-DEC-2001')) FROM dual;
-
-LAST_DAY(TO_DATE('15-DEC-2001'))
-
-\-----------------------------------
-
-2001/12/31 00:00:00
-
+```
+iSQL> SELECT LAST_DAY(TO_DATE('15-DEC-2001')) FROM dual;
+LAST_DAY(TO_DATE('15-DEC-2001')) 
+-----------------------------------
+2001/12/31 00:00:00  
 1 row selected.
+```
 
 \<질의\> 사원들이 입사한 달의 마지막 일을 출력하라.
 
-iSQL\> SELECT LAST_DAY(join_date ) FROM employee;
-
-LAST_DAY(JOIN_DATE )
-
-\-----------------------
-
-1999/11/30 00:00:00
-
+```
+iSQL> SELECT LAST_DAY(join_date ) FROM employee;
+LAST_DAY(JOIN_DATE ) 
+-----------------------
+                     
+1999/11/30 00:00:00  
 2000/01/31 00:00:00
-
 .
-
 .
-
-.
-
+. 
 20 rows selected.
+```
+
+
 
 #### NEXT_DAY
 
 ##### 구문
 
-**NEXT_DAY** (*date, weekday*)
+```
+NEXT_DAY (date, weekday)
+```
+
+
 
 ##### 설명
 
@@ -4747,40 +4630,34 @@ LAST_DAY(JOIN_DATE )
 
 \<질의\> 각 사원들의 입사일과 입사일 후 첫번째 일요일을 출력하라.
 
-iSQL\> SELECT join_date, NEXT_DAY(join_date, 'SUNDAY') First_sunday FROM
-employees;
-
-JOIN_DATE FIRST_SUNDAY
-
-\---------------------------------------------
-
+```
+iSQL> SELECT join_date, NEXT_DAY(join_date, 'SUNDAY') First_sunday FROM employees;
+JOIN_DATE            FIRST_SUNDAY         
+---------------------------------------------
 .
-
 .
-
 .
-
-24-JAN-2004 25-JAN-2004
-
-29-NOV-2009 06-DEC-2009
-
-14-JUN-2010 20-JUN-2010
-
-05-JAN-2010 10-JAN-2010
-
+24-JAN-2004  25-JAN-2004
+29-NOV-2009  06-DEC-2009
+14-JUN-2010  20-JUN-2010
+05-JAN-2010  10-JAN-2010
 .
-
 .
-
 .
-
 20 rows selected.
+```
+
+
 
 #### SESSION_TIMEZONE
 
 ##### 구문
 
-**SESSION_TIMEZONE()**
+```
+SESSION_TIMEZONE()
+```
+
+
 
 ##### 설명
 
@@ -4791,21 +4668,25 @@ JOIN_DATE FIRST_SUNDAY
 
 \<질의\> 데이터베이스 세션에 설정되어 있는 타임 존을 출력하라.
 
-iSQL\> SELECT SESSION_TIMEZONE() FROM DUAL;
-
-SESSION_TIMEZONE
-
-\--------------------------------------------
-
-\+09:00
-
+```
+iSQL> SELECT SESSION_TIMEZONE() FROM DUAL;
+SESSION_TIMEZONE                               
+--------------------------------------------
++09:00                                    
 1 row selected.
+```
+
+
 
 #### SYSDATE
 
 ##### 구문
 
-**SYSDATE**
+```
+SYSDATE
+```
+
+
 
 ##### 설명
 
@@ -4815,21 +4696,25 @@ SESSION_TIMEZONE
 
 \<질의\> 시스템 날짜(현재 날짜)를 출력하라.
 
-iSQL\> SELECT SYSDATE System_Date FROM dual;
-
-SYSTEM_DATE
-
-\-----------------------
-
-2005/01/20 09:49:33
-
+```
+iSQL> SELECT SYSDATE System_Date FROM dual;
+SYSTEM_DATE          
+-----------------------
+2005/01/20 09:49:33  
 1 row selected.
+```
+
+
 
 #### SYSTIMESTAMP
 
 ##### 구문
 
-**SYSTIMESTAMP**
+```
+SYSTIMESTAMP
+```
+
+
 
 ##### 설명
 
@@ -4840,21 +4725,25 @@ SYSDATE 함수의 alias이며 시간대(time zone)은 지원하지 않는다.
 
 \<질의\> 시스템 날짜(현재 날짜)를 출력하라.
 
-iSQL\> SELECT SYSTIMESTAMP  FROM dual;
-
+```
+iSQL> SELECT SYSTIMESTAMP  FROM dual;
 SYSTIMESTAMP
-
-\-----------------------
-
-2005/01/20 09:49:33
-
+-----------------------
+2005/01/20 09:49:33  
 1 row selected.
+```
+
+
 
 #### TRUNC (date) 
 
 ##### 구문
 
-**TRUNC** (*date* [, *‘fmt*’])
+```
+TRUNC (date [, ‘fmt’])
+```
+
+
 
 ##### 설명
 
@@ -4877,38 +4766,37 @@ TRUNC 함수에 사용할 수 있는 단위는 ROUND에서 지원하는 단위 �
 
 \<질의\> 다음 예는 시스템 시간의 시간을 버림한 결과를 돌려준다.
 
-iSQL\> **SELECT TRUNC**(SYSDATE) **FROM** *DUAL*;
-
-\<결과\>
-
-TRUNC(SYSDATE)
-
-\-----------------------
-
-2005/07/19 00:00:00
-
+```
+iSQL> SELECT TRUNC(SYSDATE) FROM DUAL;    
+<결과>
+TRUNC(SYSDATE)       
+-----------------------
+2005/07/19 00:00:00  
 1 row selected.
+```
 
 \<질의\> 다음 예는 날짜를 버림한 결과를 돌려준다.
 
-iSQL\> **SELECT TRUNC**(**TO_DATE**('2005-JUL-19','YYYY-MON-DD'), 'YEAR')
-New_Year **FROM** *DUAL*;
-
-\<결과\>
-
-NEW_YEAR
-
-\-----------------------
-
-2005/01/01 00:00:00
-
+```
+iSQL> SELECT TRUNC(TO_DATE('2005-JUL-19','YYYY-MON-DD'), 'YEAR') New_Year FROM DUAL;
+<결과>
+NEW_YEAR             
+-----------------------
+2005/01/01 00:00:00  
 1 row selected.
+```
+
+
 
 #### UNIX_DATE
 
 ##### 구문
 
-**UNIX_DATE**
+```
+UNIX_DATE
+```
+
+
 
 ##### 설명
 
@@ -4919,21 +4807,25 @@ NEW_YEAR
 
 \<질의\> 시스템의 현재 날짜를 출력하라.
 
-iSQL\> SELECT to_char(UNIX_DATE,'YYYY MM/DD HH:MI') unix_date FROM DUAL;
-
+```
+iSQL> SELECT to_char(UNIX_DATE,'YYYY MM/DD HH:MI') unix_date FROM DUAL;
 UNIX_DATE
-
-\-----------------------------------------------------------
-
+-----------------------------------------------------------
 2013 06/12 06:32
-
 1 row selected.
+```
+
+
 
 #### UNIX_TIMESTAMP
 
 ##### 구문
 
-**UNIX_TIMESTAMP**
+```
+UNIX_TIMESTAMP
+```
+
+
 
 ##### 설명
 
@@ -4946,16 +4838,15 @@ UNIX_DATE
 
 \<질의\> 시스템의 현재 날짜를 출력하라.
 
-iSQL\> SELECT to_char(UNIX_TIMESTAMP,'YYYY MM/DD HH:MI') unix_timestamp FROM
-DUAL;
-
+```
+iSQL> SELECT to_char(UNIX_TIMESTAMP,'YYYY MM/DD HH:MI') unix_timestamp FROM DUAL;
 UNIX_TIMESTAMP
-
-\-----------------------------------------------------
-
+-----------------------------------------------------
 2013 06/12 06:33
-
 1 row selected.
+```
+
+
 
 ### 변환 함수
 
@@ -8624,7 +8515,9 @@ ENAME
 
 No rows selected.
 
-부록: 정규 표현식
+<a name="부록-정규-표현식"><a/>
+
+A.부록: 정규 표현식
 -----------------
 
 여기에서는 Altibase가 지원하는 정규 표현식에 대해서 설명한다.
