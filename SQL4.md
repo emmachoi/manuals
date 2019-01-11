@@ -4856,7 +4856,11 @@ UNIX_TIMESTAMP
 
 ##### 구문
 
-**ASCIISTR**(*expr*)
+```
+ASCIISTR(expr)
+```
+
+
 
 ##### 설명
 
@@ -4871,60 +4875,66 @@ ASCII가 아닌 문자가 *expr*에 올 경우, \\xxxx와 같이 UTF-16 코드�
 
 \<질의\> 입력 문자열을 ASCII 문자열로 변환하라.
 
-iSQL\> SELECT ASCIISTR('ABÄCDE') FROM DUAL;
-
+```
+iSQL> SELECT ASCIISTR('ABÄCDE') FROM DUAL;
 ASCIISTR('
-
-\----------
-
-AB\\00C4CDE
-
+----------
+AB\00C4CDE
 1 row selected.
-
-SQL\> select asciistr('abcåñö') from dual;
-
+SQL> select asciistr('abcåñö') from dual;
 ASCIISTR('ABCÅÑÖ')
-
-\------------------
-
-abc\\00E5\\00F1\\00F6
-
+------------------
+abc\00E5\00F1\00F6
 1 row selected.
+
+```
+
+
 
 #### BIN_TO_NUM 
 
 ##### 구문
 
-**BIN_TO_NUM** (*expr*)
+```
+BIN_TO_NUM (expr)
+```
+
+
 
 ##### 설명
 
 이 함수는 expr을 10진수로 변환한다. *expr*은 이진수 또는 1과 0으로만 이루어진
 최대 길이 32의 문자열이어야 한다. 반환형은 INTEGER이다.
 
-Note: *expr*에 산술 연산이 있다면, 숫자들은 10진수로 다뤄진다. 그러나 서버
-내부에서는 그 산술 연산의 결과로 생기는 수를 10진수가 아닌 2진수로 받아들이기
-때문에 결과 숫자는 0과 1로만 이루어져야 한다.
+> Note 
+>
+> *expr*에 산술 연산이 있다면, 숫자들은 10진수로 다뤄진다. 그러나 서버
+> 내부에서는 그 산술 연산의 결과로 생기는 수를 10진수가 아닌 2진수로 받아들이기
+> 때문에 결과 숫자는 0과 1로만 이루어져야 한다.
 
 ##### 예제
 
 \<질의\> 주어진 2진수를 10진수로 변환하라.
 
-iSQL\> SELECT BIN_TO_NUM ('1010') FROM dual;
-
-BIN_TO_NUM ('1010')
-
-\----------------------
-
-10
-
+```
+iSQL> SELECT BIN_TO_NUM ('1010') FROM dual;
+BIN_TO_NUM ('1010') 
+----------------------
+10          
 1 row selected.
+```
+
+
 
 #### CONVERT
 
 ##### 구문
 
-**CONVERT(***expr, dest_char_set [, source_char_set]* **)**
+```
+CONVERT(expr, dest_char_set [, source_char_set] )
+```
+
+
 
 ##### 설명
 
@@ -4938,13 +4948,14 @@ dest_char_set*과 *source_char_set*에는 Altibase가 지원하는 캐릭터 셋
 
 \<질의\> “ABC”라는 글자를 UTF8에서 US7ASCII캐릭터셋으로 변환한다.
 
-SQL\> select convert( 'ABC', 'US7ASCII', 'UTF8') from dual;
-
+```
+iSQL> select convert( 'ABC', 'US7ASCII', 'UTF8') from dual;
 CONVER
-
-\------
-
+------
 ABC
+```
+
+
 
 #### DATE_TO_UNIX
 
