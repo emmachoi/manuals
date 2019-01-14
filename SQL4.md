@@ -4961,36 +4961,45 @@ ABC
 
 ##### 구문
 
-**DATE_TO_UNIX** (*expr)*
+```
+DATE_TO_UNIX (expr)
+```
+
+
 
 ##### 설명
 
 이 함수는 DATE 타입의 *expr*을 1970-01-01 00:00:00 (UTC +00:00 타임 존) 기준의
 초 단위 값으로 변환하여 반환하다. *expr*에 입력 가능한 값의 범위는 아래와 같다.
 
->   [1970-01-01 00:00:00 - 3999-12-31 23:59:59]
+```
+[1970-01-01 00:00:00 - 3999-12-31 23:59:59]
+```
 
 *expr*이 위 범위의 최소값보다 작으면 최소값을 변환한 결과를, 최대값보다 크면
 최대값을 변환한 결과를 반환한다.
 
 ##### 예제
 
-iSQL\> SELECT DATE_TO_UNIX( TO_DATE( '2009-04-07 04:48:30', 'YYYY-MM-DD
-HH:MI:SS' )) date_to_unix FROM dual;
-
+```
+iSQL> SELECT DATE_TO_UNIX( TO_DATE( '2009-04-07 04:48:30', 'YYYY-MM-DD HH:MI:SS' )) date_to_unix FROM dual;
 DATE_TO_UNIX
-
-\---------------------------------------------
-
+---------------------------------------------
 1239079710
-
 1 row selected.
+```
+
+
 
 #### HEX_DECODE
 
 ##### 구문
 
-**HEX_DECODE**(*expr*)
+```
+HEX_DECODE(expr)
+```
+
+
 
 ##### 설명
 
@@ -5001,21 +5010,25 @@ VARCHAR이다.
 
 \<질의\> 입력한 16진수 문자열을 ASCII 문자열로 변환하라.
 
-iSQL\> select hex_decode('414241434445') from dual;
-
+```
+iSQL> select hex_decode('414241434445') from dual;
 HEX_DECODE('414241434445')
-
-\------------------------------
-
+------------------------------
 ABACDE
-
 1 row selected.
+```
+
+
 
 #### HEX_ENCODE
 
 ##### 구문
 
-**HEX_ENCODE**(*expr*)
+```
+HEX_ENCODE(expr)
+```
+
+
 
 ##### 설명
 
@@ -5026,21 +5039,25 @@ ABACDE
 
 \<질의\> 입력한 ASCII 문자열을 16진수 문자열로 변환하라.
 
-iSQL\> SELECT HEX_ENCODE('ABACDE') FROM DUAL;
-
+```
+iSQL> SELECT HEX_ENCODE('ABACDE') FROM DUAL;
 HEX_ENCODE('ABACDE')
-
-\------------------------
-
+------------------------
 414241434445
-
 1 row selected.
+```
+
+
 
 #### HEX_TO_NUM 
 
 ##### 구문
 
-**HEX_TO_NUM** (*expr*)
+```
+HEX_TO_NUM (expr)
+```
+
+
 
 ##### 설명
 
@@ -5053,21 +5070,25 @@ F까지의 알파벳으로 이루어진 최대 길이 8인 문자열이어야 �
 
 \<질의\> 주어진 16진수를 10진수로 변환하라.
 
-iSQL\> SELECT HEX_TO_NUM ('1A') FROM dual;
-
-HEX_TO_NUM ('1A')
-
-\--------------------
-
-26
-
+```
+iSQL> SELECT HEX_TO_NUM ('1A') FROM dual;
+HEX_TO_NUM ('1A') 
+--------------------
+26          
 1 row selected.
+```
+
+
 
 #### OCT_TO_NUM 
 
 ##### 구문
 
-**OCT_TO_NUM** (*expr*)
+```
+OCT_TO_NUM (expr)
+```
+
+
 
 ##### 설명
 
@@ -5076,29 +5097,35 @@ HEX_TO_NUM ('1A')
 
 반환형은 INTEGER이다.
 
-Note: *expr*에 산술 연산이 있다면, 숫자들은 10진수로 다뤄진다. 그러나 서버
-내부에서는 그 산술 연산의 결과로 생기는 수를 10진수가 아닌 8진수로 받아들이기
-때문에 결과 숫자는 0에서 7까지의 숫자로만 이루어져야 한다.
+> Note
+>
+> *expr*에 산술 연산이 있다면, 숫자들은 10진수로 다뤄진다. 그러나 서버
+> 내부에서는 그 산술 연산의 결과로 생기는 수를 10진수가 아닌 8진수로 받아들이기
+> 때문에 결과 숫자는 0에서 7까지의 숫자로만 이루어져야 한다.
 
 ##### 예제
 
 \<질의\> 주어진 8진수를 10진수로 변환하라.
 
-iSQL\> SELECT OCT_TO_NUM ('71') FROM dual;
-
-OCT_TO_NUM ('71')
-
-\--------------------
-
-57
-
+```
+iSQL> SELECT OCT_TO_NUM ('71') FROM dual;
+OCT_TO_NUM ('71') 
+--------------------
+57          
 1 row selected.
+```
+
+
 
 #### RAW_TO_INTEGER
 
 ##### 구문
 
-**RAW_TO_INTEGER** (*expr*)
+```
+RAW_TO_INTEGER (expr)
+```
+
+
 
 ##### 설명
 
@@ -5110,23 +5137,26 @@ OCT_TO_NUM ('71')
 \<질의\> VARBYTE 타입으로 변환된 '01000000' 값을 INTEGER 데이터 타입으로
 출력하라.
 
-iSQL\> SELECT RAW_TO_INTEGER(VARBYTE'01000000') FROM DUAL;
-
-RAW_TO_INTEGER(VARBYTE'01000000')
-
-\------------------------------------
-
-1
-
+```
+iSQL> SELECT RAW_TO_INTEGER(VARBYTE'01000000') FROM DUAL;
+RAW_TO_INTEGER(VARBYTE'01000000') 
+------------------------------------
+1   
 1 row selected.
+```
+
+
 
 #### RAW_TO_NUMERIC, RAW_TO_FLOAT
 
 ##### 구문
 
-**RAW_TO_NUMERIC** (*expr*)
+```
+RAW_TO_NUMERIC (expr)
+RAW_TO_FLOAT (expr)
+```
 
-**RAW_TO_FLOAT** (*expr*)
+
 
 ##### 설명
 
@@ -5137,21 +5167,25 @@ RAW_TO_INTEGER(VARBYTE'01000000')
 
 \<질의\> VARBYTE 타입으로 변환된 '02C101' 값을 NUMERIC 데이터 타입으로 출력하라.
 
-iSQL\> SELECT RAW_TO_NUMERIC(VARBYTE'02C101') FROM DUAL;
-
-RAW_TO_NUMERIC(VARBYTE'02C101')
-
-\----------------------------------
-
-1
-
+```
+iSQL> SELECT RAW_TO_NUMERIC(VARBYTE'02C101') FROM DUAL;
+RAW_TO_NUMERIC(VARBYTE'02C101') 
+----------------------------------
+1   
 1 row selected.
+```
+
+
 
 #### RAW_TO_VARCHAR
 
 ##### 구문
 
-**RAW_TO_VARCHAR** (*n)*
+```
+RAW_TO_VARCHAR (n)
+```
+
+
 
 ##### 설명
 
@@ -5163,21 +5197,25 @@ RAW_TO_NUMERIC(VARBYTE'02C101')
 \<질의\> TO_RAW 함수로 생성된 VARBYTE 형의 값 '050068656C6C6F' 값을 VARCHAR
 데이터로 변환하라.
 
-iSQL\>SELECT RAW_TO_VARCHAR('050068656C6C6F') FROM DUAL;
-
-RAW_TO_VARCHAR('050068656C6C6F')
-
-\------------------------------------
-
+```
+iSQL>SELECT RAW_TO_VARCHAR('050068656C6C6F') FROM DUAL;
+RAW_TO_VARCHAR('050068656C6C6F')  
+------------------------------------
 hello
-
 1 row selected.
+```
+
+
 
 #### TO_BIN
 
 ##### 구문
 
-**TO_BIN** (*n*)
+```
+TO_BIN (n)
+```
+
+
 
 ##### 설명
 
@@ -5197,21 +5235,25 @@ hello
 
 \<질의\> 주어진 값을 이진수로 변환하라.
 
-iSQL\> SELECT TO_BIN(1000) FROM dual;
-
-TO_BIN(1000)
-
-\------------------------------------
-
-1111101000
-
+```
+iSQL> SELECT TO_BIN(1000) FROM dual;
+TO_BIN(1000)                      
+------------------------------------
+1111101000                        
 1 row selected.
+```
+
+
 
 #### TO_CHAR(날짜형) 
 
 ##### 구문
 
-**TO_CHAR** (*date* [, *‘fmt*’])
+```
+TO_CHAR (date [, ‘fmt’])
+```
+
+
 
 ##### 설명
 
@@ -5226,40 +5268,34 @@ DEFAULT_DATE_FORMAT 프로퍼티의 기본값은 DD-MON-RRRR 이다. 날짜형 �
 
 \<질의\> 모든 사원의 입사일을 YYYY-MM-DD HH:MI:SS 형식으로 출력하라.
 
-iSQL\> SELECT e_firstname, e_lastname, TO_CHAR(join_date, 'YYYY-MM-DD HH:MI:SS')
-Join_date FROM employees;
-
-E_FIRSTNAME E_LASTNAME JOIN_DATE
-
-\---------------------------------------------------------------------------
-
+```
+iSQL> SELECT e_firstname, e_lastname, TO_CHAR(join_date, 'YYYY-MM-DD HH:MI:SS') Join_date FROM employees;
+E_FIRSTNAME           E_LASTNAME            JOIN_DATE
+---------------------------------------------------------------------------
 .
-
 .
-
 .
-
-Farhad Ghorbani 2009-12-20 00:00:00
-
-Ryu Momoi 2010-09-09 00:00:00
-
-Gottlieb Fleischer 2004-01-24 00:00:00
-
-Xiong Wang 2009-11-29 00:00:00
-
+Farhad                Ghorbani              2009-12-20 00:00:00
+Ryu                   Momoi                 2010-09-09 00:00:00
+Gottlieb              Fleischer             2004-01-24 00:00:00
+Xiong                 Wang                  2009-11-29 00:00:00
 .
-
 .
-
 .
-
 20 rows selected.
+```
+
+
 
 #### TO_CHAR (number)
 
 ##### 구문
 
-**TO_CHAR** (*n* [,’*format’*])
+```
+TO_CHAR (n [,’format’])
+```
+
+
 
 ##### 설명
 
@@ -5277,63 +5313,53 @@ Xiong Wang 2009-11-29 00:00:00
 \<질의\> 다음 SQL문은 문자열과 숫자를 함축적 변환을 사용하여 숫자로 해석한 후
 TO_CHAR 함수를 이용하여 문자형으로 변환하여 출력한다.
 
-iSQL\> SELECT TO_CHAR('01110' + 1) FROM dual;
-
-TO_CHAR('01110' + 1)
-
-\------------------------------------------------
-
-1111
-
+```
+iSQL> SELECT TO_CHAR('01110' + 1) FROM dual;
+TO_CHAR('01110' + 1)                                
+------------------------------------------------
+1111                                                
 1 row selected.
+```
 
 \<질의\> 다음은 숫자를 다양한 형식의 문자열로 출력하는 예를 보여준다.
 
-iSQL\> SELECT TO_CHAR (123, '99999') FROM dual;
-
-TO_CHAR (123, '99999')
-
-\--------------------------
-
-123
-
+```
+iSQL> SELECT TO_CHAR (123, '99999') FROM dual;
+TO_CHAR (123, '99999')  
+--------------------------
+   123           
 1 row selected.
 
-iSQL\> SELECT TO_CHAR (123.4567, '999999') FROM dual;
-
-TO_CHAR (123.4567, '999999')
-
-\--------------------------------
-
-123
-
+iSQL> SELECT TO_CHAR (123.4567, '999999') FROM dual;
+TO_CHAR (123.4567, '999999')  
+--------------------------------
+    123          
 1 row selected.
 
-iSQL\> SELECT TO_CHAR (1234.578, '9999.99') FROM dual;
-
-TO_CHAR (1234.578, '9999.99')
-
-\---------------------------------
-
-1234.58
-
+iSQL> SELECT TO_CHAR (1234.578, '9999.99') FROM dual;
+TO_CHAR (1234.578, '9999.99')  
+---------------------------------
+ 1234.58         
 1 row selected.
 
-iSQL\> SELECT TO_CHAR (1234.578, '999.99999') FROM dual;
-
-TO_CHAR (1234.578, '999.99999')
-
-\-----------------------------------
-
-\#\#\#\#\#\#\#\#\#\#
-
+iSQL> SELECT TO_CHAR (1234.578, '999.99999') FROM dual;
+TO_CHAR (1234.578, '999.99999')  
+-----------------------------------
+########## 
 1 row selected.
+```
+
+
 
 #### TO_DATE
 
 ##### 구문
 
-**TO_DATE** (*expr* [, *‘fmt’* ])
+```
+TO_DATE (expr [, ‘fmt’ ])
+```
+
+
 
 ##### 설명
 
@@ -5352,32 +5378,33 @@ TO_DATE(TO_CHAR(sysdate,'YYYY'),'YYYY')를 실행한 시각이 2005/08/24 17:32:
 
 \<질의\> 2001년 11월 19일에 입사한 사원의 번호, 이름, 성별과 입사일을 입력하라.
 
-iSQL\> INSERT INTO employees(eno, e_lastname, e_firstname, sex, join_date)
-VALUES(22, 'Jones', 'Mary', 'F', TO_DATE('2011-11-19 00:00:00', 'YYYY-MM-DD
-HH:MI:SS'));
-
+```
+iSQL> INSERT INTO employees(eno, e_lastname, e_firstname, sex, join_date) VALUES(22, 'Jones', 'Mary', 'F', TO_DATE('2011-11-19 00:00:00', 'YYYY-MM-DD HH:MI:SS'));
 1 row inserted.
+```
 
 \<질의\> 입력 날짜에 월과 일을 명시하지 않은 경우 TO_DATE 결과
 
-iSQL\> select to_char(to_date(to_char(sysdate, 'YYYY'), 'YYYY'), 'YYYYMMDD
-HH24:MI:SS') from dual;
-
+```
+iSQL> select to_char(to_date(to_char(sysdate, 'YYYY'), 'YYYY'), 'YYYYMMDD HH24:MI:SS') from dual;
 TO_CHAR(TO_DATE(TO_CHAR(SYSDATE,'YYYY'),
-
-\--------------------------------------------
-
+-------------------------------------------- 
 20080501 00:00:00
-
 1 row selected.
-
 (단, SYSDATE = 20080502 13:17:20)
+```
+
+
 
 #### TO_HEX
 
 ##### 구문
 
-**TO_HEX** (*n*)
+```
+TO_HEX (n)
+```
+
+
 
 ##### 설명
 
@@ -5390,21 +5417,25 @@ TO_CHAR(TO_DATE(TO_CHAR(SYSDATE,'YYYY'),
 
 \<질의\> 주어진 값을 16진수로 변환하라.
 
-iSQL\> SELECT TO_HEX(1000) FROM dual;
-
-TO_HEX(1000)
-
-\----------------
-
-3E8
-
+```
+iSQL> SELECT TO_HEX(1000) FROM dual;
+TO_HEX(1000)  
+----------------
+3E8       
 1 row selected.
+```
+
+
 
 #### TO_INTERVAL (NUMTODSINTERVAL)
 
 ##### 구문
 
-**TO_INTERVAL**(*n, 'interval_unit'*)
+```
+TO_INTERVAL(n, 'interval_unit')
+```
+
+
 
 ##### 설명
 
@@ -5429,43 +5460,37 @@ n은 숫자 타입이나 숫자 타입으로 변환할 수 있는 값을 입력�
 
 ##### 예제
 
-iSQL\> select to_interval( 1, 'day') Days from dual;
-
-DAYS
-
-\-----------------------
-
-1
-
+```
+iSQL> select to_interval( 1, 'day') Days from dual;
+DAYS 
+-----------------------
+1 
 1 row selected.
 
-iSQL\> select sysdate + to_interval( 24 \* 60 \* 60, 'second') tomorrow from
-dual;
-
-TOMORROW
-
-\---------------
-
-16-APR-2015
-
+iSQL> select sysdate + to_interval( 24 * 60 * 60, 'second') tomorrow from dual;
+TOMORROW 
+---------------
+16-APR-2015 
 1 row selected.
-
-iSQL\> SELECT TO_DATE('2015-02-01', 'YYYY-MM-DD') + TO_INTERVAL( 1, 'month' )
-NEXT_MONTH FROM DUAL;
-
-NEXT_MONTH
-
-\---------------
-
+ 
+iSQL> SELECT TO_DATE('2015-02-01', 'YYYY-MM-DD') + TO_INTERVAL( 1, 'month' ) NEXT_MONTH FROM DUAL;
+NEXT_MONTH   
+---------------
 03-MAR-2015
-
 1 row selected.
+```
+
+
 
 #### TO_NCHAR(character)
 
 ##### 구문
 
-**TO_NCHAR** (*expr*)
+```
+TO_NCHAR (expr)
+```
+
+
 
 ##### 설명
 
@@ -5479,19 +5504,24 @@ NEXT_MONTH
 \<질의\> 문자 ‘안’을 내셔널 캐릭터셋 UTF-16으로 변환하여 그 정보(dump)를
 출력하라. (단, ‘안’의 code point는 U+C548이다.)
 
-iSQL\> select dump( to_nchar('안'), 16 ) from dual;
-
+```
+iSQL> select dump( to_nchar('안'), 16 ) from dual;
 DUMP( TO_NCHAR('안'), 16 )
-
-\------------------------------------------------------------------------------
-
+------------------------------------------------------------------------------
 Type=NVARCHAR(UTF16) Length=4: 2,0,c5,48
+```
+
+
 
 #### TO_NCHAR(datetime)
 
 ##### 구문
 
-**TO_NCHAR** (*datetime [,’fmt’]*)
+```
+TO_NCHAR (datetime [,’fmt’])
+```
+
+
 
 ##### 설명
 
@@ -5502,42 +5532,35 @@ Type=NVARCHAR(UTF16) Length=4: 2,0,c5,48
 
 \<질의\> 각 사원의 입사일을 내셔널 캐릭터셋으로 변환해서 출력하라.
 
-iSQL\> SELECT e_lastname, e_firstname, TO_NCHAR(join_date, 'YYYY-MM-DD
-HH:MI:SS') Join_date
-
-FROM employees;
-
-E_LASTNAME E_FIRSTNAME JOIN_DATE
-
-\---------------------------------------------------------------------------
-
+```
+iSQL> SELECT e_lastname, e_firstname, TO_NCHAR(join_date, 'YYYY-MM-DD HH:MI:SS') Join_date 
+ FROM employees;
+E_LASTNAME            E_FIRSTNAME           JOIN_DATE
+---------------------------------------------------------------------------
 .
-
 .
-
 .
-
-Momoi Ryu 2010-09-09 00:00:00
-
-Fleischer Gottlieb 2004-01-24 00:00:00
-
-Wang Xiong 2009-11-29 00:00:00
-
-Diaz Curtis 2010-06-14 00:00:00
-
+Momoi                 Ryu                   2010-09-09 00:00:00
+Fleischer             Gottlieb              2004-01-24 00:00:00
+Wang                  Xiong                 2009-11-29 00:00:00
+Diaz                  Curtis                2010-06-14 00:00:00
 .
-
 .
-
 .
-
 20 rows selected.
+```
+
+
 
 #### TO_NCHAR(number)
 
 ##### 구문
 
-**TO_NCHAR** (*n [,’fmt’]*)
+```
+TO_NCHAR (n [,’fmt’])
+```
+
+
 
 ##### 설명
 
@@ -5546,21 +5569,25 @@ Diaz Curtis 2010-06-14 00:00:00
 
 ##### 예제
 
-iSQL\> SELECT TO_NCHAR('01110' + 1) FROM dual;
-
+```
+iSQL> SELECT TO_NCHAR('01110' + 1) FROM dual;
 TO_NCHAR('01110' + 1)
-
-\------------------------------------------------
-
+------------------------------------------------
 1111
-
 1 row selected.
+```
+
+
 
 #### TO_NUMBER
 
 ##### 구문
 
-**TO_NUMBER** (*char* [, *number_fmt*] )
+```
+TO_NUMBER (char [, number_fmt] )
+```
+
+
 
 ##### 설명
 
@@ -5574,51 +5601,46 @@ Reference*를 참고하기 바란다.
 
 \<질의\> 문자열 200.00을 FLOAT로 변환하여 그 값을 이용해서 갱신하라.
 
-iSQL\> UPDATE employees
-
-SET salary = salary + TO_NUMBER( '200.00')
-
+```
+iSQL> UPDATE employees
+SET salary = salary + TO_NUMBER( '200.00') 
 WHERE eno = 10;
-
 1 row updated.
+```
 
 \<질의\> 문자열을 다양한 숫자 출력 형식으로 변환하라.
 
-iSQL\> SELECT TO_NUMBER ( '0123.4500', '0990.9909' ) FROM dual;
-
+```
+iSQL> SELECT TO_NUMBER ( '0123.4500', '0990.9909' ) FROM dual;
 TO_NUMBER ( '0123.4500', '0990.9909' )
-
-\-----------------------------------------
-
+-----------------------------------------
 123.45
-
 1 row selected.
 
-iSQL\> SELECT TO_NUMBER ( '\$12,3.45-', '09,\$0.00S' ) FROM dual;
-
-TO_NUMBER ( '\$12,3.45-', '09,\$0.00S' )
-
-\-----------------------------------------
-
-\-123.45
-
+iSQL> SELECT TO_NUMBER ( '$12,3.45-', '09,$0.00S' ) FROM dual;
+TO_NUMBER ( '$12,3.45-', '09,$0.00S' )
+-----------------------------------------
+-123.45
 1 row selected.
 
-iSQL\> SELECT TO_NUMBER ( '\<\$183.5\>', '\$9,000.0PR' ) FROM dual;
-
-TO_NUMBER ( '\<\$183.5\>', '\$9,000.0PR' )
-
-\-----------------------------------------
-
-\-183.5
-
+iSQL> SELECT TO_NUMBER ( '<$183.5>', '$9,000.0PR' ) FROM dual;
+TO_NUMBER ( '<$183.5>', '$9,000.0PR' )
+-----------------------------------------
+-183.5
 1 row selected
+```
+
+
 
 #### TO_OCT
 
 ##### 구문
 
-**TO_OCT** (*n*)
+```
+TO_OCT (n)
+```
+
+
 
 ##### 설명
 
@@ -5631,21 +5653,25 @@ TO_NUMBER ( '\<\$183.5\>', '\$9,000.0PR' )
 
 \<질의\> 주어진 값을 8진수로 변환하라.
 
-iSQL\> SELECT TO_OCT(1000) FROM dual;
-
-TO_OCT(1000)
-
-\----------------
-
-1750
-
+```
+iSQL> SELECT TO_OCT(1000) FROM dual;
+TO_OCT(1000)  
+----------------
+1750          
 1 row selected.
+```
+
+
 
 #### TO_RAW
 
 ##### 구문
 
-**TO_RAW** (*n*)
+```
+TO_RAW (n)
+```
+
+
 
 ##### 설명
 
@@ -5656,21 +5682,25 @@ TO_OCT(1000)
 
 \<질의\> 입력한 값을 VARBYTE 타입으로 출력하라.
 
-iSQL\> SELECT TO_RAW(1000) FROM DUAL;
+```
+iSQL> SELECT TO_RAW(1000) FROM DUAL;
+TO_RAW(1000)  
+----------------
+E803  
+1 row selected. 
+```
 
-TO_RAW(1000)
 
-\----------------
-
-E803
-
-1 row selected.
 
 #### UNISTR
 
 ##### 구문
 
-**UNISTR**(*expr*)
+```
+UNISTR(expr)
+```
+
+
 
 ##### 설명
 
@@ -5686,15 +5716,15 @@ ASCIISTR 함수와는 반대되는 기능을 하는 함수이다.
 \<질의\> ASCII 문자와 유니코드로 인코딩된 문자가 같이 들어있는 문자열을 내셔널
 캐릭터셋으로 변환하라.
 
-iSQL\> SELECT UNISTR('abc\\00e5\\00f1\\00f6') FROM DUAL;
-
+```
+iSQL> SELECT UNISTR('abc\00e5\00f1\00f6') FROM DUAL;
 UNISTR
-
-\------
-
+------
 abcåñö
-
 1 row selected.
+```
+
+
 
 #### UNIX_TO_DATE
 
