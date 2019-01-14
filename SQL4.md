@@ -5730,7 +5730,11 @@ abcåñö
 
 ##### 구문
 
-**UNIX_TO_DATE** (*expr*)
+```
+UNIX_TO_DATE (expr)
+```
+
+
 
 ##### 설명
 
@@ -5746,16 +5750,15 @@ abcåñö
 
 ##### 예제
 
-iSQL\> SELECT TO_CHAR( UNIX_TO_DATE( 1239079710 ), 'YYYY-MM-DD HH:MI:SS' )
-unix_to_date FROM dual;
-
+```
+iSQL> SELECT TO_CHAR( UNIX_TO_DATE( 1239079710 ), 'YYYY-MM-DD HH:MI:SS' ) unix_to_date FROM dual;
 UNIX_TO_DATE
-
-\--------------------------------------------------------------
-
-2009-04-07 04:48:30
-
+--------------------------------------------------------------
+2009-04-07 04:48:30 
 1 row selected.
+```
+
+
 
 ### 암호화 함수
 
@@ -5779,9 +5782,12 @@ AES(Advanced Encryption Standard)이다.
 
 ##### 구문
 
-**AESDECRYPT** (VARCHAR *encrypted_string*,
+```
+AESDECRYPT (VARCHAR  encrypted_string,
+            VARCHAR  key_string) 
+```
 
-VARCHAR *key_string*)
+
 
 ##### 설명
 
@@ -5790,43 +5796,51 @@ VARCHAR *key_string*)
 
 *key_string*: 암호화 키로 사용되었던 문자열이다.
 
-*\** 주의: 암호화된 문자열을 화면에 출력하면 터미널 에뮬레이터 오류가 발생할 수
-있다.
+> 주의
+>
+> : 암호화된 문자열을 화면에 출력하면 터미널 에뮬레이터 오류가 발생할 수
+> 있다.
 
 ##### 예제
 
 암호화한 텍스트를 테이블에 저장 및 복호화하여 출력하라.
 
+```
 create table t1( encrypted_string varchar(40) );
+```
 
 1) 암호화한 텍스트를 테이블에 삽입하기
 
-iSQL\> INSERT INTO T1 VALUES(AESENCRYPT(PKCS7PAD16('ABC AES TEST'),
-'WORRAPS1WORRAPS2'));
-
+```
+iSQL> INSERT INTO T1 VALUES(AESENCRYPT(PKCS7PAD16('ABC AES TEST'), 'WORRAPS1WORRAPS2'));
 1 row inserted.
+```
+
+
 
 2) 암호화할 때 사용한 것과 동일한 키를 이용하여 암호화된 텍스트를 복호화해서
 출력하라.
 
-iSQL\> SELECT PKCS7UNPAD16(AESDECRYPT(encrypted_string, 'WORRAPS1WORRAPS2'))
-FROM T1;
-
-PKCS7UNPAD16(AESDECRYPT(encrypted_string, 'WORRAPS1WORRA
-
-\-----------------------------------------------------
-
-ABC AES TEST
-
+```
+iSQL> SELECT PKCS7UNPAD16(AESDECRYPT(encrypted_string, 'WORRAPS1WORRAPS2')) FROM T1;
+PKCS7UNPAD16(AESDECRYPT(encrypted_string, 'WORRAPS1WORRA 
+-----------------------------------------------------
+ABC AES TEST 
 1 row selected.
+```
+
+
 
 #### AESENCRYPT
 
 ##### 구문
 
-**AESENCRYPT** (VARCHAR *expr*,
+```
+AESENCRYPT (VARCHAR  expr,
+            VARCHAR  key_string)
+```
 
-VARCHAR *key_string)*
+
 
 ##### 설명
 
@@ -5850,9 +5864,12 @@ AESDECRYPT 예제를 참조하라.
 
 ##### 구문
 
-**DESDECRYPT** (VARCHAR *encrypted_string*,
+```
+DESDECRYPT (VARCHAR  encrypted_string,
+            VARCHAR  key_string)
+```
 
-VARCHAR *key_string*)
+
 
 ##### 설명
 
@@ -5861,84 +5878,90 @@ VARCHAR *key_string*)
 *key_string*: 암호화 키로 사용되었던 문자열이다. 이 문자열의 최소 길이는 8이다.
 9번째와 이후의 문자는 무시된다.
 
-*\** 주의: 암호화된 문자열을 화면에 출력하면 터미널 에뮬레이터 오류가 발생할 수
-있다.
+> 주의
+>
+> : 암호화된 문자열을 화면에 출력하면 터미널 에뮬레이터 오류가 발생할 수
+> 있다.
 
 ##### 예제1
 
 암호화한 텍스트를 테이블에 저장 및 복호화하여 출력하라.
 
+```
 create table t1( encrypted_string varchar(40) );
+```
 
 1) 암호화한 텍스트를 테이블에 삽입하기
 
-iSQL\> insert into t1 values( desencrypt( 'A4 ALTIBASE Corporation.', 'altibase'
+```
+iSQL> insert into t1 values( desencrypt( 'A4 ALTIBASE Corporation.', 'altibase'
 ) );
-
 1 row inserted.
+```
 
 2) 암호화된 텍스트를 조회하면 알아볼 수 없을 것이다.
 
-iSQL\> select \* from t1;
-
-T1.ENCRYPTED_STRING
-
-\--------------------------------------------
-
-Z\\uf900\\u5b87\\ub94c]\\uffff\\uffffu\\uffffxE\\uffffIXek
-
-\\uffff
-
-1 row selected.
+```
+iSQL> select * from t1; 
+T1.ENCRYPTED_STRING 
+-------------------------------------------- 
+Z\uf900\u5b87\ub94c]\uffff\uffffu\uffffxE\uffffIXek 
+                     \uffff 
+1 row selected. 
+```
 
 3) 암호화 할 때 사용한 것과 동일한 키를 이용하여 암호화된 텍스트를 복호화해서
 출력하라.
 
-iSQL\> select desdecrypt(encrypted_string, 'altibase') from t1;
-
-DESDECRYPT(ENCRYPTED_STRING, 'altibase')
-
-\--------------------------------------------
-
-A4 ALTIBASE Corporation.
-
+```
+iSQL> select desdecrypt(encrypted_string, 'altibase') from t1; 
+DESDECRYPT(ENCRYPTED_STRING, 'altibase') 
+-------------------------------------------- 
+A4 ALTIBASE Corporation. 
 1 row selected.
+```
+
+
 
 ##### 예제2
 
 PKCS7PAD16와 PKCS7UNPAD16 함수를 사용해서 길이가 8의 배수가 아닌 문자열을
 암복호화하라.
 
+```
 create table t1( encrypted_string varchar(40) );
+```
 
 1) PKCS7PAD16 함수를 사용해서 길이가 8의 배수가 아닌 문자열을 암호화하여
 저장하라.
 
-iSQL\> insert into t1 values( DESENCRYPT( PKCS7PAD16( 'Altibase Client Query
-utility.'), 'altibase' ) );
-
-1 row inserted.
+```
+iSQL> insert into t1 values( DESENCRYPT( PKCS7PAD16( 'Altibase Client Query utility.'), 'altibase' ) ); 
+1 row inserted. 
+```
 
 2) PKCS7UNPAD16 함수를 사용해서 1번에서 암호화한 텍스트를 복호화하라.
 
-iSQL\> select PKCS7PAD16( DESDECRYPT( encrypted_string, 'altibase' ) )
-desdecrypt_str from t1;
-
+```
+iSQL> select PKCS7PAD16( DESDECRYPT( encrypted_string, 'altibase' ) ) desdecrypt_str from t1; 
 DESDECRYPT_STR
+---------------------------------------------------- 
+Altibase Client Query utility. 
+1 row selected. 
+```
 
-\----------------------------------------------------
 
-Altibase Client Query utility.
-
-1 row selected.
 
 #### DESENCRYPT
 
 ##### 구문
 
-**DESENCRYPT** (VARCHAR *expr*,
+```
+DESENCRYPT (VARCHAR  expr,
+            VARCHAR  key_string)
+```
 
-VARCHAR *key_string)*
+
 
 ##### 설명
 
@@ -5955,13 +5978,12 @@ DESDECRYPT 예제를 참조한다.
 
 ##### 구문
 
-**TRIPLE_DESDECRYPT** (VARCHAR *input_string*,
-
-VARCHAR *key_string*,
-
-[, SMALLINT *keying_option*
-
-[, VARCHAR *initial_vector*]])
+```
+TRIPLE_DESDECRYPT (VARCHAR  input_string,
+                   VARCHAR  key_string,
+                   [, SMALLINT keying_option
+                   [, VARCHAR initial_vector]])
+```
 
 ##### 설명
 
@@ -5977,60 +5999,60 @@ VARCHAR *key_string*,
 
 *initial_vector*: 암호화할 때 사용했던 초기화 벡터이다.
 
-*\** 주의: 암호화된 문자열을 화면에 출력하면 터미널 에뮬레이터 오류가 발생할 수
-있다.
+> 주의
+>
+> : 암호화된 문자열을 화면에 출력하면 터미널 에뮬레이터 오류가 발생할 수
+> 있다.
 
 ##### 예제
 
 암호화한 텍스트를 테이블에 저장 및 복호화하여 출력하라.
 
+```
 create table t1( encrypted_string varchar(40) );
+```
 
 1) 암호화한 텍스트를 테이블에 삽입하기
 
-iSQL\> insert into t1 values( tdesencrypt( 'A4 ALTIBASE Corporation.',
-'altibaselocation'));
-
-1 row inserted.
+```
+iSQL> insert into t1 values( tdesencrypt( 'A4 ALTIBASE Corporation.', 'altibaselocation'));
+1 row inserted. 
+```
 
 2) 암호화된 텍스트를 조회하면 알아볼 수 없을 것이다.
 
-iSQL\> select \* from t1;
-
+```
+iSQL> select * from t1;
 ENCRYPTED_STRING
-
-\--------------------------------------------
-
-\-m
-
+--------------------------------------------
+-m
 y???????/o??
-
-1 row selected.
+1 row selected. 
+```
 
 3) 암호화 할 때 사용한 것과 동일한 키를 이용하여 암호화된 텍스트를 복호화해서
 출력하라.
 
-iSQL\> select tdesdecrypt(encrypted_string, 'altibaselocation') from t1;
-
+```
+iSQL> select tdesdecrypt(encrypted_string, 'altibaselocation') from t1;
 TDESDECRYPT(ENCRYPTED_STRING, 'altibaseloc
-
-\----------------------------------------------
-
+----------------------------------------------
 A4 ALTIBASE Corporation.
-
 1 row selected.
+```
+
+
 
 #### TDESENCRYPT/TRIPLE_DESENCRYPT
 
 ##### 구문
 
-**TRIPLE_DESENCRYPT** (VARCHAR *input_string*,
-
-VARCHAR *key_string*,
-
-[, SMALLINT *keying_option*
-
-[, VARCHAR *initial_vector*]])*)*
+```
+TRIPLE_DESENCRYPT (VARCHAR  input_string,
+                   VARCHAR  key_string,
+                [, SMALLINT keying_option
+                [, VARCHAR initial_vector]]))
+```
 
 ##### 설명
 
@@ -6061,7 +6083,11 @@ TDESDECRYPT 예제를 참조하라.
 
 ##### 구문
 
-**BASE64_DECODE**(*expr*)
+```
+BASE64_DECODE(expr)
+```
+
+
 
 ##### 설명
 
@@ -6070,21 +6096,25 @@ VARBYTE타입의 원 데이터를 반환한다.
 
 ##### 예제
 
-iSQL\> SELECT BASE64_DECODE(VARBYTE'71673D3D') FROM DUAL;
-
+```
+iSQL> SELECT BASE64_DECODE(VARBYTE'71673D3D') FROM DUAL;
 BASE64_DECODE(VARBYTE'71673D3D')
-
-\-----------------------------
-
+-----------------------------
 AA
-
 1 row selected.
+```
+
+
 
 #### BASE64_DECODE_STR
 
 ##### 구문
 
-**BASE64_DECODE_STR**(*expr*)
+```
+BASE64_DECODE_STR(expr)
+```
+
+
 
 ##### 설명
 
@@ -6095,21 +6125,25 @@ AA
 
 ##### 예제
 
-iSQL\> SELECT BASE64_DECODE_STR('qw==') FROM DUAL;
-
-BASE64_DECODE_STR('qw==')
-
-\-----------------------------
-
-AB
-
+```
+iSQL> SELECT BASE64_DECODE_STR('qw==') FROM DUAL;
+BASE64_DECODE_STR('qw==')  
+-----------------------------
+AB      
 1 row selected.
+```
+
+
 
 #### BASE64_ENCODE
 
 ##### 구문
 
-**BASE64_ENCODE**(*expr*)
+```
+BASE64_ENCODE(expr)
+```
+
+
 
 ##### 설명
 
@@ -6118,21 +6152,25 @@ AB
 
 ##### 예제
 
-iSQL\> SELECT BASE64_ENCODE(VARBYTE'AA') FROM DUAL;
-
+```
+iSQL> SELECT BASE64_ENCODE(VARBYTE'AA') FROM DUAL;
 BASE64_ENCODE(VARBYTE'AA')
-
-\-----------------------------
-
+-----------------------------
 71673D3D
-
 1 row selected.
+```
+
+
 
 #### BASE64_ENCODE_STR
 
 ##### 구문
 
-**BASE64_ENCODE_STR**(*expr*)
+```
+BASE64_ENCODE_STR(expr)
+```
+
+
 
 ##### 설명
 
@@ -6142,21 +6180,25 @@ BASE64_ENCODE(VARBYTE'AA')
 
 ##### 예제
 
-iSQL\> SELECT BASE64_ENCODE_STR('AB') FROM DUAL;
-
-BASE64_ENCODE_STR('AB')
-
-\---------------------------
-
-qw==
-
+```
+iSQL> SELECT BASE64_ENCODE_STR('AB') FROM DUAL;
+BASE64_ENCODE_STR('AB')  
+---------------------------
+qw==  
 1 row selected.
+```
+
+
 
 #### BINARY_LENGTH
 
 ##### 구문
 
-**BINARY_LENGTH** (*expr*)
+```
+BINARY_LENGTH (expr)
+```
+
+
 
 ##### 설명
 
@@ -6166,34 +6208,31 @@ qw==
 
 \<질의\> 세 가지 이진 데이터 형 값의 길이를 출력하라.
 
-iSQL\> CREATE TABLE T1 (I1 BLOB, I2 Byte(10), I3 NIBBLE(10) );
-
+```
+iSQL> CREATE TABLE T1 (I1 BLOB, I2 Byte(10), I3 NIBBLE(10) );
 Create success.
 
-iSQL\> INSERT INTO T1 VALUES ( BLOB'3FD', Byte'123FD', NIBBLE'90BCD');
-
+iSQL> INSERT INTO T1 VALUES ( BLOB'3FD', Byte'123FD', NIBBLE'90BCD');
 1 row inserted.
 
-iSQL\> SELECT BINARY_LENGTH (I1), BINARY_LENGTH (I2), BINARY_LENGTH (I3) FROM
-T1;
-
-BINARY_LENGTH (I1) BINARY_LENGTH (I2) BINARY_LENGTH (I3)
-
-\------------------------------------------------------
-
-2 10 5
-
+iSQL> SELECT BINARY_LENGTH (I1), BINARY_LENGTH (I2), BINARY_LENGTH (I3) FROM T1;
+BINARY_LENGTH (I1) BINARY_LENGTH (I2) BINARY_LENGTH (I3) 
+------------------------------------------------------
+2           10          5           
 1 row selected.
+```
+
+
 
 #### CASE2
 
 ##### 구문
 
-**CASE2** (*expr1*, *ret_expr1*,
-
-[,*expr2*, *ret_expr2*,..,]
-
-[, *default*])
+```
+CASE2 (expr1, ret_expr1,
+     [,expr2, ret_expr2,..,]
+     [, default])
+```
 
 ##### 설명
 
@@ -6207,48 +6246,46 @@ BINARY_LENGTH (I1) BINARY_LENGTH (I2) BINARY_LENGTH (I3)
 \<질의\> 직원들의 급여를 출력하라. 월급여가 2000 보다 크면 ‘HIGH’를, 1500 보다
 작으면 ‘LOW’을 출력하고, 급여 정보가 없으면 NULL을 출력하라.
 
-iSQL\> SELECT e_lastname, e_firstname, emp_job, CASE2(salary \> 2000, 'HIGH',
-salary \< 1500, 'LOW', salary IS NULL, 'NULL', TO_CHAR(salary)) Salary
-
-FROM employees;
-
-E_LASTNAME E_FIRSTNAME EMP_JOB SALARY
-
-\---------------------------------------------------------------------------
-
-Moon Chan-seung CEO NULL
-
-Davenport Susan designer 1500
-
-Kobain Ken engineer 2000
-
-Foster Aaron PL 1800
-
-Ghorbani Farhad PL HIGH
-
-Momoi Ryu programmer 1700
-
-Fleischer Gottlieb manager LOW
-
-Wang Xiong manager NULL
-
+```
+iSQL> SELECT e_lastname, e_firstname, emp_job, CASE2(salary > 2000, 'HIGH', salary < 1500, 'LOW', salary IS NULL, 'NULL', TO_CHAR(salary)) Salary 
+ FROM employees;
+E_LASTNAME            E_FIRSTNAME           EMP_JOB          SALARY
+---------------------------------------------------------------------------
+Moon                  Chan-seung            CEO              NULL
+Davenport             Susan                 designer         1500
+Kobain                Ken                   engineer         2000
+Foster                Aaron                 PL               1800
+Ghorbani              Farhad                PL               HIGH
+Momoi                 Ryu                   programmer       1700
+Fleischer             Gottlieb              manager          LOW
+Wang                  Xiong                 manager          NULL
 .
-
 .
-
 .
-
 20 rows selected.
+```
+
+
 
 #### CASE WHEN 
 
 ##### 구문
 
-simple_case_expr
+**case**
 
-searched_case_expr
+![case](D:\emmachoigit\manuals\media\SQL\case.gif)
 
-else_clause
+**simple_case_expr**
+
+![simple_case_expr](D:\emmachoigit\manuals\media\SQL\simple_case_expr.gif)
+
+**searched_case_expr**
+
+![searched_case_expr](D:\emmachoigit\manuals\media\SQL\searched_case_expr.gif)
+
+**else_clause**
+
+![else_clause](D:\emmachoigit\manuals\media\SQL\else_clause.gif)
 
 ##### 설명
 
@@ -6266,35 +6303,33 @@ CASE WHEN에 *simple_case_expr* 이 사용되면, *expr*은 동등 연산자(=)�
 \<질의\> c1 컬럼의 세 번째 문자가 a이면 ‘aaaaa’를, b이면 ‘bbbbb’를, c이면
 ‘ccccc’를 출력하라.
 
+```
 create table test (c1 char(10));
-
 insert into test values('abcdefghi');
-
-iSQL\> select CASE substring(c1,3,1)
-
-WHEN 'a' THEN 'aaaaa'
-
-WHEN 'b' THEN 'bbbbb'
-
-WHEN 'c' THEN 'ccccc'
-
-END
-
-from test;
+iSQL> select CASE substring(c1,3,1)
+       WHEN 'a' THEN 'aaaaa'
+       WHEN 'b' THEN 'bbbbb'    
+       WHEN 'c' THEN 'ccccc'    
+       END
+      from test;
 
 CASE SUBSTRING(C1,3,1)
-
-\-------------------------
-
+-------------------------
 ccccc
-
 1 row selected.
+```
+
+
 
 #### COALESCE
 
 ##### 구문
 
-**COALESCE** (*expr1, expr2*, …, *exprn*)
+```
+COALESCE (expr1, expr2, …, exprn)
+```
+
+
 
 ##### 설명
 
@@ -6310,33 +6345,31 @@ COALESCE 함수는 두 개 이상의 수식을 명시해야 한다.
 
 \<질의\> 입력된 수식들 중 NULL이 아닌 첫 번째 수식을 구하라.
 
-iSQL\> select coalesce( NULL, 'a') from dual;
-
+```
+iSQL> select coalesce( NULL, 'a') from dual;
 COALESCE( NULL, 'a')
-
-\------------------------
-
+------------------------
 a
-
 1 row selected.
 
-iSQL\> select coalesce( NULL, NULL, NULL) from dual;
-
+iSQL> select coalesce( NULL, NULL, NULL) from dual;
 COALESCE( NULL, NULL, NULL)
-
-\------------------------------
+------------------------------
 
 1 row selected.
+```
+
+
 
 #### DECODE
 
 ##### 구문
 
-**DECODE** (*expr*, *comparison_expr1*, *ret_expr1*,
-
-[, *comparison_expr2*, *ret_expr2*,..,]
-
-[, *default*])
+```
+DECODE (expr, comparison_expr1, ret_expr1,
+     [, comparison_expr2, ret_expr2,..,]
+     [, default])
+```
 
 ##### 설명
 
@@ -6350,79 +6383,60 @@ DECODE 함수는 *simple_case_expr*이 사용된 CASE WHEN 과 동일하다. 즉
 
 \<질의\> i가 NULL 이면 ‘NULL’, 1 이면 ‘ONE’, 2 이면 ‘TWO’를 반환하라.
 
+```
 CREATE TABLE t2(i NUMBER);
-
 INSERT INTO t2 VALUES(NULL);
-
 INSERT INTO t2 VALUES(1);
-
 INSERT INTO t2 VALUES(2);
-
 INSERT INTO t2 VALUES(3);
-
-iSQL\> SELECT DECODE(i, NULL, 'NULL', 1, 'ONE', 2, 'TWO') Revised_i FROM t2;
-
-REVISED_I
-
-\-------------
-
-NULL
-
-ONE
-
-TWO
-
+iSQL> SELECT DECODE(i, NULL, 'NULL', 1, 'ONE', 2, 'TWO') Revised_i FROM t2;
+REVISED_I  
+-------------
+NULL  
+ONE   
+TWO   
+      
 4 rows selected.
+```
 
 \<질의\> 모든 사원의 현재 급여를 출력하라. emp_job이 ‘engineer’이면 급여를 10%
 인상, ‘sales rep’이면 12% 인상, ‘manager’이면 20% 인상하며, 그 외의 사원은 실제
 급여를 출력하라.
 
-iSQL\> SELECT emp_job, salary,
-
-DECODE(RTRIM(emp_job, ' '),
-
-'engineer', salary\*1.1,
-
-'sales rep', salary\*1.12,
-
-'manager', salary\*1.20,
-
-salary) Revised_salary
-
+```
+iSQL> SELECT emp_job, salary,
+ DECODE(RTRIM(emp_job, ' '),
+ 'engineer', salary*1.1,
+ 'sales rep', salary*1.12,
+ 'manager', salary*1.20,
+ salary) Revised_salary
 FROM employees;
-
-EMP_JOB SALARY REVISED_SALARY
-
-\------------------------------------------------
-
-CEO
-
-designer 1500 1500
-
-engineer 2000 2200
-
-engineer 1800 1980
-
-engineer 2500 2750
-
-programmer 1700 1700
-
-manager 500 600
-
+EMP_JOB      SALARY      REVISED_SALARY 
+------------------------------------------------
+CEO 
+designer     1500        1500 
+engineer     2000        2200 
+engineer     1800        1980 
+engineer     2500        2750 
+programmer   1700        1700 
+manager      500         600
 .
-
 .
-
 .
-
 20 rows selected.
+```
+
+
 
 #### DIGEST
 
 ##### 구문
 
-**DIGEST**(*expr*, *algorithm_name*)
+```
+DIGEST(expr, algorithm_name)
+```
+
+
 
 ##### 설명
 
@@ -6434,44 +6448,42 @@ VARCHAR타입으로 반환한다. 현재 Altibase에서 지원하는 알고리�
 
 \<질의\> 입력 문자열에 대한 다이제스트를 SHA-1 알고리즘을 사용해서 구하라.
 
-iSQL\> SELECT DIGEST('I am a boy.', 'SHA-1') FROM DUAL;
-
-DIGEST('I am a boy. ', 'SHA-1')
-
-\--------------------------------------------
-
+```
+iSQL> SELECT DIGEST('I am a boy.', 'SHA-1') FROM DUAL;
+DIGEST('I am a boy. ', 'SHA-1')             
+--------------------------------------------
 A817613E0B781BBF01816F36A8B0DC7C98B2C0CC
-
 1 row selected.
+```
 
 \<질의\> 입력 문자열에 대한 다이제스트를 SHA-256과 SHA-512 알고리즘을 사용해서
 각각 구하라.
 
-iSQL\> SELECT DIGEST('TEST', 'SHA-256') FROM DUAL;
-
-DIGEST('TEST', 'SHA-256')
-
-\--------------------------------------------------------------------
-
-94EE059335E587E501CC4BF90613E0814F00A7B08BC7C648FD865A2AF6A22CC2
-
+```
+iSQL> SELECT DIGEST('TEST', 'SHA-256') FROM DUAL;
+DIGEST('TEST', 'SHA-256')                                         
+--------------------------------------------------------------------
+94EE059335E587E501CC4BF90613E0814F00A7B08BC7C648FD865A2AF6A22CC2  
 1 row selected.
-
-iSQL\> SELECT DIGEST('TEST', 'SHA-512') FROM DUAL;
-
-DIGEST('TEST', 'SHA-512')
-
-\------------------------------------------------------------------------------------------------------------------------------------
-
-7BFA95A688924C47C7D22381F20CC926F524BEACB13F84E203D4BD8CB6BA2FCE81C57A5F059BF3D509926487BDE925B3BCEE0635E4F7BAEBA054E5DBA696B2BF
-
+ 
+iSQL> SELECT DIGEST('TEST', 'SHA-512') FROM DUAL;
+DIGEST('TEST', 'SHA-512')                                                                                                         
+------------------------------------------------------------------------------------------------------------------------------------
+7BFA95A688924C47C7D22381F20CC926F524BEACB13F84E203D4BD8CB6BA2FCE81C57A5F059BF3D509926487BDE925B3BCEE0635E4F7BAEBA054E5DBA696B2BF  
 1 row selected.
+```
+
+
 
 #### DUMP
 
 ##### 구문
 
-**DUMP** (*expr*)
+```
+DUMP (expr)
+```
+
+
 
 ##### 설명
 
@@ -6481,54 +6493,39 @@ DIGEST('TEST', 'SHA-512')
 
 \<질의\> 사원의 번호와 이름에 입력된 자료형에 관한 정보를 3개만 출력하라.
 
-iSQL\> SELECT DUMP(eno) Emp_Number, DUMP(e_lastname) Last_Name,
-DUMP(e_firstname) First_Name FROM employees LIMIT 3;
-
+```
+iSQL> SELECT DUMP(eno) Emp_Number, DUMP(e_lastname) Last_Name, DUMP(e_firstname) First_Name FROM employees LIMIT 3;
 EMP_NUMBER
-
-\----------------------------------------------------------------------
-
+----------------------------------------------------------------------
 LAST_NAME
-
-\----------------------------------------------------------------------------------------------------------------------------------------------
-
+----------------------------------------------------------------------------------------------------------------------------------------------
 FIRST_NAME
-
-\----------------------------------------------------------------------------------------------------------------------------------------------
-
+----------------------------------------------------------------------------------------------------------------------------------------------
 Type=INTEGER(ASCII) Length=4: 1,0,0,0
-
-Type=CHAR(ASCII) Length=22:
-20,0,77,111,111,110,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
-
-Type=CHAR(ASCII) Length=22:
-20,0,67,104,97,110,45,115,101,117,110,103,32,32,32,32,32,32,32,32,32,32
-
+Type=CHAR(ASCII) Length=22: 20,0,77,111,111,110,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
+Type=CHAR(ASCII) Length=22: 20,0,67,104,97,110,45,115,101,117,110,103,32,32,32,32,32,32,32,32,32,32
 Type=INTEGER(ASCII) Length=4: 2,0,0,0
-
-Type=CHAR(ASCII) Length=22:
-20,0,68,97,118,101,110,112,111,114,116,32,32,32,32,32,32,32,32,32,32,32
-
-Type=CHAR(ASCII) Length=22:
-20,0,83,117,115,97,110,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
-
+Type=CHAR(ASCII) Length=22: 20,0,68,97,118,101,110,112,111,114,116,32,32,32,32,32,32,32,32,32,32,32
+Type=CHAR(ASCII) Length=22: 20,0,83,117,115,97,110,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
 Type=INTEGER(ASCII) Length=4: 3,0,0,0
-
-Type=CHAR(ASCII) Length=22:
-20,0,75,111,98,97,105,110,32,32,32,32,32,32,32,32,32,32,32,32,32,32
-
-Type=CHAR(ASCII) Length=22:
-20,0,75,101,110,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
-
+Type=CHAR(ASCII) Length=22: 20,0,75,111,98,97,105,110,32,32,32,32,32,32,32,32,32,32,32,32,32,32
+Type=CHAR(ASCII) Length=22: 20,0,75,101,110,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
 3 rows selected.
+
+```
+
+
 
 #### EMPTY_BLOB, EMPTY_CLOB
 
 ##### 구문
 
-**EMPTY_BLOB**()
+```
+EMPTY_BLOB()
+EMPTY_CLOB()
+```
 
-**EMPTY_CLOB**()
+
 
 ##### 설명
 
@@ -6538,59 +6535,45 @@ Type=CHAR(ASCII) Length=22:
 
 ##### 예제
 
-iSQL\> CREATE TABLE test (id number, text clob);
-
+```
+iSQL> CREATE TABLE test (id number, text clob);
 Create success.
-
-iSQL\> INSERT INTO test values(1, null);
-
+iSQL> INSERT INTO test values(1, null);
 1 row inserted.
-
-iSQL\> INSERT INTO test values (2, 'some data is here');
-
+iSQL> INSERT INTO test values (2, 'some data is here');
 1 row inserted.
-
-iSQL\> INSERT INTO test values (3, empty_clob());
-
+iSQL> INSERT INTO test values (3, empty_clob());
 1 row inserted.
-
-iSQL\> SELECT \* FROM test WHERE text is null;
-
+iSQL> SELECT * FROM test WHERE text is null;
 TEST.ID
-
-\--------------
-
+--------------
 TEST.TEXT
-
-\-----------------------------------------------------------------------------------
-
+-----------------------------------------------------------------------------------
 1
-
 1 row selected.
 
-iSQL\> SELECT \* FROM test WHERE text is not null;
-
+iSQL> SELECT * FROM test WHERE text is not null;
 TEST.ID
-
-\--------------
-
+--------------
 TEST.TEXT
-
-\-----------------------------------------------------------------------------------
-
+-----------------------------------------------------------------------------------
 2
-
 some data is here
-
-3
-
+3 
 2 rows selected.
+```
+
+
 
 #### GREATEST
 
 ##### 구문
 
-**GREATEST** (*expr1 [, expr2, expr3…]*)
+```
+GREATEST (expr1 [, expr2, expr3…])
+```
+
+
 
 ##### 설명
 
@@ -6602,21 +6585,25 @@ some data is here
 \<질의\> 입력 식들을 알파벳 순으로 정렬했을 때 가장 마지막에 오는 수식을
 반환하라.
 
-iSQL\> SELECT GREATEST('HARRY', 'HARRIOT', 'HAROLD') Greatest FROM dual;
-
-GREATEST
-
-\------------
-
-HARRY
-
+```
+iSQL> SELECT GREATEST('HARRY', 'HARRIOT', 'HAROLD') Greatest FROM dual;
+GREATEST  
+------------
+HARRY    
 1 row selected.
+```
+
+
 
 #### GROUPING
 
 ##### 구문
 
-**GROUPING** (*expr1*)
+```
+
+```
+
+
 
 ##### 설명
 
@@ -6635,7 +6622,11 @@ GROUPING_ID 함수의 예제를 참고하라.
 
 ##### 구문
 
-**HOST_NAME** ()
+```
+HOST_NAME ()
+```
+
+
 
 ##### 설명
 
@@ -6644,21 +6635,25 @@ VARCHAR이다.
 
 ##### 예제
 
-iSQL\> SELECT HOST_NAME() FROM DUAL;
-
+```
+iSQL> SELECT HOST_NAME() FROM DUAL;
 HOST_NAME()
-
-\--------------------------------------------------
-
+--------------------------------------------------
 HDB-NODE1
-
 1 row selected.
+```
+
+
 
 #### GROUPING_ID
 
 ##### 구문
 
-**GROUPING_ID** (*expr1 [, expr2, expr3…]*)
+```
+GROUPING_ID (expr1 [, expr2, expr3…])
+```
+
+
 
 ##### 설명
 
@@ -6676,73 +6671,51 @@ GROUP BY 절에 속하는 수식만 이 함수의 인자가 될 수 있다.
 
 \<질의\> 그룹화 칼럼 각각의 GROUPING 값과 GROUPING_ID 값을 비교한다.
 
-iSQL\> select dno, sex, sum(SALARY),
-
+```
+iSQL> select dno, sex, sum(SALARY), 
 grouping(dno) d, grouping(sex) s, grouping_id(dno, sex ) ds
-
-from employees
-
-group by cube( dno, sex);
-
-DNO SEX SUM(SALARY) D S DS
-
-\---------------------------------------------------------------------------------
-
-31223 1 1 3
-
-1001 F 2300 0 0 0
-
-1001 M 2000 0 0 0
-
-1001 4300 0 1 1
-
-1002 M 2680 0 0 0
-
-1002 2680 0 1 1
-
-1003 F 4000 0 0 0
-
-1003 M 5753 0 0 0
-
-1003 9753 0 1 1
-
-2001 M 1400 0 0 0
-
-2001 1400 0 1 1
-
-3001 M 1800 0 0 0
-
-3001 1800 0 1 1
-
-3002 M 2500 0 0 0
-
-3002 2500 0 1 1
-
-4001 M 3100 0 0 0
-
-4001 3100 0 1 1
-
-4002 F 1890 0 0 0
-
-4002 M 2300 0 0 0
-
-4002 4190 0 1 1
-
-F 1500 0 0 0
-
-1500 0 1 1
-
-F 9690 1 0 2
-
-M 21533 1 0 2
-
+     from employees
+     group by cube( dno, sex);
+DNO         SEX  SUM(SALARY) D           S           DS
+---------------------------------------------------------------------------------
+               31223       1           1           3
+1001        F  2300        0           0           0
+1001        M  2000        0           0           0
+1001           4300        0           1           1
+1002        M  2680        0           0           0
+1002           2680        0           1           1
+1003        F  4000        0           0           0
+1003        M  5753        0           0           0
+1003           9753        0           1           1
+2001        M  1400        0           0           0
+2001           1400        0           1           1
+3001        M  1800        0           0           0
+3001           1800        0           1           1
+3002        M  2500        0           0           0
+3002           2500        0           1           1
+4001        M  3100        0           0           0
+4001           3100        0           1           1
+4002        F  1890        0           0           0
+4002        M  2300        0           0           0
+4002           4190        0           1           1
+            F  1500        0           0           0
+               1500        0           1           1
+            F  9690        1           0           2
+            M  21533       1           0           2
 24 rows selected.
+```
+
+
 
 #### LEAST
 
 ##### 구문
 
-**LEAST**(*expr1 [, expr2, expr3…]*)
+```
+LEAST(expr1 [, expr2, expr3…])
+```
+
+
 
 ##### 설명
 
@@ -6753,21 +6726,25 @@ M 21533 1 0 2
 
 \<질의\> 입력 식들을 알파벳 순으로 정렬했을 때 가장 처음에 오는 수식을 반환하라.
 
-iSQL\> SELECT LEAST('HARRY','HARRIOT','HAROLD') Least FROM dual;
-
-LEAST
-
-\-----------
-
-HAROLD
-
+```
+iSQL> SELECT LEAST('HARRY','HARRIOT','HAROLD') Least FROM dual;
+LEAST    
+-----------
+HAROLD   
 1 row selected.
+```
+
+
 
 #### LNNVL
 
 ##### 구문
 
-**LNNVL** (*condition*)
+```
+LNNVL (condition)
+```
+
+
 
 ##### 설명
 
@@ -6785,17 +6762,23 @@ TRUE인 경우 FALSE를 반환한다.
 \<질의\> 급여 데이터가 존재하지 않거나 급여가 2000 미만인 사원들의 이름과 급여를
 출력하라.
 
-SELECT e_firstname, e_lastname, salary
+```
+SELECT e_firstname, e_lastname, salary 
+FROM employees 
+WHERE LNNVL(salary >= 2000);
+```
 
-FROM employees
 
-WHERE LNNVL(salary \>= 2000);
 
-#### MSG_CREATE_QUERE
+#### MSG_CREATE_QUEUE
 
 ##### 구문
 
-**MSG_CREATE_QUEUE (***key***)**
+```
+MSG_CREATE_QUEUE (key)
+```
+
+
 
 ##### 설명
 
@@ -6807,21 +6790,25 @@ WHERE LNNVL(salary \>= 2000);
 
 \<질의\> key 값이 1004인 메시지 큐를 생성한다.
 
-iSQL\> select msg_create_queue(1004) from dual;
-
+```
+iSQL> select msg_create_queue(1004) from dual;
 MSG_CREATE_QUEUE(1004)
-
-\-----------------------------
-
+----------------------------- 
 0
-
 1 row selected.
+```
+
+
 
 #### MSG_DROP_QUEUE
 
 ##### 구문
 
-**MSG_CREATE_QUEUE(***key***)**
+```
+MSG_DROP_QUEUE(key)
+```
+
+
 
 ##### 설명
 
@@ -6833,21 +6820,25 @@ MSG_CREATE_QUEUE(1004)
 
 \<질의\> key 값이 1004인 메시지 큐를 삭제한다.
 
-iSQL\> select msg_drop_queue(1004) from dual;
-
+```
+iSQL> select msg_drop_queue(1004) from dual;
 MSG_DROP_QUEUE(1004)
-
-\-----------------------------
-
+-----------------------------
 0
-
 1 row selected.
+```
+
+
 
 #### MSG_SND_QUEUE
 
 ##### 구문
 
-**MSG_SND_QUEUE**(*key,message*)
+```
+MSG_SND_QUEUE(key,message)
+```
+
+
 
 ##### 설명
 
@@ -6859,21 +6850,25 @@ MSG_DROP_QUEUE(1004)
 
 \<질의\> key값이 1004인 메시지 큐에 altibase메시지를 전송한다.
 
-iSQL\> select msg_snd_queue(1004, varchar'altibase') from dual;
-
+```
+iSQL> select msg_snd_queue(1004, varchar'altibase') from dual;
 MSG_DROP_QUEUE(1004)
-
-\-----------------------------
-
+-----------------------------
 0
-
 1 row selected.
+```
+
+
 
 #### MSG_RCV_QUEUE
 
 ##### 구문
 
-**MSG_RCV_QUEUE**(*key*)
+```
+MSG_RCV_QUEUE(key)
+```
+
+
 
 ##### 설명
 
@@ -6885,21 +6880,25 @@ MSG_DROP_QUEUE(1004)
 
 \<질의\> key가 1004인 메시지 큐의 메시지를 수신한다.
 
-iSQL\> select raw_to_varchar(msg_rcv_queue(1004)) from dual;
-
+```
+iSQL> select raw_to_varchar(msg_rcv_queue(1004)) from dual;
 RAW_TO_VARCHAR(MSG_RCV_QUEUE(1004))
-
-\-----------------------------
-
+-----------------------------
 altibase
-
 1 row selected.
+```
+
+
 
 #### NULLIF
 
 ##### 구문
 
-**NULLIF** (*expr1, expr2*)
+```
+NULLIF (expr1, expr2)
+```
+
+
 
 ##### 설명
 
@@ -6910,29 +6909,30 @@ altibase
 
 \<질의\> 입력한 두 개의 수식이 동일한지 판단하라.
 
-iSQL\> select nullif(10,9) from dual;
-
+```
+iSQL> select nullif(10,9) from dual;
 NULLIF(10,9)
-
-\---------------
-
+---------------
 10
-
 1 row selected.
-
-iSQL\> select nullif(10,10) from dual;
-
+iSQL> select nullif(10,10) from dual;
 NULLIF(10,10)
-
-\----------------
+----------------
 
 1 row selected.
+```
+
+
 
 #### NVL
 
 ##### 구문
 
-**NVL** (*expr1*, *expr2*)
+```
+NVL (expr1, expr2)
+```
+
+
 
 ##### 설명
 
@@ -6946,33 +6946,31 @@ NULLIF(10,10)
 \<질의\> 모든 사원의 이름과 급여를 출력한다. 급여 데이터가 없는 사원에 대해서는
 'Unknown'을 출력하라.
 
-iSQL\> SELECT e_firstname, e_lastname, NVL(TO_CHAR(salary), 'Unknown')
-
-FROM employees;
-
-E_FIRSTNAME E_LASTNAME NVL(TO_CHAR(SALARY), 'Unknown')
-
-\----------------------------------------------------------------------------
-
-Chan-seung Moon Unknown
-
-Susan Davenport 1500
-
-Ken Kobain 2000
-
+```
+iSQL> SELECT e_firstname, e_lastname, NVL(TO_CHAR(salary), 'Unknown') 
+ FROM employees;
+E_FIRSTNAME           E_LASTNAME            NVL(TO_CHAR(SALARY), 'Unknown')
+----------------------------------------------------------------------------
+Chan-seung            Moon                  Unknown
+Susan                 Davenport             1500
+Ken                   Kobain                2000
 .
-
 .
-
 .
-
 20 rows selected.
+```
+
+
 
 #### NVL2
 
 ##### 구문
 
-**NVL2** (*expr1*, *expr2*, *expr3*)
+```
+NVL2 (expr1, expr2, expr3)
+```
+
+
 
 ##### 설명
 
@@ -6983,36 +6981,32 @@ Ken Kobain 2000
 \<질의\> 사원의 이름과 급여를 출력하되, 급여 데이터가 있을 경우는 10% 인상된
 급여를, 없을 경우는 'Unknown'을 출력하라.
 
-iSQL\> SELECT e_firstname, e_lastname, salary, NVL2(TO_CHAR(salary),
-TO_CHAR(salary \* 1.1), 'Unknown') Nvl2_salary
-
-FROM employees;
-
-E_FIRSTNAME E_LASTNAME SALARY NVL2_SALARY
-
-\--------------------------------------------------------------------------
-
-Chan-seung Moon Unknown
-
-Susan Davenport 1500 1650
-
-Ken Kobain 2000 2200
-
-Aaron Foster 1800 1980
-
+```
+iSQL> SELECT e_firstname, e_lastname, salary, NVL2(TO_CHAR(salary), TO_CHAR(salary * 1.1), 'Unknown') Nvl2_salary 
+ FROM employees;
+E_FIRSTNAME           E_LASTNAME            SALARY      NVL2_SALARY
+--------------------------------------------------------------------------
+Chan-seung            Moon                              Unknown
+Susan                 Davenport             1500        1650
+Ken                   Kobain                2000        2200
+Aaron                 Foster                1800        1980
 .
-
 .
-
 .
-
 20 rows selected.
+```
+
+
 
 #### RAW_CONCAT
 
 ##### 구문
 
-**RAW_CONCAT** (*expr1, expr2*)
+```
+RAW_CONCAT (expr1, expr2)
+```
+
+
 
 ##### 설명
 
@@ -7023,25 +7017,28 @@ Aaron Foster 1800 1980
 
 \<질의\> VARBYTE 타입의 'AABB'와 'CCDD'를 연결한 문자열을 출력하라.
 
-iSQL\> SELECT RAW_CONCAT(VARBYTE'AABB', VARBYTE'CCDD') FROM DUAL;
-
-RAW_CONCAT(VARBYTE'AABB',VARBYTE'CCDD')
-
-\-------------------------------------------
-
-AABBCCDD
-
+```
+iSQL> SELECT RAW_CONCAT(VARBYTE'AABB', VARBYTE'CCDD') FROM DUAL;
+RAW_CONCAT(VARBYTE'AABB',VARBYTE'CCDD')  
+-------------------------------------------
+AABBCCDD  
 1 row selected.
 
-iSQL\> SELECT RAW_CONCAT(VARBYTE'AABB', VARBYTE'GGDD') FROM DUAL;
-
+iSQL> SELECT RAW_CONCAT(VARBYTE'AABB', VARBYTE'GGDD') FROM DUAL;
 [ERR-21011 : Invalid literal]
+```
+
+
 
 #### RAW_SIZEOF
 
 ##### 구문
 
-**RAW_SIZEOF** (*expr*)
+```
+RAW_SIZEOF (expr)
+```
+
+
 
 ##### 설명
 
@@ -7054,21 +7051,25 @@ iSQL\> SELECT RAW_CONCAT(VARBYTE'AABB', VARBYTE'GGDD') FROM DUAL;
 \<질의\> 테이블 dual의 칼럼 dummy에 할당된 크기를 출력하라. SIZEOF 함수와 달리
 헤더의 2바이트를 포함한다.
 
-iSQL\> SELECT RAW_SIZEOF(DUMMY) FROM DUAL;
-
-RAW_SIZEOF(DUMMY)
-
-\--------------------
-
-3
-
+```
+iSQL> SELECT RAW_SIZEOF(DUMMY) FROM DUAL;
+RAW_SIZEOF(DUMMY) 
+--------------------
+3   
 1 row selected.
+```
+
+
 
 #### ROWNUM
 
 ##### 구문
 
-**ROWNUM**
+```
+ROWNUM
+```
+
+
 
 ##### 설명
 
@@ -7083,35 +7084,30 @@ ORDER BY, GROUP BY, HAVING 절이 사용되면 순서가 바뀔 수 있다.
 \<질의\> 사원 이름순으로 검색하여 앞에서 3명까지만 사원의 사번, 이름, 전화번호,
 상태를 출력하라.
 
-iSQL\> SELECT eno, e_lastname, e_firstname, emp_tel FROM employees
-
-WHERE ROWNUM \< 4
-
-ORDER BY e_lastname;
-
-ENO E_LASTNAME E_FIRSTNAME EMP_TEL
-
-\---------------------------------------------------------------------------
-
-2 Davenport Susan 0113654540
-
-3 Kobain Ken 0162581369
-
-1 Moon Chan-seung 01195662365
-
+```
+iSQL> SELECT eno, e_lastname, e_firstname, emp_tel FROM employees 
+ WHERE ROWNUM < 4 
+ ORDER BY e_lastname;
+ENO         E_LASTNAME            E_FIRSTNAME           EMP_TEL
+---------------------------------------------------------------------------
+2           Davenport             Susan                 0113654540
+3           Kobain                Ken                   0162581369
+1           Moon                  Chan-seung            01195662365
 3 rows selected.
+```
+
+
 
 #### SENDMSG
 
 ##### 구문
 
-**SENDMSG** ( VARCHAR *ipaddr*,
-
-INTEGER port,
-
-VARCHAR msg,
-
-INTEGER ttl )
+```
+SENDMSG ( VARCHAR ipaddr,
+          INTEGER port,
+          VARCHAR msg,
+          INTEGER ttl )
+```
 
 ##### 설명
 
@@ -7145,34 +7141,34 @@ Multicast IP 주소는 예약된 Multicast group을 제외한 225.0.0.0\~238.0.0
 
 \<질의\> 일반 IP 주소로 사용자 메시지를 전송하라 (이 경우, *ttl* 값은 무시된다).
 
-iSQL\> SELECT SENDMSG( '192.168.1.60', 12345, 'THIS IS A MESSAGE', 1 ) FROM T1;
-
+```
+iSQL> SELECT SENDMSG( '192.168.1.60', 12345, 'THIS IS A MESSAGE', 1 ) FROM T1;
 SENDMSG( '192.168.1.60', 12345, 'THIS IS
-
-\-------------------------------------------
-
+-------------------------------------------
 17
-
 1 row selected.
+```
 
 \<질의\> Multicast IP 주소로 사용자 메시지를 전송하라 (이 경우, *ttl* 값이
 적용된다).
 
-iSQL\> SELECT SENDMSG( '226.0.0.37', 12345, 'THIS IS A MESSAGE', 0 ) FROM T1;
-
+```
+iSQL> SELECT SENDMSG( '226.0.0.37', 12345, 'THIS IS A MESSAGE', 0 ) FROM T1;
 SENDMSG( '192.168.1.60', 12345, 'THIS IS
-
-\-------------------------------------------
-
+-------------------------------------------
 17
-
 1 row selected.
+```
+
+
 
 #### USER_ID
 
 ##### 구문
 
-**USER_ID**()
+USER_ID()
+
+
 
 ##### 설명
 
@@ -7182,13 +7178,21 @@ SENDMSG( '192.168.1.60', 12345, 'THIS IS
 
 \<질의\> 현재 접속한 사용자의 모든 테이블 정보를 조회하라.
 
-SELECT table_name FROM system_.sys_tables\_ WHERE user_id = USER_ID();
+```
+SELECT table_name FROM system_.sys_tables_ WHERE user_id = USER_ID();
+```
+
+
 
 #### USER_LOCK_REQUEST
 
 ##### 구문
 
-**USER_LOCK_REQUEST**(INTEGER *id*)
+```
+USER_LOCK_REQUEST(INTEGER id)
+```
+
+
 
 ##### 설명
 
@@ -7208,21 +7212,25 @@ SELECT table_name FROM system_.sys_tables\_ WHERE user_id = USER_ID();
 
 \<질의\> ID가 5인 사용자 잠금을 요청한다.
 
-iSQL\> SELECT USER_LOCK_REQUEST( 5 ) FROM DUAL;
-
+```
+iSQL> SELECT USER_LOCK_REQUEST( 5 ) FROM DUAL;
 USER_LOCK_REQUEST( 5 )
-
-\-------------------------
-
+-------------------------
 0
+1 row selected. 
+```
 
-1 row selected.
+
 
 #### USER_LOCK_RELEASE
 
 ##### 구문
 
-**USER_LOCK_RELEASE**(INTEGER *id*)
+```
+USER_LOCK_RELEASE(INTEGER id)
+```
+
+
 
 ##### 설명
 
@@ -7242,21 +7250,25 @@ id 파라미터에 입력 가능한 값은 0\~1073741823이며, 반환 값은 �
 
 \<질의\> ID가 5인 사용자 잠금을 해제한다.
 
-iSQL\> SELECT USER_LOCK_RELEASE( 5 ) FROM DUAL;
-
+```
+iSQL> SELECT USER_LOCK_RELEASE( 5 ) FROM DUAL;
 USER_LOCK_RELEASE( 5 )
-
-\-------------------------
-
+-------------------------
 0
+1 row selected. 
+```
 
-1 row selected.
+
 
 #### USER_NAME
 
 ##### 구문
 
-**USER_NAME**()
+```
+USER_NAME()
+```
+
+
 
 ##### 설명
 
@@ -7266,13 +7278,21 @@ USER_LOCK_RELEASE( 5 )
 
 \<질의\> 현재 접속한 사용자의 이름을 조회하라.
 
+```
 SELECT user_name(), user_id() FROM dual;
+```
+
+
 
 #### SESSION_ID
 
 ##### 구문
 
-**SESSION_ID**()
+```
+SESSION_ID()
+```
+
+
 
 ##### 설명
 
@@ -7282,21 +7302,25 @@ SELECT user_name(), user_id() FROM dual;
 
 \<질의\> 현재 접속한 사용자가 사용중인 캐릭터셋을 조회하라.
 
-iSQL\> SELECT client_nls FROM v\$session WHERE id = SESSION_ID();
-
+```
+iSQL> SELECT client_nls FROM v$session WHERE id = SESSION_ID();
 CLIENT_NLS
-
-\--------------------------------------------
-
+--------------------------------------------
 US7ASCII
-
 1 row selected.
+```
+
+
 
 #### SUBRAW
 
 ##### 구문
 
-**SUBRAW** (*expr1, start [, length])*
+```
+SUBRAW (expr1, start [, length])
+```
+
+
 
 ##### 설명
 
@@ -7317,21 +7341,25 @@ VARBYTE이다.
 
 \<질의\> 입력한 문자열 'AABBCC'의 첫 번째부터 2 byte 만큼의 문자열을 출력한다.
 
-iSQL\> SELECT SUBRAW(VARBYTE'AABBCC',1,2) FROM DUAL;
-
-SUBRAW(VARBYTE'AABBCC',1,2)
-
-\-------------------------------
-
+```
+iSQL> SELECT SUBRAW(VARBYTE'AABBCC',1,2) FROM DUAL;
+SUBRAW(VARBYTE'AABBCC',1,2)  
+-------------------------------
 AABB
-
 1 row selected.
+```
+
+
 
 #### SYS_CONNECT_BY_PATH
 
 ##### 구문
 
-**SYS_CONNECT_BY_PATH**(*column*, *delimiter*)
+```
+SYS_CONNECT_BY_PATH(column, delimiter)
+```
+
+
 
 ##### 설명
 
@@ -7345,45 +7373,30 @@ AABB
 \<질의\> 아래는 루트로부터 각 id에 이르는 경로를 구하는 예제이다. 출력 결과의
 가독성을 높이기 위해 CAST 연산자를 사용하였다.
 
-iSQL\> SELECT id,
-
-CAST(SYS_CONNECT_BY_PATH(id, '/') AS VARCHAR(20)) "Path"
-
-FROM hier_order
-
-START WITH id = 0
-
-CONNECT BY PRIOR id = parent
-
-ORDER BY id;
-
-ID Path
-
-\-------------------------------------
-
-0 /0
-
-1 /0/1
-
-2 /0/1/2
-
-3 /0/1/3
-
-4 /0/1/4
-
-5 /0/5
-
-6 /0/6
-
-7 /0/6/7
-
-8 /0/6/7/8
-
-9 /0/6/7/9
-
-10 /0/6/10
-
+```
+iSQL> SELECT id, 
+   CAST(SYS_CONNECT_BY_PATH(id, '/') AS VARCHAR(20)) "Path"
+   FROM hier_order
+   START WITH id = 0 
+   CONNECT BY PRIOR id = parent
+   ORDER BY id;
+ID          Path
+-------------------------------------
+0           /0
+1           /0/1
+2           /0/1/2
+3           /0/1/3
+4           /0/1/4
+5           /0/5
+6           /0/6
+7           /0/6/7
+8           /0/6/7/8
+9           /0/6/7/9
+10          /0/6/10
 11 rows selected.
+```
+
+
 
 #### SYS_CONTEXT
 
@@ -7418,19 +7431,24 @@ ID Path
 
 ##### 예제
 
-iSQL\> SELECT SYS_CONTEXT('USERENV','SID') FROM DUAL;
-
+```
+iSQL> SELECT SYS_CONTEXT('USERENV','SID') FROM DUAL;
 SYS_CONTEXT('USERENV','SID')
-
-\-------------------------------------------------------
-
+-------------------------------------------------------
 87
+```
+
+
 
 #### SYS_GUID_STR
 
 ##### 구문
 
-**SYS_GUID_STR**()
+```
+SYS_GUID_STR()
+```
+
+
 
 ##### 설명
 
@@ -7439,32 +7457,31 @@ SYS_CONTEXT('USERENV','SID')
 
 ##### 예제
 
-iSQL\> SELECT SYS_GUID_STR() FROM DUAL;
-
-SYS_GUID_STR
-
-\------------------------------------
-
-A8C09B011C02856E092284D95091D27A
-
+```
+iSQL> SELECT SYS_GUID_STR() FROM DUAL;
+SYS_GUID_STR                      
+------------------------------------
+A8C09B011C02856E092284D95091D27A  
 1 row selected.
-
-iSQL\> SELECT DUMP(SYS_GUID_STR()) FROM DUAL;
-
-DUMP(SYS_GUID_STR())
-
-\----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Type=VARCHAR(KSC5601) Length=34:
-32,0,65,56,67,48,57,66,48,49,49,67,48,50,56,53,54,69,48,57,50,50,56,52,68,67,53,48,57,49,68,50,55,65
-
+ 
+iSQL> SELECT DUMP(SYS_GUID_STR()) FROM DUAL;
+ DUMP(SYS_GUID_STR())                                                                                                                                                                        
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Type=VARCHAR(KSC5601) Length=34: 32,0,65,56,67,48,57,66,48,49,49,67,48,50,56,53,54,69,48,57,50,50,56,52,68,67,53,48,57,49,68,50,55,65                                                       
 1 row selected.
+```
+
+
 
 #### QUOTE_PRINTABLE_DECODE
 
 ##### 구문
 
-**QUOTE_PRINTABLE_DECODE**(*expr*)
+```
+QUOTE_PRINTABLE_DECODE(expr)
+```
+
+
 
 ##### 설명
 
@@ -7473,21 +7490,25 @@ VARBYTE타입의 데이터로 반환한다.
 
 ##### 예제
 
-iSQL\> SELECT QUOTED_PRINTABLE_DECODE(VARBYTE'3D4142') FROM DUAL;
-
+```
+iSQL> SELECT QUOTED_PRINTABLE_DECODE(VARBYTE'3D4142') FROM DUAL;
 QUOTED_PRINTABLE_DECODE(VARBYTE'3D4142’)
-
-\-----------------------------
-
+-----------------------------
 AB
-
 1 row selected.
+```
+
+
 
 #### QUOTE_PRINTABLE_ENCODE
 
 ##### 구문
 
-**QUOTE_PRINTABLE_ENCODE**(*expr*)
+```
+QUOTE_PRINTABLE_ENCODE(expr)
+```
+
+
 
 ##### 설명
 
@@ -7496,15 +7517,15 @@ AB
 
 ##### 예제
 
-iSQL\> SELECT QUOTED_PRINTABLE_ENCODE(VARBYTE'ABCD') FROM DUAL;
-
+```
+iSQL> SELECT QUOTED_PRINTABLE_ENCODE(VARBYTE'ABCD') FROM DUAL;
 QUOTED_PRINTABLE_ENCODE('ABCD'
-
-\-----------------------------
-
+-----------------------------
 3D41423D4344
-
 1 row selected.
+```
+
+
 
 #### 중첩 함수
 
@@ -7518,32 +7539,23 @@ QUOTED_PRINTABLE_ENCODE('ABCD'
 \<질의\> 각 사원이 입사한 날로부터 여섯 달이 경과한 뒤 첫 번째 월요일의 날짜를
 입사일 순으로 출력하라.
 
-iSQL\> SELECT TO_CHAR(NEXT_DAY(ADD_MONTHS(join_date, 6), 'MONDAY'),
-'DD-Mon-YYYY') Monday_six_months
-
-FROM employees
-
-ORDER BY join_date;
-
+```
+iSQL> SELECT TO_CHAR(NEXT_DAY(ADD_MONTHS(join_date, 6), 'MONDAY'), 'DD-Mon-YYYY') Monday_six_months 
+ FROM employees 
+ ORDER BY join_date;
 MONDAY_SIX_MONTHS
-
-\--------------------------------------
-
+--------------------------------------
 26-Jul-2004
-
 21-May-2007
-
 05-May-2008
-
 24-May-2010
-
 .
-
 .
-
 .
-
 20 rows selected.
+```
+
+
 
 8.산술 연산자
 -----------
@@ -7574,7 +7586,11 @@ MONDAY_SIX_MONTHS
 
 ##### 구문
 
-**+** *number*
+```
++ number
+```
+
+
 
 ##### 설명
 
@@ -7584,7 +7600,11 @@ MONDAY_SIX_MONTHS
 
 ##### 구문
 
-**-** *number*
+```
+- number
+```
+
+
 
 ##### 설명
 
@@ -7596,7 +7616,11 @@ MONDAY_SIX_MONTHS
 
 ##### 구문
 
-*number1* **+** *number2*
+```
+number1 + number2
+```
+
+
 
 ##### 설명
 
@@ -7606,7 +7630,11 @@ MONDAY_SIX_MONTHS
 
 ##### 구문
 
-*number1* **-** *number2*
+```
+number1 - number2
+```
+
+
 
 ##### 설명
 
@@ -7616,7 +7644,11 @@ MONDAY_SIX_MONTHS
 
 ##### 구문
 
-*number1* **x** *number2*
+```
+number1 x number2
+```
+
+
 
 ##### 설명
 
@@ -7626,7 +7658,11 @@ MONDAY_SIX_MONTHS
 
 ##### 구문
 
-*number1* **/** *number2*
+```
+number1 / number2
+```
+
+
 
 ##### 설명
 
@@ -7640,59 +7676,56 @@ DATE 타입의 값에 수를 더하거나 뺄 때, 그 수는 일 단위로 해�
 타입 값에 시, 분, 또는 초를 더하거나 빼려면 더하거나 빼고자 하는 시, 분, 초의
 숫자를 아래와 같이 일로 변환해서 입력해야 한다.
 
-*date* [ + \| - ] *n*
+```
+date [ + | - ] n
+date – date
+date [ + | - ] days (더하기/빼기 n일: n)
+date [ + | - ] hours (더하기/빼기 n시간: n/24) )
+date [ + | - ] minutes (더하기/빼기 n분: n/(24*60) )
+date [ + | - ] seconds (더하기/빼기 n초: n/(24*60*60))
+```
 
-*date* – *date*
-
-*date* [ + \| - ] *days* (더하기/빼기 n일: n)
-
-*date* [ + \| - ] *hours* (더하기/빼기 n시간: n/24) )
-
-*date* [ + \| - ] *minutes* (더하기/빼기 n분: n/(24\*60) )
-
-*date* [ + \| - ] *seconds* (더하기/빼기 n초: n/(24\*60\*60))
-
-DATE 타입 값에 대한 곱하기 또는 나누기 연산은 불가능하다.
+> 주의
+>
+> :DATE 타입 값에 대한 곱하기 또는 나누기 연산은 불가능하다.
 
 ##### 예제
 
 \<질의\> 부서 4001에 속한 모든 사원의 이름 및 근무한 주 수를 출력하라.
 
-iSQL\> SELECT e_firstname, e_lastname, (SYSDATE-join_date)/7 Weeks_worked
-
-FROM employees
-
-WHERE dno = 4001;
-
-E_FIRSTNAME E_LASTNAME WEEKS_WORKED
-
-\-----------------------------------------------------------------------
-
-Xiong Wang 115.778199044248
-
-Curtis Diaz 87.6353419013905
-
-John Huxley 224.492484758533
-
+```
+iSQL> SELECT e_firstname, e_lastname, (SYSDATE-join_date)/7 Weeks_worked 
+ FROM employees 
+ WHERE dno = 4001;
+E_FIRSTNAME           E_LASTNAME            WEEKS_WORKED
+-----------------------------------------------------------------------
+Xiong                 Wang                  115.778199044248
+Curtis                Diaz                  87.6353419013905
+John                  Huxley                224.492484758533
 3 rows selected
+```
 
 \<질의\> 현재 시간에서 10분 후의 시간을 출력하라.
 
-iSQL\> SELECT SYSDATE + (10/(24\*60)) '10 MINUTES LATER' FROM dual;
-
-10 MINUTES LATER
-
-\-----------------------
-
-2005/01/20 09:59:34
-
+```
+iSQL> SELECT SYSDATE + (10/(24*60)) '10 MINUTES LATER' FROM dual;
+10 MINUTES LATER 
+-----------------------
+2005/01/20 09:59:34 
 1 row selected.
+```
+
+
 
 ### 연결 연산자
 
 ##### 구문
 
-*char1* **\|\|** *char2*
+```
+char1 || char2
+```
+
+
 
 ##### 설명
 
@@ -7702,40 +7735,34 @@ iSQL\> SELECT SYSDATE + (10/(24\*60)) '10 MINUTES LATER' FROM dual;
 
 \<질의\> 사원 이름과 직책사이에 ‘ is a ’를 삽입하여 하나의 칼럼으로 출력하라.
 
-iSQL\> SELECT RTRIM(e_firstname) \|\| ' ' \|\| RTRIM(e_lastname) \|\| ' is a '
-\|\| emp_job \|\| '.' Job_Description FROM employees;
-
+```
+iSQL> SELECT RTRIM(e_firstname) || ' ' || RTRIM(e_lastname) || ' is a ' || emp_job || '.' Job_Description FROM employees;
 JOB_DESCRIPTION
-
-\-------------------------------------------------------------------
-
+-------------------------------------------------------------------
 .
-
 .
-
 .
-
 Aaron Foster is a PL.
-
 Farhad Ghorbani is a PL.
-
 Ryu Momoi is a programmer.
-
 Gottlieb Fleischer is a manager.
-
 .
-
 .
-
 .
-
 20 rows selected.
+```
+
+
 
 ### CAST 연산자
 
 ##### 구문
 
-**CAST** (*expr* AS *data_type*)
+```
+CAST (expr AS data_type)
+```
+
+
 
 ##### 설명
 
@@ -7746,15 +7773,15 @@ CLOB 타입을 제외한 모든 타입이 지원된다.)
 
 \<질의\> 문자열을 DOUBLE타입의 값으로 변환하라.
 
-iSQL\> SELECT CAST(‘3.14159265359’ AS DOUBLE) PI FROM dual;
-
+```
+iSQL> SELECT CAST(‘3.14159265359’ AS DOUBLE) PI FROM dual;
 PI
-
-\-------------------------
-
+------------------------- 
 3.14159265359
-
 1 row selected.
+```
+
+
 
 9.조건 연산자
 -----------
@@ -7785,11 +7812,11 @@ FALSE, 또는 UNKOWN 셋 중의 하나이다.
 다음의 논리 조건들이 Altibase에서 지원된다. 다음 표는 각각에 대한 간략한 설명을
 보여준다.
 
-| 논리 연산자  | 설명                                                                                                                      |
-|--------------|---------------------------------------------------------------------------------------------------------------------------|
-| 논리곱 (AND) | 입력 조건들의 논리곱 결과를 돌려준다. 두 조건이 모두 TRUE이면 TRUE를 반환한다. 둘 중 하나라도 FALSE이면 FALSE를 반환한다. |
-| 부정 (NOT)   | 입력된 값의 반대 결과를 돌려준다.                                                                                         |
-| 논리합 (OR)  | 입력 조건들의 논리합 결과를 돌려준다. 두 조건이 모두 FALSE이면 FALSE를 반환한다. 둘 중 하나라도 TRUE이면 TRUE를 반환한다. |
+| 논리 연산자  | 설명                                                         |
+| ------------ | ------------------------------------------------------------ |
+| 논리곱 (AND) | 입력 조건들의 논리곱 결과를 돌려준다. 두 조건이 모두 TRUE이면 TRUE를 반환한다. <br />둘 중 하나라도 FALSE이면 FALSE를 반환한다. |
+| 부정 (NOT)   | 입력된 값의 반대 결과를 돌려준다.                            |
+| 논리합 (OR)  | 입력 조건들의 논리합 결과를 돌려준다. 두 조건이 모두 FALSE이면 FALSE를 반환한다. <br />둘 중 하나라도 TRUE이면 TRUE를 반환한다. |
 
 #### 비교 조건
 
@@ -7804,16 +7831,16 @@ FALSE, 또는 UNKOWN 셋 중의 하나이다.
 
 Altibase에서 지원되는 다른 조건들이 다음 표에 간략히 설명되어 있다.
 
-| 조건 타입        | 설명                                                                                                                                                                                        |
-|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| BETWEEN 조건     | BETWEEN 조건은 비교 조건의 일종으로 어떤 값이 일정 범위 내에 속하는지 검사한다.                                                                                                             |
-| EXISTS 조건      | EXISTS 조건은 부질의가 적어도 하나 이상의 행을 반환하는지 검사한다.                                                                                                                         |
-| IN 조건          | IN 조건은 어떤 값이 리스트 또는 부질의가 반환한 결과 중의 하나 이상의 값과 같은지 검사한다. NOT IN 조건은 어떤 값이 리스트 또는 부질의가 반환한 결과 중의 모든 값과 같지 않은지를 검사한다. |
-| INLIST 조건      | INLIST 조건은 어떤 값이 주어진 목록 안에 있는지 검사한다.                                                                                                                                   |
-| IS NULL 조건     | IS NULL 조건은 어떤 값이 널인지 검사한다.                                                                                                                                                   |
-| LIKE 조건        | LIKE 조건은 패턴 일치 검사 조건으로 문자열이 주어진 패턴을 포함하는지 검사한다.                                                                                                             |
-| REGEXP_LIKE 조건 | REGEXP_LIKE 조건은 문자열이 주어진 정규 표현식을 포함하는지 검사한다.                                                                                                                       |
-| UNIQUE 조건      | UNIQUE 조건은 부질의가 오직 하나의 행을 반환하는지 검사한다.                                                                                                                                |
+| 조건 타입        | 설명                                                         |
+| ---------------- | ------------------------------------------------------------ |
+| BETWEEN 조건     | BETWEEN 조건은 비교 조건의 일종으로 어떤 값이 일정 범위 내에 속하는지 검사한다. |
+| EXISTS 조건      | EXISTS 조건은 부질의가 적어도 하나 이상의 행을 반환하는지 검사한다. |
+| IN 조건          | IN 조건은 어떤 값이 리스트 또는 부질의가 반환한 결과 중의 하나 이상의 값과 같은지 검사한다. <br />NOT IN 조건은 어떤 값이 리스트 또는 부질의가 반환한 결과 중의 모든 값과 같지 않은지를 검사한다. |
+| INLIST 조건      | INLIST 조건은 어떤 값이 주어진 목록 안에 있는지 검사한다.    |
+| IS NULL 조건     | IS NULL 조건은 어떤 값이 널인지 검사한다.                    |
+| LIKE 조건        | LIKE 조건은 패턴 일치 검사 조건으로 문자열이 주어진 패턴을 포함하는지 검사한다. |
+| REGEXP_LIKE 조건 | REGEXP_LIKE 조건은 문자열이 주어진 정규 표현식을 포함하는지 검사한다. |
+| UNIQUE 조건      | UNIQUE 조건은 부질의가 오직 하나의 행을 반환하는지 검사한다. |
 
 ### 논리 연산자
 
@@ -7821,7 +7848,11 @@ Altibase에서 지원되는 다른 조건들이 다음 표에 간략히 설명�
 
 ##### 구문
 
-*condition1* **AND** *condition2*
+```
+condition1 AND condition2
+```
+
+
 
 ##### 설명
 
@@ -7829,11 +7860,11 @@ AND는 *condition1*과 *condition2*를 논리곱 연산한 결과를 돌려준�
 
 논리곱 연산의 결과는 다음과 같다.
 
-| *Condition1 Condition2* | TRUE    | FALSE | UNKNOWN |
-|-------------------------|---------|-------|---------|
-| TRUE                    | TRUE    | FALSE | UNKNOWN |
-| FALSE                   | FALSE   | FALSE | FALSE   |
-| UNKNOWN                 | UNKNOWN | FALSE | UNKNOWN |
+| *Condition1 (우)<br />Condition2(하)* | TRUE    | FALSE | UNKNOWN |
+| ------------------------------------- | ------- | ----- | ------- |
+| TRUE                                  | TRUE    | FALSE | UNKNOWN |
+| FALSE                                 | FALSE   | FALSE | FALSE   |
+| UNKNOWN                               | UNKNOWN | FALSE | UNKNOWN |
 
 ##### 예제
 
