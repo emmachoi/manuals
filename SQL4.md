@@ -7860,31 +7860,28 @@ AND는 *condition1*과 *condition2*를 논리곱 연산한 결과를 돌려준�
 
 논리곱 연산의 결과는 다음과 같다.
 
-| *Condition1 (우)<br />Condition2(하)* | TRUE    | FALSE | UNKNOWN |
-| ------------------------------------- | ------- | ----- | ------- |
-| TRUE                                  | TRUE    | FALSE | UNKNOWN |
-| FALSE                                 | FALSE   | FALSE | FALSE   |
-| UNKNOWN                               | UNKNOWN | FALSE | UNKNOWN |
+| *Condition1 (우)<br />\<br />Condition2(하)* | TRUE    | FALSE | UNKNOWN |
+| -------------------------------------------- | ------- | ----- | ------- |
+| TRUE                                         | TRUE    | FALSE | UNKNOWN |
+| FALSE                                        | FALSE   | FALSE | FALSE   |
+| UNKNOWN                                      | UNKNOWN | FALSE | UNKNOWN |
 
 ##### 예제
 
 \<질의\> 엔지니어이면서 급여가 2000 이상인 직원의 이름, 급여, 입사일을 출력하라.
 
-iSQL\> SELECT e_firstname, e_lastname, salary, join_date
-
-FROM employees
-
-WHERE emp_job = 'engineer'
-
-AND salary \>= 2000;
-
-E_FIRSTNAME E_LASTNAME SALARY JOIN_DATE
-
-\--------------------------------------------------------------------------
-
-Ken Kobain 2000 11-JAN-2010
-
+```
+iSQL> SELECT e_firstname, e_lastname, salary, join_date 
+ FROM employees 
+ WHERE emp_job = 'engineer' 
+ AND salary >= 2000;
+E_FIRSTNAME           E_LASTNAME            SALARY      JOIN_DATE
+--------------------------------------------------------------------------
+Ken                   Kobain                2000        11-JAN-2010
 1 row selected.
+```
+
+
 
 #### NOT
 
