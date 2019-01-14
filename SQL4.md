@@ -7860,11 +7860,11 @@ AND는 *condition1*과 *condition2*를 논리곱 연산한 결과를 돌려준�
 
 논리곱 연산의 결과는 다음과 같다.
 
-| *Condition1 (우)<br />\<br />Condition2(하)* | TRUE    | FALSE | UNKNOWN |
-| -------------------------------------------- | ------- | ----- | ------- |
-| TRUE                                         | TRUE    | FALSE | UNKNOWN |
-| FALSE                                        | FALSE   | FALSE | FALSE   |
-| UNKNOWN                                      | UNKNOWN | FALSE | UNKNOWN |
+| *Condition1 (우)<br />\ <br />Condition2(하)* | TRUE    | FALSE | UNKNOWN |
+| --------------------------------------------- | ------- | ----- | ------- |
+| TRUE                                          | TRUE    | FALSE | UNKNOWN |
+| FALSE                                         | FALSE   | FALSE | FALSE   |
+| UNKNOWN                                       | UNKNOWN | FALSE | UNKNOWN |
 
 ##### 예제
 
@@ -7887,7 +7887,11 @@ Ken                   Kobain                2000        11-JAN-2010
 
 ##### 구문
 
-**NOT** *condition*
+```
+NOT condition
+```
+
+
 
 ##### 설명
 
