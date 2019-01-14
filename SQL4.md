@@ -882,11 +882,11 @@ Altibase는 버전 6.3.1부터 아래의 윈도우 함수를 지원한다.
 
 **window_function ::=**
 
-![window_funtion](D:\emmachoigit\manuals\media\SQL\window_funtion.gif)
+![window_funtion](media/SQL/window_funtion.gif)
 
 **window_specification ::=**
 
-![window_specification](D:\emmachoigit\manuals\media\SQL\window_specification.gif)
+![window_specification](media/SQL/window_specification.gif)
 
 **window_partition_clause ::=**
 
@@ -896,11 +896,11 @@ Altibase는 버전 6.3.1부터 아래의 윈도우 함수를 지원한다.
 
 **window_order_clause ::=**
 
-![window_order_clause](D:\emmachoigit\manuals\media\SQL\window_order_clause.gif)
+![window_order_clause](media/SQL/window_order_clause.gif)
 
 **window_frame_clause ::=**
 
-![window_frame_clause](D:\emmachoigit\manuals\media\SQL\window_frame_clause.gif)
+![window_frame_clause](media/SQL/window_frame_clause.gif)
 
 #### 설명
 
@@ -1199,7 +1199,7 @@ LEAD 함수와 동일하다.
 
 ##### 구문 
 
-![listagg](D:\emmachoigit\manuals\media\SQL\listagg.gif)
+![listagg](media/SQL/listagg.gif)
 
 ##### 설명
 
@@ -1390,7 +1390,7 @@ William                           3
 
 ##### 구문 
 
-![percentile_cont](D:\emmachoigit\manuals\media\SQL\percentile_cont.gif)
+![percentile_cont](media/SQL/percentile_cont.gif)
 
 ##### 설명 
 
@@ -1466,7 +1466,7 @@ EMPNO median asc cont median desc cont
 
 ##### 구문 
 
-![percentile_disc](D:\emmachoigit\manuals\media\SQL\percentile_disc.gif)
+![percentile_disc](media/SQL/percentile_disc.gif)
 
 ##### 설명
 
@@ -1544,7 +1544,7 @@ EMPNO median asc cont median desc cont
 
 ##### 구문
 
-![rank_with_group](D:\emmachoigit\manuals\media\SQL\rank_with_group.gif)
+![rank_with_group](media/SQL/rank_with_group.gif)
 
 [window_order_clause::=](#window_order_clause)
 
@@ -1600,7 +1600,7 @@ RNK
 
 ##### 구문
 
-![ratio_to_report](D:\emmachoigit\manuals\media\SQL\ratio_to_report.gif)
+![ratio_to_report](media/SQL/ratio_to_report.gif)
 
 [window_partition_clause::=](#window_partition_clause)
 
@@ -6273,19 +6273,19 @@ Wang                  Xiong                 manager          NULL
 
 **case**
 
-![case](D:\emmachoigit\manuals\media\SQL\case.gif)
+![case](media/SQL/case.gif)
 
 **simple_case_expr**
 
-![simple_case_expr](D:\emmachoigit\manuals\media\SQL\simple_case_expr.gif)
+![simple_case_expr](media/SQL/simple_case_expr.gif)
 
 **searched_case_expr**
 
-![searched_case_expr](D:\emmachoigit\manuals\media\SQL\searched_case_expr.gif)
+![searched_case_expr](media/SQL/searched_case_expr.gif)
 
 **else_clause**
 
-![else_clause](D:\emmachoigit\manuals\media\SQL\else_clause.gif)
+![else_clause](media/SQL/else_clause.gif)
 
 ##### 설명
 
@@ -7906,35 +7906,32 @@ NOT은 입력 *condition*의 반대 결과를 돌려준다.
 \<질의\> 1980년 이전에 태어난 사원을 제외한 사원들의 이름, 부서, 생일을
 출력하라.
 
-iSQL\> SELECT e_lastname, e_firstname, dno, birth
-
-FROM employees
-
-WHERE NOT birth \< BYTE'800101';
-
-E_LASTNAME E_FIRSTNAME DNO BIRTH
-
-\---------------------------------------------------------------------
-
-Foster Aaron 3001 820730
-
-Fleischer Gottlieb 4002 840417
-
-Wang Xiong 4001 810726
-
-Hammond Sandra 4002 810211
-
-Jones Mitch 1002 801102
-
-Davenport Jason 1003 901212
-
+```
+iSQL> SELECT e_lastname, e_firstname, dno, birth 
+ FROM employees 
+ WHERE NOT birth < BYTE'800101';
+E_LASTNAME            E_FIRSTNAME           DNO         BIRTH
+---------------------------------------------------------------------
+Foster                Aaron                 3001        820730
+Fleischer             Gottlieb              4002        840417
+Wang                  Xiong                 4001        810726
+Hammond               Sandra                4002        810211
+Jones                 Mitch                 1002        801102
+Davenport             Jason                 1003        901212
 6 rows selected.
+```
+
+
 
 #### OR
 
 ##### 구문
 
-*condition1* **OR** *condition2*
+```
+condition1 OR condition2
+```
+
+
 
 ##### 설명
 
@@ -7942,17 +7939,18 @@ OR은 *condition1*과 *condition2*를 논리합 연산한 결과를 돌려준다
 
 논리합 연산의 결과는 다음과 같다.
 
-| *Condition1 Condition2* | TRUE | FALSE   | UNKNOWN |
-|-------------------------|------|---------|---------|
-| TRUE                    | TRUE | TRUE    | TRUE    |
-| FALSE                   | TRUE | FALSE   | UNKNOWN |
-| UNKNOWN                 | TRUE | UNKNOWN | UNKNOWN |
+| *Condition1 (우)<br />\ <br />Condition2(하)* | TRUE | FALSE   | UNKNOWN |
+| --------------------------------------------- | ---- | ------- | ------- |
+| TRUE                                          | TRUE | TRUE    | TRUE    |
+| FALSE                                         | TRUE | FALSE   | UNKNOWN |
+| UNKNOWN                                       | TRUE | UNKNOWN | UNKNOWN |
 
 ##### 예제
 
 \<질의\> 재고 수량이 20000 이상이거나 단가가 100000원 이상인 상품의 데이터를
 출력하라.
 
+```
 iSQL\> SELECT \*
 
 FROM goods
@@ -7988,6 +7986,9 @@ F111100001 AU-100 AC0010 10000
 100000
 
 5 rows selected.
+```
+
+
 
 ### 비교조건
 
@@ -7998,7 +7999,9 @@ F111100001 AU-100 AC0010 10000
 
 ##### 구문
 
-simple_comparison_condition ::=
+**simple_comparison_condition ::=**
+
+![simple_comparison_condition_image260](media/SQL/simple_comparison_condition_image260.gif)
 
 ##### 설명
 
@@ -8021,35 +8024,30 @@ simple_comparison_condition ::=
 \<질의\> 재고금액이 1억원 이상인 상품의 품명, 보관수량, 원가, 재고금액을
 출력하라. (재고금액은 보관수량 \* 원가이다.)
 
-iSQL\> SELECT gname, stock, price, stock\*price value_of_inv
-
+```
+iSQL> SELECT gname, stock, price, stock*price value_of_inv
 FROM goods
-
-WHERE stock\*price \> 100000000;
-
-GNAME STOCK PRICE VALUE_OF_INV
-
-\------------------------------------------------
-
-IT-U950 35000 7820.55 273719250
-
-TM-T88 10000 72000 720000000
-
-TM-U950 8000 96200 769600000
-
+WHERE stock*price > 100000000;
+GNAME      STOCK    PRICE      VALUE_OF_INV 
+------------------------------------------------
+IT-U950    35000    7820.55    273719250 
+TM-T88     10000    72000      720000000 
+TM-U950    8000     96200      769600000
 .
-
 .
-
 .
-
 11 rows selected.
+```
+
+
 
 #### 그룹 비교 조건
 
 ##### 구문
 
-group_comparison_condition ::=
+**group_comparison_condition ::=**
+
+![group_comparison_condition_image267](media/SQL/group_comparison_condition_image267.gif)
 
 ##### 설명
 
@@ -8074,43 +8072,29 @@ group_comparison_condition ::=
 
 \<질의\> 성이 “B”로 시작되는 사원이 받은 모든 주문에 대한 정보를 출력하라.
 
-iSQL\> SELECT ono, order_date, processing
-
-FROM orders
-
-WHERE eno = ANY
-
+```
+iSQL> SELECT ono, order_date, processing 
+ FROM orders 
+ WHERE eno = ANY 
 (SELECT eno FROM employees WHERE e_lastname LIKE 'B%');
-
-ONO ORDER_DATE PROCESSING
-
-\--------------------------------------------------
-
-12300003 29-DEC-2011 P
-
-12300004 30-DEC-2011 P
-
-12300006 30-DEC-2011 P
-
-12300008 30-DEC-2011 P
-
-12300009 30-DEC-2011 P
-
-12300011 30-DEC-2011 P
-
-12300013 30-DEC-2011 P
-
-12310001 31-DEC-2011 O
-
-12310003 31-DEC-2011 O
-
-12310005 31-DEC-2011 O
-
-12310006 31-DEC-2011 O
-
-12310010 31-DEC-2011 O
-
+ONO                  ORDER_DATE   PROCESSING
+--------------------------------------------------
+12300003             29-DEC-2011  P
+12300004             30-DEC-2011  P
+12300006             30-DEC-2011  P
+12300008             30-DEC-2011  P
+12300009             30-DEC-2011  P
+12300011             30-DEC-2011  P
+12300013             30-DEC-2011  P
+12310001             31-DEC-2011  O
+12310003             31-DEC-2011  O
+12310005             31-DEC-2011  O
+12310006             31-DEC-2011  O
+12310010             31-DEC-2011  O
 12 rows selected.
+```
+
+
 
 ### 그 외의 조건
 
@@ -8118,7 +8102,9 @@ ONO ORDER_DATE PROCESSING
 
 ##### 구문 
 
-between_condition ::=
+**between_condition ::=**
+
+![between_image261](media/SQL/between_image261.gif)
 
 ##### 설명
 
@@ -8132,33 +8118,29 @@ BEETWEEN 비교는 어떤 값이 주어진 범위에 속하는지를 체크하�
 \<질의\> 재고금액이 100만원 이상 1000만원 이하인 상품의 품명, 보관수량, 원가,
 재고금액을 출력하라. (재고금액은 보관수량 \* 원가이다.)
 
-iSQL\> SELECT gname, stock, price, stock\*price value_of_inv
-
+```
+iSQL> SELECT gname, stock, price, stock*price value_of_inv
 FROM goods
-
-WHERE stock\*price BETWEEN 1000000 AND 10000000;
-
-GNAME STOCK PRICE VALUE_OF_INV
-
-\------------------------------------------------
-
-IM-310 100 98000 9800000
-
+WHERE stock*price BETWEEN 1000000 AND 10000000;
+GNAME      STOCK      PRICE     VALUE_OF_INV 
+------------------------------------------------
+IM-310     100        98000     9800000 
 .
-
 .
-
 .
-
-M-T500 5000 1000.54 5002700
-
+M-T500     5000       1000.54   5002700 
 7 rows selected.
+```
+
+
 
 #### EXISTS
 
 ##### 구문
 
-exists_condition ::=
+**exists_condition ::=**
+
+![exists_image265](media/SQL/exists_image265.gif)
 
 ##### 설명
 
@@ -8172,80 +8154,58 @@ EXIST는 부질의의 결과가 적어도 하나 이상 존재하는지 검사�
 모두 찾는다. 즉, 한 고객이 한 개 이상의 다른 상품을 주문한 것을 의미한다. 만약,
 그러한 행의 쌍이 존재하면, EXISTS는 TRUE를 반환하고, 그 고객번호는 출력된다.)
 
-iSQL\> SELECT DISTINCT cno
-
+```
+iSQL> SELECT DISTINCT cno
 FROM orders a
-
 WHERE EXISTS
-
-(SELECT \*
-
-FROM orders b
-
-WHERE a.cno = b.cno
-
-AND NOT(a.gno = b.gno));
-
-CNO
-
-\------------------
-
+ (SELECT *
+ FROM orders b
+ WHERE a.cno = b.cno
+ AND NOT(a.gno = b.gno));
+CNO 
+------------------
 19
-
 15
-
 14
-
 11
-
 6
-
 5
-
 3
-
 2
-
 1
-
 9 rows selected.
+```
 
 \<질의\> 모든 상품을 주문한 고객의 이름을 출력하라. 맨 아래쪽에 위치하는 가장
 안쪽 질의는 주문 테이블에서 고객이 주문한 상품들을 찾는다. 가운데 질의는 그
 고객에 의해 주문되지 않은 상품을 찾는다. 만약, 그 고객에 의해 주문되지 않은
 상품이 없으면 그 고객의 이름이 출력될 것이다.)
 
-iSQL\> SELECT customers.c_lastname
-
+```
+iSQL> SELECT customers.c_lastname
 FROM customers
-
 WHERE NOT EXISTS
-
-(SELECT \*
-
-FROM goods
-
-WHERE NOT EXISTS
-
-(SELECT \*
-
-FROM orders
-
-WHERE orders.cno = customers.cno
-
-AND orders.gno = goods.gno));
-
-CNAME
-
-\------------------------
-
+ (SELECT *
+ FROM goods
+ WHERE NOT EXISTS
+ (SELECT *
+ FROM orders
+ WHERE orders.cno = customers.cno
+ AND orders.gno = goods.gno));
+CNAME 
+------------------------
 No rows selected.
+```
+
+
 
 #### IN
 
 ##### 구문
 
-in_condition ::=
+**in_condition ::=**
+
+![in_image262](media/SQL/in_image262.gif)
 
 ##### 설명
 
@@ -8260,59 +8220,50 @@ NOT IN 조건은 ‘!= ALL’ 조건을 사용한 그룹 비교와 동일하다.
 \<질의\> 응용프로그램 개발 팀 또는 마케팅 팀에서 일하고 있는 사원의 이름, 업무,
 전화번호, 입사일을 출력하라.
 
-iSQL\> SELECT e_firstname, e_lastname, emp_job, emp_tel
-
-FROM employees
-
-WHERE dno IN (1003, 4001);
-
-E_FIRSTNAME E_LASTNAME EMP_JOB EMP_TEL
-
-\---------------------------------------------------------------------------
-
-Elizabeth Bae programmer 0167452000
-
+```
+iSQL> SELECT e_firstname, e_lastname, emp_job, emp_tel 
+ FROM employees 
+ WHERE dno IN (1003, 4001);
+E_FIRSTNAME           E_LASTNAME            EMP_JOB          EMP_TEL
+---------------------------------------------------------------------------
+Elizabeth             Bae                   programmer       0167452000
 .
-
 .
-
 .
-
 7 rows selected.
+```
 
 위 SQL문의 WHERE 절은 다음과 같은 의미를 지닌다:
 
+```
 WHERE DNO = 1003 or DNO = 4001
+```
 
 \<질의\> 상품 C111100001을 주문한 고객의 이름을 출력하라.
 
-iSQL\> SELECT DISTINCT customers.c_lastname, customers.c_firstname
-
-FROM customers
-
-WHERE customers.cno
-
-IN (SELECT orders.cno FROM orders WHERE orders.gno = 'C111100001');
-
-C_LASTNAME C_FIRSTNAME
-
-\-----------------------------------------------
-
-Martin Pierre
-
-Fedorov Fyodor
-
-Dureault Phil
-
-Sanchez Estevan
-
+```
+iSQL> SELECT DISTINCT customers.c_lastname, customers.c_firstname 
+ FROM customers 
+ WHERE customers.cno 
+ IN (SELECT orders.cno FROM orders WHERE orders.gno = 'C111100001');
+C_LASTNAME            C_FIRSTNAME
+-----------------------------------------------
+Martin                Pierre
+Fedorov               Fyodor
+Dureault              Phil
+Sanchez               Estevan
 4 rows selected.
+```
+
+
 
 #### INLIST
 
 ##### 구문
 
-inlist_condition ::=
+**inlist_condition ::=**
+
+![inlist_operator](media/SQL/inlist_operator.gif)
 
 ##### 설명
 
@@ -8326,37 +8277,31 @@ NOT INLIST는 *comma_separated_values*내 각각의 값들 중 어느 것도 *ex
 
 ##### 예제
 
-iSQL\> SELECT dno, e_firstname, e_lastname
-
-FROM employees
-
-WHERE INLIST (dno, '1003,4001' );
-
-DNO E_FIRSTNAME E_LASTNAME
-
-\------------------------------------------------------------
-
-1003 Elizabeth Bae
-
-1003 Zhen Liu
-
-1003 Yuu Miura
-
-1003 Jason Davenport
-
-4001 Xiong Wang
-
-4001 Curtis Diaz
-
-4001 John Huxley
-
+```
+iSQL> SELECT dno, e_firstname, e_lastname 
+ FROM employees 
+ WHERE INLIST (dno, '1003,4001' );
+DNO         E_FIRSTNAME           E_LASTNAME
+------------------------------------------------------------
+1003        Elizabeth             Bae
+1003        Zhen                  Liu
+1003        Yuu                   Miura
+1003        Jason                 Davenport
+4001        Xiong                 Wang
+4001        Curtis                Diaz
+4001        John                  Huxley
 7 rows selected.
+```
+
+
 
 #### IS NULL
 
 ##### 구문
 
-isnull_condition ::=
+**isnull_condition ::=**
+
+![isnull_image264](media/SQL/isnull_image264.gif)
 
 ##### 설명
 
@@ -8366,29 +8311,27 @@ IS NULL 조건은 표현식(expression)이 널(NULL) 인지 아닌지 검사하�
 
 \<질의\> 생일이 입력 되지 않은 직원의 사원번호, 이름, 업무를 출력하라.
 
-iSQL\> SELECT eno, e_firstname, e_lastname, emp_job
-
-FROM employees
-
-WHERE salary IS NULL;
-
-ENO E_FIRSTNAME E_LASTNAME EMP_JOB
-
-\---------------------------------------------------------------------------
-
-1 Chan-seung Moon CEO
-
-8 Xiong Wang manager
-
-20 William Blake sales rep
-
+```
+iSQL> SELECT eno, e_firstname, e_lastname, emp_job 
+ FROM employees 
+ WHERE salary IS NULL;
+ENO         E_FIRSTNAME           E_LASTNAME            EMP_JOB
+---------------------------------------------------------------------------
+1           Chan-seung            Moon                  CEO
+8           Xiong                 Wang                  manager
+20          William               Blake                 sales rep
 3 rows selected.
+```
+
+
 
 #### LIKE
 
 ##### 구문
 
-like_condition ::=
+**like_condition ::=**
+
+![like_image263](media/SQL/like_image263.gif)
 
 ##### 설명
 
@@ -8408,75 +8351,60 @@ LIKE는 패턴 일치 검사 조건으로써, 어떤 문자열이 주어진 패�
 \<질의\> 성이 “D”로 시작되는 직원들의 사원번호, 이름, 부서번호, 전화번호
 출력하라.
 
-iSQL\> SELECT eno, e_lastname, e_firstname, dno, emp_tel FROM employees WHERE
-e_lastname LIKE 'D%';
-
-ENO E_LASTNAME E_FIRSTNAME DNO EMP_TEL
-
-\----------------------------------------------------------------------------
-
-2 Davenport Susan 0113654540
-
-9 Diaz Curtis 4001 0165293668
-
-15 Davenport Jason 1003 0119556884
-
+```
+iSQL> SELECT eno, e_lastname, e_firstname, dno, emp_tel FROM employees WHERE e_lastname LIKE 'D%';
+ENO         E_LASTNAME            E_FIRSTNAME           DNO         EMP_TEL
+----------------------------------------------------------------------------
+2           Davenport             Susan                             0113654540
+9           Diaz                  Curtis                4001        0165293668
+15          Davenport             Jason                 1003        0119556884
 3 rows selected.
+```
 
 \<질의\> 부서 이름에 밑줄(_)이 포함된 모든 부서에 대한 정보를 출력하라.
 
-iSQL\> INSERT INTO departments VALUES(5002, 'USA_HQ', 'Palo Alto', 100);
-
+```
+iSQL> INSERT INTO departments VALUES(5002, 'USA_HQ', 'Palo Alto', 100);
 1 row inserted.
-
-iSQL\> SELECT \* FROM departments
-
-WHERE dname LIKE '%\\_%' ESCAPE '\\';
-
-DNO DNAME DEP_LOCATION MGR_NO
-
-\---------------------------------------------------------------------------
-
-5002 USA_HQ Palo Alto 100
-
+iSQL> SELECT * FROM departments
+WHERE dname LIKE '%\_%' ESCAPE '\';
+DNO         DNAME                           DEP_LOCATION  MGR_NO
+---------------------------------------------------------------------------
+5002        USA_HQ                          Palo Alto     100
 1 row selected.
+
+```
 
 위 예제에서 백슬래시 (“\\”)가 escape 문자로 정의되었다. 이 escape 문자가
 밑줄(“_”) 앞에 있으므로 밑줄이 와일드카드로 다뤄지지 않는다.
 
 \<질의\> 이름에 “h”가 들어간 모든 사원의 이름을 출력하라.
 
-iSQL\> SELECT e_firstname
-
-FROM employees
-
-WHERE e_firstname LIKE '%h%';
-
+```
+iSQL> SELECT e_firstname 
+ FROM employees 
+ WHERE e_firstname LIKE '%h%';
 E_FIRSTNAME
-
-\------------------------
-
+------------------------
 Chan-seung
-
 Farhad
-
 Elizabeth
-
 Zhen
-
 Mitch
-
 Takahiro
-
 John
-
 7 rows selected.
+```
+
+
 
 #### REGEXP_LIKE
 
 ##### 구문
 
-regexp_like_condition ::=
+**regexp_like_condition ::=**
+
+![regexp_like_condition](media/SQL/regexp_like_condition.gif)
 
 ##### 설명
 
@@ -8496,48 +8424,40 @@ Expression (BRE)을 지원한다. 정규 표현식에 대한 자세한 설명은
 \<질의\> 이름의 성이 "D"로 시작되는 직원들의 사원번호, 이름, 부서번호, 전화번호
 출력하라.
 
-iSQL\> SELECT eno, e_lastname, e_firstname, dno, emp_tel FROM employees WHERE
-REGEXP_LIKE(e_lastname, '\^D');
-
-ENO E_LASTNAME E_FIRSTNAME DNO EMP_TEL
-
-\----------------------------------------------------------------------------
-
-2 Davenport Susan 0113654540
-
-9 Diaz Curtis 4001 0165293668
-
-15 Davenport Jason 1003 0119556884
-
+```
+iSQL> SELECT eno, e_lastname, e_firstname, dno, emp_tel FROM employees WHERE REGEXP_LIKE(e_lastname, '^D');
+ENO         E_LASTNAME            E_FIRSTNAME           DNO         EMP_TEL
+----------------------------------------------------------------------------
+2           Davenport             Susan                             0113654540
+9           Diaz                  Curtis                4001        0165293668
+15          Davenport             Jason                 1003        0119556884
 3 rows selected.
+```
 
 \<질의\> 이름의 성이 다섯 개의 문자로 이루어진 직원을 출력하라.
 
-iSQL\> SELECT eno, e_lastname, emp_job
-
-FROM employees
-
-WHERE REGEXP_LIKE (trim(e_lastname), '\^.{5}\$');
-
-ENO E_LASTNAME EMP_JOB
-
-\-------------------------------------------------------
-
-6 Momoi programmer
-
-13 Jones PM
-
-14 Miura PM
-
-20 Blake sales rep
-
+```
+iSQL> SELECT eno, e_lastname, emp_job 
+        FROM employees
+        WHERE REGEXP_LIKE (trim(e_lastname), '^.{5}$');
+ENO         E_LASTNAME            EMP_JOB
+-------------------------------------------------------
+6           Momoi                 programmer
+13          Jones                 PM
+14          Miura                 PM
+20          Blake                 sales rep
 4 rows selected.
+```
+
+
 
 #### UNIQUE
 
 ##### 구문
 
-unique_condition ::=
+**unique_condition ::=**
+
+![unique_image266](media/SQL/unique_image266.gif)
 
 ##### 설명
 
@@ -8545,48 +8465,35 @@ UNIQUE는 부질의가 오직 하나의 레코드만 반환하는지 검사한�
 
 ##### 예제
 
-\<질의\> CEO가 오직 한명이면, 다음의 메시지를 출력하라: “This is only one CEO.”
+\<질의\> CEO가 오직 한명이면, 다음의 메시지를 출력하라: “There is only one CEO.”
 
-iSQL\> SELECT 'There is only one CEO.' message
-
-FROM dual
-
-WHERE UNIQUE
-
-(SELECT \*
-
-FROM employees
-
-WHERE emp_job = 'CEO');
-
+```
+iSQL> SELECT 'There is only one CEO.' message 
+ FROM dual 
+ WHERE UNIQUE 
+  (SELECT * 
+  FROM employees 
+  WHERE emp_job = 'CEO');
 MESSAGE
-
-\--------------------------
-
+--------------------------
 There is only one CEO.
-
 1 row selected.
+```
 
 \<질의\> 고객 테이블에 여성이 한명만 있을 경우 다음의 메시지를 출력하라: 'There
 is only one female customer.'
 
-iSQL\> SELECT 'There is only one female customer.' message
-
+```
+iSQL> SELECT 'There is only one female customer.' message
 FROM dual
-
 WHERE UNIQUE
-
-(SELECT \*
-
-FROM customers
-
-WHERE SEX = 'F');
-
-ENAME
-
-\------------------------
-
+ (SELECT *
+ FROM customers
+ WHERE SEX = 'F');
+ENAME 
+------------------------
 No rows selected.
+```
 
 <a name="부록-정규-표현식"><a/>
 
@@ -8643,17 +8550,20 @@ Altibase가 지원하는 정규 표현식은 아래와 같은 제약 사항과 �
 아래는 Altibase에서 정규 표현식에 사용할 수 있는 특수 문자들과 그 의미를 정리한
 표이다.
 
-| 메타문자 | 설명                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| .        | Newline를 제외한 문자 하나와 매칭된다. 각괄호 표현식 내에서 점(.) 문자는 리터럴 점(.)과 매칭된다. 예를 들어, a.c는 "abc" 등과 매치하지만, [a.c]는 오직 "a", ".", 또는 "c"와 매칭된다.                                                                                                                                                                                                                                                                                                                                                                   |
-| []       | 문자 클래스 표현식. 각괄호 내의 한 문자와 매치. 예를 들어, [abc]는 "a", "b", 또는 "c"와 매칭된다. [a-z]는 "a"에서 "z"까지의 소문자와 매칭된다. 이러한 형태는 혼합될 수 있다: [abcx-z]는 "a", "b", "c", "x", "y", 또는 "z"와 매치하며, [a-cx-z]도 마찬가지이다. ] 문자가 (\^ 뒤의) 첫 문자일 경우 각괄호 표현식에 포함될 수 있다: []abc]. \^ 문자가 [] 내의 첫 번째 위치에 올 경우 []내의 문자를 제외한 나머지를 의미한다. 예를 들면, [\^abc]d는 ad, bd, cd를 제외한 ed, fd 등과 매칭된다. [\^a-z]는 알파벳 소문자로 시작하지 않는 모든 문자를 의미한다. |
-| \^       | 문자열의 시작 위치를 의미한다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| \$       | 문자열의 마지막 위치 또는 문자열의 마지막 newline 바로 전 위치를 의미한다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| \*       | 앞에 있는 요소와 0 회 또는 그 이상 횟수로 매칭된다. 예를 들어, ab\*c는 "ac", "abc", "abbbc", 등과 매칭된다. [xyz]\*는 "", "x", "y", "z", "zx", "zyx", "xyzzy", 등과 일치한다. (ab)\*는 "", "ab", "abab", "ababab" 등과 매칭된다.                                                                                                                                                                                                                                                                                                                        |
-| \+       | 앞선 문자와 1회 이상 횟수로 매칭된다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| ?        | 앞선 문자와 0 회 또는 1회 매칭된다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| {m,n}    | 앞선 요소와 최소 m회, 최대 n회 매칭된다. 예를 들어, a{3,5}는 "aaa", "aaaa", 및 "aaaaa"와 매칭된다.                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| {m}      | 앞선 요소와 m회 매칭된다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| {m,}     | 앞선 요소와 m회 이상 매칭된다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| \|       | 여러 식 중에 하나를 선택한다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| ()       | 하위 표현식. 여러 식을 하나로 묶어서 복잡한 정규식을 표현할 수 있다.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| 메타문자 | 설명                                                         |
+| -------- | ------------------------------------------------------------ |
+| .        | Newline를 제외한 문자 하나와 매칭된다. 각괄호 표현식 내에서 점(.) 문자는 리터럴 점(.)과 매칭된다. <br />예를 들어, a.c는 "abc" 등과 매치하지만, [a.c]는 오직 "a", ".", 또는 "c"와 매칭된다. |
+| []       | 문자 클래스 표현식. 각괄호 내의 한 문자와 매치. 예를 들어, [abc]는 "a", "b", 또는 "c"와 매칭된다. [a-z]는 "a"에서 "z"까지의 소문자와 매칭된다. 이러한 형태는 혼합될 수 있다: [abcx-z]는 "a", "b", "c", "x", "y", 또는 "z"와 매치하며, [a-cx-z]도 마찬가지이다. 
+<br/>] 문자가 (^ 뒤의) 첫 문자일 경우 각괄호 표현식에 포함될 수 있다: []abc].
+
+^ 문자가 [] 내의 첫 번째 위치에 올 경우 []내의 문자를 제외한 나머지를 의미한다. 예를 들면, [^abc]d는 ad, bd, cd를 제외한 ed, fd 등과 매칭된다. [^a-z]는 알파벳 소문자로 시작하지 않는 모든 문자를 의미한다. |
+| ^        | 문자열의 시작 위치를 의미한다.                               |
+| \$       | 문자열의 마지막 위치 또는 문자열의 마지막 newline 바로 전 위치를 의미한다. |
+| \*       | 앞에 있는 요소와 0 회 또는 그 이상 횟수로 매칭된다. 예를 들어, ab\*c는 "ac", "abc", "abbbc", 등과 매칭된다. [xyz]\*는 "", "x", "y", "z", "zx", "zyx", "xyzzy", 등과 일치한다. (ab)\*는 "", "ab", "abab", "ababab" 등과 매칭된다. |
+| \+       | 앞선 문자와 1회 이상 횟수로 매칭된다.                        |
+| ?        | 앞선 문자와 0 회 또는 1회 매칭된다.                          |
+| {m,n}    | 앞선 요소와 최소 m회, 최대 n회 매칭된다. <br />예를 들어, a{3,5}는 "aaa", "aaaa", 및 "aaaaa"와 매칭된다. |
+| {m}      | 앞선 요소와 m회 매칭된다.                                    |
+| {m,}     | 앞선 요소와 m회 이상 매칭된다.                               |
+| \|       | 여러 식 중에 하나를 선택한다.                                |
+| ()       | 하위 표현식. 여러 식을 하나로 묶어서 복잡한 정규식을 표현할 수 있다. |
